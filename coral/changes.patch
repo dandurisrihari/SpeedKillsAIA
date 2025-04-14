@@ -1,5 +1,5 @@
 diff --git a/driver/kernel/kernel_mmu_mapper.cc b/driver/kernel/kernel_mmu_mapper.cc
-index 1723faa..ff99dfd 100644
+index 1723faa..c0a6b79 100644
 --- a/driver/kernel/kernel_mmu_mapper.cc
 +++ b/driver/kernel/kernel_mmu_mapper.cc
 @@ -31,6 +31,7 @@
@@ -16,7 +16,7 @@ index 1723faa..ff99dfd 100644
  
 +void KernelMmuMapper::DoVictimMap(gasket_page_table_ioctl_flags buffer_to_map) {
 +
-+  VLOG(4) << StringPrintf("[Debug Sri] DoVictimMap() : %016" PRIx64 " -> %016" PRIx64
++  VLOG(4) << StringPrintf("[Debug] DoVictimMap() : %016" PRIx64 " -> %016" PRIx64
 +                          " (%d pages) flags=%08" PRIx32 ".",
 +                          buffer_to_map.base.host_address,
 +                          buffer_to_map.base.device_address, 1,
@@ -74,10 +74,10 @@ index 1723faa..ff99dfd 100644
    }
  
 +
-+  VLOG(4) << StringPrintf("[Debug Sri] testing\n");
++  VLOG(4) << StringPrintf("[Debug] testing\n");
 +  static int ioctl_counter = 0;
 +  ioctl_counter++;
-+  VLOG(4) << StringPrintf("[Debug Sri] ioctl_counter = %d\n", ioctl_counter);
++  VLOG(4) << StringPrintf("[Debug] ioctl_counter = %d\n", ioctl_counter);
 +
 +  if(ioctl_counter == 6){ // 6th ioctl will be a victim map, On the 6th hit, set device_va to target value
 +    gasket_page_table_ioctl_flags buffer_to_map_victim;
@@ -85,12 +85,12 @@ index 1723faa..ff99dfd 100644
 +    size_t size = 4096; // 1 pages
 +    void *victim_ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 +    if (victim_ptr == MAP_FAILED) {
-+        VLOG(4) << StringPrintf("[Debug Sri] mmap failed");
++        VLOG(4) << StringPrintf("[Debug] mmap failed");
 +    }else{
-+        VLOG(4) << StringPrintf("[Debug Sri] mmap success");
++        VLOG(4) << StringPrintf("[Debug] mmap success");
 +    }
 +    memset(victim_ptr, 0x17, 4096);
-+    VLOG(4) << StringPrintf("[Debug Sri] victim_ptr = %p\n", victim_ptr);
++    VLOG(4) << StringPrintf("[Debug] victim_ptr = %p\n", victim_ptr);
 +    
 +    buffer_to_map_victim.base.page_table_index = 0;
 +    buffer_to_map_victim.base.host_address = reinterpret_cast<uintptr_t>(victim_ptr);
@@ -106,9 +106,9 @@ index 1723faa..ff99dfd 100644
 +    
 +    // Free the mapped memory, physical memory will be given back to the kernel, but the physical memory will be still mapped to TPU 
 +    if (munmap(victim_ptr, size) == 0) {
-+        VLOG(4) << StringPrintf("[Debug Sri] Memory unmapped successfully\n");
++        VLOG(4) << StringPrintf("[Debug] Memory unmapped successfully\n");
 +    } else {
-+        VLOG(4) << StringPrintf("[Debug Sri] munmap failed");
++        VLOG(4) << StringPrintf("[Debug] munmap failed");
 +    }
 +
 +
