@@ -1,0 +1,17 @@
+# download AVL(libedgetpu)
+# We modify AVL, apply changes.patch file and compile classify_image (AUA) example application in libedgetpu repo.
+
+AVL repo: https://github.com/google-coral/libedgetpu
+application repo: https://github.com/google-coral/tflite/tree/master/cpp/examples/classification/classify.cc
+
+Provided classify_image in current repo includes AVL(statically linked) with changes
+
+
+IN gdb
+# Add the directory to the sources
+directory /mnt/workspace/bazel-workspace
+
+break external/libedgetpu/driver/kernel/kernel_mmu_mapper.cc:216
+break external/libedgetpu/driver/memory/buddy_address_space.cc:70
+
+set device_va = 0x1007000
