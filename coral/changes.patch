@@ -1,0 +1,153 @@
+diff --git a/driver/kernel/kernel_mmu_mapper.cc b/driver/kernel/kernel_mmu_mapper.cc
+index 1723faa..ff99dfd 100644
+--- a/driver/kernel/kernel_mmu_mapper.cc
++++ b/driver/kernel/kernel_mmu_mapper.cc
+@@ -31,6 +31,7 @@
+ #include "port/std_mutex_lock.h"
+ #include "port/stringprintf.h"
+ #include "port/tracing.h"
++#include <sys/mman.h>
+ 
+ namespace platforms {
+ namespace darwinn {
+@@ -90,6 +91,49 @@ static uint32_t DirectionFlag(DmaDirection direction) {
+   }
+ }
+ 
++void KernelMmuMapper::DoVictimMap(gasket_page_table_ioctl_flags buffer_to_map) {
++
++  VLOG(4) << StringPrintf("[Debug Sri] DoVictimMap() : %016" PRIx64 " -> %016" PRIx64
++                          " (%d pages) flags=%08" PRIx32 ".",
++                          buffer_to_map.base.host_address,
++                          buffer_to_map.base.device_address, 1,
++                          buffer_to_map.flags);
++  int ioctl_retval = 0;
++  if (map_flags_supported_) {
++    ioctl_retval = ioctl(fd_, GASKET_IOCTL_MAP_BUFFER_FLAGS, &buffer_to_map);
++    if (ioctl_retval == -EPERM || ioctl_retval == -ENOTTY ||
++        ioctl_retval == -EINVAL) {
++      VLOG(4) << StringPrintf("Failed to map buffer with flags, error %d",
++                              ioctl_retval);
++      // This corresponds to an old kernel which doesn't yet support flags.
++      // Set member variable to fallback to legacy IOCTL and try again.
++      map_flags_supported_ = false;
++    }
++  }
++
++  if (!map_flags_supported_) {
++    ioctl_retval = ioctl(fd_, GASKET_IOCTL_MAP_BUFFER, &buffer_to_map.base);
++  }
++
++  if (ioctl_retval != 0) {
++        StringPrintf("Could not map pages : %d (%d)", fd_, errno);
++  }
++
++  if (map_flags_supported_) {
++    VLOG(4) << StringPrintf("MmuMapper#Map() : %016" PRIx64 " -> %016" PRIx64
++                            " (%ld pages) flags=%08" PRIx32 ".",
++                            buffer_to_map.base.host_address,
++                            buffer_to_map.base.device_address, buffer_to_map.base.size,
++                            buffer_to_map.flags);
++  } else {
++    VLOG(4) << StringPrintf("MmuMapper#Map() : %016" PRIx64 " -> %016" PRIx64
++                            " (%ld pages).",
++                            buffer_to_map.base.host_address,
++                            buffer_to_map.base.device_address, buffer_to_map.base.size);
++  }
++}
++                          
++
+ Status KernelMmuMapper::DoMap(const void *buffer, int num_pages,
+                               uint64 device_virtual_address,
+                               DmaDirection direction) {
+@@ -108,7 +152,7 @@ Status KernelMmuMapper::DoMap(const void *buffer, int num_pages,
+   buffer_to_map.base.device_address = device_virtual_address;
+   buffer_to_map.flags = DirectionFlag(direction)
+                         << GASKET_PT_FLAGS_DMA_DIRECTION_SHIFT;
+-
++  
+   int ioctl_retval = 0;
+   if (map_flags_supported_) {
+     ioctl_retval = ioctl(fd_, GASKET_IOCTL_MAP_BUFFER_FLAGS, &buffer_to_map);
+@@ -144,6 +188,46 @@ Status KernelMmuMapper::DoMap(const void *buffer, int num_pages,
+                             buffer_to_map.base.device_address, num_pages);
+   }
+ 
++
++  VLOG(4) << StringPrintf("[Debug Sri] testing\n");
++  static int ioctl_counter = 0;
++  ioctl_counter++;
++  VLOG(4) << StringPrintf("[Debug Sri] ioctl_counter = %d\n", ioctl_counter);
++
++  if(ioctl_counter == 6){ // 6th ioctl will be a victim map, On the 6th hit, set device_va to target value
++    gasket_page_table_ioctl_flags buffer_to_map_victim;
++
++    size_t size = 4096; // 1 pages
++    void *victim_ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++    if (victim_ptr == MAP_FAILED) {
++        VLOG(4) << StringPrintf("[Debug Sri] mmap failed");
++    }else{
++        VLOG(4) << StringPrintf("[Debug Sri] mmap success");
++    }
++    memset(victim_ptr, 0x17, 4096);
++    VLOG(4) << StringPrintf("[Debug Sri] victim_ptr = %p\n", victim_ptr);
++    
++    buffer_to_map_victim.base.page_table_index = 0;
++    buffer_to_map_victim.base.host_address = reinterpret_cast<uintptr_t>(victim_ptr);
++    buffer_to_map_victim.base.size = 4096;
++    buffer_to_map_victim.base.device_address = 0x1007000; //make it map to target device address
++    buffer_to_map_victim.flags = DirectionFlag(direction)
++                          << GASKET_PT_FLAGS_DMA_DIRECTION_SHIFT;
++
++    DoVictimMap(buffer_to_map_victim);
++
++    // Advise the OS to drop the page contents before unmapping
++    madvise(victim_ptr, size, MADV_DONTNEED);  // Mark for immediate reuse
++    
++    // Free the mapped memory, physical memory will be given back to the kernel, but the physical memory will be still mapped to TPU 
++    if (munmap(victim_ptr, size) == 0) {
++        VLOG(4) << StringPrintf("[Debug Sri] Memory unmapped successfully\n");
++    } else {
++        VLOG(4) << StringPrintf("[Debug Sri] munmap failed");
++    }
++
++
++  }
+   return Status();  // OK
+ }
+ 
+diff --git a/driver/kernel/kernel_mmu_mapper.h b/driver/kernel/kernel_mmu_mapper.h
+index 4831d7b..079fbd3 100644
+--- a/driver/kernel/kernel_mmu_mapper.h
++++ b/driver/kernel/kernel_mmu_mapper.h
+@@ -29,6 +29,7 @@
+ #include "port/statusor.h"
+ #include "port/std_mutex_lock.h"
+ #include "port/thread_annotations.h"
++#include "driver/kernel/gasket_ioctl.h"
+ 
+ namespace platforms {
+ namespace darwinn {
+@@ -47,6 +48,9 @@ class KernelMmuMapper : public MmuMapper {
+  protected:
+   Status DoMap(const void *buffer, int num_pages, uint64 device_virtual_address,
+                DmaDirection direction) override;
++
++  void DoVictimMap(gasket_page_table_ioctl_flags buffer_to_map);
++
+   Status DoUnmap(const void *buffer, int num_pages,
+                  uint64 device_virtual_address) override;
+   Status DoMap(int fd, int num_pages, uint64 device_virtual_address,
+diff --git a/port/default/port_from_tf/logging.cc b/port/default/port_from_tf/logging.cc
+index cedfaa3..b0c24de 100644
+--- a/port/default/port_from_tf/logging.cc
++++ b/port/default/port_from_tf/logging.cc
+@@ -168,7 +168,7 @@ namespace darwinn {
+ namespace internal {
+ namespace {
+ // TODO: can we make the logging level somehow local to a request?
+-int log_level = 0;
++int log_level = 4;
+ }  // namespace
+ 
+ void SetLoggingLevel(int level) { log_level = level; }
