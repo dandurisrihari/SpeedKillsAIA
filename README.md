@@ -31,8 +31,9 @@ cdaframework/
 │       ├── __init__.py
 │       └── logger.py
 ├── exploits/                        # Exploit PoCs and validation scripts
-│   ├── dma_privilege_escalation.py
-│   └── unvalidated_copy_trigger.py
+│   ├── coral/
+│   └── ti/
+│   └── nxp/
 ├── scripts/                         # CLI, orchestration, or pipelines
 │   ├── run_pipeline.py
 │   └── instrument_and_analyze.py
