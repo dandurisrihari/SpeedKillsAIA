@@ -52,7 +52,7 @@ cdaframework/
 ├── .gitignore
 ├── requirements.txt
 ├── README.md
-└── setup.py
+└── setup.sh
 ```
 
 ### Core Components
