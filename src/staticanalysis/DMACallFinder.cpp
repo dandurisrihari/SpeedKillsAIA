@@ -57,6 +57,26 @@ private:
         "dmaengine_desc_get_callback",
         "dmaengine_desc_set_callback", "dmaengine_desc_set_callback_param",
 
+        // Scatterlist DMA APIs
+        "sg_page_iter_dma_address", "sg_dma_address", "sg_dma_len",
+        "sg_phys", "sg_page_iter_page", "sg_page_iter_dma_len",
+        "for_each_sg_page", "for_each_sg_dma_page",
+
+        // Address Translation APIs
+        "dma_to_phys", "phys_to_dma", "virt_to_phys", "phys_to_virt",
+        "virt_to_bus", "bus_to_virt", "page_to_phys", "pfn_to_phys",
+        "phys_to_pfn", "virt_to_page", "page_to_virt",
+
+        // Memory Mapping APIs
+        "ioremap", "ioremap_nocache", "ioremap_wc", "ioremap_wt",
+        "ioremap_cache", "iounmap", "devm_ioremap", "devm_iounmap",
+        "devm_ioremap_resource", "devm_platform_ioremap_resource",
+
+        // PCI Resource APIs
+        "pci_resource_start", "pci_resource_end", "pci_resource_len",
+        "pci_resource_flags", "pci_iomap", "pci_iounmap",
+        "pcim_iomap", "pcim_iounmap", "pcim_iomap_regions",
+
         // Misc DMA APIs
         "dma_supported", "dma_get_cache_alignment",
         "dma_set_mask", "dma_set_coherent_mask",
