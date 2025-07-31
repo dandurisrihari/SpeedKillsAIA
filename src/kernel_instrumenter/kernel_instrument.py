@@ -97,7 +97,7 @@ Exit Codes:
     2: Complete failure - Operation could not be completed
     130: User interruption (Ctrl+C)
 
-Author: Kernel Instrumentation Team
+Author: anonymous
 Version: 2.0.0
 License: MIT
 """
@@ -182,6 +182,9 @@ class KernelInstrumenter:
             Dictionary with instrumentation results and statistics
         """
         try:
+            # Update files processed counter
+            self.stats['files_processed'] += 1
+            
             if self.verbose:
                 print(f"Processing: {file_path}")
             
@@ -200,7 +203,7 @@ class KernelInstrumenter:
                 return {
                     'success': True,
                     'modified': False,
-                    'instrumentations': {},
+                    'instrumentations': analysis_results,  # Return the empty results dict
                     'message': 'No instrumentable items found'
                 }
             
@@ -211,6 +214,26 @@ class KernelInstrumenter:
                     for inst_type, items in analysis_results.items():
                         if items:
                             print(f"    {inst_type}: {len(items)} items")
+                            # Show detailed information for each item in verbose mode
+                            for item in items[:5]:  # Limit to first 5 items to avoid clutter
+                                if inst_type == 'dma' and 'function_name' in item:
+                                    print(f"      - {item['function_name']} at line {item['line_number']}")
+                                elif inst_type == 'user_copy' and 'function_name' in item:
+                                    print(f"      - {item['function_name']} at line {item['line_number']}")
+                                elif inst_type == 'functions' and 'function_name' in item:
+                                    print(f"      - {item['function_name']} at line {item['line_number']}")
+                            if len(items) > 5:
+                                print(f"      ... and {len(items) - 5} more")
+                
+                # Update statistics for dry-run mode
+                self.stats['total_instrumentations'] += total_items
+                for inst_type, items in analysis_results.items():
+                    if 'dma_present_files_functions' in self.enabled_types and inst_type == 'functions':
+                        # Map functions to dma_present_files_functions for stats
+                        self.stats['instrumentations_by_type']['dma_present_files_functions'] = self.stats['instrumentations_by_type'].get('dma_present_files_functions', 0) + len(items)
+                    else:
+                        self.stats['instrumentations_by_type'][inst_type] += len(items)
+                
                 return {
                     'success': True,
                     'modified': False,
@@ -315,7 +338,6 @@ class KernelInstrumenter:
         
         # Process each file
         for file_path in c_files:
-            self.stats['files_processed'] += 1
             result = self.instrument_file(file_path)
             results.append({
                 'file': file_path,
@@ -477,6 +499,13 @@ def main():
             return 0
         else:
             print("\n❌ Instrumentation completed with errors!")
+            # Print specific error message if available
+            if 'error' in result:
+                print(f"Error: {result['error']}")
+            elif 'errors' in result and result['errors']:
+                print("Errors encountered:")
+                for error in result['errors']:
+                    print(f"  {error}")
             return 1
             
     except KeyboardInterrupt:

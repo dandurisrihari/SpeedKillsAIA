@@ -75,4 +75,4 @@ __all__ = [
 
 # Version information
 __version__ = "2.0.0"
-__author__ = "Kernel Instrumentation Team"
+__author__ = "anonymous"
