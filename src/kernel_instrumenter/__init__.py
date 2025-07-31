@@ -31,6 +31,7 @@ from .parsing import TreeSitterParser
 from .analysis import DMACallAnalyzer
 from .instrumentation import FileInstrumenter
 from .cli import main
+from .kernel_instrument import KernelInstrumenter
 
 __version__ = "1.0.0"
 __author__ = "DMA Instrumentation Tool"
@@ -41,5 +42,6 @@ __all__ = [
     'TreeSitterParser', 
     'DMACallAnalyzer',
     'FileInstrumenter',
-    'DirectoryProcessor'
+    'DirectoryProcessor',
+    'KernelInstrumenter'
 ]
