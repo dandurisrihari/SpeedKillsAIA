@@ -44,11 +44,12 @@ def main():
     """
     # Set up argument parser with comprehensive help
     parser = argparse.ArgumentParser(
-        description="""Instrument Linux kernel module C files with DMA allocation logging.
+        description="""Instrument Linux kernel module C files with DMA allocation and function entry logging.
         
-        This tool adds instrumentation code before DMA API calls to track memory allocations.
-        It uses tree-sitter to parse C files and identify DMA function calls, then inserts
-        printk statements before each call to log when DMA operations occur.
+        This tool adds instrumentation code before DMA API calls and function entries to track 
+        memory allocations and function execution flow. It uses tree-sitter to parse C files 
+        and identify DMA function calls and function definitions, then inserts printk statements 
+        before each call/entry to log when DMA operations and function calls occur.
         
         The tool processes all .c files in the specified directory recursively and creates
         backup files (.backup) before making any modifications.""",
@@ -76,6 +77,13 @@ def main():
         help='Limit processing to first N files (for testing)'
     )
     
+    # Optional flag to disable function instrumentation
+    parser.add_argument(
+        '--dma-only', 
+        action='store_true',
+        help='Only instrument DMA calls, skip function entry instrumentation'
+    )
+    
     # Parse command line arguments
     args = parser.parse_args()
     
@@ -87,7 +95,8 @@ def main():
         instrumenter.process_directory(
             args.directory,
             dry_run=args.dry_run,
-            max_files=args.test_limit
+            max_files=args.test_limit,
+            instrument_functions=not args.dma_only
         )
         
     except KeyboardInterrupt:

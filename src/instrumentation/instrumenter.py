@@ -50,7 +50,7 @@ class FileInstrumenter:
 
     def _is_already_instrumented(self, source_lines: List[str], line_number: int) -> bool:
         """
-        Check if a line is already instrumented by looking for our marker
+        Check if a line is already instrumented by looking for our markers
         
         This prevents duplicate instrumentation when running the tool multiple times.
         
@@ -62,7 +62,8 @@ class FileInstrumenter:
             bool: True if already instrumented, False otherwise
         """
         if line_number > 0 and len(source_lines) > line_number - 1:
-            return 'DMA_INSTRUMENT' in source_lines[line_number - 1]
+            prev_line = source_lines[line_number - 1]
+            return 'DMA_INSTRUMENT' in prev_line or 'FUNC_ENTRY' in prev_line
         return False
     
     def _create_instrumentation_line(self, function_name: str, indentation: str) -> str:
@@ -77,6 +78,20 @@ class FileInstrumenter:
             str: Formatted instrumentation code
         """
         instrumentation = DMAAPIConfig.INSTRUMENTATION_TEMPLATE.format(function_name=function_name)
+        return f"{indentation}{instrumentation}"
+
+    def _create_function_entry_line(self, function_name: str, indentation: str) -> str:
+        """
+        Create the instrumentation line for function entry logging
+        
+        Args:
+            function_name: Name of the function being instrumented
+            indentation: Indentation string to match surrounding code
+            
+        Returns:
+            str: Formatted function entry instrumentation code
+        """
+        instrumentation = DMAAPIConfig.FUNCTION_ENTRY_TEMPLATE.format(function_name=function_name)
         return f"{indentation}{instrumentation}"
     
     def _create_backup(self, file_path: Path) -> Path:
@@ -109,6 +124,81 @@ class FileInstrumenter:
             line = source_lines[line_number]
             return line[:len(line) - len(line.lstrip())]
         return ""
+
+    def _has_required_headers(self, source_lines: List[str]) -> bool:
+        """
+        Check if the source file already has the required headers for instrumentation
+        
+        Args:
+            source_lines: List of source code lines
+            
+        Returns:
+            bool: True if headers are present, False otherwise
+        """
+        source_text = '\n'.join(source_lines[:50])  # Check first 50 lines for headers
+        
+        # Check for existing printk-related headers
+        has_kernel_h = '#include <linux/kernel.h>' in source_text
+        has_printk_h = '#include <linux/printk.h>' in source_text
+        has_our_marker = DMAAPIConfig.HEADER_MARKER in source_text
+        
+        # If we already added headers, or if kernel.h is present, consider it sufficient
+        return has_our_marker or has_kernel_h or has_printk_h
+
+    def _add_required_headers(self, source_lines: List[str]) -> int:
+        """
+        Add required headers for instrumentation to the source file
+        
+        This method adds the necessary kernel headers at the appropriate location
+        in the source file to ensure instrumentation code compiles properly.
+        
+        Args:
+            source_lines: List of source code lines to modify
+            
+        Returns:
+            int: Number of lines added (for adjusting line numbers)
+        """
+        if self._has_required_headers(source_lines):
+            return 0
+        
+        # Find the best location to insert headers
+        insert_line = 0
+        
+        # Skip initial comments and find the first include or after license header
+        for i, line in enumerate(source_lines):
+            stripped = line.strip()
+            
+            # Skip empty lines and comments at the top
+            if not stripped or stripped.startswith('/*') or stripped.startswith('//') or stripped.startswith('*'):
+                continue
+                
+            # If we find an existing include, insert before it
+            if stripped.startswith('#include'):
+                insert_line = i
+                break
+                
+            # If we find other preprocessor directives or code, insert before them
+            if stripped.startswith('#') or stripped:
+                insert_line = i
+                break
+        
+        # Build header block to insert
+        header_lines = [
+            '',  # Empty line before our headers
+            DMAAPIConfig.HEADER_MARKER
+        ]
+        
+        # Add each required header
+        for header in DMAAPIConfig.REQUIRED_HEADERS:
+            header_lines.append(header)
+        
+        header_lines.append('')  # Empty line after our headers
+        
+        # Insert headers at the determined location
+        for i, header_line in enumerate(header_lines):
+            source_lines.insert(insert_line + i, header_line)
+        
+        return len(header_lines)
 
     # ============================================================================
     # SPECIALIZED INSTRUMENTATION HANDLERS
@@ -329,13 +419,13 @@ class FileInstrumenter:
     # MAIN INSTRUMENTATION METHOD
     # ============================================================================
 
-    def instrument_file(self, file_path: Path, dry_run: bool = False) -> bool:
+    def instrument_file(self, file_path: Path, dry_run: bool = False, instrument_functions: bool = True) -> bool:
         """
-        Instrument a single C file with DMA allocation logging
+        Instrument a single C file with DMA allocation and function entry logging
         
         This is the main entry point for file instrumentation. It:
         1. Reads and analyzes the source file
-        2. Finds all DMA calls using the analyzer
+        2. Finds all DMA calls and function definitions using the analyzer
         3. Applies appropriate instrumentation strategies
         4. Creates backups and writes modified files
         5. Tracks all modifications made
@@ -343,6 +433,7 @@ class FileInstrumenter:
         Args:
             file_path: Path to the C file to instrument
             dry_run: If True, show what would be done without modifying files
+            instrument_functions: If True, also instrument function entries
             
         Returns:
             bool: True if any modifications were made, False otherwise
@@ -359,33 +450,81 @@ class FileInstrumenter:
         if not source_code.strip():
             return False
 
-        # Find all DMA calls in the file
-        dma_calls = self.analyzer.find_dma_calls_in_file(source_code)
+        # Find all instrumentable items in the file
+        if instrument_functions:
+            instrumentable_items = self.analyzer.find_all_instrumentable_items(source_code)
+            dma_calls = instrumentable_items['dma_calls']
+            functions = instrumentable_items['functions']
+        else:
+            # Fallback to DMA-only instrumentation
+            dma_calls = self.analyzer.find_dma_calls_in_file(source_code)
+            functions = []
         
-        if not dma_calls:
+        total_items = len(dma_calls) + len(functions)
+        if total_items == 0:
             return False
 
-        print(f"Found {len(dma_calls)} DMA allocation calls in {file_path}")
+        print(f"Found {len(dma_calls)} DMA calls and {len(functions)} functions in {file_path}")
         
-        # Sort calls by line number in reverse order to avoid line number shifts
-        dma_calls.sort(key=lambda x: x['line_number'], reverse=True)
+        # Combine all items and sort by line number in reverse order to avoid line number shifts
+        all_items = []
+        
+        # Add DMA calls
+        for call_info in dma_calls:
+            call_info['item_type'] = 'dma_call'
+            all_items.append(call_info)
+        
+        # Add function definitions
+        for func_info in functions:
+            func_info['item_type'] = 'function_entry'
+            all_items.append(func_info)
+        
+        # Sort by line number in reverse order
+        all_items.sort(key=lambda x: x['line_number'], reverse=True)
         
         source_lines = source_code.split('\n')
-        modifications_made = 0
         
-        # Process each DMA call with appropriate strategy
-        for call_info in dma_calls:
-            line_number = call_info['line_number']
-            function_name = call_info['function_name']
-            strategy = call_info.get('instrumentation_strategy', 'before_call')
+        # Add required headers if instrumentation will be performed
+        header_lines_added = 0
+        if total_items > 0:
+            header_lines_added = self._add_required_headers(source_lines)
+            if header_lines_added > 0:
+                print(f"  ✓ Added {header_lines_added} header lines for instrumentation support")
+                # Adjust line numbers for all items since we added headers at the top
+                for item in all_items:
+                    item['line_number'] += header_lines_added
+                    if 'call_line_number' in item:
+                        item['call_line_number'] += header_lines_added
+                    if 'call_end_line' in item:
+                        item['call_end_line'] += header_lines_added
+                    if 'def_line_number' in item:
+                        item['def_line_number'] += header_lines_added
+        
+        modifications_made = header_lines_added
+        
+        # Process each instrumentable item with appropriate strategy
+        for item_info in all_items:
+            line_number = item_info['line_number']
+            function_name = item_info['function_name']
+            item_type = item_info['item_type']
+            strategy = item_info.get('instrumentation_strategy', 'before_call')
             
             # Skip if already instrumented or invalid
             if self._should_skip_instrumentation(source_lines, line_number):
-                print(f"  - Skipping {function_name} at line {line_number + 1} (already instrumented)")
+                print(f"  - Skipping {item_type} {function_name} at line {line_number + 1} (already instrumented)")
                 continue
             
             base_indent = self._get_line_indentation(source_lines, line_number)
             
+            # Handle function entry instrumentation
+            if item_type == 'function_entry':
+                instrumentation = self._create_function_entry_line(function_name, item_info.get('indentation', base_indent))
+                source_lines.insert(line_number, instrumentation)
+                modifications_made += 1
+                print(f"  ✓ Instrumented function entry {function_name} at line {line_number + 1}")
+                continue
+            
+            # Handle DMA call instrumentation (existing logic)
             # Apply instrumentation strategy based on context analysis
             if strategy == 'skip_preprocessor':
                 # Skip instrumentation for problematic preprocessor cases
@@ -394,20 +533,20 @@ class FileInstrumenter:
                 
             elif strategy == 'before_preprocessor_assignment':
                 # Handle DMA calls in preprocessor conditional assignments
-                if self._handle_preprocessor_assignment(source_lines, call_info):
+                if self._handle_preprocessor_assignment(source_lines, item_info):
                     modifications_made += 1
                     print(f"  ✓ Instrumented {function_name} before preprocessor assignment at line {line_number + 1}")
                 else:
                     # Fallback: skip this case
                     print(f"  - Skipping {function_name} at line {line_number + 1} (complex preprocessor case)")
                     
-            elif strategy == 'inline_with_temp' or call_info.get('in_preprocessor', False):
+            elif strategy == 'inline_with_temp' or item_info.get('in_preprocessor', False):
                 # For other preprocessor conditionals, skip to avoid syntax errors
                 print(f"  - Skipping {function_name} at line {line_number + 1} (inside preprocessor block)")
                 
-            elif call_info.get('is_multiline', False) and self._is_single_statement_after_control(source_lines, line_number):
+            elif item_info.get('is_multiline', False) and self._is_single_statement_after_control(source_lines, line_number):
                 # Handle multi-line calls in conditional statements
-                if self._handle_multiline_call_in_conditional(source_lines, call_info):
+                if self._handle_multiline_call_in_conditional(source_lines, item_info):
                     modifications_made += 1
                     print(f"  ✓ Instrumented multi-line {function_name} in conditional at line {line_number + 1}")
                 else:
@@ -441,17 +580,9 @@ class FileInstrumenter:
                 try:
                     with open(file_path, 'w', encoding='utf-8') as f:
                         f.write(modified_source)
-                    print(f"  ✓ Successfully instrumented {file_path} with {modifications_made} changes")
-                    
-                    # Track this modification
-                    self.modifications.append({
-                        'file': str(file_path),
-                        'backup': str(backup_path),
-                        'changes': modifications_made
-                    })
-                    
+                    print(f"  ✓ Instrumented {modifications_made} locations, backup saved as {backup_path.name}")
                 except Exception as e:
-                    print(f"Error writing {file_path}: {e}")
+                    print(f"  ✗ Error writing instrumented file: {e}")
                     return False
             else:
                 print(f"  - DRY RUN: Would instrument {modifications_made} locations in {file_path}")

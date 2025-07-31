@@ -98,9 +98,9 @@ class DirectoryProcessor:
     # MAIN PROCESSING WORKFLOW
     # ============================================================================
     
-    def process_directory(self, directory_path: str, dry_run: bool = False, max_files: Optional[int] = None) -> None:
+    def process_directory(self, directory_path: str, dry_run: bool = False, max_files: Optional[int] = None, instrument_functions: bool = True) -> None:
         """
-        Recursively process all C files in a directory with DMA instrumentation
+        Recursively process all C files in a directory with DMA and function instrumentation
         
         This is the main entry point for batch processing of source directories.
         It coordinates the entire workflow from file discovery through instrumentation
@@ -117,12 +117,14 @@ class DirectoryProcessor:
             directory_path: Path to directory containing C files to process
             dry_run: If True, preview changes without modifying files
             max_files: Optional limit on number of files to process (for testing)
+            instrument_functions: If True, also instrument function entries
             
         Features:
         - Progress tracking with file counters
         - Comprehensive error handling per file
         - Summary reporting of modifications made
         - Support for dry-run mode to preview changes
+        - Optional function entry instrumentation
         """
         directory = Path(directory_path)
         
@@ -134,6 +136,7 @@ class DirectoryProcessor:
         # Print processing header and configuration
         print(f"Processing directory: {directory_path}")
         print(f"DRY RUN: {dry_run}")
+        print(f"Function instrumentation: {instrument_functions}")
         print("-" * 60)
         
         # Find all C files to process
@@ -157,7 +160,7 @@ class DirectoryProcessor:
             
             try:
                 # Attempt to instrument the file
-                if self.instrumenter.instrument_file(file_path, dry_run):
+                if self.instrumenter.instrument_file(file_path, dry_run, instrument_functions):
                     instrumented_files += 1
             except Exception as e:
                 print(f"  - Error processing file: {e}")
