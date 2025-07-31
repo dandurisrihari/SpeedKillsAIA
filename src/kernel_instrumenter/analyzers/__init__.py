@@ -99,7 +99,7 @@ __all__ = [
 
 # Version and metadata
 __version__ = "2.0.0"
-__author__ = "Kernel Instrumentation Team"
+__author__ = "anonymous"
 
 def get_available_analyzers():
     """

@@ -87,7 +87,7 @@ Usage Examples:
         )
 
 Version: 2.0.0
-Author: Kernel Instrumentation Team
+Author: anonymous
 License: MIT
 """
 
@@ -96,7 +96,7 @@ from typing import Dict, Any, Optional
 
 # Version information
 __version__ = "2.0.0"
-__author__ = "Kernel Instrumentation Team"
+__author__ = "anonymous"
 __license__ = "MIT"
 __status__ = "Production"
 
