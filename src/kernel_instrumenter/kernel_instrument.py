@@ -257,6 +257,57 @@ class KernelInstrumenter:
             'errors': errors
         }
 
+    def instrument_code(self, source_code: str, instrumentation_type: str) -> str:
+        """
+        Instrument source code directly without file I/O
+        
+        Args:
+            source_code: C source code to instrument
+            instrumentation_type: Type of instrumentation ('dma', 'user_copy', 'functions')
+            
+        Returns:
+            Instrumented source code
+        """
+        # Filter enabled types to only the requested type
+        if instrumentation_type not in self.enabled_types:
+            # Temporarily add the type to enabled types
+            original_types = self.enabled_types.copy()
+            self.enabled_types.add(instrumentation_type)
+            
+            # Re-initialize analyzer and instrumenter with the new type
+            self.analyzer = MultiAnalyzer(self.parser, self.enabled_types)
+            self.instrumenter = MultiInstrumenter(self.analyzer, self.enabled_types)
+            
+            try:
+                # Analyze code for the specific type
+                analysis_results = self.analyzer.find_all_instrumentable_items(source_code)
+                
+                # Filter to only the requested type
+                filtered_results = {instrumentation_type: analysis_results.get(instrumentation_type, [])}
+                
+                # Instrument the code
+                if any(filtered_results.values()):
+                    return self.instrumenter.instrument_code(source_code, filtered_results)
+                else:
+                    return source_code
+            finally:
+                # Restore original enabled types
+                self.enabled_types = original_types
+                self.analyzer = MultiAnalyzer(self.parser, self.enabled_types)
+                self.instrumenter = MultiInstrumenter(self.analyzer, self.enabled_types)
+        else:
+            # Type is already enabled
+            analysis_results = self.analyzer.find_all_instrumentable_items(source_code)
+            
+            # Filter to only the requested type
+            filtered_results = {instrumentation_type: analysis_results.get(instrumentation_type, [])}
+            
+            # Instrument the code
+            if any(filtered_results.values()):
+                return self.instrumenter.instrument_code(source_code, filtered_results)
+            else:
+                return source_code
+
 
 def main():
     """
