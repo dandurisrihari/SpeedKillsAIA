@@ -6,6 +6,5 @@ for the instrumentation workflow.
 """
 
 from .core import DMAInstrumenter
-from .processor import DirectoryProcessor
 
-__all__ = ['DMAInstrumenter', 'DirectoryProcessor']
+__all__ = ['DMAInstrumenter']
