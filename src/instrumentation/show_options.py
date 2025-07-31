@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+
+# Simple test script to demonstrate the enhanced options
+import sys
+import os
+
+print("=" * 60)
+print("ENHANCED KERNEL INSTRUMENTATION TOOL - USER OPTIONS")
+print("=" * 60)
+print()
+
+print("AVAILABLE INSTRUMENTATION TYPES:")
+print("1. DMA APIs           - dma_alloc_coherent, dma_free_coherent, etc.")
+print("2. User Copy          - copy_from_user, copy_to_user, get_user, put_user")  
+print("3. Function Entries   - All function definitions")
+print()
+
+print("USAGE OPTIONS:")
+print()
+print("A) Instrument ALL Types (Default):")
+print("   python enhanced_instrument.py /path/to/source")
+print()
+print("B) Instrument Individual Types:")
+print("   python enhanced_instrument.py --only-dma /path/to/source")
+print("   python enhanced_instrument.py --only-user-copy /path/to/source")
+print("   python enhanced_instrument.py --only-functions /path/to/source")
+print()
+print("C) Instrument Multiple Specific Types:")
+print("   python enhanced_instrument.py --dma --user-copy /path/to/source")
+print("   python enhanced_instrument.py --dma --functions /path/to/source")
+print("   python enhanced_instrument.py --user-copy --functions /path/to/source")
+print()
+print("D) Exclude Specific Types:")
+print("   python enhanced_instrument.py --no-dma /path/to/source")
+print("   python enhanced_instrument.py --no-user-copy /path/to/source")
+print("   python enhanced_instrument.py --no-functions /path/to/source")
+print()
+print("E) Interactive Mode:")
+print("   python enhanced_instrument.py --interactive /path/to/source")
+print()
+print("F) Preview Changes (Dry Run):")
+print("   python enhanced_instrument.py --dry-run --verbose /path/to/source")
+print()
+
+print("=" * 60)
+print("EXAMPLES:")
+print("=" * 60)
+
+print()
+print("# Test on utilities directory:")
+print("python enhanced_instrument.py --only-user-copy --dry-run ../../utilities")
+print()
+print("# Interactive mode:")
+print("python enhanced_instrument.py --interactive --dry-run ../../utilities")
+print()
+print("# Combine DMA and user copy:")
+print("python enhanced_instrument.py --dma --user-copy --dry-run ../../utilities")
+print()
+print("# Everything except functions:")
+print("python enhanced_instrument.py --no-functions --dry-run ../../utilities")
+print()
+
+if __name__ == "__main__":
+    print("This demonstrates the available options for the enhanced instrumentation tool.")
+    print("Use the actual enhanced_instrument.py with the options shown above.")

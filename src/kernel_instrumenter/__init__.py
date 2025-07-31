@@ -16,10 +16,10 @@ Modules:
     cli: Command-line interface
 
 Main Components:
-    enhanced_instrument: Enhanced multi-type instrumentation tool
+    kernel_instrument: Enhanced multi-type instrumentation tool
     
 Usage:
-    from instrumentation import DMAInstrumenter, DMAAPIConfig
+    from kernel_instrumenter import DMAInstrumenter, DMAAPIConfig
     
     instrumenter = DMAInstrumenter()
     instrumenter.process_directory("/path/to/kernel/source")
