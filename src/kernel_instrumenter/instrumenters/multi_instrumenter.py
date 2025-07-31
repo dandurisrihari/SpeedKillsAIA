@@ -9,6 +9,7 @@ from typing import List, Dict, Any, Set
 
 from ..analyzers.multi_analyzer import MultiAnalyzer
 from ..instrumentation_types import DMAInstrumentationType, UserCopyInstrumentationType, FunctionInstrumentationType
+from ..instrumentation_types.dma_present_files_functions_config import DmaPresentFilesFunctionsInstrumentationType
 
 
 class MultiInstrumenter:
@@ -41,6 +42,10 @@ class MultiInstrumenter:
             self.type_configs['user_copy'] = UserCopyInstrumentationType()
         if 'functions' in enabled_types:
             self.type_configs['functions'] = FunctionInstrumentationType()
+        if 'dma_present_files_functions' in enabled_types:
+            # This type uses function instrumentation but with different logic
+            self.type_configs['functions'] = FunctionInstrumentationType()
+            self.type_configs['dma_present_files_functions'] = DmaPresentFilesFunctionsInstrumentationType()
 
     # ============================================================================
     # UTILITY METHODS

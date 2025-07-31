@@ -102,7 +102,7 @@ class KernelInstrumenter:
             with open(file_path, 'r', encoding='utf-8') as f:
                 source_code = f.read()
             
-            # Analyze file for instrumentable items
+            # Use the modular analyzer system for all instrumentation types
             analysis_results = self.analyzer.find_all_instrumentable_items(source_code)
             
             # Check if any instrumentation is needed
@@ -136,7 +136,7 @@ class KernelInstrumenter:
                 shutil.copy2(file_path, backup_path)
                 
                 try:
-                    # Perform actual instrumentation
+                    # Perform actual instrumentation using the modular system
                     instrumented_code = self.instrumenter.instrument_code(source_code, analysis_results)
                     
                     # Write instrumented code
@@ -153,7 +153,11 @@ class KernelInstrumenter:
                     self.stats['files_modified'] += 1
                     self.stats['total_instrumentations'] += total_items
                     for inst_type, items in analysis_results.items():
-                        self.stats['instrumentations_by_type'][inst_type] += len(items)
+                        if 'dma_present_files_functions' in self.enabled_types and inst_type == 'functions':
+                            # Map functions to dma_present_files_functions for stats
+                            self.stats['instrumentations_by_type']['dma_present_files_functions'] = self.stats['instrumentations_by_type'].get('dma_present_files_functions', 0) + len(items)
+                        else:
+                            self.stats['instrumentations_by_type'][inst_type] += len(items)
                     
                     return {
                         'success': True,
@@ -334,10 +338,10 @@ def main():
     
     parser.add_argument(
         '--types',
-        choices=['dma', 'user_copy', 'functions', 'all'],
+        choices=['dma', 'user_copy', 'functions', 'dma_present_files_functions', 'all'],
         nargs='+',
-        default=['all'],
-        help='Instrumentation types to enable (default: all)'
+        default=['dma', 'user_copy', 'dma_present_files_functions'],
+        help='Instrumentation types to enable (default: dma user_copy dma_present_files_functions). Use "all" to include all standard types. Use "dma_present_files_functions" to instrument all function entries in files containing DMA operations'
     )
     
     parser.add_argument(

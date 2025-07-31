@@ -32,6 +32,7 @@ from .analysis import DMACallAnalyzer
 from .instrumentation import FileInstrumenter
 from .cli import main
 from .kernel_instrument import KernelInstrumenter
+from .analyzers.dma_present_files_analyzer import DmaPresentFilesAnalyzer
 
 __version__ = "1.0.0"
 __author__ = "DMA Instrumentation Tool"
@@ -43,5 +44,6 @@ __all__ = [
     'DMACallAnalyzer',
     'FileInstrumenter',
     'DirectoryProcessor',
-    'KernelInstrumenter'
+    'KernelInstrumenter',
+    'DmaPresentFilesAnalyzer'
 ]

@@ -6,9 +6,11 @@ Multi-type analyzer that coordinates multiple specialized analyzers
 from typing import List, Dict, Any, Set
 from ..parsing.parser import TreeSitterParser
 from ..instrumentation_types import InstrumentationType, DMAInstrumentationType, UserCopyInstrumentationType, FunctionInstrumentationType
+from ..instrumentation_types.dma_present_files_functions_config import DmaPresentFilesFunctionsInstrumentationType
 from .dma_analyzer import DMAAnalyzer
 from .user_copy_analyzer import UserCopyAnalyzer
 from .function_analyzer import FunctionAnalyzer
+from .dma_present_files_analyzer import DmaPresentFilesAnalyzer
 
 
 class MultiAnalyzer:
@@ -42,6 +44,9 @@ class MultiAnalyzer:
         if 'functions' in enabled_types:
             function_type = FunctionInstrumentationType()
             self.analyzers['functions'] = FunctionAnalyzer(parser, function_type)
+            
+        if 'dma_present_files_functions' in enabled_types:
+            self.analyzers['dma_present_files_functions'] = DmaPresentFilesAnalyzer(parser, verbose=True)
 
     def get_enabled_types(self) -> List[str]:
         """Get list of enabled instrumentation types"""
@@ -68,6 +73,9 @@ class MultiAnalyzer:
                     results['user_copy'] = analyzer.find_calls_in_file(source_code)
                 elif analyzer_name == 'functions':
                     results['functions'] = analyzer.find_functions_in_file(source_code)
+                elif analyzer_name == 'dma_present_files_functions':
+                    # This analyzer returns functions but maps to 'functions' key for instrumentation
+                    results['functions'] = analyzer.find_instrumentable_items(source_code)
                 else:
                     results[analyzer_name] = []
                     
