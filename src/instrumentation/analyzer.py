@@ -80,6 +80,57 @@ class DMACallAnalyzer:
         function_name = self.get_text_from_node(function_node, source_bytes)
         return function_name in self.dma_apis
 
+    def is_function_definition(self, node: tree_sitter.Node, source_bytes: bytes) -> bool:
+        """
+        Check if a node represents a function definition
+        
+        Args:
+            node: Tree-sitter AST node to check
+            source_bytes: Source code as bytes
+            
+        Returns:
+            bool: True if node is a function definition, False otherwise
+        """
+        return node.type == 'function_definition'
+
+    def get_function_name_from_definition(self, function_def_node: tree_sitter.Node, source_bytes: bytes) -> Optional[str]:
+        """
+        Extract function name from a function definition node
+        
+        Args:
+            function_def_node: Function definition AST node
+            source_bytes: Source code as bytes
+            
+        Returns:
+            Optional[str]: Function name or None if not found
+        """
+        if function_def_node.type != 'function_definition':
+            return None
+            
+        # Look for the function declarator
+        declarator = function_def_node.child_by_field_name('declarator')
+        if not declarator:
+            return None
+            
+        # Handle different declarator types
+        if declarator.type == 'function_declarator':
+            # Direct function declarator
+            declarator_name = declarator.child_by_field_name('declarator')
+            if declarator_name:
+                return self.get_text_from_node(declarator_name, source_bytes)
+        elif declarator.type == 'pointer_declarator':
+            # Function pointer - look deeper
+            inner_declarator = declarator.child_by_field_name('declarator')
+            if inner_declarator and inner_declarator.type == 'function_declarator':
+                declarator_name = inner_declarator.child_by_field_name('declarator')
+                if declarator_name:
+                    return self.get_text_from_node(declarator_name, source_bytes)
+        elif declarator.type == 'identifier':
+            # Simple identifier
+            return self.get_text_from_node(declarator, source_bytes)
+            
+        return None
+
     # ============================================================================
     # CONTEXT ANALYSIS METHODS - Determine call context and environment
     # ============================================================================
@@ -303,8 +354,122 @@ class DMACallAnalyzer:
         return None
 
     # ============================================================================
-    # AST TRAVERSAL METHODS - Find and analyze DMA calls in the AST
+    # AST TRAVERSAL METHODS - Find and analyze DMA calls and function definitions
     # ============================================================================
+
+    def _find_instrumentable_nodes_recursive(self, node: tree_sitter.Node, source_bytes: bytes, 
+                                           dma_results: List[Dict[str, Any]], 
+                                           function_results: List[Dict[str, Any]], 
+                                           in_condition: bool = False) -> None:
+        """
+        Recursively traverse the AST to find both DMA calls and function definitions
+        
+        This method performs a depth-first traversal of the AST, analyzing
+        each node to:
+        1. Identify DMA function calls and function definitions
+        2. Analyze their context (preprocessor, assignment, etc.)
+        3. Determine the best instrumentation strategy
+        4. Collect metadata for instrumentation
+        
+        Args:
+            node: Current AST node being processed
+            source_bytes: Source code as bytes
+            dma_results: List to collect found DMA calls
+            function_results: List to collect found function definitions
+            in_condition: Whether we're inside a conditional expression
+        """
+        
+        # Special handling for if statements to track conditional context
+        if node.type == 'if_statement':
+            # Process condition separately (mark as in_condition=True)
+            condition_node = node.child_by_field_name('condition')
+            if condition_node:
+                self._find_instrumentable_nodes_recursive(condition_node, source_bytes, dma_results, function_results, True)
+            
+            # Process consequence (body of if)
+            consequence = node.child_by_field_name('consequence')
+            if consequence:
+                self._find_instrumentable_nodes_recursive(consequence, source_bytes, dma_results, function_results, in_condition)
+            
+            # Process alternative (else clause)
+            alternative = node.child_by_field_name('alternative')
+            if alternative:
+                self._find_instrumentable_nodes_recursive(alternative, source_bytes, dma_results, function_results, in_condition)
+            return
+            
+        # Check if current node is a function definition
+        elif self.is_function_definition(node, source_bytes):
+            function_name = self.get_function_name_from_definition(node, source_bytes)
+            if function_name:
+                # Skip internal/compiler-generated functions
+                if not function_name.startswith('__') and function_name != 'main':
+                    # Find the function body to instrument at the beginning
+                    body = node.child_by_field_name('body')
+                    if body and body.type == 'compound_statement':
+                        # Find the first statement inside the function body
+                        first_statement_line = body.start_point[0] + 1  # After opening brace
+                        
+                        function_results.append({
+                            'function_name': function_name,
+                            'line_number': first_statement_line,
+                            'def_line_number': node.start_point[0],
+                            'column': node.start_point[1],
+                            'instrumentation_strategy': 'function_entry',
+                            'instrumentation_type': 'function_entry'
+                        })
+            
+        # Check if current node is a DMA function call
+        elif self.is_dma_allocation_call(node, source_bytes):
+            function_name = self.get_function_name_from_node(node, source_bytes)
+            if function_name:
+                # Analyze the context and environment of this DMA call
+                in_preprocessor = self._is_inside_preprocessor_conditional(node)
+                in_assignment = self._is_inside_assignment(node)
+                assignment_start = self._find_assignment_start(node) if in_assignment else None
+                preprocessor_assignment = self._find_assignment_with_preprocessor(node) if in_preprocessor else None
+                is_multiline = self._is_multiline_call(node, source_bytes)
+                complete_statement = self._find_complete_statement(node)
+                statement_end_line = self._find_statement_end_line(node, source_bytes)
+                
+                # Determine the best instrumentation strategy based on context
+                target_line = node.start_point[0]  # Default to call line
+                instrumentation_strategy = 'before_call'
+                
+                if in_preprocessor and preprocessor_assignment:
+                    # For preprocessor conditionals in assignments, instrument before the assignment
+                    target_line = preprocessor_assignment.start_point[0]
+                    instrumentation_strategy = 'before_preprocessor_assignment'
+                elif in_assignment and assignment_start:
+                    # For assignments, instrument before the assignment
+                    target_line = assignment_start.start_point[0]
+                    instrumentation_strategy = 'before_assignment'
+                elif in_preprocessor:
+                    # For other preprocessor conditionals, skip or use special handling
+                    instrumentation_strategy = 'skip_preprocessor'
+                elif is_multiline and complete_statement:
+                    # For multiline calls, instrument before the complete statement
+                    target_line = complete_statement.start_point[0]
+                    instrumentation_strategy = 'before_statement'
+                
+                # Store all the metadata for this DMA call
+                dma_results.append({
+                    'node': node,
+                    'function_name': function_name,
+                    'line_number': target_line,
+                    'call_line_number': node.start_point[0],
+                    'call_end_line': statement_end_line,
+                    'column': node.start_point[1],
+                    'in_condition': in_condition,
+                    'in_preprocessor': in_preprocessor,
+                    'in_assignment': in_assignment,
+                    'is_multiline': is_multiline,
+                    'instrumentation_strategy': instrumentation_strategy,
+                    'instrumentation_type': 'dma_call'
+                })
+        
+        # Continue traversing child nodes
+        for child in node.children:
+            self._find_instrumentable_nodes_recursive(child, source_bytes, dma_results, function_results, in_condition)
 
     def _find_dma_calls_recursive(self, node: tree_sitter.Node, source_bytes: bytes, 
                                 results: List[Dict[str, Any]], in_condition: bool = False) -> None:
@@ -449,3 +614,87 @@ class DMACallAnalyzer:
         except Exception as e:
             print(f"Error parsing source code: {e}")
             return []
+
+    def find_all_instrumentable_items(self, source_code: str) -> Dict[str, List[Dict[str, Any]]]:
+        """
+        Find all instrumentable items (DMA calls and function definitions) in a source file
+        
+        This is the main entry point for comprehensive code analysis. It:
+        1. Parses the source code into an AST
+        2. Recursively finds all DMA calls and function definitions
+        3. Formats the results with proper indentation info
+        4. Returns structured data for instrumentation
+        
+        Args:
+            source_code: C source code as string
+            
+        Returns:
+            Dict containing 'dma_calls' and 'functions' lists with metadata
+        """
+        try:
+            # Parse source code into AST
+            tree = self.parser.parse(source_code)
+            source_bytes = bytes(source_code, 'utf8')
+            
+            # Find all instrumentable items in the AST
+            dma_results = []
+            function_results = []
+            self._find_instrumentable_nodes_recursive(tree.root_node, source_bytes, dma_results, function_results)
+            
+            # Format results with indentation and line information
+            source_lines = source_code.split('\n')
+            
+            # Format DMA call results
+            formatted_dma_calls = []
+            for call_info in dma_results:
+                line_number = call_info['line_number']
+                if line_number < len(source_lines):
+                    line = source_lines[line_number]
+                    indentation = ' ' * (len(line) - len(line.lstrip()))
+                    
+                    formatted_dma_calls.append({
+                        'function_name': call_info['function_name'],
+                        'line_number': line_number,
+                        'call_line_number': call_info['call_line_number'],
+                        'call_end_line': call_info.get('call_end_line', call_info['call_line_number']),
+                        'column': call_info['column'],
+                        'indentation': indentation,
+                        'in_condition': call_info.get('in_condition', False),
+                        'in_preprocessor': call_info.get('in_preprocessor', False),
+                        'in_assignment': call_info.get('in_assignment', False),
+                        'is_multiline': call_info.get('is_multiline', False),
+                        'instrumentation_strategy': call_info.get('instrumentation_strategy', 'before_call'),
+                        'instrumentation_type': 'dma_call'
+                    })
+            
+            # Format function definition results
+            formatted_functions = []
+            for func_info in function_results:
+                line_number = func_info['line_number']
+                if line_number < len(source_lines):
+                    # For function entry, use the indentation of the first statement inside the function
+                    if line_number < len(source_lines):
+                        line = source_lines[line_number] if line_number < len(source_lines) else ""
+                        # Function body typically has 4 spaces or 1 tab indentation
+                        indentation = "    "  # Standard 4-space indentation for function body
+                    else:
+                        indentation = "    "
+                    
+                    formatted_functions.append({
+                        'function_name': func_info['function_name'],
+                        'line_number': line_number,
+                        'def_line_number': func_info['def_line_number'],
+                        'column': func_info['column'],
+                        'indentation': indentation,
+                        'instrumentation_strategy': func_info.get('instrumentation_strategy', 'function_entry'),
+                        'instrumentation_type': 'function_entry'
+                    })
+            
+            return {
+                'dma_calls': formatted_dma_calls,
+                'functions': formatted_functions
+            }
+            
+        except Exception as e:
+            print(f"Error parsing source code: {e}")
+            return {'dma_calls': [], 'functions': []}

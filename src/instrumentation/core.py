@@ -77,9 +77,9 @@ class DMAInstrumenter:
             print(f"Failed to initialize DMA Instrumenter: {e}")
             sys.exit(1)
 
-    def process_directory(self, directory_path: str, dry_run: bool = False, max_files: Optional[int] = None) -> None:
+    def process_directory(self, directory_path: str, dry_run: bool = False, max_files: Optional[int] = None, instrument_functions: bool = True) -> None:
         """
-        Process all C files in a directory for DMA instrumentation
+        Process all C files in a directory for DMA and function instrumentation
         
         This is the main entry point for batch instrumentation operations.
         It delegates to the DirectoryProcessor to handle the actual work
@@ -89,5 +89,6 @@ class DMAInstrumenter:
             directory_path: Path to directory containing C files to instrument
             dry_run: If True, preview changes without modifying files
             max_files: Optional limit on number of files to process (for testing)
+            instrument_functions: If True, also instrument function entries
         """
-        self.directory_processor.process_directory(directory_path, dry_run, max_files)
+        self.directory_processor.process_directory(directory_path, dry_run, max_files, instrument_functions)

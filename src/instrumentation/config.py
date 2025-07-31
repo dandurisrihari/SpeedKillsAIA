@@ -153,14 +153,37 @@ class DMAAPIConfig:
     ]
     
     # ============================================================================
-    # INSTRUMENTATION CODE TEMPLATE
+    # INSTRUMENTATION CODE TEMPLATES
     # ============================================================================
-    # Template for the instrumentation code to insert before DMA calls
+    
+    # Template for DMA call instrumentation
     # This template provides:
     # 1. Function name and location logging
-    # 2. Stack trace capture for debugging
-    # 3. Clear markers for log parsing
-    INSTRUMENTATION_TEMPLATE = '''printk(KERN_INFO "DMA_INSTRUMENT: About to call {function_name} at %s:%d\\n", __FILE__, __LINE__);
-printk(KERN_INFO "DMA_STACK_START: Stack trace for {function_name}\\n");
+    # 2. Calling function identification
+    # 3. Stack trace capture for debugging
+    # 4. Clear markers for log parsing
+    INSTRUMENTATION_TEMPLATE = '''printk(KERN_INFO "DMA_INSTRUMENT: About to call {function_name} from function %s at %s:%d\\n", __func__, __FILE__, __LINE__);
+printk(KERN_INFO "DMA_STACK_START: Stack trace for {function_name} called from %s\\n", __func__);
 dump_stack();
 printk(KERN_INFO "DMA_STACK_END: End of stack trace for {function_name}\\n");'''
+
+    # Template for function entry instrumentation
+    # This template provides:
+    # 1. Function entry logging with parameters
+    # 2. File and line information
+    # 3. Clear markers for log parsing
+    FUNCTION_ENTRY_TEMPLATE = '''printk(KERN_INFO "FUNC_ENTRY: Entering function {function_name} at %s:%d\\n", __FILE__, __LINE__);'''
+
+    # ============================================================================
+    # REQUIRED HEADERS CONFIGURATION
+    # ============================================================================
+    # Headers required for instrumentation to compile properly
+    # These will be automatically added to files that need instrumentation
+    REQUIRED_HEADERS = [
+        '#include <linux/kernel.h>',      # For printk and KERN_INFO
+        '#include <linux/printk.h>',      # Additional printk definitions (newer kernels)
+        '#include <asm/stacktrace.h>',     # For dump_stack() on some architectures
+    ]
+    
+    # Comment marker to identify our added headers
+    HEADER_MARKER = '/* DMA_INSTRUMENT: Auto-added headers */'
