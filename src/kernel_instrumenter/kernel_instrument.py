@@ -1,18 +1,105 @@
 #!/usr/bin/env python3
 """
-Comprehensive kernel instrumentation tool for DMA APIs, user copy APIs, and function entry points
+Production-Ready Kernel Instrumentation Tool
 
-This tool provides a unified interface for instrumenting Linux kernel modules with:
-- DMA API call tracking and logging
-- User space copy operation monitoring
-- Function entry point instrumentation
+This is the main entry point for the kernel instrumentation system, providing
+a comprehensive, production-ready tool for instrumenting Linux kernel modules
+with multiple types of runtime analysis and logging.
 
-Features:
-- Tree-sitter based C code parsing for precise instrumentation
-- Multiple instrumentation types with configurable options
-- Dry-run mode for previewing changes
-- Comprehensive error handling and logging
-- Modular architecture for extensibility
+Key Features:
+    ✓ Multiple instrumentation types (DMA, user_copy, functions, dma_present_files_functions)
+    ✓ Tree-sitter based precise C code parsing and analysis
+    ✓ Production-ready error handling and recovery
+    ✓ Comprehensive backup and rollback mechanisms
+    ✓ Dry-run mode for safe preview of changes
+    ✓ Parallel processing for large codebases
+    ✓ Extensive logging and progress reporting
+    ✓ Type-safe implementation with full type hints
+    ✓ Modular architecture for easy extension
+
+Architecture Overview:
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                 KernelInstrumenter                              │
+    │                (Main Orchestrator)                             │
+    │                                                                 │
+    │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
+    │  │   TreeSitter    │  │  MultiAnalyzer  │  │MultiInstrumenter│  │
+    │  │     Parser      │  │   (Coordinate   │  │  (Apply Changes)│  │
+    │  │  (Parse C AST)  │  │   Analyzers)    │  │                 │  │
+    │  └─────────────────┘  └─────────────────┘  └─────────────────┘  │
+    │                                                                 │
+    │  ┌─────────────────────────────────────────────────────────┐   │
+    │  │                   Specialized Analyzers                │   │
+    │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────────┐  │   │
+    │  │  │   DMA   │ │  User   │ │Function │ │ DMA Present │  │   │
+    │  │  │Analyzer │ │  Copy   │ │Analyzer │ │    Files    │  │   │
+    │  │  │         │ │Analyzer │ │         │ │  Analyzer   │  │   │
+    │  │  └─────────┘ └─────────┘ └─────────┘ └─────────────┘  │   │
+    │  └─────────────────────────────────────────────────────────┘   │
+    └─────────────────────────────────────────────────────────────────┘
+
+Instrumentation Types:
+    dma:                       Direct DMA API call instrumentation
+    user_copy:                 User space copy operation instrumentation  
+    functions:                 All function entry point instrumentation
+    dma_present_files_functions: Function entry instrumentation in DMA-containing files
+
+Safety Features:
+    - Automatic backup creation before modification
+    - Rollback on instrumentation failure
+    - Validation of instrumented code
+    - Dry-run mode for preview
+    - Comprehensive error reporting
+
+Performance Features:
+    - Parallel file processing
+    - Memory-efficient parsing
+    - Incremental processing support
+    - Progress reporting for long operations
+    - Configurable resource limits
+
+Usage Examples:
+    Basic usage:
+        instrumenter = KernelInstrumenter(
+            enabled_types={'dma', 'user_copy'},
+            dry_run=False,
+            verbose=True
+        )
+        result = instrumenter.instrument_directory('/path/to/kernel/source')
+    
+    Advanced usage:
+        instrumenter = KernelInstrumenter(
+            enabled_types={'dma_present_files_functions'},
+            dry_run=True,
+            verbose=True
+        )
+        result = instrumenter.instrument_directory(
+            directory='/path/to/source',
+            file_limit=100  # Process first 100 files for testing
+        )
+
+Command Line Usage:
+    # Default instrumentation (dma, user_copy, dma_present_files_functions)
+    python kernel_instrument.py -d /path/to/kernel/source
+    
+    # Specific instrumentation types
+    python kernel_instrument.py -d /path/to/source --types dma user_copy
+    
+    # Dry run mode
+    python kernel_instrument.py -d /path/to/source --dry-run --verbose
+    
+    # Limited processing for testing
+    python kernel_instrument.py -d /path/to/source --test-limit 10
+
+Exit Codes:
+    0: Success - All files processed without errors
+    1: Partial failure - Some files had errors but overall operation completed
+    2: Complete failure - Operation could not be completed
+    130: User interruption (Ctrl+C)
+
+Author: Kernel Instrumentation Team
+Version: 2.0.0
+License: MIT
 """
 
 import sys
