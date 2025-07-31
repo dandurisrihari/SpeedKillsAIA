@@ -326,8 +326,9 @@ def main():
     )
     
     parser.add_argument(
-        'directory',
+        '--directory', '-d',
         type=Path,
+        required=True,
         help='Directory containing kernel module C files to instrument'
     )
     
