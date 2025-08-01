@@ -1,0 +1,1962 @@
+diff --git a/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel.c b/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel.c
+index 84047d5bcc8c..a064df09cb76 100644
+--- a/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel.c
++++ b/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_precomp.h"
+ 
+ #if gcdDEC_ENABLE_AHB
+@@ -2170,12 +2178,20 @@ _SetVidMemMetadata(IN gckKERNEL Kernel, IN gctUINT32 ProcessID,
+         if (nodeObj->metadata.ts_fd >= 0 &&
+             nodeObj->metadata.ts_dma_buf &&
+             !(IS_ERR(nodeObj->metadata.ts_dma_buf))) {
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_put called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
+             dma_buf_put(nodeObj->metadata.ts_dma_buf);
+         }
+ 
+         nodeObj->metadata.ts_fd = Interface->u.SetVidMemMetadata.ts_fd;
+ 
+         if (nodeObj->metadata.ts_fd >= 0) {
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_get from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_get called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_get\n");
+             nodeObj->metadata.ts_dma_buf = dma_buf_get(nodeObj->metadata.ts_fd);
+ 
+             if (IS_ERR(nodeObj->metadata.ts_dma_buf))
+diff --git a/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c b/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c
+index 1e85a2486d30..29db02819163 100644
+--- a/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c
++++ b/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_precomp.h"
+ 
+ #if defined(__QNXNTO__)
+@@ -101,6 +109,7 @@ extern const uint64_t slogLowWaterFPC;
+ static gctBOOL
+ _Split(IN gckOS Os, IN gcuVIDMEM_NODE_PTR Node, IN gctSIZE_T Bytes)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _Split at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node;
+     gctPOINTER         pointer = gcvNULL;
+ 
+@@ -170,6 +179,7 @@ _Split(IN gckOS Os, IN gcuVIDMEM_NODE_PTR Node, IN gctSIZE_T Bytes)
+ static gceSTATUS
+ _Merge(IN gckOS Os, IN gcuVIDMEM_NODE_PTR Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _Merge at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node;
+     gceSTATUS          status;
+ 
+@@ -202,6 +212,7 @@ _Merge(IN gckOS Os, IN gcuVIDMEM_NODE_PTR Node)
+ static gceSTATUS
+ _TraceGpuMem(IN gckOS Os, IN gctINT32 ProcessID, IN gcuVIDMEM_NODE_PTR Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _TraceGpuMem at %s:%d\n", __FILE__, __LINE__);
+     gctUINT64 Delta = 0;
+     gckVIDMEM_BLOCK vidMemBlock = Node->VirtualChunk.parent;
+ 
+@@ -231,6 +242,7 @@ _UpdatePIDInfoListNode(gckOS Os, gckVIDMEM_NODE Node,
+                        gcuVIDMEM_NODE_PTR VideoNode,
+                        gctUINT32 ProcessID, gctUINT32 Behavier)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UpdatePIDInfoListNode at %s:%d\n", __FILE__, __LINE__);
+ #if gcdENABLE_VIDEO_MEMORY_TRACE
+     gckVIDMEM_PIDINFO pid_info;
+     gctUINT32 pid = 0;
+@@ -389,6 +401,7 @@ gckVIDMEM_Construct(IN gckOS Os, IN gctPHYS_ADDR_T PhysicalBase,
+                     IN gctSIZE_T Bytes, IN gctSIZE_T Threshold,
+                     IN gctSIZE_T BankSize, OUT gckVIDMEM *Memory)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_Construct at %s:%d\n", __FILE__, __LINE__);
+     gckVIDMEM          memory = gcvNULL;
+     gceSTATUS          status;
+     gcuVIDMEM_NODE_PTR node;
+@@ -609,6 +622,7 @@ gckVIDMEM_Construct(IN gckOS Os, IN gctPHYS_ADDR_T PhysicalBase,
+ gceSTATUS
+ gckVIDMEM_Destroy(IN gckVIDMEM Memory)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_Destroy at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node, next;
+     gctINT             i;
+ 
+@@ -687,6 +701,7 @@ _GetSurfaceBankAlignment(IN gckKERNEL Kernel, IN gceVIDMEM_TYPE Type,
+                          IN gctUINT32 BaseAddress,
+                          OUT gctUINT32_PTR AlignmentOffset)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GetSurfaceBankAlignment at %s:%d\n", __FILE__, __LINE__);
+     gctUINT32 bank;
+     /* To retrieve the bank. */
+     static const gctUINT32 bankMask = (0xFFFFFFFF << gcdBANK_BIT_START)
+@@ -744,6 +759,7 @@ _FindNode(IN gckKERNEL Kernel, IN gckVIDMEM Memory,
+           IN gctINT Bank, IN gctSIZE_T Bytes,
+           IN gceVIDMEM_TYPE Type, IN OUT gctUINT32_PTR Alignment)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _FindNode at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node;
+     gctUINT32          alignment;
+     gctUINT32          bankAlignment;
+@@ -833,6 +849,7 @@ gckVIDMEM_AllocateLinear(IN gckKERNEL Kernel, IN gckVIDMEM Memory,
+                          IN gceVIDMEM_TYPE Type, IN gctUINT32 Flag,
+                          IN gctBOOL Specified, OUT gcuVIDMEM_NODE_PTR *Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_AllocateLinear at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gcuVIDMEM_NODE_PTR node;
+     gctUINT32          alignment;
+@@ -1051,6 +1068,7 @@ gckVIDMEM_AllocateVirtual(IN gckKERNEL Kernel,
+                           IN gctSIZE_T Bytes,
+                           OUT gcuVIDMEM_NODE_PTR *Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_AllocateVirtual at %s:%d\n", __FILE__, __LINE__);
+     gckOS              os;
+     gceSTATUS          status;
+     gcuVIDMEM_NODE_PTR node    = gcvNULL;
+@@ -1135,6 +1153,7 @@ gckVIDMEM_AllocateVirtual(IN gckKERNEL Kernel,
+ static gceSTATUS
+ _AddToBlockList(IN gckKERNEL Kernel, IN gckVIDMEM_BLOCK VidMemBlock)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _AddToBlockList at %s:%d\n", __FILE__, __LINE__);
+     VidMemBlock->next   = Kernel->vidMemBlock;
+     Kernel->vidMemBlock = VidMemBlock;
+ 
+@@ -1144,6 +1163,7 @@ _AddToBlockList(IN gckKERNEL Kernel, IN gckVIDMEM_BLOCK VidMemBlock)
+ static gceSTATUS
+ _RemoveFromBlockList(IN gckKERNEL Kernel, IN gckVIDMEM_BLOCK VidMemBlock)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _RemoveFromBlockList at %s:%d\n", __FILE__, __LINE__);
+     gckVIDMEM_BLOCK vidMemBlock;
+     gckVIDMEM_BLOCK previous = gcvNULL;
+     gctUINT32       index;
+@@ -1178,6 +1198,7 @@ _RemoveFromBlockList(IN gckKERNEL Kernel, IN gckVIDMEM_BLOCK VidMemBlock)
+ static gckVIDMEM_BLOCK
+ _FindFreeBlock(IN gckKERNEL Kernel, IN gctSIZE_T Bytes, IN gctUINT32 Flag)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _FindFreeBlock at %s:%d\n", __FILE__, __LINE__);
+     gckVIDMEM_BLOCK vidMemBlock = gcvNULL;
+     gctBOOL cacheable = (Flag & gcvALLOC_FLAG_CACHEABLE) != 0;
+ 
+@@ -1196,6 +1217,7 @@ _FindFreeBlock(IN gckKERNEL Kernel, IN gctSIZE_T Bytes, IN gctUINT32 Flag)
+ static gceSTATUS
+ _SplitVirtualChunk(IN gckOS Os, IN gcuVIDMEM_NODE_PTR Node, IN gctSIZE_T Bytes)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _SplitVirtualChunk at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status = gcvSTATUS_OK;
+     gcuVIDMEM_NODE_PTR node   = gcvNULL;
+     gctPOINTER         pointer;
+@@ -1239,6 +1261,7 @@ _SplitVirtualChunk(IN gckOS Os, IN gcuVIDMEM_NODE_PTR Node, IN gctSIZE_T Bytes)
+ static gceSTATUS
+ _MergeVirtualChunk(IN gckOS Os, IN gcuVIDMEM_NODE_PTR Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _MergeVirtualChunk at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node;
+     gceSTATUS          status = gcvSTATUS_OK;
+ 
+@@ -1271,6 +1294,7 @@ _MergeVirtualChunk(IN gckOS Os, IN gcuVIDMEM_NODE_PTR Node)
+ static gctBOOL
+ _IsVidMemBlockFree(IN gckVIDMEM_BLOCK VidMemBlock)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _IsVidMemBlockFree at %s:%d\n", __FILE__, __LINE__);
+     return (VidMemBlock->freeBytes == VidMemBlock->bytes);
+ }
+ 
+@@ -1279,6 +1303,7 @@ _FindVirtualChunkNode(IN gckKERNEL Kernel,
+                       IN gckVIDMEM_BLOCK VidMemBlock,
+                       IN gctSIZE_T Bytes)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _FindVirtualChunkNode at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node;
+ 
+     if (VidMemBlock->node.VirtualChunk.nextFree == gcvNULL) {
+@@ -1329,6 +1354,7 @@ _ConvertPhysical(IN gckKERNEL Kernel,
+                  IN gctPHYS_ADDR_T PhysicalAddress,
+                  OUT gctADDRESS *Address)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _ConvertPhysical at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS status;
+     gctUINT64 physical = 0;
+ 
+@@ -1420,6 +1446,7 @@ _ConvertPhysical(IN gckKERNEL Kernel,
+ static gceSTATUS
+ gckVIDMEM_MapVidMemBlock(IN gckKERNEL Kernel, IN gckVIDMEM_BLOCK VidMemBlock)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_MapVidMemBlock at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS        status;
+     gckOS            os = Kernel->os;
+     gctPHYS_ADDR_T   physAddr;
+@@ -1513,6 +1540,7 @@ gckVIDMEM_MapVidMemBlock(IN gckKERNEL Kernel, IN gckVIDMEM_BLOCK VidMemBlock)
+ static gceSTATUS
+ _UnmapVidMemBlock(IN gckKERNEL Kernel, IN gckVIDMEM_BLOCK VidMemBlock)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UnmapVidMemBlock at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS status;
+     gctUINT32 index;
+ #if gcdSHARED_PAGETABLE
+@@ -1560,6 +1588,7 @@ gckVIDMEM_BLOCK_Construct(IN gckKERNEL Kernel,
+                           IN gctUINT32 Flag,
+                           OUT gckVIDMEM_BLOCK *VidMemBlock)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_BLOCK_Construct at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gckVIDMEM_BLOCK    vidMemBlock = gcvNULL;
+     gcuVIDMEM_NODE_PTR node        = gcvNULL;
+@@ -1669,6 +1698,7 @@ gckVIDMEM_BLOCK_Construct(IN gckKERNEL Kernel,
+ static gceSTATUS
+ gckVIDMEM_BLOCK_Destroy(IN gckKERNEL Kernel, IN gckVIDMEM_BLOCK VidMemBlock)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_BLOCK_Destroy at %s:%d\n", __FILE__, __LINE__);
+     gckKERNEL ker = gcvNULL;
+     gctINT    i   = 0;
+ 
+@@ -1712,6 +1742,7 @@ _AllocateVirtualChunk(IN gckKERNEL Kernel,
+                       INOUT gctSIZE_T *Bytes,
+                       OUT gcuVIDMEM_NODE_PTR *Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _AllocateVirtualChunk at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status   = gcvSTATUS_OK;
+     gctBOOL            acquired = gcvFALSE;
+     gcuVIDMEM_NODE_PTR node;
+@@ -1776,6 +1807,7 @@ gckVIDMEM_AllocateVirtualChunk(IN gckKERNEL Kernel, IN gceVIDMEM_TYPE Type,
+                                IN gctUINT32 Flag, IN gctSIZE_T Bytes,
+                                OUT gcuVIDMEM_NODE_PTR *Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_AllocateVirtualChunk at %s:%d\n", __FILE__, __LINE__);
+     gckOS              os;
+     gceSTATUS          status;
+     gcuVIDMEM_NODE_PTR node;
+@@ -1862,6 +1894,7 @@ gckVIDMEM_AllocateVirtualChunk(IN gckKERNEL Kernel, IN gceVIDMEM_TYPE Type,
+ static gceSTATUS
+ gckVIDMEM_Free(IN gckKERNEL Kernel, IN gcuVIDMEM_NODE_PTR Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_Free at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gckKERNEL          kernel      = gcvNULL;
+     gckVIDMEM          memory      = gcvNULL;
+@@ -2171,6 +2204,7 @@ gckVIDMEM_Lock(IN gckKERNEL Kernel,
+                IN gcuVIDMEM_NODE_PTR Node,
+                OUT gctADDRESS *Address)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_Lock at %s:%d\n", __FILE__, __LINE__);
+     gcmkHEADER_ARG("Kernel=%p Node=%p", Kernel, Node);
+ 
+     gcmkVERIFY_ARGUMENT(Kernel != gcvNULL);
+@@ -2414,6 +2448,7 @@ gckVIDMEM_LockVirtualChunk(IN gckKERNEL Kernel,
+                            IN gcuVIDMEM_NODE_PTR Node,
+                            OUT gctADDRESS *Address)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_LockVirtualChunk at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS       status      = gcvSTATUS_OK;
+     gckVIDMEM_BLOCK vidMemBlock = Node->VirtualChunk.parent;
+     gctUINT32       index;
+@@ -2508,6 +2543,7 @@ gckVIDMEM_Unlock(IN gckKERNEL Kernel,
+                  IN gcuVIDMEM_NODE_PTR Node,
+                  IN OUT gctBOOL *Asynchroneous)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_Unlock at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS status;
+ 
+     gcmkHEADER_ARG("Node=%p *Asynchroneous=%d",
+@@ -2644,6 +2680,7 @@ gckVIDMEM_UnlockVirtualChunk(IN gckKERNEL Kernel,
+                              IN gcuVIDMEM_NODE_PTR Node,
+                              IN OUT gctBOOL *Asynchroneous)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_UnlockVirtualChunk at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS status = gcvSTATUS_OK;
+     gctUINT32 index;
+ #if gcdSHARED_PAGETABLE
+@@ -2724,6 +2761,7 @@ gceSTATUS
+ gckVIDMEM_HANDLE_Allocate(IN gckKERNEL Kernel, IN gckVIDMEM_NODE Node,
+                           OUT gctUINT32 *Handle)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_HANDLE_Allocate at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS        status;
+     gctUINT32        processID      = 0;
+     gctPOINTER       pointer        = gcvNULL;
+@@ -2784,6 +2822,7 @@ gckVIDMEM_HANDLE_Reference(IN gckKERNEL Kernel,
+                            IN gctUINT32 ProcessID,
+                            IN gctUINT32 Handle)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_HANDLE_Reference at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS        status;
+     gckVIDMEM_HANDLE handleObject = gcvNULL;
+     gctPOINTER       database     = gcvNULL;
+@@ -2825,6 +2864,7 @@ gckVIDMEM_HANDLE_Dereference(IN gckKERNEL Kernel,
+                              IN gctUINT32 ProcessID,
+                              IN gctUINT32 Handle)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_HANDLE_Dereference at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS        status;
+     gctPOINTER       handleDatabase = gcvNULL;
+     gctPOINTER       mutex          = gcvNULL;
+@@ -2875,6 +2915,7 @@ gceSTATUS
+ gckVIDMEM_HANDLE_Lookup(IN gckKERNEL Kernel, IN gctUINT32 ProcessID,
+                         IN gctUINT32 Handle, OUT gckVIDMEM_NODE *Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_HANDLE_Lookup at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS        status;
+     gckVIDMEM_HANDLE handleObject = gcvNULL;
+     gckVIDMEM_NODE   node         = gcvNULL;
+@@ -2916,6 +2957,7 @@ gceSTATUS
+ gckVIDMEM_HANDLE_Lookup2(IN gckKERNEL Kernel, IN gcsDATABASE_PTR Database,
+                          IN gctUINT32 Handle, OUT gckVIDMEM_NODE *Node)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_HANDLE_Lookup2 at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS        status;
+     gckVIDMEM_HANDLE handleObject = gcvNULL;
+     gckVIDMEM_NODE   node         = gcvNULL;
+@@ -2958,6 +3000,7 @@ gckVIDMEM_NODE_Construct(IN gckKERNEL Kernel, IN gcuVIDMEM_NODE_PTR VideoNode,
+                          IN gceVIDMEM_TYPE Type, IN gcePOOL Pool,
+                          IN gctUINT32 Flag, OUT gckVIDMEM_NODE *NodeObject)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Construct at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS      status;
+     gckVIDMEM_NODE node    = gcvNULL;
+     gctPOINTER     pointer = gcvNULL;
+@@ -3039,6 +3082,7 @@ gceSTATUS
+ _AllocateVideoMemoryMirror(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                            IN gceMIRROR_TYPE MirrorType)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _AllocateVideoMemoryMirror at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status     = gcvSTATUS_OK;
+     gckVIDMEM_NODE     mirrorNode = gcvNULL;
+     gcuVIDMEM_NODE_PTR node       = gcvNULL;
+@@ -3093,6 +3137,7 @@ _AllocateVideoMemoryMirror(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+ gceSTATUS
+ _FreeVideoMemoryMirror(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _FreeVideoMemoryMirror at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS status = gcvSTATUS_OK;
+ 
+     if (NodeObject->mirror.mirrorNode) {
+@@ -3113,6 +3158,7 @@ gckVIDMEM_NODE_AllocateLinear(IN gckKERNEL Kernel, IN gckVIDMEM VideoMemory,
+                               IN gctBOOL Specified, IN OUT gctSIZE_T *Bytes,
+                               OUT gckVIDMEM_NODE *NodeObject)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_AllocateLinear at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gctSIZE_T          bytes      = *Bytes;
+     gcuVIDMEM_NODE_PTR node       = gcvNULL;
+@@ -3177,6 +3223,7 @@ gckVIDMEM_NODE_AllocateVirtual(IN gckKERNEL Kernel, IN gcePOOL Pool,
+                                IN OUT gctSIZE_T *Bytes,
+                                OUT gckVIDMEM_NODE *NodeObject)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_AllocateVirtual at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gctSIZE_T          bytes      = *Bytes;
+     gcuVIDMEM_NODE_PTR node       = gcvNULL;
+@@ -3220,6 +3267,7 @@ gckVIDMEM_NODE_AllocateVirtualChunk(IN gckKERNEL Kernel, IN gcePOOL Pool,
+                                     IN OUT gctSIZE_T *Bytes,
+                                     OUT gckVIDMEM_NODE *NodeObject)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_AllocateVirtualChunk at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gctSIZE_T          bytes      = *Bytes;
+     gcuVIDMEM_NODE_PTR node       = gcvNULL;
+@@ -3254,6 +3302,7 @@ gckVIDMEM_NODE_AllocateVirtualChunk(IN gckKERNEL Kernel, IN gcePOOL Pool,
+ gceSTATUS
+ gckVIDMEM_NODE_Reference(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Reference at %s:%d\n", __FILE__, __LINE__);
+     gctINT32 oldValue;
+ 
+     gcmkHEADER_ARG("Kernel=%p NodeObject=%p", Kernel, NodeObject);
+@@ -3273,6 +3322,7 @@ gceSTATUS
+ gckVIDMEM_NODE_DereferenceEx(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                              IN gctUINT32 ProcessID)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_DereferenceEx at %s:%d\n", __FILE__, __LINE__);
+     gctINT32   oldValue = 0;
+     gctPOINTER database = Kernel->db->nameDatabase;
+     gctPOINTER mutex    = Kernel->db->nameDatabaseMutex;
+@@ -3350,6 +3400,7 @@ gckVIDMEM_NODE_DereferenceEx(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+ gceSTATUS
+ gckVIDMEM_NODE_Dereference(gckKERNEL Kernel, gckVIDMEM_NODE NodeObject)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Dereference at %s:%d\n", __FILE__, __LINE__);
+     gcmkHEADER_ARG("Kernel=%p NodeObject=%p", Kernel, NodeObject);
+     gcmkVERIFY_ARGUMENT(NodeObject != gcvNULL);
+ 
+@@ -3364,6 +3415,7 @@ gckVIDMEM_NODE_GetReference(IN gckKERNEL Kernel,
+                             IN gckVIDMEM_NODE NodeObject,
+                             OUT gctINT32 *ReferenceCount)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetReference at %s:%d\n", __FILE__, __LINE__);
+     gctINT32 value;
+ 
+     gckOS_AtomGet(Kernel->os, NodeObject->reference, &value);
+@@ -3377,6 +3429,7 @@ gckVIDMEM_NODE_Lock(IN gckKERNEL Kernel,
+                     IN gckVIDMEM_NODE NodeObject,
+                     OUT gctADDRESS *Address)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Lock at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gckOS              os       = Kernel->os;
+     gctBOOL            acquired = gcvFALSE;
+@@ -3439,6 +3492,7 @@ gceSTATUS
+ gckVIDMEM_NODE_Unlock(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                       IN gctUINT32 ProcessID, IN OUT gctBOOL *Asynchroneous)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Unlock at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gckOS              os          = Kernel->os;
+     gctBOOL            acquired    = gcvFALSE;
+@@ -3512,6 +3566,7 @@ gckVIDMEM_NODE_CleanCache(IN gckKERNEL Kernel,
+                           IN gckVIDMEM_NODE NodeObject, IN gctSIZE_T Offset,
+                           IN gctPOINTER Logical, IN gctSIZE_T Bytes)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_CleanCache at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node        = gcvNULL;
+     gctPHYS_ADDR       physHandle  = gcvNULL;
+     gckVIDMEM_BLOCK    vidMemBlock = gcvNULL;
+@@ -3570,6 +3625,7 @@ gceSTATUS
+ gckVIDMEM_NODE_InvalidateCache(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                                IN gctSIZE_T Offset, IN gctPOINTER Logical, IN gctSIZE_T Bytes)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_InvalidateCache at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node        = gcvNULL;
+     gctPHYS_ADDR       physHandle  = gcvNULL;
+     gckVIDMEM_BLOCK    vidMemBlock = gcvNULL;
+@@ -3627,6 +3683,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetLockCount(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                             OUT gctINT32 *LockCount)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetLockCount at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node        = gcvNULL;
+     gckVIDMEM_BLOCK    vidMemBlock = gcvNULL;
+     gctINT32           lockCount   = 0;
+@@ -3671,6 +3728,7 @@ gckVIDMEM_NODE_LockCPU(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                        IN gctBOOL Cacheable, IN gctBOOL FromUser,
+                        OUT gctPOINTER *Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_LockCPU at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gckOS              os       = Kernel->os;
+     gctBOOL            acquired = gcvFALSE;
+@@ -3803,6 +3861,7 @@ gckVIDMEM_NODE_UnlockCPU(IN gckKERNEL Kernel,
+                          IN gctUINT32 ProcessID,
+                          IN gctBOOL FromUser, IN gctBOOL Defer)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_UnlockCPU at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gckOS              os       = Kernel->os;
+     gctBOOL            acquired = gcvFALSE;
+@@ -3923,6 +3982,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetCPUPhysical(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                               IN gctSIZE_T Offset, OUT gctPHYS_ADDR_T *PhysicalAddress)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetCPUPhysical at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gckOS              os          = Kernel->os;
+     gcuVIDMEM_NODE_PTR node        = gcvNULL;
+@@ -3972,6 +4032,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetGPUPhysical(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                               IN gctUINT32 Offset, OUT gctPHYS_ADDR_T *PhysicalAddress)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetGPUPhysical at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS      status = gcvSTATUS_OK;
+     gckOS          os     = Kernel->os;
+     gctPHYS_ADDR_T physical;
+@@ -4003,6 +4064,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetGid(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                       OUT gctUINT32 *Gid)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetGid at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node        = NodeObject->node;
+     gckVIDMEM_BLOCK    vidMemBlock = node->VirtualChunk.parent;
+ 
+@@ -4020,6 +4082,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetSize(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                        OUT gctSIZE_T *Size)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetSize at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node        = NodeObject->node;
+     gckVIDMEM_BLOCK    vidMemBlock = node->VirtualChunk.parent;
+ 
+@@ -4037,6 +4100,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetType(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                        OUT gceVIDMEM_TYPE *Type, OUT gcePOOL *Pool)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetType at %s:%d\n", __FILE__, __LINE__);
+     if (Type)
+         *Type = NodeObject->type;
+ 
+@@ -4067,6 +4131,7 @@ MODULE_IMPORT_NS(DMA_BUF);
+ static struct sg_table *
+ _dmabuf_map(struct dma_buf_attachment *attachment, enum dma_data_direction direction)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _dmabuf_map at %s:%d\n", __FILE__, __LINE__);
+     struct sg_table *sgt        = gcvNULL;
+     struct dma_buf  *dmabuf     = attachment->dmabuf;
+     gckVIDMEM_NODE   nodeObject = dmabuf->priv;
+@@ -4126,6 +4191,7 @@ static void
+ _dmabuf_unmap(struct dma_buf_attachment *attachment,
+               struct sg_table *sgt, enum dma_data_direction direction)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _dmabuf_unmap at %s:%d\n", __FILE__, __LINE__);
+     struct dma_buf    *dmabuf     = attachment->dmabuf;
+     gckVIDMEM_NODE     nodeObject = dmabuf->priv;
+     gcuVIDMEM_NODE_PTR node       = nodeObject->node;
+@@ -4156,6 +4222,7 @@ _dmabuf_unmap(struct dma_buf_attachment *attachment,
+ static int
+ _dmabuf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _dmabuf_mmap at %s:%d\n", __FILE__, __LINE__);
+     gckVIDMEM_NODE     nodeObject  = dmabuf->priv;
+     gcuVIDMEM_NODE_PTR node        = nodeObject->node;
+     gckVIDMEM_BLOCK    vidMemBlock = node->VirtualChunk.parent;
+@@ -4184,9 +4251,14 @@ _dmabuf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
+ static void
+ _dmabuf_release(struct dma_buf *dmabuf)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _dmabuf_release at %s:%d\n", __FILE__, __LINE__);
+     gckVIDMEM_NODE nodeObject = dmabuf->priv;
+ 
+     if (nodeObject->metadata.ts_dma_buf) {
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_put called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
+         dma_buf_put(nodeObject->metadata.ts_dma_buf);
+         nodeObject->metadata.ts_dma_buf = NULL;
+     }
+@@ -4198,6 +4270,7 @@ _dmabuf_release(struct dma_buf *dmabuf)
+ static void *
+ _dmabuf_kmap(struct dma_buf *dmabuf, unsigned long offset)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _dmabuf_kmap at %s:%d\n", __FILE__, __LINE__);
+     gckVIDMEM_NODE     nodeObject  = dmabuf->priv;
+     gcuVIDMEM_NODE_PTR node        = nodeObject->node;
+     gckVIDMEM_BLOCK    vidMemBlock = node->VirtualChunk.parent;
+@@ -4231,6 +4304,7 @@ _dmabuf_kmap(struct dma_buf *dmabuf, unsigned long offset)
+ static void
+ _dmabuf_kunmap(struct dma_buf *dmabuf, unsigned long offset, void *ptr)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _dmabuf_kunmap at %s:%d\n", __FILE__, __LINE__);
+     gckVIDMEM_NODE     nodeObject  = dmabuf->priv;
+     gcuVIDMEM_NODE_PTR node        = nodeObject->node;
+     gckVIDMEM_BLOCK    vidMemBlock = node->VirtualChunk.parent;
+@@ -4282,6 +4356,7 @@ gckVIDMEM_NODE_Export(IN gckKERNEL Kernel,
+                       OUT gctPOINTER *DmaBuf,
+                       OUT gctINT32 *FD)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Export at %s:%d\n", __FILE__, __LINE__);
+ #if defined(CONFIG_DMA_SHARED_BUFFER)
+     gceSTATUS       status = gcvSTATUS_OK;
+     struct dma_buf *dmabuf = gcvNULL;
+@@ -4322,10 +4397,22 @@ gckVIDMEM_NODE_Export(IN gckKERNEL Kernel,
+             exp_info.size  = bytes;
+             exp_info.flags = Flags;
+             exp_info.priv  = NodeObject;
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_export called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_export\n");
+             dmabuf         = dma_buf_export(&exp_info);
+ #    elif LINUX_VERSION_CODE >= KERNEL_VERSION(3, 17, 0)
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_export called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_export\n");
+             dmabuf = dma_buf_export(NodeObject, &_dmabuf_ops, bytes, Flags, NULL);
+ #    else
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_export called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_export\n");
+             dmabuf = dma_buf_export(NodeObject, &_dmabuf_ops, bytes, Flags);
+ #    endif
+         }
+@@ -4366,6 +4453,7 @@ gckVIDMEM_NODE_Name(IN gckKERNEL Kernel,
+                     IN gckVIDMEM_NODE NodeObject,
+                     OUT gctUINT32 *Name)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Name at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS  status;
+     gctUINT32  name       = 0;
+     gctPOINTER database   = Kernel->db->nameDatabase;
+@@ -4415,6 +4503,7 @@ gckVIDMEM_NODE_Name(IN gckKERNEL Kernel,
+ gceSTATUS
+ gckVIDMEM_NODE_Import(IN gckKERNEL Kernel, IN gctUINT32 Name, OUT gckVIDMEM_NODE *NodeObject)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Import at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS      status;
+     gckVIDMEM_NODE node       = gcvNULL;
+     gctPOINTER     database   = Kernel->db->nameDatabase;
+@@ -4461,6 +4550,7 @@ typedef struct _gcsVIDMEM_NODE_FDPRIVATE {
+ static gctINT
+ _ReleaseFdPrivate(gcsFDPRIVATE_PTR FdPrivate)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _ReleaseFdPrivate at %s:%d\n", __FILE__, __LINE__);
+     /* Cast private info. */
+     gcsVIDMEM_NODE_FDPRIVATE *private = (gcsVIDMEM_NODE_FDPRIVATE *)FdPrivate;
+ 
+@@ -4485,6 +4575,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetFd(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                      IN gctBOOL Exported, OUT gctINT *Fd)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetFd at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS                 status;
+     gctBOOL                   referenced = gcvFALSE;
+     gcsVIDMEM_NODE_FDPRIVATE *fdPrivate  = gcvNULL;
+@@ -4535,6 +4626,7 @@ gckVIDMEM_NODE_WrapUserMemory(IN gckKERNEL Kernel,
+                               OUT gckVIDMEM_NODE *NodeObject,
+                               OUT gctUINT64 *Bytes)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_WrapUserMemory at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS      status     = gcvSTATUS_OK;
+     gckVIDMEM_NODE nodeObject = gcvNULL;
+     gctBOOL        found      = gcvFALSE;
+@@ -4550,6 +4642,10 @@ gckVIDMEM_NODE_WrapUserMemory(IN gckKERNEL Kernel,
+ 
+         if (fd >= 0) {
+             /* Import dma buf handle. */
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_get from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_get called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_get\n");
+             dmabuf = dma_buf_get(fd);
+ 
+             if (IS_ERR(dmabuf))
+@@ -4558,6 +4654,10 @@ gckVIDMEM_NODE_WrapUserMemory(IN gckKERNEL Kernel,
+             Desc->handle = -1;
+             Desc->dmabuf = gcmPTR_TO_UINT64(dmabuf);
+ 
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_put called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
+             dma_buf_put(dmabuf);
+         } else if (fd == -1) {
+             /* It is called by our kernel drm driver. */
+@@ -4668,6 +4768,7 @@ gceSTATUS
+ gckVIDMEM_NODE_SetCommitStamp(IN gckKERNEL Kernel, IN gceENGINE Engine,
+                               IN gckVIDMEM_NODE NodeObject, IN gctUINT64 CommitStamp)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_SetCommitStamp at %s:%d\n", __FILE__, __LINE__);
+     NodeObject->sync[Engine].commitStamp = CommitStamp;
+     return gcvSTATUS_OK;
+ }
+@@ -4677,6 +4778,7 @@ gckVIDMEM_NODE_GetCommitStamp(IN gckKERNEL Kernel, IN gceENGINE Engine,
+                               IN gckVIDMEM_NODE NodeObject,
+                               OUT gctUINT64_PTR CommitStamp)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetCommitStamp at %s:%d\n", __FILE__, __LINE__);
+     *CommitStamp = NodeObject->sync[Engine].commitStamp;
+     return gcvSTATUS_OK;
+ }
+@@ -4708,6 +4810,7 @@ gckVIDMEM_NODE_Find(IN gckKERNEL Kernel, IN gctADDRESS Address,
+                     OUT gckVIDMEM_NODE *NodeObject,
+                     OUT gctSIZE_T *Offset)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_Find at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status      = gcvSTATUS_NOT_FOUND;
+     gckVIDMEM_NODE     nodeObject  = gcvNULL;
+     gcuVIDMEM_NODE_PTR node        = gcvNULL;
+@@ -4795,6 +4898,7 @@ gceSTATUS
+ gckVIDMEM_NODE_IsContiguous(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                             OUT gctBOOL *Contiguous)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_IsContiguous at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS          status;
+     gckOS              os       = Kernel->os;
+     gctBOOL            acquired = gcvFALSE;
+@@ -4863,6 +4967,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetMemoryHandle(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                                OUT gctPOINTER *MemoryHandle)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetMemoryHandle at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node         = NodeObject->node;
+     gckVIDMEM_BLOCK    vidMemBlock  = node->VirtualChunk.parent;
+     gctUINT64          mappingInOne = 1;
+@@ -4890,6 +4995,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetMapKernel(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                             OUT gctPOINTER *KernelMap)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetMapKernel at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node        = NodeObject->node;
+     gckVIDMEM_BLOCK    vidMemBlock = node->VirtualChunk.parent;
+ 
+@@ -4925,6 +5031,7 @@ gceSTATUS
+ gckVIDMEM_NODE_GetOffset(IN gckKERNEL Kernel, IN gckVIDMEM_NODE NodeObject,
+                          OUT gctSIZE_T *Offset)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckVIDMEM_NODE_GetOffset at %s:%d\n", __FILE__, __LINE__);
+     gcuVIDMEM_NODE_PTR node        = NodeObject->node;
+     gckVIDMEM_BLOCK    vidMemBlock = node->VirtualChunk.parent;
+ 
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dma.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dma.c
+index 8e3ad857a616..e96751f432fb 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dma.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dma.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_linux.h"
+ #include "gc_hal_kernel_allocator.h"
+ 
+@@ -88,6 +96,7 @@ struct mdl_dma_priv {
+  */
+ static int gc_dma_usage_show(struct seq_file *m, void *data)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gc_dma_usage_show at %s:%d\n", __FILE__, __LINE__);
+     gcsINFO_NODE   *node      = m->private;
+     gckALLOCATOR    Allocator = node->device;
+     gcsDMA_PRIV_PTR priv      = Allocator->privateData;
+@@ -106,6 +115,7 @@ static gcsINFO InfoList[] = {
+ static void
+ _DebugfsInit(IN gckALLOCATOR Allocator, IN gckDEBUGFS_DIR Root)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DebugfsInit at %s:%d\n", __FILE__, __LINE__);
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_Init(&Allocator->debugfsDir, Root->root, "dma"));
+ 
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_CreateFiles(&Allocator->debugfsDir,
+@@ -117,6 +127,7 @@ _DebugfsInit(IN gckALLOCATOR Allocator, IN gckDEBUGFS_DIR Root)
+ static void
+ _DebugfsCleanup(IN gckALLOCATOR Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DebugfsCleanup at %s:%d\n", __FILE__, __LINE__);
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_RemoveFiles(&Allocator->debugfsDir,
+                                              InfoList, gcmCOUNTOF(InfoList)));
+ 
+@@ -129,6 +140,7 @@ _DmaAlloc(IN gckALLOCATOR  Allocator,
+           IN gctSIZE_T     NumPages,
+           IN gctUINT32     Flags)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaAlloc at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS            status;
+     u32                  gfp           = GFP_KERNEL | gcdNOWARN;
+     gcsDMA_PRIV_PTR      allocatorPriv = (gcsDMA_PRIV_PTR)Allocator->privateData;
+@@ -149,6 +161,22 @@ _DmaAlloc(IN gckALLOCATOR  Allocator,
+         gfp |= __GFP_DMA;
+ #endif
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_free_wc from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_free_wc called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_free_wc\n");
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_free_coherent from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_free_coherent called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_free_coherent\n");
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_alloc_wc from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_alloc_wc called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_alloc_wc\n");
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_alloc_coherent from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_alloc_coherent called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_alloc_coherent\n");
+     mdlPriv->kvaddr =
+ #if defined CONFIG_MIPS || defined CONFIG_CPU_CSKYV2 || defined CONFIG_PPC ||                      \
+     defined CONFIG_ARM64 || !gcdENABLE_BUFFERABLE_VIDEO_MEMORY
+@@ -205,6 +233,7 @@ _DmaGetSGT(IN gckALLOCATOR Allocator,
+            IN gctSIZE_T    Bytes,
+            OUT gctPOINTER *SGT)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaGetSGT at %s:%d\n", __FILE__, __LINE__);
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 6, 0)
+     struct page        **pages   = gcvNULL;
+     struct page         *page    = gcvNULL;
+@@ -273,6 +302,7 @@ _DmaGetSGT(IN gckALLOCATOR Allocator,
+ static void
+ _DmaFree(IN gckALLOCATOR Allocator, IN OUT PLINUX_MDL Mdl)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaFree at %s:%d\n", __FILE__, __LINE__);
+     gckOS                os            = Allocator->os;
+     struct mdl_dma_priv *mdlPriv       = (struct mdl_dma_priv *)Mdl->priv;
+     gcsDMA_PRIV_PTR      allocatorPriv = (gcsDMA_PRIV_PTR)Allocator->privateData;
+@@ -306,6 +336,7 @@ _DmaMmap(IN gckALLOCATOR           Allocator,
+          IN gctSIZE_T              numPages,
+          IN struct vm_area_struct *vma)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaMmap at %s:%d\n", __FILE__, __LINE__);
+     struct mdl_dma_priv *mdlPriv = (struct mdl_dma_priv *)Mdl->priv;
+ #if gcdENABLE_BUFFERABLE_VIDEO_MEMORY
+ #if !defined CONFIG_MIPS && !defined CONFIG_CPU_CSKYV2 && !defined CONFIG_PPC
+@@ -374,6 +405,7 @@ _DmaUnmapUser(IN gckALLOCATOR   Allocator,
+               IN PLINUX_MDL_MAP MdlMap,
+               IN gctUINT32      Size)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaUnmapUser at %s:%d\n", __FILE__, __LINE__);
+     if (unlikely(current->mm == gcvNULL))
+         /* Do nothing if process is exiting. */
+         return;
+@@ -483,6 +515,7 @@ _DmaMapKernel(IN gckALLOCATOR Allocator,
+               IN gctSIZE_T    Bytes,
+               OUT gctPOINTER *Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaMapKernel at %s:%d\n", __FILE__, __LINE__);
+     struct mdl_dma_priv *mdlPriv = (struct mdl_dma_priv *)Mdl->priv;
+     *Logical                     = (uint8_t *)mdlPriv->kvaddr + Offset;
+     return gcvSTATUS_OK;
+@@ -491,6 +524,7 @@ _DmaMapKernel(IN gckALLOCATOR Allocator,
+ static gceSTATUS
+ _DmaUnmapKernel(IN gckALLOCATOR Allocator, IN PLINUX_MDL Mdl, IN gctPOINTER Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaUnmapKernel at %s:%d\n", __FILE__, __LINE__);
+     return gcvSTATUS_OK;
+ }
+ 
+@@ -502,6 +536,7 @@ _DmaCache(IN gckALLOCATOR      Allocator,
+           IN gctSIZE_T         Bytes,
+           IN gceCACHEOPERATION Operation)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaCache at %s:%d\n", __FILE__, __LINE__);
+     switch (Operation) {
+     case gcvCACHE_CLEAN:
+     case gcvCACHE_FLUSH:
+@@ -522,6 +557,7 @@ _DmaPhysical(IN gckALLOCATOR     Allocator,
+              IN gctUINT32        Offset,
+              OUT gctPHYS_ADDR_T *Physical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaPhysical at %s:%d\n", __FILE__, __LINE__);
+     struct mdl_dma_priv *mdlPriv = (struct mdl_dma_priv *)Mdl->priv;
+ 
+     *Physical = mdlPriv->dmaHandle + Offset;
+@@ -532,6 +568,7 @@ _DmaPhysical(IN gckALLOCATOR     Allocator,
+ static void
+ _DmaAllocatorDestructor(gcsALLOCATOR *Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaAllocatorDestructor at %s:%d\n", __FILE__, __LINE__);
+     _DebugfsCleanup(Allocator);
+ 
+     kfree(Allocator->privateData);
+@@ -559,6 +596,7 @@ _DmaAlloctorInit(IN gckOS           Os,
+                  IN gcsDEBUGFS_DIR *Parent,
+                  OUT gckALLOCATOR  *Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmaAlloctorInit at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS       status;
+     gckALLOCATOR    allocator = gcvNULL;
+     gcsDMA_PRIV_PTR priv      = gcvNULL;
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c
+index ee32f0909f28..d0389a95043a 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_linux.h"
+ #include "gc_hal_kernel_allocator.h"
+ 
+@@ -102,6 +110,7 @@ struct allocator_priv {
+ static int
+ dma_buf_info_show(struct seq_file *m, void *data)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function dma_buf_info_show at %s:%d\n", __FILE__, __LINE__);
+     int                        ret;
+     gcsDMABUF                 *buf_desc;
+     struct dma_buf_attachment *attach_obj;
+@@ -179,6 +188,7 @@ static gcsINFO _InfoList[] = {
+ static void
+ _DebugfsInit(IN gckALLOCATOR Allocator, IN gckDEBUGFS_DIR Root)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DebugfsInit at %s:%d\n", __FILE__, __LINE__);
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_Init(&Allocator->debugfsDir,
+                                       Root->root, "dma_buf"));
+ 
+@@ -191,6 +201,7 @@ _DebugfsInit(IN gckALLOCATOR Allocator, IN gckDEBUGFS_DIR Root)
+ static void
+ _DebugfsCleanup(IN gckALLOCATOR Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DebugfsCleanup at %s:%d\n", __FILE__, __LINE__);
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_RemoveFiles(&Allocator->debugfsDir,
+                                              _InfoList,
+                                              gcmCOUNTOF(_InfoList)));
+@@ -203,6 +214,7 @@ _DmabufAttach(IN gckALLOCATOR       Allocator,
+               IN gcsATTACH_DESC_PTR Desc,
+               IN PLINUX_MDL         Mdl)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufAttach at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS status;
+ 
+     gckOS os = Allocator->os;
+@@ -225,11 +237,19 @@ _DmabufAttach(IN gckALLOCATOR       Allocator,
+         gcmkONERROR(gcvSTATUS_NOT_SUPPORTED);
+ 
+     get_dma_buf(dmabuf);
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_attach from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_attach called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_attach\n");
+     attachment = dma_buf_attach(dmabuf, &os->device->platform->device->dev);
+ 
+     if (!attachment)
+         gcmkONERROR(gcvSTATUS_NOT_SUPPORTED);
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_map_attachment from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_map_attachment called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_map_attachment\n");
+     sgt = dma_buf_map_attachment(attachment, DMA_BIDIRECTIONAL);
+ 
+     if (!sgt)
+@@ -285,6 +305,10 @@ _DmabufAttach(IN gckALLOCATOR       Allocator,
+         gcmkOS_SAFE_FREE(os, pagearray);
+     }
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\n");
+     if (sgt)
+         dma_buf_unmap_attachment(attachment, sgt, DMA_BIDIRECTIONAL);
+ 
+@@ -295,6 +319,7 @@ _DmabufAttach(IN gckALLOCATOR       Allocator,
+ static void
+ _DmabufFree(IN gckALLOCATOR Allocator, IN PLINUX_MDL Mdl)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufFree at %s:%d\n", __FILE__, __LINE__);
+     gcsDMABUF             *buf_desc = Mdl->priv;
+     gckOS                  os       = Allocator->os;
+     struct allocator_priv *priv     = Allocator->privateData;
+@@ -303,10 +328,22 @@ _DmabufFree(IN gckALLOCATOR Allocator, IN PLINUX_MDL Mdl)
+     list_del(&buf_desc->list);
+     mutex_unlock(&priv->lock);
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\n");
+     dma_buf_unmap_attachment(buf_desc->attachment, buf_desc->sgt, DMA_BIDIRECTIONAL);
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_detach called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_detach\n");
+     dma_buf_detach(buf_desc->dmabuf, buf_desc->attachment);
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_put called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
+     dma_buf_put(buf_desc->dmabuf);
+ 
+     gckOS_Free(os, buf_desc->pagearray);
+@@ -320,6 +357,7 @@ _DmabufUnmapUser(IN gckALLOCATOR   Allocator,
+                  IN PLINUX_MDL_MAP MdlMap,
+                  IN gctUINT32      Size)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufUnmapUser at %s:%d\n", __FILE__, __LINE__);
+     gcsDMABUF  *buf_desc    = Mdl->priv;
+     gctINT8_PTR userLogical = MdlMap->vmaAddr;
+ 
+@@ -337,6 +375,7 @@ _DmabufMapUser(IN gckALLOCATOR   Allocator,
+                IN PLINUX_MDL_MAP MdlMap,
+                IN gctBOOL        Cacheable)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufMapUser at %s:%d\n", __FILE__, __LINE__);
+     gcsDMABUF    *buf_desc    = Mdl->priv;
+     gctINT8_PTR   userLogical = gcvNULL;
+     gceSTATUS     status      = gcvSTATUS_OK;
+@@ -372,6 +411,7 @@ _DmabufMapKernel(IN gckALLOCATOR Allocator,
+                  IN gctSIZE_T    Bytes,
+                  OUT gctPOINTER *Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufMapKernel at %s:%d\n", __FILE__, __LINE__);
+     /* Kernel doesn't access video memory. */
+     return gcvSTATUS_NOT_SUPPORTED;
+ }
+@@ -381,6 +421,7 @@ _DmabufUnmapKernel(IN gckALLOCATOR Allocator,
+                    IN PLINUX_MDL   Mdl,
+                    IN gctPOINTER   Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufUnmapKernel at %s:%d\n", __FILE__, __LINE__);
+     /* Kernel doesn't access video memory. */
+     return gcvSTATUS_NOT_SUPPORTED;
+ }
+@@ -393,6 +434,7 @@ _DmabufCache(IN gckALLOCATOR      Allocator,
+              IN gctSIZE_T         Bytes,
+              IN gceCACHEOPERATION Operation)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufCache at %s:%d\n", __FILE__, __LINE__);
+     gcsDMABUF              *buf_desc = Mdl->priv;
+     struct sg_table        *sgt      = buf_desc->sgt;
+     enum dma_data_direction dir;
+@@ -401,16 +443,32 @@ _DmabufCache(IN gckALLOCATOR      Allocator,
+     switch (Operation) {
+     case gcvCACHE_CLEAN:
+         dir = DMA_TO_DEVICE;
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\n");
+         dma_sync_sg_for_device(dev, sgt->sgl, sgt->nents, dir);
+         break;
+     case gcvCACHE_FLUSH:
+         dir = DMA_TO_DEVICE;
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\n");
+         dma_sync_sg_for_device(dev, sgt->sgl, sgt->nents, dir);
+         dir = DMA_FROM_DEVICE;
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
+         dma_sync_sg_for_cpu(dev, sgt->sgl, sgt->nents, dir);
+         break;
+     case gcvCACHE_INVALIDATE:
+         dir = DMA_FROM_DEVICE;
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
+         dma_sync_sg_for_cpu(dev, sgt->sgl, sgt->nents, dir);
+         break;
+     default:
+@@ -426,6 +484,7 @@ _DmabufPhysical(IN gckALLOCATOR     Allocator,
+                 IN gctUINT32        Offset,
+                 OUT gctPHYS_ADDR_T *Physical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufPhysical at %s:%d\n", __FILE__, __LINE__);
+     gcsDMABUF *buf_desc     = Mdl->priv;
+     gctUINT32  offsetInPage = Offset & ~PAGE_MASK;
+     gctUINT32  index        = Offset / PAGE_SIZE;
+@@ -450,6 +509,7 @@ static gcsALLOCATOR_OPERATIONS DmabufAllocatorOperations = {
+ static void
+ _DmabufAllocatorDestructor(gcsALLOCATOR *Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufAllocatorDestructor at %s:%d\n", __FILE__, __LINE__);
+     _DebugfsCleanup(Allocator);
+ 
+     kfree(Allocator->privateData);
+@@ -461,6 +521,7 @@ _DmabufAllocatorDestructor(gcsALLOCATOR *Allocator)
+ gceSTATUS
+ _DmabufAlloctorInit(IN gckOS Os, IN gcsDEBUGFS_DIR *Parent, OUT gckALLOCATOR *Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _DmabufAlloctorInit at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS              status;
+     gckALLOCATOR           allocator;
+     struct allocator_priv *priv = NULL;
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c
+index 0f935e78f7ee..828ea6b8bb0f 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_linux.h"
+ #include "gc_hal_kernel_allocator.h"
+ #include <linux/pagemap.h>
+@@ -113,6 +121,7 @@ struct gfp_mdl_priv {
+ 
+ static int gc_usage_show(struct seq_file *m, void *data)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gc_usage_show at %s:%d\n", __FILE__, __LINE__);
+     gcsINFO_NODE     *node      = m->private;
+     gckALLOCATOR      Allocator = node->device;
+     struct gfp_alloc *priv      = Allocator->privateData;
+@@ -133,6 +142,7 @@ static gcsINFO InfoList[] = {
+ static void
+ _GFPAllocatorDebugfsInit(IN gckALLOCATOR Allocator, IN gckDEBUGFS_DIR Root)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPAllocatorDebugfsInit at %s:%d\n", __FILE__, __LINE__);
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_Init(&Allocator->debugfsDir, Root->root, "gfp"));
+ 
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_CreateFiles(&Allocator->debugfsDir,
+@@ -144,6 +154,7 @@ _GFPAllocatorDebugfsInit(IN gckALLOCATOR Allocator, IN gckDEBUGFS_DIR Root)
+ static void
+ _GFPAllocatorDebugfsCleanup(IN gckALLOCATOR Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPAllocatorDebugfsCleanup at %s:%d\n", __FILE__, __LINE__);
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_RemoveFiles(&Allocator->debugfsDir,
+                                              InfoList,
+                                              gcmCOUNTOF(InfoList)));
+@@ -154,6 +165,7 @@ _GFPAllocatorDebugfsCleanup(IN gckALLOCATOR Allocator)
+ static void
+ _NonContiguousFree(IN struct page **Pages, IN gctSIZE_T NumPages)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _NonContiguousFree at %s:%d\n", __FILE__, __LINE__);
+     gctSIZE_T i;
+ 
+     gcmkHEADER_ARG("Pages=%p, NumPages=%zx", Pages, NumPages);
+@@ -246,6 +258,7 @@ _NonContiguousAlloc(IN struct gfp_mdl_priv *MdlPriv, IN gctSIZE_T NumPages, IN g
+ static void
+ _NonContiguous1MPagesFree(IN struct gfp_mdl_priv *MdlPriv, IN gctUINT32 NumPages1M)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _NonContiguous1MPagesFree at %s:%d\n", __FILE__, __LINE__);
+     gctINT i;
+ 
+     if (MdlPriv->Pages1M && MdlPriv->isExact) {
+@@ -288,6 +301,7 @@ _NonContiguous1MPagesAlloc(IN struct gfp_mdl_priv *MdlPriv,
+                            IN gctSIZE_T           *NumPages,
+                            IN gctUINT32            Gfp)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _NonContiguous1MPagesAlloc at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS     status;
+     size_t        numPages1M, num, size;
+     struct page **pages;
+@@ -385,6 +399,7 @@ _GFPAlloc(IN gckALLOCATOR  Allocator,
+           IN gctSIZE_T     NumPages,
+           IN gctUINT32     Flags)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPAlloc at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS status;
+     gctSIZE_T i          = 0;
+     gctBOOL   contiguous = Flags & gcvALLOC_FLAG_CONTIGUOUS;
+@@ -453,6 +468,10 @@ _GFPAlloc(IN gckALLOCATOR  Allocator,
+     else
+         Mdl->pageUnit1M = gcvFALSE;
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_map_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_map_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_map_page\n");
+     if (contiguous) {
+         size_t bytes = NumPages << PAGE_SHIFT;
+         void *addr = NULL;
+@@ -531,6 +550,10 @@ _GFPAlloc(IN gckALLOCATOR  Allocator,
+ #    endif
+         }
+ #endif
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_map_sg from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_map_sg called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_map_sg\n");
+     } else {
+         if (Mdl->pageUnit1M) {
+             gcmkONERROR(_NonContiguous1MPagesAlloc(mdlPriv, &NumPages, gfp));
+@@ -641,6 +664,7 @@ _GFPGetSGT(IN gckALLOCATOR Allocator,
+            IN gctSIZE_T    Bytes,
+            OUT gctPOINTER *SGT)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPGetSGT at %s:%d\n", __FILE__, __LINE__);
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 6, 0)
+     struct page        **pages    = gcvNULL;
+     struct sg_table     *sgt      = NULL;
+@@ -690,6 +714,7 @@ _GFPGetSGT(IN gckALLOCATOR Allocator,
+ static void
+ _GFPFree(IN gckALLOCATOR Allocator, IN OUT PLINUX_MDL Mdl)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPFree at %s:%d\n", __FILE__, __LINE__);
+     gctSIZE_T            i;
+     struct page         *page;
+     struct gfp_alloc    *priv    = (struct gfp_alloc *)Allocator->privateData;
+@@ -698,11 +723,19 @@ _GFPFree(IN gckALLOCATOR Allocator, IN OUT PLINUX_MDL Mdl)
+     int                  low     = 0;
+     int                  high    = 0;
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_unmap_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_unmap_page\n");
+     if (mdlPriv->contiguous) {
+         dma_unmap_page(dev,
+                        mdlPriv->dma_addr,
+                        Mdl->numPages << PAGE_SHIFT,
+                        DMA_FROM_DEVICE);
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_unmap_sg from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_unmap_sg called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_unmap_sg\n");
+     } else {
+         dma_unmap_sg(dev,
+                      mdlPriv->sgt.sgl,
+@@ -768,6 +801,7 @@ _GFPMmap(IN gckALLOCATOR           Allocator,
+          IN gctSIZE_T              numPages,
+          IN struct vm_area_struct *vma)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPMmap at %s:%d\n", __FILE__, __LINE__);
+     struct gfp_mdl_priv *mdlPriv  = (struct gfp_mdl_priv *)Mdl->priv;
+     gcsPLATFORM         *platform = mdlPriv->platform;
+     gceSTATUS            status   = gcvSTATUS_OK;
+@@ -839,6 +873,7 @@ _GFPUnmapUser(IN gckALLOCATOR   Allocator,
+               IN PLINUX_MDL_MAP MdlMap,
+               IN gctUINT32      Size)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPUnmapUser at %s:%d\n", __FILE__, __LINE__);
+     MdlMap->cacheable = gcvFALSE;
+ 
+     if (unlikely(current->mm == gcvNULL))
+@@ -951,6 +986,7 @@ _GFPMapKernel(IN gckALLOCATOR Allocator,
+               IN gctSIZE_T    Bytes,
+               OUT gctPOINTER *Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPMapKernel at %s:%d\n", __FILE__, __LINE__);
+     void                *addr     = 0;
+     gctSIZE_T            numPages = Mdl->numPages;
+     struct gfp_mdl_priv *mdlPriv  = Mdl->priv;
+@@ -1010,6 +1046,7 @@ _GFPUnmapKernel(IN gckALLOCATOR Allocator,
+                 IN PLINUX_MDL   Mdl,
+                 IN gctPOINTER   Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPUnmapKernel at %s:%d\n", __FILE__, __LINE__);
+     vunmap((void *)((uintptr_t)Logical & PAGE_MASK));
+ 
+     return gcvSTATUS_OK;
+@@ -1023,6 +1060,7 @@ _GFPCache(IN gckALLOCATOR      Allocator,
+           IN gctSIZE_T         Bytes,
+           IN gceCACHEOPERATION Operation)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPCache at %s:%d\n", __FILE__, __LINE__);
+     struct gfp_mdl_priv    *mdlPriv  = Mdl->priv;
+     struct device          *dev      = (struct device *)Mdl->device;
+     enum dma_data_direction dir;
+@@ -1034,9 +1072,17 @@ _GFPCache(IN gckALLOCATOR      Allocator,
+     case gcvCACHE_CLEAN:
+         dir = DMA_TO_DEVICE;
+ 
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_single_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_single_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_single_for_device\n");
+         if (mdlPriv->contiguous) {
+             dma_sync_single_for_device(dev, dma_addr,
+                                        numPages << PAGE_SHIFT, dir);
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\n");
+         } else {
+             dma_sync_sg_for_device(dev,
+                                    mdlPriv->sgt.sgl,
+@@ -1047,9 +1093,17 @@ _GFPCache(IN gckALLOCATOR      Allocator,
+     case gcvCACHE_FLUSH:
+         dir = DMA_TO_DEVICE;
+ 
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_single_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_single_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_single_for_device\n");
+         if (mdlPriv->contiguous) {
+             dma_sync_single_for_device(dev, dma_addr,
+                                        numPages << PAGE_SHIFT, dir);
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\n");
+         } else {
+             dma_sync_sg_for_device(dev,
+                                    mdlPriv->sgt.sgl,
+@@ -1058,9 +1112,17 @@ _GFPCache(IN gckALLOCATOR      Allocator,
+ 
+         dir = DMA_FROM_DEVICE;
+ 
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_single_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_single_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_single_for_cpu\n");
+         if (mdlPriv->contiguous) {
+             dma_sync_single_for_cpu(dev, dma_addr,
+                                     numPages << PAGE_SHIFT, dir);
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
+         } else {
+             dma_sync_sg_for_cpu(dev,
+                                 mdlPriv->sgt.sgl,
+@@ -1071,9 +1133,17 @@ _GFPCache(IN gckALLOCATOR      Allocator,
+     case gcvCACHE_INVALIDATE:
+         dir = DMA_FROM_DEVICE;
+ 
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_single_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_single_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_single_for_cpu\n");
+         if (mdlPriv->contiguous) {
+             dma_sync_single_for_cpu(dev, dma_addr,
+                                     numPages << PAGE_SHIFT, dir);
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
+         } else {
+             dma_sync_sg_for_cpu(dev,
+                                 mdlPriv->sgt.sgl,
+@@ -1094,6 +1164,7 @@ _GFPPhysical(IN gckALLOCATOR     Allocator,
+              IN gctUINT32        Offset,
+              OUT gctPHYS_ADDR_T *Physical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPPhysical at %s:%d\n", __FILE__, __LINE__);
+     struct gfp_mdl_priv *mdlPriv      = Mdl->priv;
+     gctUINT32            offsetInPage = Offset & ~PAGE_MASK;
+     gctUINT32            index        = Offset / PAGE_SIZE;
+@@ -1111,6 +1182,7 @@ _GFPPhysical(IN gckALLOCATOR     Allocator,
+ static void
+ _GFPAllocatorDestructor(gcsALLOCATOR *Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPAllocatorDestructor at %s:%d\n", __FILE__, __LINE__);
+     _GFPAllocatorDebugfsCleanup(Allocator);
+ 
+     kfree(Allocator->privateData);
+@@ -1136,6 +1208,7 @@ static gcsALLOCATOR_OPERATIONS GFPAllocatorOperations = {
+ gceSTATUS
+ _GFPAlloctorInit(IN gckOS Os, IN gcsDEBUGFS_DIR *Parent, OUT gckALLOCATOR *Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _GFPAlloctorInit at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS         status;
+     gckALLOCATOR      allocator = gcvNULL;
+     struct gfp_alloc *priv      = gcvNULL;
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.c
+index 1c76eff02a74..37f400b6a825 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_linux.h"
+ #include "gc_hal_kernel_allocator.h"
+ #include <linux/scatterlist.h>
+@@ -118,6 +126,7 @@ struct um_desc {
+ static int import_physical_map(gckOS Os, struct device *dev,
+                                struct um_desc *um, unsigned long phys)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function import_physical_map at %s:%d\n", __FILE__, __LINE__);
+     um->type        = UM_PHYSICAL_MAP;
+     um->physical    = phys & PAGE_MASK;
+     um->chunk_count = 1;
+@@ -127,6 +136,10 @@ static int import_physical_map(gckOS Os, struct device *dev,
+         size_t        size = um->size + (phys & (~PAGE_MASK));
+         unsigned long pfn  = phys >> PAGE_SHIFT;
+ 
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_map_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_map_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_map_page\n");
+         if (pfn_valid(pfn))
+             dmaHandle = dma_map_page(dev, pfn_to_page(pfn),
+                                      0, size, DMA_BIDIRECTIONAL);
+@@ -135,6 +148,10 @@ static int import_physical_map(gckOS Os, struct device *dev,
+             dmaHandle = dma_map_resource(dev, pfn << PAGE_SHIFT,
+                                          size, DMA_BIDIRECTIONAL, 0);
+ #else
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_map_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_map_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_map_page\n");
+             dmaHandle = dma_map_page(dev, pfn_to_page(pfn),
+                                      0, size, DMA_BIDIRECTIONAL);
+ #endif
+@@ -152,6 +169,7 @@ static gceSTATUS
+ phy_is_from_reserved(IN gckOS           Os,
+                  IN gctPHYS_ADDR_T  Physical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function phy_is_from_reserved at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS      status   = gcvSTATUS_NOT_FOUND;
+     gckGALDEVICE   device   = Os->device;
+     gctUINT32      i        = 0;
+@@ -202,6 +220,7 @@ import_page_map(gckOS           Os,
+                 size_t          size,
+                 unsigned long   flags)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function import_page_map at %s:%d\n", __FILE__, __LINE__);
+     int           i;
+     int           result;
+     struct page **pages;
+@@ -259,6 +278,14 @@ import_page_map(gckOS           Os,
+     if (gcmIS_SUCCESS(phy_is_from_reserved(Os, (gctPHYS_ADDR_T)page_to_pfn(pages[0]) << PAGE_SHIFT)))
+         um->alloc_from_res = 1;
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_map_sg from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_map_sg called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_map_sg\n");
+     if (!um->alloc_from_res) {
+ #if gcdUSE_LINUX_SG_TABLE_API
+         result = sg_alloc_table_from_pages(&um->sgt, pages, page_count,
+@@ -309,6 +336,7 @@ static int
+ import_pfn_map(gckOS Os, struct device *dev, struct um_desc *um,
+                unsigned long addr, size_t pfn_count)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function import_pfn_map at %s:%d\n", __FILE__, __LINE__);
+     int                    i;
+     struct vm_area_struct *vma;
+     unsigned long         *pfns;
+@@ -429,6 +457,10 @@ import_pfn_map(gckOS Os, struct device *dev, struct um_desc *um,
+         um->alloc_from_res = 1;
+ 
+     um->pfns_valid = 0;
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_map_sg from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_map_sg called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_map_sg\n");
+     if (pageCount == pfn_count && !um->alloc_from_res) {
+ #if gcdUSE_LINUX_SG_TABLE_API
+         result = sg_alloc_table_from_pages(&um->sgt, pages, pfn_count, addr & ~PAGE_MASK,
+@@ -486,6 +518,7 @@ _Import(IN gckOS           Os,
+         IN gctSIZE_T       Size,
+         IN struct um_desc *UserMemory)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _Import at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS              status   = gcvSTATUS_OK;
+     unsigned long          vm_flags = 0;
+     struct vm_area_struct *vma      = NULL;
+@@ -649,6 +682,7 @@ _UserMemoryAttach(IN gckALLOCATOR       Allocator,
+                   IN gcsATTACH_DESC_PTR Desc,
+                   IN PLINUX_MDL         Mdl)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryAttach at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS       status;
+     struct um_desc *userMemory = gcvNULL;
+ 
+@@ -686,16 +720,25 @@ _UserMemoryAttach(IN gckALLOCATOR       Allocator,
+ static void
+ release_physical_map(gckOS Os, struct device *dev, struct um_desc *um)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function release_physical_map at %s:%d\n", __FILE__, __LINE__);
+     if (Os->iommu) {
+         unsigned long pfn  = um->physical >> PAGE_SHIFT;
+         size_t        size = um->size + um->offset;
+ 
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_unmap_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_unmap_page\n");
+         if (pfn_valid(pfn))
+             dma_unmap_page(dev, um->dmaHandle, size, DMA_BIDIRECTIONAL);
+         else
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
+             dma_unmap_resource(dev, um->dmaHandle, size, DMA_BIDIRECTIONAL, 0);
+ #else
++            printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_unmap_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_unmap_page\n");
+             dma_unmap_page(dev, um->dmaHandle, size, DMA_BIDIRECTIONAL);
+ #endif
+ 
+@@ -706,14 +749,27 @@ release_physical_map(gckOS Os, struct device *dev, struct um_desc *um)
+ static void
+ release_page_map(gckOS Os, struct device *dev, struct um_desc *um)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function release_page_map at %s:%d\n", __FILE__, __LINE__);
+     int i;
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\n");
+     dma_sync_sg_for_device(dev, um->sgt.sgl,
+                            um->sgt.nents, DMA_TO_DEVICE);
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
+     dma_sync_sg_for_cpu(dev, um->sgt.sgl,
+                         um->sgt.nents, DMA_FROM_DEVICE);
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_unmap_sg from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_unmap_sg called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_unmap_sg\n");
+     dma_unmap_sg(dev, um->sgt.sgl,
+                  um->sgt.nents, DMA_FROM_DEVICE);
+ 
+@@ -742,8 +798,13 @@ release_page_map(gckOS Os, struct device *dev, struct um_desc *um)
+ static void
+ release_pfn_map(gckOS Os, struct device *dev, struct um_desc *um)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function release_pfn_map at %s:%d\n", __FILE__, __LINE__);
+     int i;
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_unmap_sg from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_unmap_sg called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_unmap_sg\n");
+     if (um->pfns_valid) {
+         dma_unmap_sg(dev, um->sgt.sgl,
+                      um->sgt.nents, DMA_FROM_DEVICE);
+@@ -776,6 +837,7 @@ release_pfn_map(gckOS Os, struct device *dev, struct um_desc *um)
+ static void
+ _UserMemoryFree(IN gckALLOCATOR Allocator, IN PLINUX_MDL Mdl)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryFree at %s:%d\n", __FILE__, __LINE__);
+     gckOS           os         = Allocator->os;
+     struct um_desc *userMemory = Mdl->priv;
+     struct device  *dev        = (struct device *)Mdl->device;
+@@ -807,6 +869,7 @@ _UserMemoryMapUser(IN gckALLOCATOR   Allocator,
+                    IN PLINUX_MDL_MAP MdlMap,
+                    IN gctBOOL        Cacheable)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryMapUser at %s:%d\n", __FILE__, __LINE__);
+     struct um_desc *userMemory = Mdl->priv;
+ 
+     MdlMap->vmaAddr   = (gctPOINTER)userMemory->user_vaddr;
+@@ -821,6 +884,7 @@ _UserMemoryUnmapUser(IN gckALLOCATOR   Allocator,
+                      IN PLINUX_MDL_MAP MdlMap,
+                      IN gctUINT32      Size)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryUnmapUser at %s:%d\n", __FILE__, __LINE__);
+ }
+ 
+ static gceSTATUS
+@@ -830,6 +894,7 @@ _UserMemoryMapKernel(IN gckALLOCATOR Allocator,
+                      IN gctSIZE_T    Bytes,
+                      OUT gctPOINTER *Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryMapKernel at %s:%d\n", __FILE__, __LINE__);
+     /* Kernel doesn't access video memory. */
+     return gcvSTATUS_NOT_SUPPORTED;
+ }
+@@ -839,6 +904,7 @@ _UserMemoryUnmapKernel(IN gckALLOCATOR Allocator,
+                        IN PLINUX_MDL   Mdl,
+                        IN gctPOINTER   Logical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryUnmapKernel at %s:%d\n", __FILE__, __LINE__);
+     /* Kernel doesn't access video memory. */
+     return gcvSTATUS_NOT_SUPPORTED;
+ }
+@@ -851,6 +917,7 @@ _UserMemoryCache(IN gckALLOCATOR      Allocator,
+                  IN gctSIZE_T         Bytes,
+                  IN gceCACHEOPERATION Operation)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryCache at %s:%d\n", __FILE__, __LINE__);
+     struct um_desc         *um  = Mdl->priv;
+     enum dma_data_direction dir;
+     struct device          *dev = (struct device *)Mdl->device;
+@@ -875,16 +942,32 @@ _UserMemoryCache(IN gckALLOCATOR      Allocator,
+     switch (Operation) {
+     case gcvCACHE_CLEAN:
+         dir = DMA_TO_DEVICE;
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\n");
+         dma_sync_sg_for_device(dev, um->sgt.sgl, um->sgt.nents, dir);
+         break;
+     case gcvCACHE_FLUSH:
+         dir = DMA_TO_DEVICE;
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\n");
+         dma_sync_sg_for_device(dev, um->sgt.sgl, um->sgt.nents, dir);
+         dir = DMA_FROM_DEVICE;
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
+         dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, dir);
+         break;
+     case gcvCACHE_INVALIDATE:
+         dir = DMA_FROM_DEVICE;
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
+         dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, dir);
+         break;
+     default:
+@@ -900,6 +983,7 @@ _UserMemoryPhysical(IN gckALLOCATOR     Allocator,
+                     IN gctUINT32        Offset,
+                     OUT gctPHYS_ADDR_T *Physical)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryPhysical at %s:%d\n", __FILE__, __LINE__);
+     gckOS           os           = Allocator->os;
+     struct um_desc *userMemory   = Mdl->priv;
+     unsigned long   offset       = Offset + userMemory->offset;
+@@ -941,6 +1025,7 @@ _UserMemoryPhysical(IN gckALLOCATOR     Allocator,
+ static void
+ _UserMemoryAllocatorDestructor(gcsALLOCATOR *Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryAllocatorDestructor at %s:%d\n", __FILE__, __LINE__);
+     kfree(Allocator->privateData);
+ 
+     kfree(Allocator);
+@@ -964,6 +1049,7 @@ _UserMemoryAlloctorInit(IN gckOS           Os,
+                         IN gcsDEBUGFS_DIR *Parent,
+                         OUT gckALLOCATOR  *Allocator)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _UserMemoryAlloctorInit at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS    status;
+     gckALLOCATOR allocator;
+ 
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c
+index dc09f6b4c401..cc13a2d53f08 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_linux.h"
+ #include "gc_hal_kernel_allocator.h"
+ 
+@@ -82,6 +90,7 @@ struct mdl_cma_priv {
+ 
+ static int gc_cma_usage_show(struct seq_file* m, void* data)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gc_cma_usage_show at %s:%d\n", __FILE__, __LINE__);
+     gcsINFO_NODE *node = m->private;
+     gckALLOCATOR Allocator = node->device;
+     gcsCMA_PRIV_PTR priv = Allocator->privateData;
+@@ -103,6 +112,7 @@ _CMAAllocatorDebugfsInit(
+     IN gckDEBUGFS_DIR Root
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMAAllocatorDebugfsInit at %s:%d\n", __FILE__, __LINE__);
+     gcmkVERIFY_OK(
+         gckDEBUGFS_DIR_Init(&Allocator->debugfsDir, Root->root, "cma"));
+ 
+@@ -119,6 +129,7 @@ _CMAAllocatorDebugfsCleanup(
+     IN gckALLOCATOR Allocator
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMAAllocatorDebugfsCleanup at %s:%d\n", __FILE__, __LINE__);
+     gcmkVERIFY_OK(gckDEBUGFS_DIR_RemoveFiles(
+         &Allocator->debugfsDir,
+         InfoList,
+@@ -204,6 +215,7 @@ _CMAFSLGetSGT(
+     OUT gctPOINTER *SGT
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMAFSLGetSGT at %s:%d\n", __FILE__, __LINE__);
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 6, 0)
+     struct page **pages = gcvNULL;
+     struct page *page = gcvNULL;
+@@ -473,6 +485,7 @@ _CMAMapKernel(
+     OUT gctPOINTER *Logical
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMAMapKernel at %s:%d\n", __FILE__, __LINE__);
+     struct mdl_cma_priv *mdl_priv = (struct mdl_cma_priv *)Mdl->priv;
+     *Logical = (uint8_t *)mdl_priv->kvaddr + Offset;
+     return gcvSTATUS_OK;
+@@ -485,6 +498,7 @@ _CMAUnmapKernel(
+     IN gctPOINTER Logical
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMAUnmapKernel at %s:%d\n", __FILE__, __LINE__);
+     return gcvSTATUS_OK;
+ }
+ 
+@@ -498,6 +512,7 @@ _CMACache(
+     IN gceCACHEOPERATION Operation
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMACache at %s:%d\n", __FILE__, __LINE__);
+     switch (Operation) {
+     case gcvCACHE_CLEAN:
+     case gcvCACHE_FLUSH:
+@@ -520,6 +535,7 @@ _CMAPhysical(
+     OUT gctPHYS_ADDR_T *Physical
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMAPhysical at %s:%d\n", __FILE__, __LINE__);
+     struct mdl_cma_priv *mdl_priv = (struct mdl_cma_priv *)Mdl->priv;
+ 
+     *Physical = mdl_priv->physical + Offset;
+@@ -532,6 +548,7 @@ _CMAAllocatorDestructor(
+     gcsALLOCATOR *Allocator
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMAAllocatorDestructor at %s:%d\n", __FILE__, __LINE__);
+     _CMAAllocatorDebugfsCleanup(Allocator);
+ 
+     if (Allocator->privateData)
+@@ -563,6 +580,7 @@ _CMAFSLAlloctorInit(
+     OUT gckALLOCATOR  *Allocator
+     )
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function _CMAFSLAlloctorInit at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS status;
+     gckALLOCATOR allocator = gcvNULL;
+     gcsCMA_PRIV_PTR priv = gcvNULL;
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_device.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_device.c
+index 6b3c68dc769d..1851ab8ba244 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_device.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_device.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_linux.h"
+ #include "gc_hal_kernel_allocator.h"
+ #include <linux/pagemap.h>
+@@ -1023,6 +1031,8 @@ gc_vidmem_show(void *m, void *unused, gctBOOL all)
+ static inline int
+ strtoint_from_user(const char __user *s, size_t count, int *res)
+ {
++printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 0, 0)
+     int ret = kstrtoint_from_user(s, count, 10, res);
+ 
+@@ -1251,6 +1261,8 @@ debugfs_copy_from_user(char *k_buf, const char __user *buf, size_t count)
+ {
+     int ret;
+ 
++    printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+     ret = copy_from_user(k_buf, buf, count);
+     if (ret != 0) {
+         pr_err("Error: lost data: %d\n", (int)ret);
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c
+index e3de349243e7..59e9c2e72aa8 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include <linux/device.h>
+ #include <linux/slab.h>
+ #include <linux/miscdevice.h>
+@@ -697,6 +705,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+     switch (ioctlCode) {
+     case IOCTL_GCHAL_INTERFACE:
+         /* Get the drvArgs. */
++        printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+         copyLen = copy_from_user(&drvArgs, (void *)arg, sizeof(DRIVER_ARGS));
+ 
+         if (copyLen != 0) {
+@@ -717,6 +727,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+             gcmkONERROR(gcvSTATUS_INVALID_ARGUMENT);
+         }
+ 
++        printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+         copyLen = copy_from_user(&iface,
+                                  gcmUINT64_TO_PTR(drvArgs.InputBuffer),
+                                  drvArgs.InputBufferSize);
+@@ -760,6 +772,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+         }
+ 
+         /* Copy data back to the user. */
++        printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+         copyLen = copy_to_user(gcmUINT64_TO_PTR(drvArgs.OutputBuffer),
+                                &iface,
+                                drvArgs.OutputBufferSize);
+@@ -776,6 +790,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+     case IOCTL_GCHAL_PROFILER_INTERFACE:
+ #if VIVANTE_PROFILER
+         /* Get the drvArgs. */
++        printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+         copyLen = copy_from_user(&drvArgs, (void *)arg, sizeof(DRIVER_ARGS));
+ 
+         if (copyLen != 0) {
+@@ -796,6 +812,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+             gcmkONERROR(gcvSTATUS_INVALID_ARGUMENT);
+         }
+ 
++        printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+         copyLen = copy_from_user(&iface_profiler,
+                                  gcmUINT64_TO_PTR(drvArgs.InputBuffer),
+                                  sizeof(gcsHAL_PROFILER_INTERFACE));
+@@ -819,6 +837,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+         }
+ 
+         /* Copy data back to the user. */
++        printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+         copyLen = copy_to_user(gcmUINT64_TO_PTR(drvArgs.OutputBuffer),
+                                &iface_profiler,
+                                sizeof(gcsHAL_PROFILER_INTERFACE));
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c
+index 2d00ee9b36b6..3c6f360257f4 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_linux.h"
+ #include "gc_hal_kernel_device.h"
+ 
+@@ -63,9 +71,14 @@
+ void
+ gckIOMMU_Destory(IN gckOS Os, IN gckIOMMU Iommu)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckIOMMU_Destory at %s:%d\n", __FILE__, __LINE__);
+     gcmkHEADER_ARG("Os=%p Iommu=%p", Os, Iommu);
+ 
+     if (Iommu) {
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_unmap_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_unmap_page\n");
+         if (Iommu->paddingPageDmaHandle) {
+             dma_unmap_page(Iommu->device, Iommu->paddingPageDmaHandle,
+                            PAGE_SIZE, DMA_FROM_DEVICE);
+@@ -80,6 +93,7 @@ gckIOMMU_Destory(IN gckOS Os, IN gckIOMMU Iommu)
+ gceSTATUS
+ gckIOMMU_Construct(IN gckOS Os, OUT gckIOMMU *Iommu)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function gckIOMMU_Construct at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS            status = gcvSTATUS_OK;
+     gckIOMMU             iommu  = gcvNULL;
+     struct device       *dev;
+@@ -97,6 +111,10 @@ gckIOMMU_Construct(IN gckOS Os, OUT gckIOMMU *Iommu)
+     domain = gcvNULL;
+ #endif
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_map_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_map_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_map_page\n");
+     if (domain) {
+         struct page *page;
+ 
+@@ -108,6 +126,10 @@ gckIOMMU_Construct(IN gckOS Os, OUT gckIOMMU *Iommu)
+ 
+         dmaHandle = dma_map_page(dev, page, 0, PAGE_SIZE, DMA_TO_DEVICE);
+ 
++        printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_unmap_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_unmap_page\n");
+         if (dmaHandle)
+             dma_unmap_page(dev, dmaHandle, PAGE_SIZE, DMA_FROM_DEVICE);
+ 
+@@ -132,6 +154,10 @@ gckIOMMU_Construct(IN gckOS Os, OUT gckIOMMU *Iommu)
+ 
+     gckOS_ZeroMemory(iommu, gcmSIZEOF(gcsIOMMU));
+ 
++    printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_map_page from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_map_page called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_map_page\n");
+     if (Os->paddingPage) {
+         iommu->paddingPageDmaHandle =
+             dma_map_page(dev, Os->paddingPage, 0, PAGE_SIZE, DMA_TO_DEVICE);
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_os.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_os.c
+index 845610d66dd7..bf43c80168aa 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_os.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_os.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "gc_hal_kernel_linux.h"
+ #include "gc_hal_dump.h"
+ 
+@@ -586,6 +594,8 @@ static int dump_file_write(const char __user *buf, size_t count, void *data)
+     char          fname[256];
+     size_t        len = min(count, sizeof(fname) - 1);
+ 
++    printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+     if (copy_from_user(fname, buf, len))
+         return -EFAULT;
+ 
+@@ -3875,6 +3885,8 @@ gckOS_CopyFromUserData(IN gckOS      Os,
+     gcmkVERIFY_ARGUMENT(Size > 0);
+ 
+     /* Copy data from user. */
++    printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+     if (copy_from_user(KernelPointer, Pointer, Size) != 0)
+         /* Could not copy all the bytes. */
+         gcmkONERROR(gcvSTATUS_OUT_OF_RESOURCES);
+@@ -3927,6 +3939,8 @@ gckOS_CopyToUserData(IN gckOS      Os,
+     gcmkVERIFY_ARGUMENT(Size > 0);
+ 
+     /* Copy data to user. */
++    printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+     if (copy_to_user(Pointer, KernelPointer, Size) != 0)
+         /* Could not copy all the bytes. */
+         gcmkONERROR(gcvSTATUS_OUT_OF_RESOURCES);
