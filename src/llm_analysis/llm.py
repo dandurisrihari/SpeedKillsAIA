@@ -1,49 +1,54 @@
-
 #!/usr/bin/env python3
 
 import os
 from openai import OpenAI
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
-# Set your OpenRouter API key in the environment or hardcode it (not recommended)
-api_key = os.getenv("OPENROUTER_API_KEY")
-
+# Read the API key
+api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
-    raise ValueError("Set OPENROUTER_API_KEY as environment variable")
+    raise RuntimeError("OPENAI_API_KEY not found in .env")
 
-# Optional: Set site info for OpenRouter ranking
-EXTRA_HEADERS = {
-    "HTTP-Referer": "https://your-site.com",  # optional
-    "X-Title": "My Chat App",                 # optional
-}
+# Create the OpenAI client
+client = OpenAI(api_key=api_key)
 
-
-
-# Create OpenAI client targeting OpenRouter
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=api_key,
-)
-
-# Conversation history
+# Initialize message history
 messages = [{"role": "system", "content": "You are a helpful assistant."}]
 
-while True:
-    user_input = input("You: ")
-    if user_input.lower() in ("exit", "quit"):
-        break
+def chat_with_openai():
+    while True:
+        try:
+            user_input = input("\nYou: ").strip()
+            if not user_input:
+                continue
+            if user_input.lower() in {"exit", "quit"}:
+                print("Exiting chat.")
+                break
 
-    messages.append({"role": "user", "content": user_input})
+            # Add user message
+            messages.append({"role": "user", "content": user_input})
 
-    try:
-        completion = client.chat.completions.create(
-            model="openai/gpt-4o",  # or any other model from OpenRouter
-            messages=messages,
-            extra_headers=EXTRA_HEADERS,
-        )
-        reply = completion.choices[0].message.content
-        print("Assistant:", reply)
-        messages.append({"role": "assistant", "content": reply})
+            # Make API call
+            response = client.chat.completions.create(
+                model="gpt-4",  # or "gpt-3.5-turbo"
+                messages=messages,
+                temperature=0.7
+            )
 
-    except Exception as e:
-        print("Error:", e)
+            reply = response.choices[0].message.content.strip()
+            messages.append({"role": "assistant", "content": reply})
+            print(f"\nAssistant: {reply}")
+
+        except KeyboardInterrupt:
+            print("\n[Interrupted by user, exiting]")
+            break
+        except Exception as e:
+            print(f"\n[Error] {e}")
+            break
+
+if __name__ == "__main__":
+    print("Chat started. Type 'exit' or 'quit' to end.")
+    chat_with_openai()
