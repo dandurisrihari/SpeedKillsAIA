@@ -1,0 +1,728 @@
+#!/usr/bin/env python3
+"""
+Kernel Log Parser Web UI - Interactive web interface for viewing parsed results
+
+This creates a Flask web server that displays the parsed kernel log results
+in an interactive, searchable web interface.
+
+Usage:
+    python web_ui.py [json_file] [--port PORT] [--host HOST]
+"""
+
+import os
+import json
+import argparse
+from datetime import datetime
+from pathlib import Path
+from flask import Flask, render_template_string, jsonify, request, send_from_directory
+import webbrowser
+import threading
+import time
+
+def create_app():
+    """Create and configure Flask application"""
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'kernel-log-parser-secret-key'
+    
+    # Global variable to store the parsed data
+    app.parsed_data = None
+    
+    return app
+
+app = create_app()
+
+# Global variable to store the parsed data (for backward compatibility)
+parsed_data = None
+
+# HTML template for the web UI
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kernel Log Analysis - {{ data.metadata.log_file }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2196F3;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2196F3;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: "";
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: #2196F3;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+        
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        
+        .file-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid #2196F3;
+        }
+        
+        .file-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .function-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .function-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateX(5px);
+        }
+        
+        .function-name {
+            font-weight: bold;
+            color: #2196F3;
+            font-size: 1.1em;
+        }
+        
+        .function-details {
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        
+        .dma-item, .copy-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #ff9800;
+        }
+        
+        .dma-header, .copy-header {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .dma-details, .copy-details {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .stack-trace {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+        
+        .stack-trace-header {
+            color: #3498db;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stack-line {
+            margin: 2px 0;
+            padding: 2px 0;
+        }
+        
+        .stack-line:hover {
+            background: rgba(52, 152, 219, 0.2);
+        }
+        
+        .process-info {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid #4caf50;
+        }
+        
+        .timestamp {
+            color: #888;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: #2196F3;
+            color: white;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        
+        .toggle-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .toggle-btn:hover {
+            background: #1976D2;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .tab-container {
+            margin-bottom: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f1f1f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .function-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Kernel Log Analysis</h1>
+            <p>{{ data.metadata.log_file }}</p>
+            <p><strong>Parsed:</strong> {{ data.metadata.parsed_at[:19] }} | <strong>Lines:</strong> {{ data.metadata.total_lines }}</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ data.statistics.unique_function_entries }}</div>
+                <div class="stat-label">Function Entries</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.statistics.unique_dma_operations }}</div>
+                <div class="stat-label">DMA Operations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.statistics.unique_user_copy_operations }}</div>
+                <div class="stat-label">User Copy Ops</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.statistics.total_files_analyzed }}</div>
+                <div class="stat-label">Total Files Analyzed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.statistics.files_instrumented_with_function_entries }}</div>
+                <div class="stat-label">Files Instrumented</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.statistics.total_duplicates_skipped }}</div>
+                <div class="stat-label">Duplicates Skipped</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="tab-container">
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('functions')">📍 Functions</button>
+                    <button class="tab" onclick="showTab('dma')">🔄 DMA Operations</button>
+                    <button class="tab" onclick="showTab('userCopy')">👤 User Copy</button>
+                </div>
+                
+                <div id="functions" class="tab-content active">
+                    <div class="section">
+                        <div class="section-title">Function Entries by File</div>
+                        <input type="text" class="search-box" id="functionSearch" placeholder="🔍 Search functions..." onkeyup="filterFunctions()">
+                        
+                        <div class="function-grid" id="functionGrid">
+                            {% for file_path, functions in data.functions_by_file.items() %}
+                            <div class="file-section">
+                                <div class="file-title">{{ file_path }}<span class="badge">{{ functions|length }}</span></div>
+                                {% for func in functions %}
+                                <div class="function-item">
+                                    <div class="function-name">{{ func.function_name }}</div>
+                                    <div class="function-details">
+                                        Line {{ func.line_number }} • <span class="timestamp">{{ "%.6f"|format(func.first_seen_timestamp) }}s</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="dma" class="tab-content">
+                    <div class="section">
+                        <div class="section-title">DMA Operations with Call Graphs</div>
+                        <input type="text" class="search-box" id="dmaSearch" placeholder="🔍 Search DMA operations..." onkeyup="filterDMA()">
+                        
+                        <div id="dmaGrid">
+                            {% for dma in data.dma_operations %}
+                            <div class="dma-item">
+                                <div class="dma-header">
+                                    {{ dma.dma_function }} → {{ dma.caller_function }}
+                                </div>
+                                <div class="dma-details">
+                                    <strong>File:</strong> {{ dma.file_path }}:{{ dma.line_number }}<br>
+                                    <strong>Timestamp:</strong> <span class="timestamp">{{ "%.6f"|format(dma.first_seen_timestamp) }}s</span>
+                                </div>
+                                
+                                {% if dma.stack_trace %}
+                                <button class="toggle-btn" onclick="toggleStackTrace(this)">Show Call Graph</button>
+                                <div class="stack-trace hidden">
+                                    <div class="stack-trace-header">Call Graph:</div>
+                                    {% for line in dma.stack_trace %}
+                                    <div class="stack-line">{{ line }}</div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="userCopy" class="tab-content">
+                    <div class="section">
+                        <div class="section-title">User Copy Operations</div>
+                        <input type="text" class="search-box" id="copySearch" placeholder="🔍 Search user copy operations..." onkeyup="filterUserCopy()">
+                        
+                        <div id="copyGrid">
+                            {% for copy in data.user_copy_operations %}
+                            <div class="copy-item">
+                                <div class="copy-header">
+                                    {{ copy.copy_function }} → {{ copy.caller_function }}
+                                </div>
+                                <div class="copy-details">
+                                    <strong>File:</strong> {{ copy.file_path }}:{{ copy.line_number }}<br>
+                                    <strong>Timestamp:</strong> <span class="timestamp">{{ "%.6f"|format(copy.first_seen_timestamp) }}s</span>
+                                </div>
+                                
+                                {% if copy.process_info %}
+                                <div class="process-info">
+                                    <strong>Process:</strong> {{ copy.process_info.comm }} (PID: {{ copy.process_info.pid }})
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        function toggleStackTrace(btn) {
+            const stackTrace = btn.nextElementSibling;
+            const isHidden = stackTrace.classList.contains('hidden');
+            
+            if (isHidden) {
+                stackTrace.classList.remove('hidden');
+                btn.textContent = 'Hide Call Graph';
+            } else {
+                stackTrace.classList.add('hidden');
+                btn.textContent = 'Show Call Graph';
+            }
+        }
+        
+        function filterFunctions() {
+            const searchTerm = document.getElementById('functionSearch').value.toLowerCase();
+            const functionItems = document.querySelectorAll('.function-item');
+            
+            functionItems.forEach(item => {
+                const functionName = item.querySelector('.function-name').textContent.toLowerCase();
+                const shouldShow = functionName.includes(searchTerm);
+                item.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+        
+        function filterDMA() {
+            const searchTerm = document.getElementById('dmaSearch').value.toLowerCase();
+            const dmaItems = document.querySelectorAll('.dma-item');
+            
+            dmaItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const shouldShow = text.includes(searchTerm);
+                item.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+        
+        function filterUserCopy() {
+            const searchTerm = document.getElementById('copySearch').value.toLowerCase();
+            const copyItems = document.querySelectorAll('.copy-item');
+            
+            copyItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const shouldShow = text.includes(searchTerm);
+                item.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+        
+        // Auto-refresh functionality
+        function checkForUpdates() {
+            fetch('/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.updated) {
+                        location.reload();
+                    }
+                })
+                .catch(error => console.log('Update check failed:', error));
+        }
+        
+        // Check for updates every 30 seconds
+        setInterval(checkForUpdates, 30000);
+    </script>
+</body>
+</html>
+"""
+
+@app.route('/')
+def index():
+    """Main page showing the analysis results"""
+    if parsed_data is None:
+        return "No data loaded. Please run with a JSON file argument.", 404
+    
+    return render_template_string(HTML_TEMPLATE, data=parsed_data)
+
+@app.route('/api/data')
+def api_data():
+    """API endpoint to get raw data"""
+    if parsed_data is None:
+        return jsonify({"error": "No data loaded"}), 404
+    return jsonify(parsed_data)
+
+@app.route('/api/status')
+def api_status():
+    """API endpoint to check if data has been updated"""
+    return jsonify({"updated": False, "timestamp": datetime.now().isoformat()})
+
+@app.route('/api/search/<category>')
+def api_search(category):
+    """API endpoint for searching specific categories"""
+    if parsed_data is None:
+        return jsonify({"error": "No data loaded"}), 404
+    
+    query = request.args.get('q', '').lower()
+    
+    if category == 'functions':
+        results = []
+        for file_path, functions in parsed_data['functions_by_file'].items():
+            for func in functions:
+                if query in func['function_name'].lower():
+                    results.append({**func, 'file_path': file_path})
+        return jsonify(results)
+    
+    elif category == 'dma':
+        results = [dma for dma in parsed_data['dma_operations'] 
+                  if query in dma['dma_function'].lower() or query in dma['caller_function'].lower()]
+        return jsonify(results)
+    
+    elif category == 'user_copy':
+        results = [copy for copy in parsed_data['user_copy_operations'] 
+                  if query in copy['copy_function'].lower() or query in copy['caller_function'].lower()]
+        return jsonify(results)
+    
+    return jsonify({"error": "Invalid category"}), 400
+
+def load_data(json_file):
+    """Load parsed data from JSON file"""
+    global parsed_data
+    
+    if not json_file.exists():
+        print(f"❌ Error: JSON file not found: {json_file}")
+        return False
+    
+    try:
+        with open(json_file, 'r') as f:
+            parsed_data = json.load(f)
+        
+        # Backward compatibility: add missing fields if they don't exist
+        if 'statistics' in parsed_data:
+            stats = parsed_data['statistics']
+            if 'total_files_analyzed' not in stats:
+                stats['total_files_analyzed'] = stats.get('files_with_functions', 0)
+            if 'files_instrumented_with_function_entries' not in stats:
+                stats['files_instrumented_with_function_entries'] = stats.get('files_with_functions', 0)
+        
+        print(f"✅ Loaded data from {json_file}")
+        return True
+    except json.JSONDecodeError as e:
+        print(f"❌ Error parsing JSON file: {e}")
+        return False
+    except Exception as e:
+        print(f"❌ Error loading file: {e}")
+        return False
+
+def open_browser(host, port):
+    """Open browser after a short delay"""
+    time.sleep(1.5)
+    url = f"http://{host}:{port}"
+    print(f"🌐 Opening browser: {url}")
+    webbrowser.open(url)
+
+def start_web_ui(json_file=None, port=5000, host='127.0.0.1', auto_open=True):
+    """Start web UI programmatically with specified parameters"""
+    global parsed_data
+    
+    # If no JSON file provided, look for recent files
+    if not json_file:
+        # Look for JSON files in current directory and results
+        possible_files = []
+        for pattern in ['*.json', '../results/*.json', '../../results/*.json']:
+            possible_files.extend(Path('.').glob(pattern))
+        
+        if possible_files:
+            # Sort by modification time, newest first
+            json_file = sorted(possible_files, key=lambda x: x.stat().st_mtime, reverse=True)[0]
+            print(f"📁 Auto-detected recent JSON file: {json_file}")
+        else:
+            print("❌ No JSON file provided and none found automatically.")
+            return False
+    else:
+        json_file = Path(json_file)
+    
+    # Load the data
+    if not load_data(json_file):
+        return False
+    
+    print(f"\n🚀 Starting Kernel Log Analysis Web UI")
+    print(f"📊 Data: {json_file}")
+    print(f"🌐 Server: http://{host}:{port}")
+    print(f"📈 Statistics:")
+    print(f"   • Functions: {parsed_data['statistics']['unique_function_entries']}")
+    print(f"   • DMA Operations: {parsed_data['statistics']['unique_dma_operations']}")
+    print(f"   • User Copy Operations: {parsed_data['statistics']['unique_user_copy_operations']}")
+    print(f"   • Total Files Analyzed: {parsed_data['statistics']['total_files_analyzed']}")
+    print(f"   • Files Instrumented: {parsed_data['statistics']['files_instrumented_with_function_entries']}")
+    print(f"\n💡 Use Ctrl+C to stop the server\n")
+    
+    # Open browser in a separate thread unless disabled
+    if auto_open:
+        browser_thread = threading.Thread(target=open_browser, args=(host, port))
+        browser_thread.daemon = True
+        browser_thread.start()
+    
+    # Run the Flask app
+    try:
+        app.run(host=host, port=port, debug=False)
+        return True
+    except KeyboardInterrupt:
+        print("\n👋 Server stopped by user")
+        return True
+    except Exception as e:
+        print(f"❌ Server error: {e}")
+        return False
+
+
+def main():
+    """Main function to run the web UI from command line"""
+    parser = argparse.ArgumentParser(
+        description="Web UI for Kernel Log Analysis Results",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python web_ui.py coral_parsed.json
+  python web_ui.py results.json --port 8080
+  python web_ui.py data.json --host 0.0.0.0 --port 5000
+        """
+    )
+    
+    parser.add_argument('json_file', nargs='?', 
+                       help='Path to the parsed JSON file')
+    parser.add_argument('--port', type=int, default=5000,
+                       help='Port to run the web server on (default: 5000)')
+    parser.add_argument('--host', default='127.0.0.1',
+                       help='Host to bind the server to (default: 127.0.0.1)')
+    parser.add_argument('--no-browser', action='store_true',
+                       help='Don\'t automatically open browser')
+    
+    args = parser.parse_args()
+    
+    # Use the new programmatic function
+    start_web_ui(
+        json_file=args.json_file,
+        port=args.port, 
+        host=args.host,
+        auto_open=not args.no_browser
+    )
+
+if __name__ == "__main__":
+    main()
