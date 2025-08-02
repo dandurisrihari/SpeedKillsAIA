@@ -20,7 +20,7 @@ Key Features:
 Architecture Overview:
     ┌─────────────────────────────────────────────────────────────────┐
     │                 KernelInstrumenter                              │
-    │                (Main Orchestrator)                             │
+    │                (Main Orchestrator)                              │
     │                                                                 │
     │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
     │  │   TreeSitter    │  │  MultiAnalyzer  │  │MultiInstrumenter│  │
@@ -28,14 +28,14 @@ Architecture Overview:
     │  │  (Parse C AST)  │  │   Analyzers)    │  │                 │  │
     │  └─────────────────┘  └─────────────────┘  └─────────────────┘  │
     │                                                                 │
-    │  ┌─────────────────────────────────────────────────────────┐   │
-    │  │                   Specialized Analyzers                │   │
-    │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────────┐  │   │
-    │  │  │   DMA   │ │  User   │ │Function │ │ DMA Present │  │   │
-    │  │  │Analyzer │ │  Copy   │ │Analyzer │ │    Files    │  │   │
-    │  │  │         │ │Analyzer │ │         │ │  Analyzer   │  │   │
-    │  │  └─────────┘ └─────────┘ └─────────┘ └─────────────┘  │   │
-    │  └─────────────────────────────────────────────────────────┘   │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │                   Specialized Analyzers                 │    │
+    │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────────┐    │    │
+    │  │  │   DMA   │ │  User   │ │Function │ │ DMA Present │    │    │
+    │  │  │Analyzer │ │  Copy   │ │Analyzer │ │    Files    │    │    │
+    │  │  │         │ │Analyzer │ │         │ │  Analyzer   │    │    │
+    │  │  └─────────┘ └─────────┘ └─────────┘ └─────────────┘    │    │
+    │  └─────────────────────────────────────────────────────────┘    │
     └─────────────────────────────────────────────────────────────────┘
 
 Instrumentation Types:
@@ -109,6 +109,7 @@ from pathlib import Path
 from typing import Set, List, Dict, Any
 import sys
 import os
+#import pdb; pdb.set_trace()
 
 # Add parent directories to Python path for imports when running directly
 current_dir = os.path.dirname(os.path.abspath(__file__))

@@ -1,13 +1,8 @@
 #!/usr/bin/env python3
 """
-Kernel Instrumenter - Production-Ready Linux Kernel Module Instrumentation Tool
+Kernel Instrumenter -  Linux Kernel Module Instrumentation Tool
 
-A comprehensive, modular to# Legacy compatibility exports (if available)
-try:
-    from .core import DMAInstrumenter, DirectoryProcessor
-except ImportError:
-    # These might not exist in all configurations
-    logger.debug("Some legacy core modules not available")r instrumenting Linux kernel module C files with
+A comprehensive, modular tool for instrumenting Linux kernel module C files with
 multiple types of runtime analysis including DMA operations, user space copy functions,
 and function entry point tracking.
 
@@ -15,29 +10,29 @@ Architecture Overview:
     ┌─────────────────────────────────────────────────────────────────┐
     │                    Kernel Instrumenter                          │
     │                                                                 │
-    │  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────┐    │
-    │  │    CLI      │  │   Config     │  │    Parsing          │    │
-    │  │   Module    │  │   System     │  │   (Tree-sitter)     │    │
-    │  └─────────────┘  └──────────────┘  └─────────────────────┘    │
+    │  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────┐     │
+    │  │    CLI      │  │   Config     │  │    Parsing          │     │
+    │  │   Module    │  │   System     │  │   (Tree-sitter)     │     │
+    │  └─────────────┘  └──────────────┘  └─────────────────────┘     │
     │                                                                 │
-    │  ┌─────────────────────────────────┐  ┌─────────────────────┐  │
-    │  │         Analyzers               │  │    Instrumenters    │  │
-    │  │  ┌─────┐ ┌────────┐ ┌────────┐ │  │  ┌─────┐ ┌────────┐ │  │
-    │  │  │ DMA │ │ User   │ │Function│ │  │  │Multi│ │ File   │ │  │
-    │  │  │     │ │ Copy   │ │        │ │  │  │     │ │ Writer │ │  │
-    │  │  └─────┘ └────────┘ └────────┘ │  │  └─────┘ └────────┘ │  │
-    │  └─────────────────────────────────┘  └─────────────────────┘  │
+    │  ┌─────────────────────────────────┐  ┌─────────────────────┐   │
+    │  │         Analyzers               │  │    Instrumenters    │   │
+    │  │  ┌─────┐ ┌────────┐ ┌────────┐  │  │  ┌─────┐ ┌────────┐ │   │
+    │  │  │ DMA │ │ User   │ │Function│  │  │  │Multi│ │ File   │ │   │
+    │  │  │     │ │ Copy   │ │        │  │  │  │     │ │ Writer │ │   │
+    │  │  └─────┘ └────────┘ └────────┘  │  │  └─────┘ └────────┘ │   │
+    │  └─────────────────────────────────┘  └─────────────────────┘   │
     │                                                                 │
-    │  ┌─────────────────────────────────────────────────────────┐   │
-    │  │                 Core Orchestration                      │   │
-    │  │     KernelInstrumenter (Main Coordinator)              │   │
-    │  └─────────────────────────────────────────────────────────┘   │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │                 Core Orchestration                      │    │
+    │  │     KernelInstrumenter (Main Coordinator)               │    │
+    │  └─────────────────────────────────────────────────────────┘    │
     └─────────────────────────────────────────────────────────────────┘
 
 Features:
     - Tree-sitter based precise C code parsing and analysis
     - Modular analyzer system for different instrumentation types
-    - Production-ready error handling and logging
+    -  error handling and logging
     - Comprehensive backup and recovery mechanisms
     - Dry-run mode for safe preview of modifications
     - Extensive configuration and customization options
@@ -85,17 +80,13 @@ Usage Examples:
             enabled_types={'dma'},
             custom_configs={'dma': dma_config}
         )
-
-Version: 2.0.0
-Author: anonymous
-License: MIT
 """
 
 import logging
 from typing import Dict, Any, Optional
 
 # Version information
-__version__ = "2.0.0"
+__version__ = "1.0.0"
 __author__ = "anonymous"
 __license__ = "MIT"
 __status__ = "Production"
@@ -138,12 +129,12 @@ from .parsing import TreeSitterParser
 # CLI exports for programmatic use
 from .cli import CLIHandler
 
-# Legacy compatibility exports
+# Legacy compatibility exports (if available)
 try:
     from .core import DMAInstrumenter
 except ImportError:
     # These might not exist in all configurations
-    logger.debug("Some legacy modules not available")
+    logger.debug("Some legacy core modules not available")
 
 # Public API - what gets imported with "from kernel_instrumenter import *"
 __all__ = [

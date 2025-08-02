@@ -30,6 +30,8 @@ from .tool import KernelLogParserTool
 
 __version__ = "2.0.0"
 __author__ = "SpeedKillsAIA Research Team"
+__license__ = "MIT"
+__status__ = "Production"
 
 # Convenience function for common use case
 def parse_kernel_log(log_file_path, show_ui=True):
@@ -47,4 +49,40 @@ def parse_kernel_log(log_file_path, show_ui=True):
     return parser.parse_log_file(log_file_path)
 
 # Export main classes
-__all__ = ['KernelLogParserEngine', 'KernelLogParserTool', 'parse_kernel_log']
+__all__ = [
+    'KernelLogParserEngine', 
+    'KernelLogParserTool', 
+    'parse_kernel_log',
+    '__version__',
+    '__author__',
+    '__license__'
+]
+
+
+def get_version_info():
+    """
+    Get comprehensive version and build information.
+    
+    Returns:
+        Dictionary containing version, build info, and capabilities
+    """
+    return {
+        "version": __version__,
+        "author": __author__,
+        "license": __license__,
+        "status": __status__,
+        "python_version": "3.8+",
+        "dependencies": {
+            "flask": "optional (for web UI)"
+        },
+        "capabilities": {
+            "function_parsing": True,
+            "dma_operation_parsing": True,
+            "user_copy_parsing": True,
+            "stack_trace_capture": True,
+            "web_ui": True,
+            "interactive_mode": True,
+            "batch_processing": True,
+            "deduplication": True
+        }
+    }
