@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
+"""
+LLM Analysis Module
+
+Provides AI-powered analysis capabilities for kernel instrumentation and security research.
+"""
 
 import os
+import argparse
+import sys
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -10,13 +17,16 @@ load_dotenv()
 # Read the API key
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
-    raise RuntimeError("OPENAI_API_KEY not found in .env")
+    print("Warning: OPENAI_API_KEY not found in .env")
+    print("Please set up your OpenAI API key to use LLM analysis features.")
 
-# Create the OpenAI client
-client = OpenAI(api_key=api_key)
+# Create the OpenAI client if API key is available
+client = None
+if api_key:
+    client = OpenAI(api_key=api_key)
 
 # Initialize message history
-messages = [{"role": "system", "content": "You are a helpful assistant."}]
+messages = [{"role": "system", "content": "You are a helpful assistant specialized in kernel instrumentation, security analysis, and Linux kernel development."}]
 
 def chat_with_openai():
     while True:

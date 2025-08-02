@@ -1,0 +1,101 @@
+> /media/sri/D/Research/Accelerators_Research/SpeedKillsAIA/src/kernel_instrumenter/kernel_instrument.py(115)<module>()
+-> current_dir = os.path.dirname(os.path.abspath(__file__))
+(Pdb) (Pdb) @startuml kernel_instrumenter
+!pragma useIntermediatePackages false
+
+class kernel_instrumenter.analyzers.base_analyzer.BaseAnalyzer {
+  parser: TreeSitterParser
+  instrumentation_type: InstrumentationType
+}
+class kernel_instrumenter.cli.cli.CLIHandler {
+  instrumenter: None
+}
+class kernel_instrumenter.config.config.Configuration {
+  logging: LoggingConfig
+  validation: ValidationConfig
+  performance: PerformanceConfig
+  instrumentation: InstrumentationConfig
+  parsing: ParsingConfig
+  custom_settings: Dict[str, Any]
+}
+class kernel_instrumenter.analyzers.dma_analyzer.DMAAnalyzer {
+  dma_apis: None
+}
+class kernel_instrumenter.instrumentation_types.dma_config.DMAInstrumentationType {
+}
+class kernel_instrumenter.core.core.DMAInstrumenter {
+  instrumenter: None
+}
+class kernel_instrumenter.analyzers.dma_present_files_analyzer.DmaPresentFilesAnalyzer {
+  verbose: bool
+  function_analyzer: None
+  dma_functions: None
+}
+class kernel_instrumenter.instrumentation_types.dma_present_files_functions_config.DmaPresentFilesFunctionsInstrumentationType {
+}
+class kernel_instrumenter.analyzers.function_analyzer.FunctionAnalyzer {
+}
+class kernel_instrumenter.instrumentation_types.function_config.FunctionInstrumentationType {
+}
+abstract class kernel_instrumenter.instrumentation_types.base.InstrumentationType {
+}
+class kernel_instrumenter.kernel_instrument.KernelInstrumenter {
+  enabled_types: Set[str]
+  dry_run: bool
+  verbose: bool
+  parser: None
+  analyzer: None
+  instrumenter: None
+  stats: None
+}
+class kernel_instrumenter.config.config.LoggingConfig {
+  level: LogLevel
+  enable_console_logging: bool
+  enable_file_logging: bool
+  log_file_path: Optional[Path]
+  log_format: str
+  date_format: str
+  max_log_file_size_mb: int
+  max_log_files: int
+  enable_color_logging: bool
+}
+class kernel_instrumenter.analyzers.multi_analyzer.MultiAnalyzer {
+  parser: TreeSitterParser
+  analyzers: None
+}
+class kernel_instrumenter.instrumenters.multi_instrumenter.MultiInstrumenter {
+  analyzer: MultiAnalyzer
+  enabled_types: Set[str]
+  modifications: List[Dict[str, Any]]
+  type_configs: None
+}
+class kernel_instrumenter.parsing.parser.TreeSitterParser {
+  language: Optional[Language]
+  parser: Optional[Parser]
+}
+class kernel_instrumenter.analyzers.user_copy_analyzer.UserCopyAnalyzer {
+  user_copy_apis: None
+}
+class kernel_instrumenter.instrumentation_types.user_copy_config.UserCopyInstrumentationType {
+}
+kernel_instrumenter.analyzers.base_analyzer.BaseAnalyzer *-- kernel_instrumenter.parsing.parser.TreeSitterParser
+kernel_instrumenter.analyzers.base_analyzer.BaseAnalyzer *-- kernel_instrumenter.instrumentation_types.base.InstrumentationType
+kernel_instrumenter.config.config.Configuration *-- kernel_instrumenter.config.config.LoggingConfig
+kernel_instrumenter.config.config.Configuration *-- kernel_instrumenter.config.config.ValidationConfig
+kernel_instrumenter.config.config.Configuration *-- kernel_instrumenter.config.config.PerformanceConfig
+kernel_instrumenter.config.config.Configuration *-- kernel_instrumenter.config.config.InstrumentationConfig
+kernel_instrumenter.config.config.Configuration *-- kernel_instrumenter.config.config.ParsingConfig
+kernel_instrumenter.analyzers.base_analyzer.BaseAnalyzer <|-- kernel_instrumenter.analyzers.dma_analyzer.DMAAnalyzer
+kernel_instrumenter.instrumentation_types.base.InstrumentationType <|-- kernel_instrumenter.instrumentation_types.dma_config.DMAInstrumentationType
+kernel_instrumenter.analyzers.base_analyzer.BaseAnalyzer <|-- kernel_instrumenter.analyzers.dma_present_files_analyzer.DmaPresentFilesAnalyzer
+kernel_instrumenter.instrumentation_types.base.InstrumentationType <|-- kernel_instrumenter.instrumentation_types.dma_present_files_functions_config.DmaPresentFilesFunctionsInstrumentationType
+kernel_instrumenter.analyzers.base_analyzer.BaseAnalyzer <|-- kernel_instrumenter.analyzers.function_analyzer.FunctionAnalyzer
+kernel_instrumenter.instrumentation_types.base.InstrumentationType <|-- kernel_instrumenter.instrumentation_types.function_config.FunctionInstrumentationType
+kernel_instrumenter.config.config.LoggingConfig *-- kernel_instrumenter.config.config.LogLevel
+kernel_instrumenter.analyzers.multi_analyzer.MultiAnalyzer *-- kernel_instrumenter.parsing.parser.TreeSitterParser
+kernel_instrumenter.instrumenters.multi_instrumenter.MultiInstrumenter *-- kernel_instrumenter.analyzers.multi_analyzer.MultiAnalyzer
+kernel_instrumenter.analyzers.base_analyzer.BaseAnalyzer <|-- kernel_instrumenter.analyzers.user_copy_analyzer.UserCopyAnalyzer
+kernel_instrumenter.instrumentation_types.base.InstrumentationType <|-- kernel_instrumenter.instrumentation_types.user_copy_config.UserCopyInstrumentationType
+footer Generated by //py2puml//
+@enduml
+
