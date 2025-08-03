@@ -10,11 +10,13 @@ from .dma_config import DMAInstrumentationType
 from .user_copy_config import UserCopyInstrumentationType
 from .function_config import FunctionInstrumentationType
 from .dma_present_files_functions_config import DmaPresentFilesFunctionsInstrumentationType
+from .ioctl_config import IoctlInstrumentationType
 
 __all__ = [
     'InstrumentationType',
     'DMAInstrumentationType', 
     'UserCopyInstrumentationType',
     'FunctionInstrumentationType',
-    'DmaPresentFilesFunctionsInstrumentationType'
+    'DmaPresentFilesFunctionsInstrumentationType',
+    'IoctlInstrumentationType'
 ]

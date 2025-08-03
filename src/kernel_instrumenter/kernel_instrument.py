@@ -61,7 +61,7 @@ Performance Features:
 Usage Examples:
     Basic usage:
         instrumenter = KernelInstrumenter(
-            enabled_types={'dma', 'user_copy'},
+            enabled_types={'dma', 'user_copy', 'ioctl'},
             dry_run=False,
             verbose=True
         )
@@ -152,7 +152,7 @@ class KernelInstrumenter:
         Initialize the kernel instrumenter
         
         Args:
-            enabled_types: Set of instrumentation types to enable ('dma', 'user_copy', 'functions')
+            enabled_types: Set of instrumentation types to enable ('dma', 'user_copy', 'functions', 'ioctl')
             dry_run: If True, preview changes without modifying files
             verbose: Enable verbose output
         """
@@ -222,6 +222,8 @@ class KernelInstrumenter:
                                 elif inst_type == 'user_copy' and 'function_name' in item:
                                     print(f"      - {item['function_name']} at line {item['line_number']}")
                                 elif inst_type == 'functions' and 'function_name' in item:
+                                    print(f"      - {item['function_name']} at line {item['line_number']}")
+                                elif inst_type == 'ioctl' and 'function_name' in item:
                                     print(f"      - {item['function_name']} at line {item['line_number']}")
                             if len(items) > 5:
                                 print(f"      ... and {len(items) - 5} more")
@@ -448,10 +450,10 @@ def main():
     
     parser.add_argument(
         '--types',
-        choices=['dma', 'user_copy', 'functions', 'dma_present_files_functions', 'all'],
+        choices=['dma', 'user_copy', 'functions', 'dma_present_files_functions', 'ioctl', 'all'],
         nargs='+',
-        default=['dma', 'user_copy', 'dma_present_files_functions'],
-        help='Instrumentation types to enable (default: dma user_copy dma_present_files_functions). Use "all" to include all standard types. Use "dma_present_files_functions" to instrument all function entries in files containing DMA operations'
+        default=['dma', 'user_copy', 'dma_present_files_functions', 'ioctl'],
+        help='Instrumentation types to enable (default: dma user_copy dma_present_files_functions ioctl). Use "all" to include all standard types. Use "dma_present_files_functions" to instrument all function entries in files containing DMA operations. Use "ioctl" to instrument ioctl handler functions'
     )
     
     parser.add_argument(
@@ -477,7 +479,7 @@ def main():
     
     # Determine enabled types
     if 'all' in args.types:
-        enabled_types = {'dma', 'user_copy', 'functions'}
+        enabled_types = {'dma', 'user_copy', 'functions', 'ioctl'}
     else:
         enabled_types = set(args.types)
     

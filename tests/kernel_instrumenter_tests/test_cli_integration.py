@@ -157,6 +157,36 @@ MODULE_LICENSE("GPL");
         self.assertIn("DRY RUN MODE", stdout)
         self.assertIn("test_function", stdout)
     
+    def test_dry_run_ioctl_only(self):
+        """Test dry-run mode with ioctl instrumentation only"""
+        # Create a test file with ioctl handler
+        ioctl_file = Path(self.test_dir) / "ioctl_test.c"
+        ioctl_content = '''
+#include <linux/module.h>
+#include <linux/fs.h>
+
+static long device_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {
+    switch (cmd) {
+        case 0x1000:
+            return 0;
+        default:
+            return -EINVAL;
+    }
+}
+'''
+        ioctl_file.write_text(ioctl_content)
+        
+        returncode, stdout, stderr = self.run_cli_command([
+            "-d", self.test_dir,
+            "--types", "ioctl",
+            "--dry-run",
+            "--verbose"
+        ])
+        
+        self.assertEqual(returncode, 0)
+        self.assertIn("DRY RUN MODE", stdout)
+        self.assertIn("device_ioctl", stdout)
+    
     def test_dry_run_multiple_types(self):
         """Test dry-run mode with multiple instrumentation types"""
         returncode, stdout, stderr = self.run_cli_command([

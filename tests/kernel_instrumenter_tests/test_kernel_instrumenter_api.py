@@ -141,6 +141,21 @@ MODULE_AUTHOR("Test Suite");
         self.assertFalse(instrumenter.dry_run)
         self.assertTrue(instrumenter.verbose)
     
+    def test_initialization_ioctl_only(self):
+        """Test KernelInstrumenter initialization with ioctl only"""
+        instrumenter = KernelInstrumenter(
+            enabled_types={'ioctl'},
+            dry_run=True,
+            verbose=False
+        )
+        
+        self.assertEqual(instrumenter.enabled_types, {'ioctl'})
+        self.assertTrue(instrumenter.dry_run)
+        self.assertFalse(instrumenter.verbose)
+        self.assertIsNotNone(instrumenter.parser)
+        self.assertIsNotNone(instrumenter.analyzer)
+        self.assertIsNotNone(instrumenter.instrumenter)
+    
     def test_instrument_file_dma_dry_run(self):
         """Test instrumenting a single file with DMA in dry-run mode"""
         instrumenter = KernelInstrumenter(
@@ -212,6 +227,56 @@ MODULE_AUTHOR("Test Suite");
         self.assertIn('helper_function', found_functions)
         self.assertIn('complex_dma_function', found_functions)
         self.assertIn('another_function', found_functions)
+    
+    def test_instrument_file_ioctl_dry_run(self):
+        """Test instrumenting a file with ioctl handlers in dry-run mode"""
+        # Create a test file with ioctl handlers
+        ioctl_file_path = Path(self.test_dir) / "ioctl_driver.c"
+        ioctl_content = '''
+#include <linux/module.h>
+#include <linux/fs.h>
+
+static long device_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {
+    switch (cmd) {
+        case 0x1000:
+            return handle_command_1(arg);
+        case 0x1001:
+            return handle_command_2(arg);
+        default:
+            return -EINVAL;
+    }
+}
+
+static long driver_unlocked_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {
+    return device_ioctl(file, cmd, arg);
+}
+
+static int regular_function(void) {
+    return 0;
+}
+'''
+        ioctl_file_path.write_text(ioctl_content)
+        
+        instrumenter = KernelInstrumenter(
+            enabled_types={'ioctl'},
+            dry_run=True,
+            verbose=False
+        )
+        
+        result = instrumenter.instrument_file(ioctl_file_path)
+        
+        self.assertTrue(result['success'])
+        self.assertFalse(result['modified'])  # Dry run doesn't modify
+        self.assertIn('ioctl', result['instrumentations'])
+        
+        # Should find ioctl handlers
+        ioctl_handlers = result['instrumentations']['ioctl']
+        self.assertGreater(len(ioctl_handlers), 0)
+        
+        # Verify specific handlers are found
+        found_handlers = [handler['function_name'] for handler in ioctl_handlers]
+        self.assertIn('device_ioctl', found_handlers)
+        # May also find driver_unlocked_ioctl depending on detection sophistication
     
     def test_instrument_file_multiple_types(self):
         """Test instrumenting with multiple types"""

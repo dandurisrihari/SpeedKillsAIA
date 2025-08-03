@@ -5,12 +5,13 @@ Multi-type analyzer that coordinates multiple specialized analyzers
 
 from typing import List, Dict, Any, Set
 from ..parsing.parser import TreeSitterParser
-from ..instrumentation_types import InstrumentationType, DMAInstrumentationType, UserCopyInstrumentationType, FunctionInstrumentationType
+from ..instrumentation_types import InstrumentationType, DMAInstrumentationType, UserCopyInstrumentationType, FunctionInstrumentationType, IoctlInstrumentationType
 from ..instrumentation_types.dma_present_files_functions_config import DmaPresentFilesFunctionsInstrumentationType
 from .dma_analyzer import DMAAnalyzer
 from .user_copy_analyzer import UserCopyAnalyzer
 from .function_analyzer import FunctionAnalyzer
 from .dma_present_files_analyzer import DmaPresentFilesAnalyzer
+from .ioctl_analyzer import IoctlAnalyzer
 
 
 class MultiAnalyzer:
@@ -27,7 +28,7 @@ class MultiAnalyzer:
         
         Args:
             parser: Initialized TreeSitterParser instance
-            enabled_types: Set of enabled instrumentation type names ('dma', 'user_copy', 'functions')
+            enabled_types: Set of enabled instrumentation type names ('dma', 'user_copy', 'functions', 'ioctl')
         """
         self.parser = parser
         self.analyzers = {}
@@ -47,6 +48,10 @@ class MultiAnalyzer:
             
         if 'dma_present_files_functions' in enabled_types:
             self.analyzers['dma_present_files_functions'] = DmaPresentFilesAnalyzer(parser, verbose=True)
+            
+        if 'ioctl' in enabled_types:
+            ioctl_type = IoctlInstrumentationType()
+            self.analyzers['ioctl'] = IoctlAnalyzer(parser, ioctl_type)
 
     def get_enabled_types(self) -> List[str]:
         """Get list of enabled instrumentation types"""
@@ -76,6 +81,8 @@ class MultiAnalyzer:
                 elif analyzer_name == 'dma_present_files_functions':
                     # This analyzer returns functions but maps to 'functions' key for instrumentation
                     results['functions'] = analyzer.find_instrumentable_items(source_code)
+                elif analyzer_name == 'ioctl':
+                    results['ioctl'] = analyzer.find_calls_in_file(source_code)
                 else:
                     results[analyzer_name] = []
                     
