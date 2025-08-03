@@ -73,7 +73,8 @@ def main():
             print(f"IOCTL Operations: {len(results.get('ioctl_operations', []))}")
             
             stats = results.get('statistics', {})
-            print(f"Total Files Analyzed: {stats.get('total_files_analyzed', 0)}")
+            print(f"Total Files: {stats.get('total_files', 0)}")
+            print(f"Files need analysis: {stats.get('files_need_analysis', 0)}")
             print(f"Files with Function Entries: {stats.get('files_instrumented_with_function_entries', 0)}")
             
             if args.output:

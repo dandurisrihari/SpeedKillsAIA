@@ -252,179 +252,267 @@ HTML_TEMPLATE = """
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            line-height: 1.6;
         }
         
         .container {
             max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
         
         .header {
-            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
         }
         
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            font-weight: 300;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
         }
         
         .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+            font-size: 1.3em;
+            opacity: 0.95;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: #f8f9fa;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         
         .stat-card {
             background: white;
-            padding: 25px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
         
         .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #2196F3;
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 10px;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         .stat-label {
-            color: #666;
+            color: #4a5568;
             font-size: 1.1em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .content {
-            padding: 30px;
+            padding: 40px;
+            background: #fafbfc;
         }
         
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 50px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
         
         .section-title {
-            font-size: 1.8em;
-            color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #2196F3;
+            font-size: 2em;
+            color: #2d3748;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, #667eea, #764ba2) 1;
             display: flex;
             align-items: center;
+            font-weight: 600;
         }
         
         .section-title::before {
             content: "";
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            border-radius: 50%;
-            background: #2196F3;
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
         }
         
         .search-box {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 18px 24px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-size: 1.1em;
-            margin-bottom: 20px;
-            transition: border-color 0.3s ease;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
         .search-box:focus {
             outline: none;
-            border-color: #2196F3;
+            border-color: #667eea;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
         }
         
         .function-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
         }
         
         .file-section {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            border-left: 5px solid #2196F3;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 6px solid #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
         
         .file-title {
-            font-size: 1.3em;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: bold;
+            font-size: 1.4em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         
         .function-item {
             background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #f1f5f9;
         }
         
         .function-item:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+            border-color: #667eea;
         }
         
         .function-name {
-            font-weight: bold;
-            color: #2196F3;
-            font-size: 1.1em;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 8px;
         }
         
         .function-details {
-            color: #666;
-            margin-top: 5px;
-            font-size: 0.9em;
+            color: #718096;
+            margin-top: 8px;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
         .dma-item, .copy-item, .ioctl-item {
             background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-left: 5px solid #ff9800;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            border-left: 6px solid #ff9800;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
-        .dma-header, .copy-header {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
+        .dma-item::before, .copy-item::before, .ioctl-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.05));
+            border-radius: 0 0 0 100px;
         }
         
-        .dma-details, .copy-details {
-            color: #666;
-            margin-bottom: 15px;
+        .dma-item:hover, .copy-item:hover, .ioctl-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        
+        .dma-header, .copy-header, .ioctl-header {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dma-details, .copy-details, .ioctl-details {
+            color: #718096;
+            margin-bottom: 18px;
+            line-height: 1.6;
         }
         
         .stack-trace {
@@ -508,6 +596,47 @@ HTML_TEMPLATE = """
             line-height: 1.4;
             max-height: 400px;
             overflow-y: auto;
+        }
+        
+        .badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        }
+        
+        .timestamp {
+            background: #f7fafc;
+            color: #4a5568;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .call-count {
+            background: #e6fffa;
+            color: #234e52;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 500;
+            border: 1px solid #81e6d9;
+        }
+        
+        .process-info {
+            background: #fef5e7;
+            color: #744210;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            margin-top: 10px;
+            border-left: 4px solid #f6ad55;
         }
         
         .function-code code {
@@ -637,12 +766,16 @@ HTML_TEMPLATE = """
                 <div class="stat-label">IOCTL Handlers</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.total_files_analyzed }}</div>
-                <div class="stat-label">Total Files Analyzed</div>
+                <div class="stat-number">{{ data.statistics.total_files or 0 }}</div>
+                <div class="stat-label">Total Files</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.files_instrumented_with_function_entries }}</div>
-                <div class="stat-label">Files Instrumented</div>
+                <div class="stat-number">{{ data.statistics.files_need_analysis or data.statistics.total_files_analyzed or 0 }}</div>
+                <div class="stat-label">Files need analysis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.statistics.files_with_functions_entrypoint_instrumented or data.statistics.files_instrumented_with_function_entries }}</div>
+                <div class="stat-label">Files with functions entry Instrumented</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">{{ data.statistics.total_duplicates_skipped }}</div>
@@ -1121,9 +1254,9 @@ def load_data(json_file):
         if 'statistics' in parsed_data:
             stats = parsed_data['statistics']
             if 'total_files_analyzed' not in stats:
-                stats['total_files_analyzed'] = stats.get('files_with_functions', 0)
+                stats['total_files_analyzed'] = stats.get('files_with_functions_entrypoint_instrumented', stats.get('files_with_functions', 0))
             if 'files_instrumented_with_function_entries' not in stats:
-                stats['files_instrumented_with_function_entries'] = stats.get('files_with_functions', 0)
+                stats['files_instrumented_with_function_entries'] = stats.get('files_with_functions_entrypoint_instrumented', stats.get('files_with_functions', 0))
         
         print(f"✅ Loaded data from {json_file}")
         return True
@@ -1174,8 +1307,9 @@ def start_web_ui(json_file=None, port=5000, host='127.0.0.1', auto_open=True):
     print(f"   • DMA Operations: {parsed_data['statistics']['unique_dma_operations']}")
     print(f"   • User Copy Operations: {parsed_data['statistics']['unique_user_copy_operations']}")
     print(f"   • IOCTL Operations: {parsed_data['statistics'].get('unique_ioctl_operations', 0)}")
-    print(f"   • Total Files Analyzed: {parsed_data['statistics']['total_files_analyzed']}")
-    print(f"   • Files Instrumented: {parsed_data['statistics']['files_instrumented_with_function_entries']}")
+    print(f"   • Total Files: {parsed_data['statistics'].get('total_files', 0)}")
+    print(f"   • Files need analysis: {parsed_data['statistics'].get('files_need_analysis', parsed_data['statistics'].get('total_files_analyzed', 0))}")
+    print(f"   • Files with functions entry Instrumented: {parsed_data['statistics']['files_instrumented_with_function_entries']}")
     print(f"\n💡 Use Ctrl+C to stop the server\n")
     
     # Open browser in a separate thread unless disabled

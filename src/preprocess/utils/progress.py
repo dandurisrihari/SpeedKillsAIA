@@ -48,9 +48,10 @@ class ProgressUI:
         self.print_message(f"📍 Unique function entries: {statistics.unique_function_entries}")
         self.print_message(f"🔄 Unique DMA operations: {statistics.unique_dma_operations}")
         self.print_message(f"👤 Unique user copy operations: {statistics.unique_user_copy_operations}")
-        self.print_message(f"📁 Total files analyzed: {statistics.total_files_analyzed}")
-        self.print_message(f"🔧 Files instrumented with function entries: {statistics.files_instrumented_with_function_entries}")
-        self.print_message(f"📄 Files with functions: {statistics.files_with_functions}")
+        self.print_message(f"📁 Total files: {statistics.total_files}")
+        self.print_message(f"📋 Files need analysis: {statistics.files_need_analysis}")
+        self.print_message(f"🔧 Files with functions entry Instrumented: {statistics.files_instrumented_with_function_entries}")
+        self.print_message(f"📄 Files with functions: {statistics.files_with_functions_entrypoint_instrumented}")
     
     def print_file_analysis(self, functions_by_file):
         """Print file analysis summary with function code details"""

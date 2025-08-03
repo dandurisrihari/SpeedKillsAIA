@@ -115,6 +115,30 @@ class KernelLogParserEngine:
         # Metadata about the parsing run
         self.metadata = ParseMetadata()
     
+    def _count_total_c_files(self, source_root: str) -> int:
+        """
+        Count total .c files recursively in the source root directory
+        
+        Args:
+            source_root: Path to the root directory to search
+            
+        Returns:
+            Total number of .c files found
+        """
+        try:
+            source_path = Path(source_root)
+            if not source_path.exists() or not source_path.is_dir():
+                return 0
+                
+            # Recursively search for all .c files
+            c_files = list(source_path.rglob("*.c"))
+            return len(c_files)
+        except Exception as e:
+            # If we can't count files, return 0 to avoid breaking the parser
+            if self.show_ui:
+                print(f"Warning: Could not count .c files in {source_root}: {e}")
+            return 0
+    
     def parse_log_file(self, log_file_path, output_file: Optional[str] = None):
         """Parse entire log file and return structured results"""
         # Convert to Path object if string
@@ -371,6 +395,11 @@ class KernelLogParserEngine:
         # Calculate statistics
         file_stats = self.file_tracker.get_statistics(self.functions_by_file)
         
+        # Count total .c files if source root is provided
+        total_files = 0
+        if self.source_root_path:
+            total_files = self._count_total_c_files(self.source_root_path)
+        
         statistics = ParseStatistics(
             unique_function_entries=sum(len(funcs) for funcs in self.functions_by_file.values()),
             unique_dma_operations=len(self.dma_operations),
@@ -380,8 +409,9 @@ class KernelLogParserEngine:
             total_dma_operations_found=self.total_dma_operations_found,
             total_user_copy_operations_found=self.total_user_copy_operations_found,
             total_ioctl_operations_found=self.total_ioctl_operations_found,
-            files_with_functions=file_stats['files_with_functions'],
-            total_files_analyzed=file_stats['total_files_analyzed'],
+            files_with_functions_entrypoint_instrumented=file_stats['files_with_functions'],
+            total_files=total_files,
+            files_need_analysis=file_stats['total_files_analyzed'],
             files_instrumented_with_function_entries=file_stats['files_instrumented_with_function_entries'],
             total_duplicates_skipped=self.deduplicator.total_duplicates
         )

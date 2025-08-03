@@ -57,6 +57,7 @@ class TestKernelLogDeduplicator(unittest.TestCase):
             file_path="/test/file.c",
             line_number=200,
             first_seen_timestamp=156.0,
+            first_seen_time_str="2023-01-01 12:00:00",
             stack_trace=[]
         )
         dma2 = DMAOperation(
@@ -65,6 +66,7 @@ class TestKernelLogDeduplicator(unittest.TestCase):
             file_path="/test/file.c",
             line_number=200,
             first_seen_timestamp=157.0,
+            first_seen_time_str="2023-01-01 12:00:01",
             stack_trace=[]
         )
         
@@ -80,12 +82,14 @@ class TestKernelLogDeduplicator(unittest.TestCase):
         func1 = FunctionEntry(
             function_name="test_func",
             line_number=100,
-            first_seen_timestamp=156.0
+            first_seen_timestamp=156.0,
+            first_seen_time_str="2023-01-01 12:00:00"
         )
         func2 = FunctionEntry(
             function_name="test_func",
             line_number=100,
-            first_seen_timestamp=157.0
+            first_seen_timestamp=157.0,
+            first_seen_time_str="2023-01-01 12:00:01"
         )
         
         # Test deduplication with file path
@@ -104,6 +108,7 @@ class TestKernelLogDeduplicator(unittest.TestCase):
             file_path="/test/file.c",
             line_number=300,
             first_seen_timestamp=156.0,
+            first_seen_time_str="2023-01-01 12:00:00",
             process_info=None
         )
         copy2 = UserCopyOperation(
@@ -112,6 +117,7 @@ class TestKernelLogDeduplicator(unittest.TestCase):
             file_path="/test/file.c",
             line_number=300,
             first_seen_timestamp=157.0,
+            first_seen_time_str="2023-01-01 12:00:01",
             process_info=None
         )
         
@@ -124,9 +130,9 @@ class TestKernelLogDeduplicator(unittest.TestCase):
     def test_total_duplicates(self):
         """Test total duplicate count across all categories"""
         # Add some duplicates to each category
-        dma = DMAOperation("dma_map", "caller", "/file.c", 100, 156.0, [])
-        func = FunctionEntry("test_func", 100, 156.0)
-        copy = UserCopyOperation("copy_from_user", "caller", "/file.c", 200, 156.0)
+        dma = DMAOperation("dma_map", "caller", "/file.c", 100, 156.0, "2023-01-01 12:00:00", [])
+        func = FunctionEntry("test_func", 100, 156.0, "2023-01-01 12:00:00")
+        copy = UserCopyOperation("copy_from_user", "caller", "/file.c", 200, 156.0, "2023-01-01 12:00:00")
         
         # Add originals (not duplicates)
         self.deduplicator.dma_operations.is_duplicate(dma)
