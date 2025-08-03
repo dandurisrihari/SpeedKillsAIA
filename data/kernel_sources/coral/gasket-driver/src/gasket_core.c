@@ -1226,6 +1226,7 @@ fail:
  */
 static int gasket_open(struct inode *inode, struct file *filp)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_open called at %s:%d\n", __FILE__, __LINE__);
     printk(KERN_INFO "FUNC_ENTRY: Entering function gasket_open at %s:%d\n", __FILE__, __LINE__);
 	int ret;
 	struct gasket_dev *gasket_dev;
@@ -1306,6 +1307,7 @@ static int gasket_open(struct inode *inode, struct file *filp)
  */
 static int gasket_release(struct inode *inode, struct file *file)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_release called at %s:%d\n", __FILE__, __LINE__);
     printk(KERN_INFO "FUNC_ENTRY: Entering function gasket_release at %s:%d\n", __FILE__, __LINE__);
 	int i;
 	struct gasket_dev *gasket_dev;
@@ -1368,6 +1370,7 @@ static int gasket_release(struct inode *inode, struct file *file)
  */
 static long gasket_ioctl(struct file *filp, uint cmd, ulong arg)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_ioctl called at %s:%d\n", __FILE__, __LINE__);
     printk(KERN_INFO "FUNC_ENTRY: Entering function gasket_ioctl at %s:%d\n", __FILE__, __LINE__);
 	struct gasket_dev *gasket_dev;
 	const struct gasket_driver_desc *driver_desc;
@@ -1783,6 +1786,7 @@ EXPORT_SYMBOL(gasket_reset_nolock);
 gasket_ioctl_permissions_cb_t
 gasket_get_ioctl_permissions_cb(struct gasket_dev *gasket_dev)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_get_ioctl_permissions_cb called at %s:%d\n", __FILE__, __LINE__);
     printk(KERN_INFO "FUNC_ENTRY: Entering function gasket_get_ioctl_permissions_cb at %s:%d\n", __FILE__, __LINE__);
 	return gasket_dev->internal_desc->driver_desc->ioctl_permissions_cb;
 }
