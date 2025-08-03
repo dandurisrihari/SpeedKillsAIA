@@ -1,8 +1,16 @@
 diff --git a/src/apex_driver.c b/src/apex_driver.c
-index 1cc4e00..7c63d7b 100644
+index 1cc4e00..7390d9f 100644
 --- a/src/apex_driver.c
 +++ b/src/apex_driver.c
-@@ -529,6 +529,8 @@ static long apex_clock_gating(struct gasket_dev *gasket_dev,
+@@ -517,6 +517,7 @@ static int apex_reset(struct gasket_dev *gasket_dev)
+  */
+ static bool apex_ioctl_check_permissions(struct file *filp, uint cmd)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function apex_ioctl_check_permissions called at %s:%d\n", __FILE__, __LINE__);
+ 	return !!(filp->f_mode & FMODE_WRITE);
+ }
+ 
+@@ -529,6 +530,8 @@ static long apex_clock_gating(struct gasket_dev *gasket_dev,
  	if (bypass_top_level || !allow_sw_clock_gating)
  		return 0;
  
@@ -11,7 +19,7 @@ index 1cc4e00..7c63d7b 100644
  	if (copy_from_user(&ibuf, argp, sizeof(ibuf)))
  		return -EFAULT;
  
-@@ -571,6 +573,8 @@ static long apex_set_performance_expectation(
+@@ -571,6 +574,8 @@ static long apex_set_performance_expectation(
  	if (bypass_top_level)
  		return 0;
  
@@ -20,8 +28,16 @@ index 1cc4e00..7c63d7b 100644
  	if (copy_from_user(&ibuf, argp, sizeof(ibuf)))
  		return -EFAULT;
  
+@@ -613,6 +618,7 @@ static long apex_set_performance_expectation(
+ /* Apex-specific ioctl handler. */
+ static long apex_ioctl(struct file *filp, uint cmd, void __user *argp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function apex_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct gasket_dev *gasket_dev = filp->private_data;
+ 
+ 	if (!apex_ioctl_check_permissions(filp, cmd))
 diff --git a/src/gasket_core.c b/src/gasket_core.c
-index b1c2726..5a3112c 100644
+index b1c2726..1d9a442 100644
 --- a/src/gasket_core.c
 +++ b/src/gasket_core.c
 @@ -119,6 +119,7 @@ static inline int
@@ -232,31 +248,34 @@ index b1c2726..5a3112c 100644
  	int i, ret;
  	int bar_index;
  	int has_mapped_anything = 0;
-@@ -1200,6 +1226,7 @@ fail:
+@@ -1200,6 +1226,8 @@ fail:
   */
  static int gasket_open(struct inode *inode, struct file *filp)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_open called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function gasket_open at %s:%d\n", __FILE__, __LINE__);
  	int ret;
  	struct gasket_dev *gasket_dev;
  	const struct gasket_driver_desc *driver_desc;
-@@ -1279,6 +1306,7 @@ static int gasket_open(struct inode *inode, struct file *filp)
+@@ -1279,6 +1307,8 @@ static int gasket_open(struct inode *inode, struct file *filp)
   */
  static int gasket_release(struct inode *inode, struct file *file)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_release called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function gasket_release at %s:%d\n", __FILE__, __LINE__);
  	int i;
  	struct gasket_dev *gasket_dev;
  	struct gasket_ownership *ownership;
-@@ -1340,6 +1368,7 @@ static int gasket_release(struct inode *inode, struct file *file)
+@@ -1340,6 +1370,8 @@ static int gasket_release(struct inode *inode, struct file *file)
   */
  static long gasket_ioctl(struct file *filp, uint cmd, ulong arg)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_ioctl called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function gasket_ioctl at %s:%d\n", __FILE__, __LINE__);
  	struct gasket_dev *gasket_dev;
  	const struct gasket_driver_desc *driver_desc;
  	void __user *argp = (void __user *)arg;
-@@ -1384,6 +1413,7 @@ static const struct file_operations gasket_file_ops = {
+@@ -1384,6 +1416,7 @@ static const struct file_operations gasket_file_ops = {
  /* Perform final init and marks the device as active. */
  int gasket_enable_device(struct gasket_dev *gasket_dev)
  {
@@ -264,7 +283,7 @@ index b1c2726..5a3112c 100644
  	int tbl_idx;
  	int ret;
  	const struct gasket_driver_desc *driver_desc =
-@@ -1507,6 +1537,7 @@ static void __gasket_remove_device(struct gasket_internal_desc *internal_desc,
+@@ -1507,6 +1540,7 @@ static void __gasket_remove_device(struct gasket_internal_desc *internal_desc,
  int gasket_pci_add_device(struct pci_dev *pci_dev,
  			  struct gasket_dev **gasket_devp)
  {
@@ -272,7 +291,7 @@ index b1c2726..5a3112c 100644
  	int ret;
  	struct gasket_internal_desc *internal_desc;
  	struct gasket_dev *gasket_dev;
-@@ -1558,6 +1589,7 @@ EXPORT_SYMBOL(gasket_pci_add_device);
+@@ -1558,6 +1592,7 @@ EXPORT_SYMBOL(gasket_pci_add_device);
  /* Remove a PCI gasket device. */
  void gasket_pci_remove_device(struct pci_dev *pci_dev)
  {
@@ -280,7 +299,7 @@ index b1c2726..5a3112c 100644
  	int i;
  	struct gasket_internal_desc *internal_desc;
  	struct gasket_dev *gasket_dev = NULL;
-@@ -1596,6 +1628,7 @@ EXPORT_SYMBOL(gasket_pci_remove_device);
+@@ -1596,6 +1631,7 @@ EXPORT_SYMBOL(gasket_pci_remove_device);
  int gasket_platform_add_device(struct platform_device *pdev,
  			       struct gasket_dev **gasket_devp)
  {
@@ -288,7 +307,7 @@ index b1c2726..5a3112c 100644
  	int ret;
  	struct gasket_internal_desc *internal_desc;
  	struct gasket_dev *gasket_dev;
-@@ -1626,6 +1659,7 @@ EXPORT_SYMBOL(gasket_platform_add_device);
+@@ -1626,6 +1662,7 @@ EXPORT_SYMBOL(gasket_platform_add_device);
  /* Remove a platform gasket device. */
  void gasket_platform_remove_device(struct platform_device *pdev)
  {
@@ -296,7 +315,7 @@ index b1c2726..5a3112c 100644
  	int i;
  	struct gasket_internal_desc *internal_desc;
  	struct gasket_dev *gasket_dev = NULL;
-@@ -1661,6 +1695,7 @@ EXPORT_SYMBOL(gasket_platform_remove_device);
+@@ -1661,6 +1698,7 @@ EXPORT_SYMBOL(gasket_platform_remove_device);
  void gasket_set_dma_device(struct gasket_dev *gasket_dev,
  			   struct device *dma_dev)
  {
@@ -304,7 +323,7 @@ index b1c2726..5a3112c 100644
  	put_device(gasket_dev->dma_dev);
  	gasket_dev->dma_dev = get_device(dma_dev);
  }
-@@ -1680,6 +1715,7 @@ EXPORT_SYMBOL(gasket_set_dma_device);
+@@ -1680,6 +1718,7 @@ EXPORT_SYMBOL(gasket_set_dma_device);
  const char *gasket_num_name_lookup(uint num,
  				   const struct gasket_num_name *table)
  {
@@ -312,7 +331,7 @@ index b1c2726..5a3112c 100644
  	uint i = 0;
  
  	while (table[i].snn_name) {
-@@ -1694,6 +1730,7 @@ EXPORT_SYMBOL(gasket_num_name_lookup);
+@@ -1694,6 +1733,7 @@ EXPORT_SYMBOL(gasket_num_name_lookup);
  
  int gasket_reset(struct gasket_dev *gasket_dev)
  {
@@ -320,7 +339,7 @@ index b1c2726..5a3112c 100644
  	int ret;
  
  	mutex_lock(&gasket_dev->mutex);
-@@ -1705,6 +1742,7 @@ EXPORT_SYMBOL(gasket_reset);
+@@ -1705,6 +1745,7 @@ EXPORT_SYMBOL(gasket_reset);
  
  int gasket_reset_nolock(struct gasket_dev *gasket_dev)
  {
@@ -328,15 +347,16 @@ index b1c2726..5a3112c 100644
  	int ret;
  	int i;
  	const struct gasket_driver_desc *driver_desc;
-@@ -1745,6 +1783,7 @@ EXPORT_SYMBOL(gasket_reset_nolock);
+@@ -1745,6 +1786,8 @@ EXPORT_SYMBOL(gasket_reset_nolock);
  gasket_ioctl_permissions_cb_t
  gasket_get_ioctl_permissions_cb(struct gasket_dev *gasket_dev)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_get_ioctl_permissions_cb called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function gasket_get_ioctl_permissions_cb at %s:%d\n", __FILE__, __LINE__);
  	return gasket_dev->internal_desc->driver_desc->ioctl_permissions_cb;
  }
  EXPORT_SYMBOL(gasket_get_ioctl_permissions_cb);
-@@ -1754,6 +1793,7 @@ EXPORT_SYMBOL(gasket_get_ioctl_permissions_cb);
+@@ -1754,6 +1797,7 @@ EXPORT_SYMBOL(gasket_get_ioctl_permissions_cb);
   */
  const struct gasket_driver_desc *gasket_get_driver_desc(struct gasket_dev *dev)
  {
@@ -344,7 +364,7 @@ index b1c2726..5a3112c 100644
  	return dev->internal_desc->driver_desc;
  }
  
-@@ -1762,6 +1802,7 @@ const struct gasket_driver_desc *gasket_get_driver_desc(struct gasket_dev *dev)
+@@ -1762,6 +1806,7 @@ const struct gasket_driver_desc *gasket_get_driver_desc(struct gasket_dev *dev)
   */
  struct device *gasket_get_device(struct gasket_dev *dev)
  {
@@ -352,7 +372,7 @@ index b1c2726..5a3112c 100644
  	return dev->dev;
  }
  
-@@ -1782,6 +1823,7 @@ int gasket_wait_with_reschedule(struct gasket_dev *gasket_dev, int bar,
+@@ -1782,6 +1827,7 @@ int gasket_wait_with_reschedule(struct gasket_dev *gasket_dev, int bar,
  				u64 offset, u64 mask, u64 val,
  				uint max_retries, u64 delay_ms)
  {
@@ -360,7 +380,7 @@ index b1c2726..5a3112c 100644
  	uint retries = 0;
  	u64 tmp;
  
-@@ -1801,6 +1843,7 @@ EXPORT_SYMBOL(gasket_wait_with_reschedule);
+@@ -1801,6 +1847,7 @@ EXPORT_SYMBOL(gasket_wait_with_reschedule);
  /* See gasket_core.h for description. */
  int gasket_register_device(const struct gasket_driver_desc *driver_desc)
  {
@@ -368,7 +388,7 @@ index b1c2726..5a3112c 100644
  	int i, ret;
  	int desc_idx = -1;
  	struct gasket_internal_desc *internal;
-@@ -1880,6 +1923,7 @@ EXPORT_SYMBOL(gasket_register_device);
+@@ -1880,6 +1927,7 @@ EXPORT_SYMBOL(gasket_register_device);
  /* See gasket_core.h for description. */
  void gasket_unregister_device(const struct gasket_driver_desc *driver_desc)
  {
@@ -376,7 +396,7 @@ index b1c2726..5a3112c 100644
  	int i, desc_idx;
  	struct gasket_internal_desc *internal_desc = NULL;
  
-@@ -1915,6 +1959,7 @@ EXPORT_SYMBOL(gasket_unregister_device);
+@@ -1915,6 +1963,7 @@ EXPORT_SYMBOL(gasket_unregister_device);
  
  static int __init gasket_init(void)
  {
@@ -385,7 +405,7 @@ index b1c2726..5a3112c 100644
  
  	mutex_lock(&g_mutex);
 diff --git a/src/gasket_ioctl.c b/src/gasket_ioctl.c
-index 1760a9c..c41c434 100644
+index 1760a9c..31401bc 100644
 --- a/src/gasket_ioctl.c
 +++ b/src/gasket_ioctl.c
 @@ -1,5 +1,13 @@
@@ -510,7 +530,23 @@ index 1760a9c..c41c434 100644
  	if (copy_to_user(argp, &ibuf, sizeof(ibuf)))
  		return -EFAULT;
  
-@@ -392,6 +424,8 @@ long gasket_handle_ioctl(struct file *filp, uint cmd, void __user *argp)
+@@ -294,6 +326,7 @@ static int gasket_config_coherent_allocator(
+ /* Check permissions for Gasket ioctls. */
+ static bool gasket_ioctl_check_permissions(struct file *filp, uint cmd)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_ioctl_check_permissions called at %s:%d\n", __FILE__, __LINE__);
+ 	bool alive;
+ 	bool read, write;
+ 	struct gasket_dev *gasket_dev = (struct gasket_dev *)filp->private_data;
+@@ -344,6 +377,7 @@ static bool gasket_ioctl_check_permissions(struct file *filp, uint cmd)
+  */
+ long gasket_handle_ioctl(struct file *filp, uint cmd, void __user *argp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_handle_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct gasket_dev *gasket_dev;
+ 	unsigned long arg = (unsigned long)argp;
+ 	gasket_ioctl_permissions_cb_t ioctl_permissions_cb;
+@@ -392,6 +426,8 @@ long gasket_handle_ioctl(struct file *filp, uint cmd, void __user *argp)
  		break;
  	case GASKET_IOCTL_NUMBER_PAGE_TABLES:
  		trace_gasket_ioctl_integer_data(gasket_dev->num_page_tables);
@@ -519,6 +555,14 @@ index 1760a9c..c41c434 100644
  		if (copy_to_user(argp, &gasket_dev->num_page_tables,
  				 sizeof(uint64_t)))
  			retval = -EFAULT;
+@@ -449,6 +485,7 @@ long gasket_handle_ioctl(struct file *filp, uint cmd, void __user *argp)
+  */
+ long gasket_is_supported_ioctl(uint cmd)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_is_supported_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	switch (cmd) {
+ 	case GASKET_IOCTL_RESET:
+ 	case GASKET_IOCTL_SET_EVENTFD:
 diff --git a/src/gasket_page_table.c b/src/gasket_page_table.c
 index c9067cb..b579314 100644
 --- a/src/gasket_page_table.c
