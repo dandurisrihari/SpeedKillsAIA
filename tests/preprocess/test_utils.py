@@ -13,7 +13,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 from preprocess.utils.progress import ProgressUI
 from preprocess.utils.deduplication import KernelLogDeduplicator
 from preprocess.utils.file_tracker import FileTracker
-from preprocess.core.models import FunctionEntry, DMAOperation, UserCopyOperation, ProcessInfo, ParseResults
+from preprocess.utils.function_extractor import FunctionCodeExtractor
+from preprocess.core.models import FunctionEntry, DMAOperation, UserCopyOperation, IOCTLOperation, ProcessInfo, ParseResults, ParseMetadata, ParseStatistics
 
 
 class TestProgressUI(unittest.TestCase):
@@ -208,6 +209,141 @@ class TestFileTracker(unittest.TestCase):
         # Should be empty
         self.assertEqual(len(self.tracker.all_files_encountered), 0)
         self.assertEqual(len(self.tracker.files_with_instrumentations), 0)
+
+
+class TestFunctionCodeExtractor(unittest.TestCase):
+    """Test cases for FunctionCodeExtractor"""
+    
+    def setUp(self):
+        """Set up test fixtures"""
+        self.extractor = FunctionCodeExtractor()
+    
+    def test_extract_function_simple(self):
+        """Test extracting a simple function"""
+        # Create a temporary C file with a simple function
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.c', delete=False) as f:
+            f.write("""
+#include <stdio.h>
+
+int simple_function(int x) {
+    return x * 2;
+}
+
+int another_function(void) {
+    return 42;
+}
+""")
+            temp_file = f.name
+        
+        try:
+            # Extract function at line 4 (simple_function)
+            result = self.extractor.extract_function_at_line(temp_file, 4)
+            
+            self.assertIsNotNone(result)
+            function_name, function_code, start_line, end_line = result
+            self.assertEqual(function_name, "simple_function")
+            self.assertIn("return x * 2", function_code)
+            self.assertNotIn("another_function", function_code)
+        finally:
+            os.unlink(temp_file)
+    
+    def test_extract_function_with_source_root(self):
+        """Test extracting function with source root path resolution"""
+        # Create temporary directory structure
+        with tempfile.TemporaryDirectory() as temp_dir:
+            drivers_dir = os.path.join(temp_dir, "drivers", "test")
+            os.makedirs(drivers_dir)
+            
+            test_file = os.path.join(drivers_dir, "test_driver.c")
+            with open(test_file, 'w') as f:
+                f.write("""
+int driver_ioctl(unsigned int cmd, unsigned long arg) {
+    if (cmd == 0) {
+        return -1;
+    }
+    return 0;
+}
+""")
+            
+            # Create extractor with source root
+            extractor = FunctionCodeExtractor(source_root_path=temp_dir)
+            
+            # Test with relative path
+            relative_path = "drivers/test/test_driver.c"
+            result = extractor.extract_function_at_line(relative_path, 2)
+            
+            self.assertIsNotNone(result)
+            function_name, function_code, start_line, end_line = result
+            self.assertEqual(function_name, "driver_ioctl")
+            self.assertIn("return -1", function_code)
+    
+    def test_extract_function_file_not_found(self):
+        """Test behavior when file is not found"""
+        result = self.extractor.extract_function_at_line("/nonexistent/file.c", 10)
+        self.assertIsNone(result)
+    
+    def test_extract_function_line_outside_function(self):
+        """Test behavior when line is not inside a function"""
+        # Create a temporary C file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.c', delete=False) as f:
+            f.write("""
+#include <stdio.h>
+
+// This is a comment
+#define MACRO_VALUE 42
+
+int function_after_line_10(void) {
+    return 1;
+}
+""")
+            temp_file = f.name
+        
+        try:
+            # Try to extract function at line 4 (comment line)
+            result = self.extractor.extract_function_at_line(temp_file, 4)
+            self.assertIsNone(result)
+        finally:
+            os.unlink(temp_file)
+    
+    @patch('preprocess.utils.function_extractor.ts.Parser.parse')
+    def test_extract_function_tree_sitter_error(self, mock_parse):
+        """Test behavior when tree-sitter fails"""
+        # Mock tree-sitter parse to raise an exception
+        mock_parse.side_effect = Exception("Tree-sitter error")
+        
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.c', delete=False) as f:
+            f.write("int test() { return 0; }")
+            temp_file = f.name
+        
+        try:
+            result = self.extractor.extract_function_at_line(temp_file, 1)
+            self.assertIsNone(result)
+        finally:
+            os.unlink(temp_file)
+
+
+class TestKernelLogDeduplicatorWithIOCTL(unittest.TestCase):
+    """Test cases for KernelLogDeduplicator with IOCTL operations"""
+    
+    def setUp(self):
+        """Set up test fixtures"""
+        self.deduplicator = KernelLogDeduplicator()
+    
+    def test_ioctl_operation_deduplication(self):
+        """Test IOCTL operation deduplication"""
+        # Create duplicate IOCTL operations
+        ioctl1 = IOCTLOperation("drv_ioctl", "driver.c", 100, 10.0, "code1")
+        ioctl2 = IOCTLOperation("drv_ioctl", "driver.c", 100, 20.0, "code2")  # Later timestamp
+        ioctl3 = IOCTLOperation("other_ioctl", "driver.c", 200, 15.0, "code3")  # Different function
+        
+        # Test deduplication directly
+        self.assertFalse(self.deduplicator.ioctl_operations.is_duplicate(ioctl1))
+        self.assertTrue(self.deduplicator.ioctl_operations.is_duplicate(ioctl2))  # Should be duplicate
+        self.assertFalse(self.deduplicator.ioctl_operations.is_duplicate(ioctl3))  # Different function
+        
+        # Check duplicate count
+        self.assertEqual(self.deduplicator.ioctl_operations.duplicate_count, 1)
+        self.assertEqual(self.deduplicator.ioctl_operations.unique_count, 2)
 
 
 if __name__ == '__main__':

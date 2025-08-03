@@ -11,7 +11,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 from preprocess.core.models import (
-    FunctionEntry, ProcessInfo, DMAOperation, UserCopyOperation,
+    FunctionEntry, ProcessInfo, DMAOperation, UserCopyOperation, IOCTLOperation,
     ParseStatistics, ParseMetadata, ParseResults
 )
 
@@ -119,6 +119,7 @@ class TestDataModels(unittest.TestCase):
             functions_by_file=functions_by_file,
             dma_operations=dma_operations,
             user_copy_operations=user_copy_operations,
+            ioctl_operations=[],
             statistics=statistics
         )
         
@@ -146,6 +147,101 @@ class TestDataModels(unittest.TestCase):
         # Check user copy operations
         self.assertEqual(len(data_dict['user_copy_operations']), 1)
         self.assertEqual(data_dict['user_copy_operations'][0]['copy_function'], "copy_test")
+
+
+class TestIOCTLOperation(unittest.TestCase):
+    """Test cases for IOCTLOperation model"""
+    
+    def test_ioctl_operation_creation(self):
+        """Test IOCTLOperation creation with all fields"""
+        ioctl = IOCTLOperation(
+            function_name="drv_ioctl",
+            file_path="drivers/gpu/kernel_driver.c",
+            line_number=673,
+            first_seen_timestamp=47.468247,
+            function_code="int drv_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {\n    return 0;\n}"
+        )
+        
+        self.assertEqual(ioctl.function_name, "drv_ioctl")
+        self.assertEqual(ioctl.file_path, "drivers/gpu/kernel_driver.c")
+        self.assertEqual(ioctl.line_number, 673)
+        self.assertEqual(ioctl.first_seen_timestamp, 47.468247)
+        self.assertIsNotNone(ioctl.function_code)
+        self.assertIn("drv_ioctl", ioctl.function_code)
+    
+    def test_ioctl_operation_creation_without_code(self):
+        """Test IOCTLOperation creation without function code"""
+        ioctl = IOCTLOperation(
+            function_name="video_ioctl",
+            file_path="drivers/media/v4l2-dev.c",
+            line_number=456,
+            first_seen_timestamp=50.123456
+        )
+        
+        self.assertEqual(ioctl.function_name, "video_ioctl")
+        self.assertEqual(ioctl.file_path, "drivers/media/v4l2-dev.c")
+        self.assertEqual(ioctl.line_number, 456)
+        self.assertEqual(ioctl.first_seen_timestamp, 50.123456)
+        self.assertIsNone(ioctl.function_code)
+    
+    def test_ioctl_operation_to_dict(self):
+        """Test IOCTLOperation to_dict method"""
+        ioctl = IOCTLOperation(
+            function_name="test_ioctl",
+            file_path="test.c",
+            line_number=123,
+            first_seen_timestamp=100.0,
+            function_code="int test_ioctl() { return 0; }"
+        )
+        
+        data_dict = ioctl.to_dict()
+        
+        self.assertEqual(data_dict['function_name'], "test_ioctl")
+        self.assertEqual(data_dict['file_path'], "test.c")
+        self.assertEqual(data_dict['line_number'], 123)
+        self.assertEqual(data_dict['first_seen_timestamp'], 100.0)
+        self.assertEqual(data_dict['function_code'], "int test_ioctl() { return 0; }")
+
+
+class TestParseResultsWithIOCTL(unittest.TestCase):
+    """Test cases for ParseResults with IOCTL operations"""
+    
+    def test_parse_results_with_ioctl_operations(self):
+        """Test ParseResults containing IOCTL operations"""
+        function_entry = FunctionEntry("test_func", 100, 50.0)
+        dma_op = DMAOperation("dma_test", "caller", "test.c", 200, 60.0)
+        user_copy_op = UserCopyOperation("copy_test", "caller_func", "test.c", 300, 70.0)
+        ioctl_op = IOCTLOperation("ioctl_test", "test.c", 400, 80.0, "int ioctl_test() { return 0; }")
+        
+        metadata = ParseMetadata()
+        metadata.log_file = "test.log"
+        statistics = ParseStatistics(
+            unique_function_entries=1,
+            unique_dma_operations=1,
+            unique_user_copy_operations=1,
+            unique_ioctl_operations=1,
+            files_with_functions=1,
+            total_files_analyzed=1,
+            files_instrumented_with_function_entries=1
+        )
+        
+        results = ParseResults(
+            metadata=metadata,
+            statistics=statistics,
+            functions_by_file={"test.c": [function_entry]},
+            dma_operations=[dma_op],
+            user_copy_operations=[user_copy_op],
+            ioctl_operations=[ioctl_op]
+        )
+        
+        self.assertEqual(len(results.ioctl_operations), 1)
+        self.assertEqual(results.ioctl_operations[0].function_name, "ioctl_test")
+        
+        # Test to_dict includes IOCTL operations
+        data_dict = results.to_dict()
+        self.assertIn('ioctl_operations', data_dict)
+        self.assertEqual(len(data_dict['ioctl_operations']), 1)
+        self.assertEqual(data_dict['ioctl_operations'][0]['function_name'], "ioctl_test")
 
 
 if __name__ == '__main__':

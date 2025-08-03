@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+"""
+Tests for CLI functionality including IOCTL support and source-root parameter
+"""
+
+import unittest
+import sys
+import os
+import tempfile
+import json
+from unittest.mock import patch, MagicMock
+from io import StringIO
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+
+from preprocess.cli import main
+from preprocess.tool import KernelLogParserTool
+
+
+class TestCLIWithIOCTL(unittest.TestCase):
+    """Test CLI functionality with IOCTL support"""
+    
+    def setUp(self):
+        """Set up test fixtures"""
+        self.test_log_content = """[   47.468247] IOCTL_HANDLER: Function drv_ioctl called at drivers/gpu/driver.c:100
+[   48.123456] FUNC_ENTRY: Entering function test_func at /test/file.c:200
+[   49.789012] DMA_INSTRUMENT: About to call dma_map_page from function test_dma at /test/dma.c:300
+"""
+    
+    def test_kernel_log_parser_tool_with_source_root(self):
+        """Test KernelLogParserTool with source_root_path parameter"""
+        # Create temporary log file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
+            f.write(self.test_log_content)
+            log_file = f.name
+        
+        # Create temporary output file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            output_file = f.name
+        
+        try:
+            # Create tool and process log
+            tool = KernelLogParserTool()
+            result = tool.process_log(log_file, output_file, 
+                                    show_ui=False, 
+                                    source_root_path="/test/kernel/sources")
+            
+            # Verify output file was created
+            self.assertTrue(os.path.exists(output_file))
+            
+            # Verify JSON content
+            with open(output_file, 'r') as f:
+                data = json.load(f)
+            
+            self.assertIn('ioctl_operations', data)
+            self.assertEqual(len(data['ioctl_operations']), 1)
+            
+            ioctl_op = data['ioctl_operations'][0]
+            self.assertEqual(ioctl_op['function_name'], 'drv_ioctl')
+            self.assertEqual(ioctl_op['file_path'], 'drivers/gpu/driver.c')
+            
+        finally:
+            os.unlink(log_file)
+            if os.path.exists(output_file):
+                os.unlink(output_file)
+    
+    @patch('sys.argv')
+    def test_main_with_source_root_integration(self, mock_argv):
+        """Test main function with --source-root parameter"""
+        # Create temporary files
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
+            f.write(self.test_log_content)
+            log_file = f.name
+        
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            output_file = f.name
+        
+        try:
+            # Mock command line arguments
+            mock_argv.__getitem__.side_effect = [
+                'preprocess_cli.py',  # sys.argv[0]
+                log_file,             # log file
+                '--output', output_file,
+                '--source-root', '/kernel/sources',
+                '--no-ui'            # Disable UI for testing
+            ]
+            mock_argv.__len__.return_value = 6
+            
+            # Run main function
+            try:
+                main()
+            except SystemExit as e:
+                # main() calls sys.exit(0) on success
+                self.assertEqual(e.code, 0)
+            
+            # Verify output file was created and contains IOCTL data
+            self.assertTrue(os.path.exists(output_file))
+            
+            with open(output_file, 'r') as f:
+                data = json.load(f)
+            
+            self.assertIn('ioctl_operations', data)
+            
+        finally:
+            os.unlink(log_file)
+            if os.path.exists(output_file):
+                os.unlink(output_file)
+    
+    @patch('preprocess.tool.KernelLogParserEngine.parse_log_file')
+    def test_source_root_passed_to_engine(self, mock_parse):
+        """Test that source_root parameter is passed to the parsing engine"""
+        # Mock the parse_log_file method
+        mock_results = MagicMock()
+        mock_results.to_dict.return_value = {'test': 'data'}
+        mock_parse.return_value = mock_results
+        
+        # Create temporary files
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
+            f.write("test log content")
+            log_file = f.name
+        
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            output_file = f.name
+        
+        try:
+            # Create tool and process log with source_root_path
+            tool = KernelLogParserTool()
+            source_root = "/test/source/root"
+            tool.process_log(log_file, output_file, 
+                           show_ui=False,
+                           source_root_path=source_root)
+            
+            # Verify that parse_log_file was called with source_root_path
+            mock_parse.assert_called_once_with(log_file, source_root_path=source_root)
+            
+        finally:
+            os.unlink(log_file)
+            if os.path.exists(output_file):
+                os.unlink(output_file)
+
+
+class TestCLIErrorHandling(unittest.TestCase):
+    """Test CLI error handling scenarios"""
+    
+    def test_invalid_log_file(self):
+        """Test CLI behavior with invalid log file"""
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            output_file = f.name
+        
+        try:
+            # Create tool
+            tool = KernelLogParserTool()
+            
+            # This should handle the error gracefully
+            result = tool.process_log("/nonexistent/file.log", output_file, show_ui=False)
+            
+            # Should return None or handle error appropriately
+            # (Actual behavior depends on implementation)
+            
+        finally:
+            if os.path.exists(output_file):
+                os.unlink(output_file)
+    
+    def test_invalid_source_root(self):
+        """Test CLI behavior with invalid source root"""
+        # Create temporary log file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
+            f.write("[   47.468247] IOCTL_HANDLER: Function test called at driver.c:100\n")
+            log_file = f.name
+        
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            output_file = f.name
+        
+        try:
+            # Process with invalid source root - should not crash
+            tool = KernelLogParserTool()
+            result = tool.process_log(log_file, output_file, 
+                                    show_ui=False,
+                                    source_root_path="/nonexistent/path")
+            
+            # Should still create output file
+            self.assertTrue(os.path.exists(output_file))
+            
+            # Verify IOCTL operation exists but without function code
+            with open(output_file, 'r') as f:
+                data = json.load(f)
+            
+            self.assertIn('ioctl_operations', data)
+            if len(data['ioctl_operations']) > 0:
+                ioctl_op = data['ioctl_operations'][0]
+                self.assertEqual(ioctl_op['function_name'], 'test')
+                # Function code should be None since source file doesn't exist
+                self.assertIsNone(ioctl_op['function_code'])
+            
+        finally:
+            os.unlink(log_file)
+            if os.path.exists(output_file):
+                os.unlink(output_file)
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

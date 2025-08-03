@@ -36,6 +36,10 @@ def main():
         help="Start web UI after processing"
     )
     parser.add_argument(
+        "--source-root",
+        help="Root path to prepend to relative file paths in logs (for function code extraction)"
+    )
+    parser.add_argument(
         "--version", 
         action="version", 
         version="Kernel Log Parser 2.0.0"
@@ -54,7 +58,9 @@ def main():
     
     try:
         # Process the log file
-        results = tool.process_log(str(log_file), args.output, show_ui=not args.no_ui)
+        results = tool.process_log(str(log_file), args.output, 
+                                 show_ui=not args.no_ui, 
+                                 source_root_path=args.source_root)
         
         if results:
             # Print summary
@@ -64,6 +70,7 @@ def main():
             print(f"Function Entries: {len(results.get('function_entries', []))}")
             print(f"DMA Operations: {len(results.get('dma_operations', []))}")
             print(f"User Copy Operations: {len(results.get('user_copy_operations', []))}")
+            print(f"IOCTL Operations: {len(results.get('ioctl_operations', []))}")
             
             stats = results.get('statistics', {})
             print(f"Total Files Analyzed: {stats.get('total_files_analyzed', 0)}")

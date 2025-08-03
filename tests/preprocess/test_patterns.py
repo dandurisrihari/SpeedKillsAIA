@@ -113,6 +113,48 @@ class TestLogPatterns(unittest.TestCase):
             self.assertIsNone(self.patterns.search_func_entry(line))
             self.assertIsNone(self.patterns.search_dma_instrument(line))
             self.assertIsNone(self.patterns.search_user_copy(line))
+            self.assertIsNone(self.patterns.search_ioctl_handler(line))
+    
+    def test_ioctl_handler_pattern(self):
+        """Test IOCTL handler pattern matching"""
+        line = "[47.468247] IOCTL_HANDLER: Function drv_ioctl called at drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c:673"
+        match = self.patterns.search_ioctl_handler(line)
+        
+        self.assertIsNotNone(match)
+        self.assertEqual(match.group(1), "drv_ioctl")
+        self.assertEqual(match.group(2), "drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c")
+        self.assertEqual(match.group(3), "673")
+    
+    def test_ioctl_handler_pattern_variations(self):
+        """Test IOCTL handler pattern with different function names"""
+        test_cases = [
+            ("[50.123] IOCTL_HANDLER: Function video_ioctl called at drivers/media/v4l2-core/v4l2-dev.c:456", 
+             "video_ioctl", "drivers/media/v4l2-core/v4l2-dev.c", "456"),
+            ("[100.500] IOCTL_HANDLER: Function test_ioctl_handler called at test/driver.c:123", 
+             "test_ioctl_handler", "test/driver.c", "123"),
+            ("[0.001] IOCTL_HANDLER: Function my_ioctl called at /absolute/path/driver.c:1", 
+             "my_ioctl", "/absolute/path/driver.c", "1")
+        ]
+        
+        for line, expected_func, expected_file, expected_line in test_cases:
+            match = self.patterns.search_ioctl_handler(line)
+            self.assertIsNotNone(match, f"Failed to match: {line}")
+            self.assertEqual(match.group(1), expected_func)
+            self.assertEqual(match.group(2), expected_file)
+            self.assertEqual(match.group(3), expected_line)
+    
+    def test_ioctl_handler_invalid_patterns(self):
+        """Test IOCTL handler pattern with invalid lines"""
+        invalid_lines = [
+            "[47.468247] FUNC_ENTRY: Entering function test",
+            "[47.468247] DMA_INSTRUMENT: About to call dma_function",
+            "[47.468247] IOCTL_HANDLER: Missing function name",
+            "[47.468247] IOCTL_HANDLER: Function called at",
+            "Not a log line at all"
+        ]
+        
+        for line in invalid_lines:
+            self.assertIsNone(self.patterns.search_ioctl_handler(line), f"Should not match: {line}")
 
 
 if __name__ == '__main__':

@@ -59,6 +59,22 @@ class TestWebUI(unittest.TestCase):
                     }
                 }
             ],
+            "ioctl_operations": [
+                {
+                    "function_name": "drv_ioctl",
+                    "file_path": "drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c",
+                    "line_number": 673,
+                    "first_seen_timestamp": 47.468247,
+                    "function_code": "static long drv_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {\n    switch (cmd) {\n        case IOCTL_GCHAL_INTERFACE:\n            return gckDEVICE_Dispatch(device, &iface);\n        default:\n            return -ENOTTY;\n    }\n}"
+                },
+                {
+                    "function_name": "video_ioctl",
+                    "file_path": "drivers/media/v4l2-core/v4l2-dev.c",
+                    "line_number": 456,
+                    "first_seen_timestamp": 50.123456,
+                    "function_code": None
+                }
+            ],
             "statistics": {
                 "total_lines_processed": 100,
                 "total_files_analyzed": 3,
@@ -178,6 +194,104 @@ class TestWebUI(unittest.TestCase):
         # This would test CSS/JS files if they exist
         # For now just verify the static folder is configured
         self.assertIsNotNone(self.app.static_folder)
+    
+    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
+    def test_ioctl_operations_display(self):
+        """Test that IOCTL operations are displayed in the web UI"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            response = self.client.get('/results')
+            self.assertEqual(response.status_code, 200)
+            
+            # Check that IOCTL data is displayed
+            self.assertIn(b'drv_ioctl', response.data)
+            self.assertIn(b'video_ioctl', response.data)
+            self.assertIn(b'gc_hal_kernel_driver.c', response.data)
+            self.assertIn(b'v4l2-dev.c', response.data)
+    
+    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
+    def test_ioctl_function_code_display(self):
+        """Test that IOCTL function code is properly displayed"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            response = self.client.get('/results')
+            self.assertEqual(response.status_code, 200)
+            
+            # Check that function code is displayed for drv_ioctl
+            self.assertIn(b'switch (cmd)', response.data)
+            self.assertIn(b'IOCTL_GCHAL_INTERFACE', response.data)
+            self.assertIn(b'gckDEVICE_Dispatch', response.data)
+    
+    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
+    def test_ioctl_tab_functionality(self):
+        """Test that IOCTL tab is present and functional"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            response = self.client.get('/results')
+            self.assertEqual(response.status_code, 200)
+            
+            # Check that IOCTL tab exists
+            self.assertIn(b'IOCTL Operations', response.data)
+            self.assertIn(b'id="ioctl"', response.data)
+            
+            # Check JavaScript filtering function
+            self.assertIn(b'filterIOCTL', response.data)
+    
+    def test_ioctl_operations_in_empty_results(self):
+        """Test web UI with results containing no IOCTL operations"""
+        empty_results = {
+            "function_entries": [],
+            "dma_operations": [],
+            "user_copy_operations": [],
+            "ioctl_operations": [],
+            "statistics": {
+                "total_lines_processed": 0,
+                "ioctl_operations_found": 0
+            }
+        }
+        
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = empty_results
+            
+            response = self.client.get('/results')
+            self.assertEqual(response.status_code, 200)
+            
+            # Should still have IOCTL tab but with no operations
+            self.assertIn(b'IOCTL Operations', response.data)
+            self.assertIn(b'No IOCTL operations found', response.data)
+    
+    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
+    def test_api_data_includes_ioctl(self):
+        """Test that API data endpoint includes IOCTL operations"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            response = self.client.get('/api/data')
+            self.assertEqual(response.status_code, 200)
+            
+            # Parse JSON response
+            data = json.loads(response.data)
+            
+            # Check IOCTL operations are included
+            self.assertIn('ioctl_operations', data)
+            self.assertEqual(len(data['ioctl_operations']), 2)
+            
+            # Check specific IOCTL data
+            drv_ioctl = next(op for op in data['ioctl_operations'] if op['function_name'] == 'drv_ioctl')
+            self.assertEqual(drv_ioctl['line_number'], 673)
+            self.assertIsNotNone(drv_ioctl['function_code'])
+            
+            video_ioctl = next(op for op in data['ioctl_operations'] if op['function_name'] == 'video_ioctl')
+            self.assertEqual(video_ioctl['line_number'], 456)
+            self.assertIsNone(video_ioctl['function_code'])
 
 
 if __name__ == '__main__':

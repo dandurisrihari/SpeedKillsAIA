@@ -12,7 +12,8 @@ from preprocess.core.patterns import LogPatterns
 from preprocess.parsers.function_parser import FunctionEntryParser
 from preprocess.parsers.dma_parser import DMAParser
 from preprocess.parsers.user_copy_parser import UserCopyParser
-from preprocess.core.models import FunctionEntry, DMAOperation, UserCopyOperation, ProcessInfo
+from preprocess.parsers.ioctl_parser import IOCTLParser
+from preprocess.core.models import FunctionEntry, DMAOperation, UserCopyOperation, IOCTLOperation, ProcessInfo
 
 
 class TestFunctionEntryParser(unittest.TestCase):
@@ -176,6 +177,67 @@ class TestUserCopyParser(unittest.TestCase):
         """Test parsing invalid line"""
         line = "[  156.889534] Not a user copy line"
         success, result = self.parser.parse(line, 156.889534)
+        
+        self.assertFalse(success)
+        self.assertIsNone(result)
+
+
+class TestIOCTLParser(unittest.TestCase):
+    """Test cases for IOCTLParser"""
+    
+    def setUp(self):
+        """Set up test fixtures"""
+        self.patterns = LogPatterns()
+        self.parser = IOCTLParser(self.patterns)
+    
+    def test_can_parse(self):
+        """Test can_parse method"""
+        self.assertTrue(self.parser.can_parse("[47.468247] IOCTL_HANDLER: Function drv_ioctl called at drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c:673"))
+        self.assertFalse(self.parser.can_parse("[  156.773472] FUNC_ENTRY: Entering function test"))
+        self.assertFalse(self.parser.can_parse("Not a log line"))
+    
+    def test_parse_valid_line(self):
+        """Test parsing valid IOCTL handler line"""
+        line = "[47.468247] IOCTL_HANDLER: Function drv_ioctl called at drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c:673"
+        success, result = self.parser.parse(line, 47.468247)
+        
+        self.assertTrue(success)
+        self.assertIsNotNone(result)
+        
+        ioctl_op = result
+        self.assertIsInstance(ioctl_op, IOCTLOperation)
+        self.assertEqual(ioctl_op.function_name, "drv_ioctl")
+        self.assertEqual(ioctl_op.line_number, 673)
+        self.assertEqual(ioctl_op.first_seen_timestamp, 47.468247)
+        self.assertEqual(ioctl_op.file_path, "drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c")
+    
+    def test_parse_valid_line_with_different_function(self):
+        """Test parsing valid IOCTL handler line with different function name"""
+        line = "[50.123456] IOCTL_HANDLER: Function video_ioctl called at drivers/media/v4l2-core/v4l2-dev.c:456"
+        success, result = self.parser.parse(line, 50.123456)
+        
+        self.assertTrue(success)
+        self.assertIsNotNone(result)
+        
+        ioctl_op = result
+        self.assertIsInstance(ioctl_op, IOCTLOperation)
+        self.assertEqual(ioctl_op.function_name, "video_ioctl")
+        self.assertEqual(ioctl_op.line_number, 456)
+        self.assertEqual(ioctl_op.first_seen_timestamp, 50.123456)
+        self.assertEqual(ioctl_op.file_path, "drivers/media/v4l2-core/v4l2-dev.c")
+    
+    def test_parse_invalid_line(self):
+        """Test parsing invalid line"""
+        line = "[  156.773472] Not an IOCTL handler line"
+        success, result = self.parser.parse(line, 156.773472)
+        
+        self.assertFalse(success)
+        self.assertIsNone(result)
+    
+    def test_parse_malformed_ioctl_line(self):
+        """Test parsing malformed IOCTL line missing parts"""
+        line = "[47.468247] IOCTL_HANDLER: Function called at"
+        success, result = self.parser.parse(line, 47.468247)
         
         self.assertFalse(success)
         self.assertIsNone(result)
