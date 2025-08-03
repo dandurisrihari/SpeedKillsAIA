@@ -6959,6 +6959,7 @@ gckOS_GPUPhysicalToCPUPhysical(IN gckOS           Os,
 static int
 fd_release(struct inode *inode, struct file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function fd_release called at %s:%d\n", __FILE__, __LINE__);
     gcsFDPRIVATE_PTR private = (gcsFDPRIVATE_PTR)file->private_data;
 
     return (private && private->release) ? private->release(private) : 0;

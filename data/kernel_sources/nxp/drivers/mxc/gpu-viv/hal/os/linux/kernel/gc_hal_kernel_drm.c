@@ -52,6 +52,14 @@
 *
 *****************************************************************************/
 
+
+/* MULTI_INSTRUMENT: Auto-added headers */
+#include <asm/stacktrace.h>
+#include <linux/kernel.h>
+#include <linux/printk.h>
+#include <linux/sched.h>
+#include <linux/uaccess.h>
+
 #if gcdENABLE_DRM
 
 #    include <linux/version.h>
@@ -183,6 +191,7 @@ void viv_gem_free_object(struct drm_gem_object *gem_obj)
 
 static int viv_ioctl_gem_create(struct drm_device *drm, void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_create called at %s:%d\n", __FILE__, __LINE__);
     int                        ret     = 0;
     struct drm_viv_gem_create *args    = (struct drm_viv_gem_create *)data;
     struct drm_gem_object     *gem_obj = gcvNULL;
@@ -254,6 +263,7 @@ OnError:
 
 static int viv_ioctl_gem_lock(struct drm_device *drm, void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_lock called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_lock *args    = (struct drm_viv_gem_lock *)data;
     struct drm_gem_object   *gem_obj = gcvNULL;
     struct viv_gem_object   *viv_obj = gcvNULL;
@@ -295,6 +305,7 @@ OnError:
 
 static int viv_ioctl_gem_unlock(struct drm_device *drm, void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_unlock called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_unlock *args    = (struct drm_viv_gem_unlock *)data;
     struct drm_gem_object     *gem_obj = gcvNULL;
     struct viv_gem_object     *viv_obj = gcvNULL;
@@ -341,6 +352,7 @@ OnError:
 
 static int viv_ioctl_gem_cache(struct drm_device *drm, void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_cache called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_cache *args    = (struct drm_viv_gem_cache *)data;
     struct drm_gem_object    *gem_obj = gcvNULL;
     struct viv_gem_object    *viv_obj = gcvNULL;
@@ -398,6 +410,7 @@ OnError:
 
 static int viv_ioctl_gem_query(struct drm_device *drm, void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_query called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_query *args    = (struct drm_viv_gem_query *)data;
     struct drm_gem_object    *gem_obj = gcvNULL;
     struct viv_gem_object    *viv_obj = gcvNULL;
@@ -436,6 +449,7 @@ OnError:
 static int viv_ioctl_gem_timestamp(struct drm_device *drm,
                                    void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_timestamp called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_timestamp *args    = (struct drm_viv_gem_timestamp *)data;
     struct drm_gem_object        *gem_obj = gcvNULL;
     struct viv_gem_object        *viv_obj = gcvNULL;
@@ -466,6 +480,7 @@ OnError:
 static int viv_ioctl_gem_set_tiling(struct drm_device *drm,
                                     void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_set_tiling called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_set_tiling *args    = (struct drm_viv_gem_set_tiling *)data;
     struct drm_gem_object         *gem_obj = gcvNULL;
     struct viv_gem_object         *viv_obj = gcvNULL;
@@ -498,6 +513,7 @@ OnError:
 static int viv_ioctl_gem_get_tiling(struct drm_device *drm,
                                     void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_get_tiling called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_get_tiling *args    = (struct drm_viv_gem_get_tiling *)data;
     struct drm_gem_object         *gem_obj = gcvNULL;
     struct viv_gem_object         *viv_obj = gcvNULL;
@@ -530,6 +546,7 @@ OnError:
 static int viv_ioctl_gem_attach_aux(struct drm_device *drm,
                                     void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_attach_aux called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_attach_aux *args       = (struct drm_viv_gem_attach_aux *)data;
     struct drm_gem_object         *gem_obj    = gcvNULL;
     struct viv_gem_object         *viv_obj    = gcvNULL;
@@ -637,6 +654,7 @@ OnError:
 static int viv_ioctl_gem_ref_node(struct drm_device *drm,
                                   void *data, struct drm_file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_ref_node called at %s:%d\n", __FILE__, __LINE__);
     struct drm_viv_gem_ref_node *args    = (struct drm_viv_gem_ref_node *)data;
     struct drm_gem_object       *gem_obj = gcvNULL;
     struct viv_gem_object       *viv_obj = gcvNULL;
