@@ -517,6 +517,7 @@ static int apex_reset(struct gasket_dev *gasket_dev)
  */
 static bool apex_ioctl_check_permissions(struct file *filp, uint cmd)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function apex_ioctl_check_permissions called at %s:%d\n", __FILE__, __LINE__);
 	return !!(filp->f_mode & FMODE_WRITE);
 }
 
@@ -617,6 +618,7 @@ printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, c
 /* Apex-specific ioctl handler. */
 static long apex_ioctl(struct file *filp, uint cmd, void __user *argp)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function apex_ioctl called at %s:%d\n", __FILE__, __LINE__);
 	struct gasket_dev *gasket_dev = filp->private_data;
 
 	if (!apex_ioctl_check_permissions(filp, cmd))

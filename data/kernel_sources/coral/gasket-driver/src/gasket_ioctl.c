@@ -326,6 +326,7 @@ printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, c
 /* Check permissions for Gasket ioctls. */
 static bool gasket_ioctl_check_permissions(struct file *filp, uint cmd)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_ioctl_check_permissions called at %s:%d\n", __FILE__, __LINE__);
 	bool alive;
 	bool read, write;
 	struct gasket_dev *gasket_dev = (struct gasket_dev *)filp->private_data;
@@ -376,6 +377,7 @@ static bool gasket_ioctl_check_permissions(struct file *filp, uint cmd)
  */
 long gasket_handle_ioctl(struct file *filp, uint cmd, void __user *argp)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_handle_ioctl called at %s:%d\n", __FILE__, __LINE__);
 	struct gasket_dev *gasket_dev;
 	unsigned long arg = (unsigned long)argp;
 	gasket_ioctl_permissions_cb_t ioctl_permissions_cb;
@@ -483,6 +485,7 @@ printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, c
  */
 long gasket_is_supported_ioctl(uint cmd)
 {
+ printk(KERN_INFO "IOCTL_HANDLER: Function gasket_is_supported_ioctl called at %s:%d\n", __FILE__, __LINE__);
 	switch (cmd) {
 	case GASKET_IOCTL_RESET:
 	case GASKET_IOCTL_SET_EVENTFD:
