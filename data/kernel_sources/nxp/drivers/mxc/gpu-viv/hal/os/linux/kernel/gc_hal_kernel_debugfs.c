@@ -52,6 +52,14 @@
 *
 *****************************************************************************/
 
+
+/* MULTI_INSTRUMENT: Auto-added headers */
+#include <asm/stacktrace.h>
+#include <linux/kernel.h>
+#include <linux/printk.h>
+#include <linux/sched.h>
+#include <linux/uaccess.h>
+
 #ifdef MODULE
 #    include <linux/module.h>
 #endif
@@ -84,6 +92,7 @@
 static int
 gc_debugfs_open(struct inode *inode, struct file *file)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function gc_debugfs_open called at %s:%d\n", __FILE__, __LINE__);
     gcsINFO_NODE *node = inode->i_private;
 
     return single_open(file, node->info->show, node);

@@ -538,6 +538,7 @@ gckOS_DumpParam(void)
 
 static int drv_open(struct inode *inode, struct file *filp)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function drv_open called at %s:%d\n", __FILE__, __LINE__);
     gceSTATUS               status = gcvSTATUS_OK;
     gcsHAL_PRIVATE_DATA_PTR data   = gcvNULL;
     gctUINT                 i, devIndex;
@@ -605,6 +606,7 @@ OnError:
 
 static int drv_release(struct inode *inode, struct file *filp)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function drv_release called at %s:%d\n", __FILE__, __LINE__);
     int                     ret    = -ENOTTY;
     gceSTATUS               status = gcvSTATUS_OK;
     gcsHAL_PRIVATE_DATA_PTR data;
@@ -668,6 +670,7 @@ OnError:
 
 static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long arg)
 {
+    printk(KERN_INFO "IOCTL_HANDLER: Function drv_ioctl called at %s:%d\n", __FILE__, __LINE__);
     long                    ret    = -ENOTTY;
     gceSTATUS               status = gcvSTATUS_OK;
     gcsHAL_INTERFACE        iface;
