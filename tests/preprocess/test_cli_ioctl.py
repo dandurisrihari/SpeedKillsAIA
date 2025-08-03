@@ -64,8 +64,7 @@ class TestCLIWithIOCTL(unittest.TestCase):
             if os.path.exists(output_file):
                 os.unlink(output_file)
     
-    @patch('sys.argv')
-    def test_main_with_source_root_integration(self, mock_argv):
+    def test_main_with_source_root_integration(self):
         """Test main function with --source-root parameter"""
         # Create temporary files
         with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
@@ -76,15 +75,16 @@ class TestCLIWithIOCTL(unittest.TestCase):
             output_file = f.name
         
         try:
-            # Mock command line arguments
-            mock_argv.__getitem__.side_effect = [
-                'preprocess_cli.py',  # sys.argv[0]
-                log_file,             # log file
+            # Test the main function by directly calling it with patched sys.argv
+            import sys
+            original_argv = sys.argv[:]
+            sys.argv = [
+                'preprocess_cli.py',
+                log_file,
                 '--output', output_file,
                 '--source-root', '/kernel/sources',
-                '--no-ui'            # Disable UI for testing
+                '--no-ui'
             ]
-            mock_argv.__len__.return_value = 6
             
             # Run main function
             try:
@@ -92,6 +92,9 @@ class TestCLIWithIOCTL(unittest.TestCase):
             except SystemExit as e:
                 # main() calls sys.exit(0) on success
                 self.assertEqual(e.code, 0)
+            finally:
+                # Restore original argv
+                sys.argv = original_argv
             
             # Verify output file was created and contains IOCTL data
             self.assertTrue(os.path.exists(output_file))
@@ -106,13 +109,15 @@ class TestCLIWithIOCTL(unittest.TestCase):
             if os.path.exists(output_file):
                 os.unlink(output_file)
     
-    @patch('preprocess.tool.KernelLogParserEngine.parse_log_file')
-    def test_source_root_passed_to_engine(self, mock_parse):
-        """Test that source_root parameter is passed to the parsing engine"""
-        # Mock the parse_log_file method
+    @patch('preprocess.tool.KernelLogParserEngine')
+    def test_source_root_passed_to_engine(self, mock_engine_class):
+        """Test that source_root parameter is passed to the parsing engine constructor"""
+        # Mock the engine class and instance
+        mock_engine = MagicMock()
         mock_results = MagicMock()
         mock_results.to_dict.return_value = {'test': 'data'}
-        mock_parse.return_value = mock_results
+        mock_engine.parse_log_file.return_value = mock_results
+        mock_engine_class.return_value = mock_engine
         
         # Create temporary files
         with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
@@ -130,8 +135,10 @@ class TestCLIWithIOCTL(unittest.TestCase):
                            show_ui=False,
                            source_root_path=source_root)
             
-            # Verify that parse_log_file was called with source_root_path
-            mock_parse.assert_called_once_with(log_file, source_root_path=source_root)
+            # Verify that the engine was created with source_root_path
+            mock_engine_class.assert_called_once_with(show_ui=False, source_root_path=source_root)
+            # Verify that parse_log_file was called correctly
+            mock_engine.parse_log_file.assert_called_once_with(log_file, output_file)
             
         finally:
             os.unlink(log_file)

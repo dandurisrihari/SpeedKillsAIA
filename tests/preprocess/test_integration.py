@@ -101,9 +101,10 @@ class TestKernelLogParserEngineIntegration(unittest.TestCase):
             self.assertIn('dma_operations_found', stats)
             self.assertIn('user_copy_operations_found', stats)
             
-            self.assertEqual(stats['function_entries_found'], 2)
-            self.assertEqual(stats['dma_operations_found'], 1)
-            self.assertEqual(stats['user_copy_operations_found'], 1)
+            # Total found counts (before deduplication)
+            self.assertEqual(stats['function_entries_found'], 3)  # gasket_open (2x) + gasket_perform_mapping (1x)
+            self.assertEqual(stats['dma_operations_found'], 2)   # dma_map_page called twice
+            self.assertEqual(stats['user_copy_operations_found'], 1)  # copy_from_user called once
             self.assertEqual(stats['files_instrumented_with_function_entries'], 2)  # Two unique files
             
         finally:
@@ -247,7 +248,7 @@ class TestNXPExample(unittest.TestCase):
 [  156.821000] DMA_STACK_END: End of stack trace for dma_map_page"""
     
     def test_nxp_stack_trace_capture(self):
-        """Test that the NXP example captures all 20 stack trace lines"""
+        """Test that the NXP example captures all stack trace lines between markers"""
         log_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.log')
         log_file.write(self.nxp_log_data)
         log_file.flush()
@@ -260,10 +261,15 @@ class TestNXPExample(unittest.TestCase):
             dma_operations = results['dma_operations']
             self.assertEqual(len(dma_operations), 1)
             
-            # Should capture all 20 lines between markers
+            # Should capture all 19 lines between DMA_STACK_START and DMA_STACK_END markers
             dma_op = dma_operations[0]
             stack_trace = dma_op['stack_trace']
-            self.assertEqual(len(stack_trace), 20, f"Expected 20 stack trace lines, got {len(stack_trace)}")
+            self.assertEqual(len(stack_trace), 19, f"Expected 19 stack trace lines, got {len(stack_trace)}")
+            
+            # Verify it contains key stack trace elements
+            self.assertTrue(any('CPU: 2 PID: 3999' in line for line in stack_trace))
+            self.assertTrue(any('dump_backtrace' in line for line in stack_trace))
+            self.assertTrue(any('classify_image_main' in line for line in stack_trace))
             
             # Verify specific content
             self.assertIn('CPU: 2 PID: 3999 Comm: classify_image', stack_trace[0])

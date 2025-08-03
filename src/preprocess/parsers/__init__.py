@@ -7,7 +7,8 @@ from .base import BaseParser
 from .function_parser import FunctionEntryParser
 from .dma_parser import DMAParser
 from .user_copy_parser import UserCopyParser
+from .ioctl_parser import IOCTLParser
 
 __all__ = [
-    'BaseParser', 'FunctionEntryParser', 'DMAParser', 'UserCopyParser'
+    'BaseParser', 'FunctionEntryParser', 'DMAParser', 'UserCopyParser', 'IOCTLParser'
 ]
