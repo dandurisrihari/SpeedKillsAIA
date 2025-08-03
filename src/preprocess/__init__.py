@@ -28,7 +28,32 @@ Usage:
 from .core.engine import KernelLogParserEngine
 from .tool import KernelLogParserTool
 
-__version__ = "2.0.0"
+# Modern interfaces - import with try/except for backward compatibility
+try:
+    from .interfaces.api import ProgrammaticAPI, parse_log
+    from .interfaces.batch import BatchProcessor, process_log_files
+    from .interfaces.interactive import InteractiveInterface
+    MODERN_INTERFACES_AVAILABLE = True
+except ImportError:
+    # Fallback if interfaces not available
+    MODERN_INTERFACES_AVAILABLE = False
+    ProgrammaticAPI = None
+    BatchProcessor = None
+    InteractiveInterface = None
+    parse_log = None
+    process_log_files = None
+
+# Configuration
+try:
+    from .config.settings import ParserSettings, WebUISettings, OutputSettings
+    CONFIG_AVAILABLE = True
+except ImportError:
+    CONFIG_AVAILABLE = False
+    ParserSettings = None
+    WebUISettings = None
+    OutputSettings = None
+
+__version__ = "2.1.0"
 __author__ = "SpeedKillsAIA Research Team"
 __license__ = "MIT"
 __status__ = "Production"
@@ -48,8 +73,8 @@ def parse_kernel_log(log_file_path, show_ui=True):
     parser = KernelLogParserEngine(show_ui=show_ui)
     return parser.parse_log_file(log_file_path)
 
-# Export main classes
-__all__ = [
+# Export main classes - include new interfaces if available
+exports = [
     'KernelLogParserEngine', 
     'KernelLogParserTool', 
     'parse_kernel_log',
@@ -57,6 +82,24 @@ __all__ = [
     '__author__',
     '__license__'
 ]
+
+if MODERN_INTERFACES_AVAILABLE:
+    exports.extend([
+        'ProgrammaticAPI',
+        'BatchProcessor', 
+        'InteractiveInterface',
+        'parse_log',
+        'process_log_files'
+    ])
+
+if CONFIG_AVAILABLE:
+    exports.extend([
+        'ParserSettings',
+        'WebUISettings', 
+        'OutputSettings'
+    ])
+
+__all__ = exports
 
 
 def get_version_info():

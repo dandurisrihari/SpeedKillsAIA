@@ -25,6 +25,23 @@ class TestWebUI(unittest.TestCase):
         
         # Sample data for testing
         self.sample_results = {
+            "metadata": {
+                "log_file": "test_kernel.log",
+                "parsed_at": "2024-01-01T12:00:00",
+                "total_lines": 100,
+                "unique_entries": 5
+            },
+            "functions_by_file": {
+                "/gasket-driver/src/gasket_core.c": [
+                    {
+                        "function_name": "gasket_open",
+                        "file_path": "/gasket-driver/src/gasket_core.c",
+                        "line_number": 1229,
+                        "first_seen_timestamp": 156.773472,
+                        "call_count": 2
+                    }
+                ]
+            },
             "function_entries": [
                 {
                     "function_name": "gasket_open",
@@ -65,6 +82,7 @@ class TestWebUI(unittest.TestCase):
                     "file_path": "drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c",
                     "line_number": 673,
                     "first_seen_timestamp": 47.468247,
+                    "call_count": 1,
                     "function_code": "static long drv_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {\n    switch (cmd) {\n        case IOCTL_GCHAL_INTERFACE:\n            return gckDEVICE_Dispatch(device, &iface);\n        default:\n            return -ENOTTY;\n    }\n}"
                 },
                 {
@@ -72,6 +90,7 @@ class TestWebUI(unittest.TestCase):
                     "file_path": "drivers/media/v4l2-core/v4l2-dev.c",
                     "line_number": 456,
                     "first_seen_timestamp": 50.123456,
+                    "call_count": 1,
                     "function_code": None
                 }
             ],
@@ -81,7 +100,11 @@ class TestWebUI(unittest.TestCase):
                 "files_instrumented_with_function_entries": 2,
                 "function_entries_found": 1,
                 "dma_operations_found": 1,
-                "user_copy_operations_found": 1
+                "user_copy_operations_found": 1,
+                "unique_function_entries": 1,
+                "unique_dma_operations": 1,
+                "unique_user_copy_operations": 1,
+                "unique_ioctl_operations": 2
             }
         }
     
@@ -95,9 +118,13 @@ class TestWebUI(unittest.TestCase):
     
     def test_index_route(self):
         """Test the index route"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+        
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Kernel Log Parser Results', response.data)
+        self.assertIn(b'Kernel Log Analysis', response.data)
     
     def test_upload_route_get(self):
         """Test GET request to upload route"""
@@ -147,7 +174,6 @@ class TestWebUI(unittest.TestCase):
         finally:
             os.unlink(temp_file.name)
     
-    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
     def test_results_route_with_session(self):
         """Test results route with data in session"""
         with self.app.test_request_context():
@@ -169,7 +195,6 @@ class TestWebUI(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn('/upload', response.location)
     
-    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
     def test_api_data_route(self):
         """Test the API data route"""
         with self.app.test_request_context():
@@ -195,7 +220,6 @@ class TestWebUI(unittest.TestCase):
         # For now just verify the static folder is configured
         self.assertIsNotNone(self.app.static_folder)
     
-    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
     def test_ioctl_operations_display(self):
         """Test that IOCTL operations are displayed in the web UI"""
         with self.app.test_request_context():
@@ -211,7 +235,6 @@ class TestWebUI(unittest.TestCase):
             self.assertIn(b'gc_hal_kernel_driver.c', response.data)
             self.assertIn(b'v4l2-dev.c', response.data)
     
-    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
     def test_ioctl_function_code_display(self):
         """Test that IOCTL function code is properly displayed"""
         with self.app.test_request_context():
@@ -226,7 +249,6 @@ class TestWebUI(unittest.TestCase):
             self.assertIn(b'IOCTL_GCHAL_INTERFACE', response.data)
             self.assertIn(b'gckDEVICE_Dispatch', response.data)
     
-    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
     def test_ioctl_tab_functionality(self):
         """Test that IOCTL tab is present and functional"""
         with self.app.test_request_context():
@@ -237,7 +259,7 @@ class TestWebUI(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             
             # Check that IOCTL tab exists
-            self.assertIn(b'IOCTL Operations', response.data)
+            self.assertIn(b'IOCTL Handlers', response.data)
             self.assertIn(b'id="ioctl"', response.data)
             
             # Check JavaScript filtering function
@@ -246,13 +268,28 @@ class TestWebUI(unittest.TestCase):
     def test_ioctl_operations_in_empty_results(self):
         """Test web UI with results containing no IOCTL operations"""
         empty_results = {
+            "metadata": {
+                "log_file": "empty_test.log",
+                "parsed_at": "2024-01-01T12:00:00",
+                "total_lines": 0,
+                "unique_entries": 0
+            },
+            "functions_by_file": {},
             "function_entries": [],
             "dma_operations": [],
             "user_copy_operations": [],
             "ioctl_operations": [],
             "statistics": {
                 "total_lines_processed": 0,
-                "ioctl_operations_found": 0
+                "total_files_analyzed": 0,
+                "files_instrumented_with_function_entries": 0,
+                "function_entries_found": 0,
+                "dma_operations_found": 0,
+                "user_copy_operations_found": 0,
+                "unique_function_entries": 0,
+                "unique_dma_operations": 0,
+                "unique_user_copy_operations": 0,
+                "unique_ioctl_operations": 0
             }
         }
         
@@ -264,10 +301,9 @@ class TestWebUI(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             
             # Should still have IOCTL tab but with no operations
-            self.assertIn(b'IOCTL Operations', response.data)
+            self.assertIn(b'IOCTL Handlers', response.data)
             self.assertIn(b'No IOCTL operations found', response.data)
     
-    @patch('preprocess.web.ui.session', {'results': 'sample_results'})
     def test_api_data_includes_ioctl(self):
         """Test that API data endpoint includes IOCTL operations"""
         with self.app.test_request_context():

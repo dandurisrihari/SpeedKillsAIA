@@ -69,7 +69,12 @@ class KernelLogParserTool:
         self.parser = KernelLogParserEngine(show_ui=show_ui, source_root_path=source_root_path)
         
         try:
-            self.results = self.parser.parse_log_file(log_file, output_file)
+            # Parse the log file and convert to dict if needed
+            results = self.parser.parse_log_file(log_file, output_file)
+            if hasattr(results, 'to_dict'):
+                self.results = results.to_dict()
+            else:
+                self.results = results
             return self.results
         except Exception as e:
             print(f"❌ Error processing {log_file}: {e}", file=sys.stderr)

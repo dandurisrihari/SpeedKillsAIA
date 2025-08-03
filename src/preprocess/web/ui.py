@@ -14,7 +14,7 @@ import json
 import argparse
 from datetime import datetime
 from pathlib import Path
-from flask import Flask, render_template_string, jsonify, request, send_from_directory
+from flask import Flask, render_template_string, jsonify, request, send_from_directory, session, redirect, url_for
 import webbrowser
 import threading
 import time
@@ -27,7 +27,163 @@ def create_app():
     # Global variable to store the parsed data
     app.parsed_data = None
     
+    # Register routes on the app instance
+    register_routes(app)
+    
     return app
+
+def register_routes(app):
+    """Register all routes on the Flask app"""
+    
+    @app.route('/')
+    def index():
+        """Main page showing the analysis results"""
+        if parsed_data is None and 'results' not in session:
+            return redirect(url_for('upload'))
+        
+        data = session.get('results', parsed_data)
+        if data is None:
+            return redirect(url_for('upload'))
+        
+        return render_template_string(HTML_TEMPLATE, data=data)
+
+    @app.route('/upload', methods=['GET', 'POST'])
+    def upload():
+        """Upload page for JSON results"""
+        if request.method == 'POST':
+            if 'file' not in request.files:
+                return render_template_string(UPLOAD_TEMPLATE, error="No file selected")
+            
+            file = request.files['file']
+            if file.filename == '':
+                return render_template_string(UPLOAD_TEMPLATE, error="No file selected")
+            
+            if file and file.filename.endswith('.json'):
+                try:
+                    content = file.read().decode('utf-8')
+                    data = json.loads(content)
+                    session['results'] = data
+                    return redirect(url_for('results'))
+                except json.JSONDecodeError:
+                    return render_template_string(UPLOAD_TEMPLATE, error="Invalid JSON file")
+                except Exception as e:
+                    return render_template_string(UPLOAD_TEMPLATE, error=f"Error processing file: {e}")
+            else:
+                return render_template_string(UPLOAD_TEMPLATE, error="Please select a JSON file")
+        
+        # GET request - show upload form
+        return render_template_string(UPLOAD_TEMPLATE)
+
+    @app.route('/results')
+    def results():
+        """Results page from session data"""
+        if 'results' not in session:
+            return redirect(url_for('upload'))
+        
+        data = session['results']
+        return render_template_string(HTML_TEMPLATE, data=data)
+
+    @app.route('/api/data')
+    def api_data():
+        """API endpoint to get raw data"""
+        data = session.get('results', parsed_data)
+        if data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        return jsonify(data)
+
+    @app.route('/api/status')
+    def api_status():
+        """API endpoint to check if data has been updated"""
+        return jsonify({"updated": False, "timestamp": datetime.now().isoformat()})
+
+    @app.route('/api/search/<category>')
+    def api_search(category):
+        """API endpoint for searching specific categories"""
+        data = session.get('results', parsed_data)
+        if data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        
+        query = request.args.get('q', '').lower()
+        
+        if category == 'functions':
+            results = []
+            for file_path, functions in data['functions_by_file'].items():
+                for func in functions:
+                    if query in func['function_name'].lower():
+                        results.append({**func, 'file_path': file_path})
+            return jsonify(results)
+        
+        elif category == 'dma':
+            results = [dma for dma in data['dma_operations'] 
+                      if query in dma['dma_function'].lower() or query in dma['caller_function'].lower()]
+            return jsonify(results)
+        
+        elif category == 'user_copy':
+            results = [copy for copy in data['user_copy_operations'] 
+                      if query in copy['copy_function'].lower() or query in copy['caller_function'].lower()]
+            return jsonify(results)
+        
+        elif category == 'ioctl':
+            results = [ioctl for ioctl in data.get('ioctl_operations', [])
+                      if query in ioctl['function_name'].lower() or query in ioctl['file_path'].lower()]
+            return jsonify(results)
+        
+        return jsonify({"error": "Invalid category"}), 400
+
+    @app.route('/test')
+    def test_page():
+        """Test page for lazy loading functionality"""
+        try:
+            with open('test_lazy_loading.html', 'r') as f:
+                return f.read()
+        except FileNotFoundError:
+            return "<h1>Test page not found</h1><p><a href='/'>Back to main page</a></p>", 404
+
+    @app.route('/api/function-code')
+    def api_function_code():
+        """API endpoint to get function code for a specific function by name and file"""
+        data = session.get('results', parsed_data)
+        if data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        
+        function_name = request.args.get('name')
+        file_path = request.args.get('file')
+        line_number = request.args.get('line', type=int)
+        
+        if not function_name:
+            return jsonify({"error": "Function name required"}), 400
+        
+        # Search in function_entries for the specific function
+        function_entries = data.get('function_entries', [])
+        for func in function_entries:
+            if (func.get('function_name') == function_name and 
+                (not file_path or func.get('file_path') == file_path) and
+                (not line_number or func.get('line_number') == line_number)):
+                return jsonify({
+                    "function_name": func.get('function_name'),
+                    "function_code": func.get('function_code', 'No source code available'),
+                    "file_path": func.get('file_path'),
+                    "line_number": func.get('line_number')
+                })
+        
+        return jsonify({"error": "Function not found"}), 404
+
+    @app.route('/api/ioctl-code/<int:ioctl_index>')
+    def api_ioctl_code(ioctl_index):
+        """API endpoint to get function code for a specific IOCTL by index"""
+        data = session.get('results', parsed_data)
+        if data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        
+        ioctl_operations = data.get('ioctl_operations', [])
+        if 0 <= ioctl_index < len(ioctl_operations):
+            ioctl = ioctl_operations[ioctl_index]
+            return jsonify({
+                "function_name": ioctl.get('function_name'),
+                "function_code": ioctl.get('function_code', 'No source code available')
+            })
+        
+        return jsonify({"error": "IOCTL function not found"}), 404
 
 app = create_app()
 
@@ -277,6 +433,22 @@ HTML_TEMPLATE = """
             background: #e9ecef;
             border-radius: 5px 5px 0 0;
             font-weight: bold;
+            user-select: none;
+        }
+        
+        .function-code summary:hover {
+            background: #dee2e6;
+        }
+        
+        .loading-indicator {
+            color: #6c757d;
+            font-weight: normal;
+            font-style: italic;
+        }
+        
+        .code-container {
+            background: #f8f9fa;
+            border-radius: 0 0 5px 5px;
         }
         
         .function-code pre {
@@ -288,10 +460,13 @@ HTML_TEMPLATE = """
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 0.9em;
             line-height: 1.4;
+            max-height: 400px;
+            overflow-y: auto;
         }
         
         .function-code code {
             color: #333;
+            white-space: pre-wrap;
         }
         
         .timestamp {
@@ -444,6 +619,7 @@ HTML_TEMPLATE = """
                         <input type="text" class="search-box" id="functionSearch" placeholder="🔍 Search functions..." onkeyup="filterFunctions()">
                         
                         <div class="function-grid" id="functionGrid">
+                            {% set function_index = namespace(value=0) %}
                             {% for file_path, functions in data.functions_by_file.items() %}
                             <div class="file-section">
                                 <div class="file-title">{{ file_path }}<span class="badge">{{ functions|length }}</span></div>
@@ -457,13 +633,16 @@ HTML_TEMPLATE = """
                                     
                                     {% if func.function_code %}
                                     <div class="function-code">
-                                        <details>
-                                            <summary><strong>Function Source Code</strong></summary>
-                                            <pre><code>{{ func.function_code }}</code></pre>
+                                        <details onclick="loadFunctionCode(this, '{{ func.function_name }}', '{{ file_path }}', {{ func.line_number }})">
+                                            <summary><strong>Function Source Code</strong> <span class="loading-indicator" style="display:none;">Loading...</span></summary>
+                                            <div class="code-container">
+                                                <pre><code>Click to load source code...</code></pre>
+                                            </div>
                                         </details>
                                     </div>
                                     {% endif %}
                                 </div>
+                                {% set function_index.value = function_index.value + 1 %}
                                 {% endfor %}
                             </div>
                             {% endfor %}
@@ -568,12 +747,18 @@ HTML_TEMPLATE = """
                                 
                                 {% if ioctl.function_code %}
                                 <div class="function-code">
-                                    <details>
-                                        <summary><strong>Function Source Code</strong></summary>
-                                        <pre><code>{{ ioctl.function_code }}</code></pre>
+                                    <details onclick="loadIoctlCode(this, {{ loop.index0 }}, '{{ ioctl.function_name }}')">
+                                        <summary><strong>Function Source Code</strong> <span class="loading-indicator" style="display:none;">Loading...</span></summary>
+                                        <div class="code-container">
+                                            <pre><code>Click to load source code...</code></pre>
+                                        </div>
                                     </details>
                                 </div>
                                 {% endif %}
+                            </div>
+                            {% else %}
+                            <div class="empty-state">
+                                <p>No IOCTL operations found in the log data.</p>
                             </div>
                             {% endfor %}
                         </div>
@@ -657,6 +842,73 @@ HTML_TEMPLATE = """
             });
         }
         
+        // Lazy loading functions for function code
+        async function loadFunctionCode(detailsElement, functionName, filePath, lineNumber) {
+            const codeContainer = detailsElement.querySelector('.code-container');
+            const loadingIndicator = detailsElement.querySelector('.loading-indicator');
+            const preElement = codeContainer.querySelector('pre code');
+            
+            // Check if already loaded
+            if (preElement.textContent !== 'Click to load source code...') {
+                return;
+            }
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'inline';
+            preElement.textContent = 'Loading...';
+            
+            try {
+                const params = new URLSearchParams({
+                    name: functionName,
+                    file: filePath,
+                    line: lineNumber
+                });
+                
+                const response = await fetch(`/api/function-code?${params}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    preElement.textContent = data.function_code || 'No source code available';
+                } else {
+                    preElement.textContent = `Error: ${data.error}`;
+                }
+            } catch (error) {
+                preElement.textContent = `Error loading code: ${error.message}`;
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        async function loadIoctlCode(detailsElement, ioctlIndex, functionName) {
+            const codeContainer = detailsElement.querySelector('.code-container');
+            const loadingIndicator = detailsElement.querySelector('.loading-indicator');
+            const preElement = codeContainer.querySelector('pre code');
+            
+            // Check if already loaded
+            if (preElement.textContent !== 'Click to load source code...') {
+                return;
+            }
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'inline';
+            preElement.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch(`/api/ioctl-code/${ioctlIndex}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    preElement.textContent = data.function_code || 'No source code available';
+                } else {
+                    preElement.textContent = `Error: ${data.error}`;
+                }
+            } catch (error) {
+                preElement.textContent = `Error loading code: ${error.message}`;
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
         // Auto-refresh functionality
         function checkForUpdates() {
             fetch('/api/status')
@@ -676,58 +928,44 @@ HTML_TEMPLATE = """
 </html>
 """
 
-@app.route('/')
-def index():
-    """Main page showing the analysis results"""
-    if parsed_data is None:
-        return "No data loaded. Please run with a JSON file argument.", 404
-    
-    return render_template_string(HTML_TEMPLATE, data=parsed_data)
+# Simple upload template
+UPLOAD_TEMPLATE = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kernel Log Analysis - Upload Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .upload-box { border: 2px dashed #ccc; padding: 40px; text-align: center; }
+        .error { color: red; margin: 10px 0; }
+        button { background: #2196F3; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Kernel Log Parser Results</h1>
+        <h2>Upload Results File</h2>
+        <p>Upload a JSON results file to view the analysis.</p>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <form method="post" enctype="multipart/form-data">
+            <div class="upload-box">
+                <input type="file" name="file" accept=".json" required>
+                <br><br>
+                <button type="submit">Upload and Analyze</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+"""
 
-@app.route('/api/data')
-def api_data():
-    """API endpoint to get raw data"""
-    if parsed_data is None:
-        return jsonify({"error": "No data loaded"}), 404
-    return jsonify(parsed_data)
-
-@app.route('/api/status')
-def api_status():
-    """API endpoint to check if data has been updated"""
-    return jsonify({"updated": False, "timestamp": datetime.now().isoformat()})
-
-@app.route('/api/search/<category>')
-def api_search(category):
-    """API endpoint for searching specific categories"""
-    if parsed_data is None:
-        return jsonify({"error": "No data loaded"}), 404
-    
-    query = request.args.get('q', '').lower()
-    
-    if category == 'functions':
-        results = []
-        for file_path, functions in parsed_data['functions_by_file'].items():
-            for func in functions:
-                if query in func['function_name'].lower():
-                    results.append({**func, 'file_path': file_path})
-        return jsonify(results)
-    
-    elif category == 'dma':
-        results = [dma for dma in parsed_data['dma_operations'] 
-                  if query in dma['dma_function'].lower() or query in dma['caller_function'].lower()]
-        return jsonify(results)
-    
-    elif category == 'user_copy':
-        results = [copy for copy in parsed_data['user_copy_operations'] 
-                  if query in copy['copy_function'].lower() or query in copy['caller_function'].lower()]
-        return jsonify(results)
-    
-    elif category == 'ioctl':
-        results = [ioctl for ioctl in parsed_data.get('ioctl_operations', [])
-                  if query in ioctl['function_name'].lower() or query in ioctl['file_path'].lower()]
-        return jsonify(results)
-    
-    return jsonify({"error": "Invalid category"}), 400
+# Global variable to store the parsed data (for backward compatibility)
+parsed_data = None
 
 def load_data(json_file):
     """Load parsed data from JSON file"""

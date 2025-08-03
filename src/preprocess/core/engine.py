@@ -2,7 +2,24 @@
 """
 Main kernel log parser engine
 
-Coordinates all parsers and manages the parsing process.
+This module contains the core parsing engine that coordinates all individual parsers
+and manages the overall parsing workflow. It handles file processing, result aggregation,
+and provides a clean interface for the parsing process.
+
+The engine follows these key principles:
+- Modular design with separate parsers for different log types
+- Efficient streaming processing for large files  
+- Comprehensive error handling and logging
+- Deduplication to reduce memory usage and improve performance
+- Progress tracking for user feedback
+- Extensible architecture for adding new parser types
+
+Key Components:
+- KernelLogParserEngine: Main orchestrating class
+- Individual parsers: Function, DMA, UserCopy, IOCTL
+- Deduplication system: Reduces duplicate entries
+- Function code extraction: Gets source code for operations
+- Progress tracking: Real-time user feedback
 """
 
 import json
@@ -26,14 +43,42 @@ from ..utils.function_extractor import FunctionCodeExtractor
 
 
 class KernelLogParserEngine:
-    """Main parsing engine that coordinates all parsers"""
+    """
+    Main parsing engine that coordinates all parsers
+    
+    This is the central orchestrating class that manages the entire parsing workflow.
+    It coordinates individual parsers, handles file I/O, manages deduplication,
+    tracks statistics, and builds the final results.
+    
+    The engine processes log files line by line, attempting to match each line
+    against known patterns using specialized parsers. When matches are found,
+    it extracts relevant information, applies deduplication, and optionally
+    extracts function source code.
+    
+    Key responsibilities:
+    - File processing and line-by-line parsing
+    - Parser coordination and result handling
+    - Deduplication and statistics tracking
+    - Function code extraction coordination
+    - Progress reporting and user feedback
+    - Result aggregation and output generation
+    """
     
     def __init__(self, show_ui: bool = True, source_root_path: Optional[str] = None):
+        """
+        Initialize the parsing engine with configuration
+        
+        Args:
+            show_ui: Whether to display progress UI during parsing
+            source_root_path: Optional root path for resolving relative file paths
+                            in log entries. Used for function code extraction.
+        """
         self.show_ui = show_ui
         self.ui = ProgressUI(show_ui)
         self.source_root_path = source_root_path
         
         # Initialize patterns and parsers
+        # Each parser handles a specific type of log entry
         self.patterns = LogPatterns()
         self.function_parser = FunctionEntryParser(self.patterns)
         self.dma_parser = DMAParser(self.patterns)
@@ -41,29 +86,33 @@ class KernelLogParserEngine:
         self.ioctl_parser = IOCTLParser(self.patterns)
         
         # Initialize tracking utilities
+        # Deduplicator removes duplicate entries to save memory and processing
         self.deduplicator = KernelLogDeduplicator()
+        # File tracker maintains statistics about processed files
         self.file_tracker = FileTracker()
         
-        # Initialize function code extractor
+        # Function code extractor gets source code for function references
         self.function_extractor = FunctionCodeExtractor(source_root_path)
         
-        # Results storage
-        self.functions_by_file = defaultdict(list)
-        self.dma_operations = []
-        self.user_copy_operations = []
-        self.ioctl_operations = []
-        self.pending_user_copy = None  # For attaching process info
+        # Results storage - organized by type for efficient processing
+        self.functions_by_file = defaultdict(list)  # Grouped by file for organization
+        self.dma_operations = []       # DMA operations with stack traces
+        self.user_copy_operations = [] # User-space copy operations
+        self.ioctl_operations = []     # IOCTL handler operations
+        self.pending_user_copy = None  # For attaching process info to user copy ops
         
-        # Total counters (before deduplication)
+        # Total counters track all entries found before deduplication
+        # This helps users understand the total activity vs unique operations
         self.total_function_entries_found = 0
         self.total_dma_operations_found = 0
         self.total_user_copy_operations_found = 0
         self.total_ioctl_operations_found = 0
         
         # Stack trace storage for DMA operations
+        # DMA stack traces can span multiple lines, so we need temporary storage
         self.pending_stack_traces = {}  # dma_function -> stack_trace
         
-        # Metadata
+        # Metadata about the parsing run
         self.metadata = ParseMetadata()
     
     def parse_log_file(self, log_file_path, output_file: Optional[str] = None):
@@ -112,6 +161,19 @@ class KernelLogParserEngine:
         self.ui.print_file_analysis(results.functions_by_file)
         
         return results_dict
+    
+    def parse_line(self, line: str, line_num: int = 1) -> bool:
+        """
+        Public method to parse a single log line
+        
+        Args:
+            line: Log line to parse
+            line_num: Line number (optional, defaults to 1)
+            
+        Returns:
+            True if line was successfully parsed, False otherwise
+        """
+        return self._parse_line(line, line_num)
     
     def _parse_line(self, line: str, line_num: int) -> bool:
         """Parse a single log line using appropriate parser"""
