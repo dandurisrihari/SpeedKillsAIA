@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Set
 
 from ..analyzers.multi_analyzer import MultiAnalyzer
-from ..instrumentation_types import DMAInstrumentationType, UserCopyInstrumentationType, FunctionInstrumentationType
+from ..instrumentation_types import DMAInstrumentationType, UserCopyInstrumentationType, FunctionInstrumentationType, IoctlInstrumentationType
 from ..instrumentation_types.dma_present_files_functions_config import DmaPresentFilesFunctionsInstrumentationType
 
 
@@ -46,6 +46,8 @@ class MultiInstrumenter:
             # This type uses function instrumentation but with different logic
             self.type_configs['functions'] = FunctionInstrumentationType()
             self.type_configs['dma_present_files_functions'] = DmaPresentFilesFunctionsInstrumentationType()
+        if 'ioctl' in enabled_types:
+            self.type_configs['ioctl'] = IoctlInstrumentationType()
 
     # ============================================================================
     # UTILITY METHODS
@@ -56,7 +58,7 @@ class MultiInstrumenter:
         if line_number > 0 and len(source_lines) > line_number - 1:
             prev_line = source_lines[line_number - 1]
             # Check for any of our instrumentation markers
-            markers = ['DMA_INSTRUMENT', 'USER_COPY', 'FUNC_ENTRY']
+            markers = ['DMA_INSTRUMENT', 'USER_COPY', 'FUNC_ENTRY', 'IOCTL_HANDLER']
             return any(marker in prev_line for marker in markers)
         return False
 
@@ -73,6 +75,8 @@ class MultiInstrumenter:
             template = self.type_configs['user_copy'].template
         elif item_type == 'function_entry':
             template = self.type_configs['functions'].template
+        elif item_type == 'ioctl_handler':
+            template = self.type_configs['ioctl'].template
         else:
             return f"{indentation}/* Unknown instrumentation type: {item_type} */"
         

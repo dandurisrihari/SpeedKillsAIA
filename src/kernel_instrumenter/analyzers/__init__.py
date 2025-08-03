@@ -11,6 +11,7 @@ from .user_copy_analyzer import UserCopyAnalyzer
 from .function_analyzer import FunctionAnalyzer
 from .dma_present_files_analyzer import DmaPresentFilesAnalyzer
 from .multi_analyzer import MultiAnalyzer
+from .ioctl_analyzer import IoctlAnalyzer
 
 __all__ = [
     'BaseAnalyzer',
@@ -18,5 +19,6 @@ __all__ = [
     'UserCopyAnalyzer', 
     'FunctionAnalyzer',
     'DmaPresentFilesAnalyzer',
-    'MultiAnalyzer'
+    'MultiAnalyzer',
+    'IoctlAnalyzer'
 ]
