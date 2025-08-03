@@ -159,9 +159,12 @@ def register_routes(app):
             if (func.get('function_name') == function_name and 
                 (not file_path or func.get('file_path') == file_path) and
                 (not line_number or func.get('line_number') == line_number)):
+                function_code = func.get('function_code')
+                if function_code is None:
+                    function_code = 'No source code available'
                 return jsonify({
                     "function_name": func.get('function_name'),
-                    "function_code": func.get('function_code', 'No source code available'),
+                    "function_code": function_code,
                     "file_path": func.get('file_path'),
                     "line_number": func.get('line_number')
                 })
@@ -178,12 +181,55 @@ def register_routes(app):
         ioctl_operations = data.get('ioctl_operations', [])
         if 0 <= ioctl_index < len(ioctl_operations):
             ioctl = ioctl_operations[ioctl_index]
+            function_code = ioctl.get('function_code')
+            if function_code is None:
+                function_code = 'No source code available'
             return jsonify({
                 "function_name": ioctl.get('function_name'),
-                "function_code": ioctl.get('function_code', 'No source code available')
+                "function_code": function_code
             })
         
         return jsonify({"error": "IOCTL function not found"}), 404
+
+    @app.route('/api/dma-code/<int:dma_index>')
+    def api_dma_code(dma_index):
+        """API endpoint to get function code for a specific DMA operation by index"""
+        data = session.get('results', parsed_data)
+        if data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        
+        dma_operations = data.get('dma_operations', [])
+        if 0 <= dma_index < len(dma_operations):
+            dma = dma_operations[dma_index]
+            function_code = dma.get('function_code')
+            if function_code is None:
+                function_code = 'No source code available'
+            return jsonify({
+                "function_name": dma.get('dma_function'),
+                "function_code": function_code
+            })
+        
+        return jsonify({"error": "DMA function not found"}), 404
+
+    @app.route('/api/copy-code/<int:copy_index>')
+    def api_copy_code(copy_index):
+        """API endpoint to get function code for a specific User Copy operation by index"""
+        data = session.get('results', parsed_data)
+        if data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        
+        copy_operations = data.get('user_copy_operations', [])
+        if 0 <= copy_index < len(copy_operations):
+            copy = copy_operations[copy_index]
+            function_code = copy.get('function_code')
+            if function_code is None:
+                function_code = 'No source code available'
+            return jsonify({
+                "function_name": copy.get('copy_function'),
+                "function_code": function_code
+            })
+        
+        return jsonify({"error": "User Copy function not found"}), 404
 
 app = create_app()
 
@@ -627,11 +673,18 @@ HTML_TEMPLATE = """
                                 <div class="function-item">
                                     <div class="function-name">{{ func.function_name }}</div>
                                     <div class="function-details">
-                                        Line {{ func.line_number }} • <span class="timestamp">{{ "%.6f"|format(func.first_seen_timestamp) }}s</span>
+                                        Line {{ func.line_number }} • <span class="timestamp">{{ func.first_seen_time_str }}</span>
                                         <span class="call-count">Called {{ func.call_count }} times</span>
                                     </div>
                                     
                                     {% if func.function_code %}
+                                    <div class="function-code">
+                                        <details>
+                                            <summary><strong>Function Source Code</strong></summary>
+                                            <pre><code>{{ func.function_code }}</code></pre>
+                                        </details>
+                                    </div>
+                                    {% else %}
                                     <div class="function-code">
                                         <details onclick="loadFunctionCode(this, '{{ func.function_name }}', '{{ file_path }}', {{ func.line_number }})">
                                             <summary><strong>Function Source Code</strong> <span class="loading-indicator" style="display:none;">Loading...</span></summary>
@@ -664,7 +717,7 @@ HTML_TEMPLATE = """
                                 </div>
                                 <div class="dma-details">
                                     <strong>File:</strong> {{ dma.file_path }}:{{ dma.line_number }}<br>
-                                    <strong>Timestamp:</strong> <span class="timestamp">{{ "%.6f"|format(dma.first_seen_timestamp) }}s</span>
+                                    <strong>Timestamp:</strong> <span class="timestamp">{{ dma.first_seen_time_str }}</span>
                                 </div>
                                 
                                 {% if dma.function_code %}
@@ -672,6 +725,15 @@ HTML_TEMPLATE = """
                                     <details>
                                         <summary><strong>Function Source Code</strong></summary>
                                         <pre><code>{{ dma.function_code }}</code></pre>
+                                    </details>
+                                </div>
+                                {% else %}
+                                <div class="function-code">
+                                    <details onclick="loadDmaCode(this, {{ loop.index0 }}, '{{ dma.dma_function }}')">
+                                        <summary><strong>Function Source Code</strong> <span class="loading-indicator" style="display:none;">Loading...</span></summary>
+                                        <div class="code-container">
+                                            <pre><code>Click to load source code...</code></pre>
+                                        </div>
                                     </details>
                                 </div>
                                 {% endif %}
@@ -705,7 +767,7 @@ HTML_TEMPLATE = """
                                 </div>
                                 <div class="copy-details">
                                     <strong>File:</strong> {{ copy.file_path }}:{{ copy.line_number }}<br>
-                                    <strong>Timestamp:</strong> <span class="timestamp">{{ "%.6f"|format(copy.first_seen_timestamp) }}s</span>
+                                    <strong>Timestamp:</strong> <span class="timestamp">{{ copy.first_seen_time_str }}</span>
                                 </div>
                                 
                                 {% if copy.function_code %}
@@ -713,6 +775,15 @@ HTML_TEMPLATE = """
                                     <details>
                                         <summary><strong>Function Source Code</strong></summary>
                                         <pre><code>{{ copy.function_code }}</code></pre>
+                                    </details>
+                                </div>
+                                {% else %}
+                                <div class="function-code">
+                                    <details onclick="loadCopyCode(this, {{ loop.index0 }}, '{{ copy.copy_function }}')">
+                                        <summary><strong>Function Source Code</strong> <span class="loading-indicator" style="display:none;">Loading...</span></summary>
+                                        <div class="code-container">
+                                            <pre><code>Click to load source code...</code></pre>
+                                        </div>
                                     </details>
                                 </div>
                                 {% endif %}
@@ -742,10 +813,17 @@ HTML_TEMPLATE = """
                                 </div>
                                 <div class="ioctl-details">
                                     <strong>File:</strong> {{ ioctl.file_path }}:{{ ioctl.line_number }}<br>
-                                    <strong>Timestamp:</strong> <span class="timestamp">{{ "%.6f"|format(ioctl.first_seen_timestamp) }}s</span>
+                                    <strong>Timestamp:</strong> <span class="timestamp">{{ ioctl.first_seen_time_str }}</span>
                                 </div>
                                 
                                 {% if ioctl.function_code %}
+                                <div class="function-code">
+                                    <details>
+                                        <summary><strong>Function Source Code</strong></summary>
+                                        <pre><code>{{ ioctl.function_code }}</code></pre>
+                                    </details>
+                                </div>
+                                {% else %}
                                 <div class="function-code">
                                     <details onclick="loadIoctlCode(this, {{ loop.index0 }}, '{{ ioctl.function_name }}')">
                                         <summary><strong>Function Source Code</strong> <span class="loading-indicator" style="display:none;">Loading...</span></summary>
@@ -895,6 +973,66 @@ HTML_TEMPLATE = """
             
             try {
                 const response = await fetch(`/api/ioctl-code/${ioctlIndex}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    preElement.textContent = data.function_code || 'No source code available';
+                } else {
+                    preElement.textContent = `Error: ${data.error}`;
+                }
+            } catch (error) {
+                preElement.textContent = `Error loading code: ${error.message}`;
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        async function loadDmaCode(detailsElement, dmaIndex, functionName) {
+            const codeContainer = detailsElement.querySelector('.code-container');
+            const loadingIndicator = detailsElement.querySelector('.loading-indicator');
+            const preElement = codeContainer.querySelector('pre code');
+            
+            // Check if already loaded
+            if (preElement.textContent !== 'Click to load source code...') {
+                return;
+            }
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'inline';
+            preElement.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch(`/api/dma-code/${dmaIndex}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    preElement.textContent = data.function_code || 'No source code available';
+                } else {
+                    preElement.textContent = `Error: ${data.error}`;
+                }
+            } catch (error) {
+                preElement.textContent = `Error loading code: ${error.message}`;
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        async function loadCopyCode(detailsElement, copyIndex, functionName) {
+            const codeContainer = detailsElement.querySelector('.code-container');
+            const loadingIndicator = detailsElement.querySelector('.loading-indicator');
+            const preElement = codeContainer.querySelector('pre code');
+            
+            // Check if already loaded
+            if (preElement.textContent !== 'Click to load source code...') {
+                return;
+            }
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'inline';
+            preElement.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch(`/api/copy-code/${copyIndex}`);
                 const data = await response.json();
                 
                 if (response.ok) {

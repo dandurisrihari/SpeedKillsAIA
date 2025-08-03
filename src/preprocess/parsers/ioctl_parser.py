@@ -19,9 +19,12 @@ class IOCTLParser(BaseParser):
         """Check if line contains IOCTL-related content"""
         return 'IOCTL_HANDLER:' in line
     
-    def parse(self, line: str, timestamp: float, context=None) -> Tuple[bool, Optional[object]]:
+    def parse(self, line: str, timestamp_data=None, context=None) -> Tuple[bool, Optional[object]]:
         """
         Parse IOCTL-related lines
+        
+        Args:
+            timestamp_data: Tuple of (readable_time_str, numeric_timestamp) or single float for backward compatibility
         
         Example line:
         [   47.468247] IOCTL_HANDLER: Function drv_ioctl called at drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c:673
@@ -29,6 +32,13 @@ class IOCTLParser(BaseParser):
         Returns:
             Tuple of (success, IOCTLOperation or None)
         """
+        # Handle both old (float) and new (tuple) timestamp formats
+        if isinstance(timestamp_data, tuple):
+            time_str, numeric_timestamp = timestamp_data
+        else:
+            numeric_timestamp = timestamp_data or 0.0
+            time_str = str(numeric_timestamp)
+        
         # Parse IOCTL_HANDLER line
         match = self.patterns.search_ioctl_handler(line)
         if match:
@@ -40,7 +50,8 @@ class IOCTLParser(BaseParser):
                 function_name=function_name,
                 file_path=file_path,
                 line_number=line_number,
-                first_seen_timestamp=timestamp
+                first_seen_timestamp=numeric_timestamp,
+                first_seen_time_str=time_str
             )
             
             return True, operation

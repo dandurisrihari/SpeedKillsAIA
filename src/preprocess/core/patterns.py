@@ -15,7 +15,7 @@ class LogPatterns:
     def __init__(self):
         """Initialize all patterns"""
         self._patterns = {
-            'timestamp': re.compile(r'^\[\s*(\d+\.\d+)\]'),
+            'timestamp': re.compile(r'(?:^\[\s*(\d+\.\d+)\]|^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[,\.]\d+[+\-]\d{2}:\d{2})\s)'),
             'func_entry': re.compile(r'FUNC_ENTRY: Entering function (\w+) at ([^:]+):(\d+)'),
             'dma_instrument': re.compile(r'DMA_INSTRUMENT: About to call (\w+) from function (\w+) at ([^:]+):(\d+)'),
             'dma_stack_start': re.compile(r'DMA_STACK_START: Stack trace for (\w+) called from (\w+)'),

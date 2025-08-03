@@ -26,9 +26,12 @@ class DMAParser(BaseParser):
         # Otherwise check for DMA markers
         return any(marker in line for marker in ['DMA_INSTRUMENT:', 'DMA_STACK_START:', 'DMA_STACK_END:'])
     
-    def parse(self, line: str, timestamp: float, context=None) -> Tuple[bool, Optional[object]]:
+    def parse(self, line: str, timestamp_data=None, context=None) -> Tuple[bool, Optional[object]]:
         """
         Parse DMA-related lines
+        
+        Args:
+            timestamp_data: Tuple of (readable_time_str, numeric_timestamp) or single float for backward compatibility
         
         Returns:
             Tuple of (success, result)
@@ -38,6 +41,13 @@ class DMAParser(BaseParser):
             - 'stack_end' for DMA_STACK_END
             - stack_line for lines between stack markers
         """
+        # Handle both old (float) and new (tuple) timestamp formats
+        if isinstance(timestamp_data, tuple):
+            time_str, numeric_timestamp = timestamp_data
+        else:
+            numeric_timestamp = timestamp_data or 0.0
+            time_str = str(numeric_timestamp)
+        
         # Check for DMA_STACK_START first
         if self._parse_dma_stack_start(line):
             return True, 'stack_start'
@@ -55,13 +65,13 @@ class DMAParser(BaseParser):
                 return True, ('stack_line', stack_line)
         
         # Check for DMA_INSTRUMENT
-        dma_op = self._parse_dma_instrument(line, timestamp)
+        dma_op = self._parse_dma_instrument(line, time_str, numeric_timestamp)
         if dma_op:
             return True, dma_op
         
         return False, None
     
-    def _parse_dma_instrument(self, line: str, timestamp: float) -> Optional[DMAOperation]:
+    def _parse_dma_instrument(self, line: str, time_str: str, numeric_timestamp: float) -> Optional[DMAOperation]:
         """Parse DMA_INSTRUMENT line"""
         match = self.patterns.search_dma_instrument(line)
         if not match:
@@ -77,7 +87,8 @@ class DMAParser(BaseParser):
             caller_function=caller_function,
             file_path=file_path,
             line_number=line_number,
-            first_seen_timestamp=timestamp
+            first_seen_timestamp=numeric_timestamp,
+            first_seen_time_str=time_str
         )
     
     def _parse_dma_stack_start(self, line: str) -> bool:
