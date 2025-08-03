@@ -1729,6 +1729,33 @@ index dc09f6b4c401..cc13a2d53f08 100644
      gceSTATUS status;
      gckALLOCATOR allocator = gcvNULL;
      gcsCMA_PRIV_PTR priv = gcvNULL;
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_debugfs.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_debugfs.c
+index 030670fac593..3be3a44b820a 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_debugfs.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_debugfs.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #ifdef MODULE
+ #    include <linux/module.h>
+ #endif
+@@ -84,6 +92,7 @@
+ static int
+ gc_debugfs_open(struct inode *inode, struct file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function gc_debugfs_open called at %s:%d\n", __FILE__, __LINE__);
+     gcsINFO_NODE *node = inode->i_private;
+ 
+     return single_open(file, node->info->show, node);
 diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_device.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_device.c
 index 6b3c68dc769d..1851ab8ba244 100644
 --- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_device.c
@@ -1767,7 +1794,7 @@ index 6b3c68dc769d..1851ab8ba244 100644
      if (ret != 0) {
          pr_err("Error: lost data: %d\n", (int)ret);
 diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c
-index e3de349243e7..59e9c2e72aa8 100644
+index e3de349243e7..919863f2690e 100644
 --- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c
 +++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_driver.c
 @@ -52,6 +52,14 @@
@@ -1785,7 +1812,31 @@ index e3de349243e7..59e9c2e72aa8 100644
  #include <linux/device.h>
  #include <linux/slab.h>
  #include <linux/miscdevice.h>
-@@ -697,6 +705,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+@@ -530,6 +538,7 @@ gckOS_DumpParam(void)
+ 
+ static int drv_open(struct inode *inode, struct file *filp)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function drv_open called at %s:%d\n", __FILE__, __LINE__);
+     gceSTATUS               status = gcvSTATUS_OK;
+     gcsHAL_PRIVATE_DATA_PTR data   = gcvNULL;
+     gctUINT                 i, devIndex;
+@@ -597,6 +606,7 @@ static int drv_open(struct inode *inode, struct file *filp)
+ 
+ static int drv_release(struct inode *inode, struct file *filp)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function drv_release called at %s:%d\n", __FILE__, __LINE__);
+     int                     ret    = -ENOTTY;
+     gceSTATUS               status = gcvSTATUS_OK;
+     gcsHAL_PRIVATE_DATA_PTR data;
+@@ -660,6 +670,7 @@ static int drv_release(struct inode *inode, struct file *filp)
+ 
+ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long arg)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function drv_ioctl called at %s:%d\n", __FILE__, __LINE__);
+     long                    ret    = -ENOTTY;
+     gceSTATUS               status = gcvSTATUS_OK;
+     gcsHAL_INTERFACE        iface;
+@@ -697,6 +708,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
      switch (ioctlCode) {
      case IOCTL_GCHAL_INTERFACE:
          /* Get the drvArgs. */
@@ -1794,7 +1845,7 @@ index e3de349243e7..59e9c2e72aa8 100644
          copyLen = copy_from_user(&drvArgs, (void *)arg, sizeof(DRIVER_ARGS));
  
          if (copyLen != 0) {
-@@ -717,6 +727,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+@@ -717,6 +730,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
              gcmkONERROR(gcvSTATUS_INVALID_ARGUMENT);
          }
  
@@ -1803,7 +1854,7 @@ index e3de349243e7..59e9c2e72aa8 100644
          copyLen = copy_from_user(&iface,
                                   gcmUINT64_TO_PTR(drvArgs.InputBuffer),
                                   drvArgs.InputBufferSize);
-@@ -760,6 +772,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+@@ -760,6 +775,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
          }
  
          /* Copy data back to the user. */
@@ -1812,7 +1863,7 @@ index e3de349243e7..59e9c2e72aa8 100644
          copyLen = copy_to_user(gcmUINT64_TO_PTR(drvArgs.OutputBuffer),
                                 &iface,
                                 drvArgs.OutputBufferSize);
-@@ -776,6 +790,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+@@ -776,6 +793,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
      case IOCTL_GCHAL_PROFILER_INTERFACE:
  #if VIVANTE_PROFILER
          /* Get the drvArgs. */
@@ -1821,7 +1872,7 @@ index e3de349243e7..59e9c2e72aa8 100644
          copyLen = copy_from_user(&drvArgs, (void *)arg, sizeof(DRIVER_ARGS));
  
          if (copyLen != 0) {
-@@ -796,6 +812,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+@@ -796,6 +815,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
              gcmkONERROR(gcvSTATUS_INVALID_ARGUMENT);
          }
  
@@ -1830,7 +1881,7 @@ index e3de349243e7..59e9c2e72aa8 100644
          copyLen = copy_from_user(&iface_profiler,
                                   gcmUINT64_TO_PTR(drvArgs.InputBuffer),
                                   sizeof(gcsHAL_PROFILER_INTERFACE));
-@@ -819,6 +837,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
+@@ -819,6 +840,8 @@ static long drv_ioctl(struct file *filp, unsigned int ioctlCode, unsigned long a
          }
  
          /* Copy data back to the user. */
@@ -1839,6 +1890,105 @@ index e3de349243e7..59e9c2e72aa8 100644
          copyLen = copy_to_user(gcmUINT64_TO_PTR(drvArgs.OutputBuffer),
                                 &iface_profiler,
                                 sizeof(gcsHAL_PROFILER_INTERFACE));
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_drm.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_drm.c
+index 6ebd5b941c5d..baabeb10c580 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_drm.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_drm.c
+@@ -52,6 +52,14 @@
+ *
+ *****************************************************************************/
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #if gcdENABLE_DRM
+ 
+ #    include <linux/version.h>
+@@ -183,6 +191,7 @@ void viv_gem_free_object(struct drm_gem_object *gem_obj)
+ 
+ static int viv_ioctl_gem_create(struct drm_device *drm, void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_create called at %s:%d\n", __FILE__, __LINE__);
+     int                        ret     = 0;
+     struct drm_viv_gem_create *args    = (struct drm_viv_gem_create *)data;
+     struct drm_gem_object     *gem_obj = gcvNULL;
+@@ -254,6 +263,7 @@ static int viv_ioctl_gem_create(struct drm_device *drm, void *data, struct drm_f
+ 
+ static int viv_ioctl_gem_lock(struct drm_device *drm, void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_lock called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_lock *args    = (struct drm_viv_gem_lock *)data;
+     struct drm_gem_object   *gem_obj = gcvNULL;
+     struct viv_gem_object   *viv_obj = gcvNULL;
+@@ -295,6 +305,7 @@ static int viv_ioctl_gem_lock(struct drm_device *drm, void *data, struct drm_fil
+ 
+ static int viv_ioctl_gem_unlock(struct drm_device *drm, void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_unlock called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_unlock *args    = (struct drm_viv_gem_unlock *)data;
+     struct drm_gem_object     *gem_obj = gcvNULL;
+     struct viv_gem_object     *viv_obj = gcvNULL;
+@@ -341,6 +352,7 @@ static int viv_ioctl_gem_unlock(struct drm_device *drm, void *data, struct drm_f
+ 
+ static int viv_ioctl_gem_cache(struct drm_device *drm, void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_cache called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_cache *args    = (struct drm_viv_gem_cache *)data;
+     struct drm_gem_object    *gem_obj = gcvNULL;
+     struct viv_gem_object    *viv_obj = gcvNULL;
+@@ -398,6 +410,7 @@ static int viv_ioctl_gem_cache(struct drm_device *drm, void *data, struct drm_fi
+ 
+ static int viv_ioctl_gem_query(struct drm_device *drm, void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_query called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_query *args    = (struct drm_viv_gem_query *)data;
+     struct drm_gem_object    *gem_obj = gcvNULL;
+     struct viv_gem_object    *viv_obj = gcvNULL;
+@@ -436,6 +449,7 @@ static int viv_ioctl_gem_query(struct drm_device *drm, void *data, struct drm_fi
+ static int viv_ioctl_gem_timestamp(struct drm_device *drm,
+                                    void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_timestamp called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_timestamp *args    = (struct drm_viv_gem_timestamp *)data;
+     struct drm_gem_object        *gem_obj = gcvNULL;
+     struct viv_gem_object        *viv_obj = gcvNULL;
+@@ -466,6 +480,7 @@ static int viv_ioctl_gem_timestamp(struct drm_device *drm,
+ static int viv_ioctl_gem_set_tiling(struct drm_device *drm,
+                                     void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_set_tiling called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_set_tiling *args    = (struct drm_viv_gem_set_tiling *)data;
+     struct drm_gem_object         *gem_obj = gcvNULL;
+     struct viv_gem_object         *viv_obj = gcvNULL;
+@@ -498,6 +513,7 @@ static int viv_ioctl_gem_set_tiling(struct drm_device *drm,
+ static int viv_ioctl_gem_get_tiling(struct drm_device *drm,
+                                     void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_get_tiling called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_get_tiling *args    = (struct drm_viv_gem_get_tiling *)data;
+     struct drm_gem_object         *gem_obj = gcvNULL;
+     struct viv_gem_object         *viv_obj = gcvNULL;
+@@ -530,6 +546,7 @@ static int viv_ioctl_gem_get_tiling(struct drm_device *drm,
+ static int viv_ioctl_gem_attach_aux(struct drm_device *drm,
+                                     void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_attach_aux called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_attach_aux *args       = (struct drm_viv_gem_attach_aux *)data;
+     struct drm_gem_object         *gem_obj    = gcvNULL;
+     struct viv_gem_object         *viv_obj    = gcvNULL;
+@@ -637,6 +654,7 @@ static int viv_ioctl_gem_attach_aux(struct drm_device *drm,
+ static int viv_ioctl_gem_ref_node(struct drm_device *drm,
+                                   void *data, struct drm_file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function viv_ioctl_gem_ref_node called at %s:%d\n", __FILE__, __LINE__);
+     struct drm_viv_gem_ref_node *args    = (struct drm_viv_gem_ref_node *)data;
+     struct drm_gem_object       *gem_obj = gcvNULL;
+     struct viv_gem_object       *viv_obj = gcvNULL;
 diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c
 index 2d00ee9b36b6..3c6f360257f4 100644
 --- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c
@@ -1915,7 +2065,7 @@ index 2d00ee9b36b6..3c6f360257f4 100644
          iommu->paddingPageDmaHandle =
              dma_map_page(dev, Os->paddingPage, 0, PAGE_SIZE, DMA_TO_DEVICE);
 diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_os.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_os.c
-index 845610d66dd7..bf43c80168aa 100644
+index 845610d66dd7..7e1aec30ea04 100644
 --- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_os.c
 +++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_os.c
 @@ -52,6 +52,14 @@
@@ -1960,3 +2110,11 @@ index 845610d66dd7..bf43c80168aa 100644
      if (copy_to_user(Pointer, KernelPointer, Size) != 0)
          /* Could not copy all the bytes. */
          gcmkONERROR(gcvSTATUS_OUT_OF_RESOURCES);
+@@ -6945,6 +6959,7 @@ gckOS_GPUPhysicalToCPUPhysical(IN gckOS           Os,
+ static int
+ fd_release(struct inode *inode, struct file *file)
+ {
++    printk(KERN_INFO "IOCTL_HANDLER: Function fd_release called at %s:%d\n", __FILE__, __LINE__);
+     gcsFDPRIVATE_PTR private = (gcsFDPRIVATE_PTR)file->private_data;
+ 
+     return (private && private->release) ? private->release(private) : 0;

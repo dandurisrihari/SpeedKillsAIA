@@ -1,3 +1,179 @@
+diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+index 3d58514d04826..4731a44d8fe45 100644
+--- a/drivers/dma-buf/dma-buf.c
++++ b/drivers/dma-buf/dma-buf.c
+@@ -11,6 +11,14 @@
+  * refining of this idea.
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include <linux/fs.h>
+ #include <linux/slab.h>
+ #include <linux/dma-buf.h>
+@@ -89,6 +97,7 @@ static void dma_buf_release(struct dentry *dentry)
+ 
+ static int dma_buf_file_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function dma_buf_file_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct dma_buf *dmabuf;
+ 
+ 	if (!is_dma_buf_file(file))
+@@ -342,6 +351,8 @@ static long dma_buf_export_sync_file(struct dma_buf *dmabuf,
+ 	struct sync_file *sync_file;
+ 	int fd, ret;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(&arg, user_data, sizeof(arg)))
+ 		return -EFAULT;
+ 
+@@ -373,6 +384,8 @@ static long dma_buf_export_sync_file(struct dma_buf *dmabuf,
+ 	}
+ 
+ 	arg.fd = fd;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_to_user(user_data, &arg, sizeof(arg))) {
+ 		ret = -EFAULT;
+ 		goto err_put_file;
+@@ -399,6 +412,8 @@ static long dma_buf_import_sync_file(struct dma_buf *dmabuf,
+ 	unsigned int num_fences;
+ 	int ret = 0;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(&arg, user_data, sizeof(arg)))
+ 		return -EFAULT;
+ 
+@@ -440,6 +455,7 @@ static long dma_buf_import_sync_file(struct dma_buf *dmabuf,
+ static long dma_buf_ioctl(struct file *file,
+ 			  unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function dma_buf_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct dma_buf *dmabuf;
+ 	struct dma_buf_sync sync;
+ 	enum dma_data_direction direction;
+@@ -449,6 +465,8 @@ static long dma_buf_ioctl(struct file *file,
+ 
+ 	switch (cmd) {
+ 	case DMA_BUF_IOCTL_SYNC:
++  printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 		if (copy_from_user(&sync, (void __user *) arg, sizeof(sync)))
+ 			return -EFAULT;
+ 
+@@ -898,6 +916,10 @@ dma_buf_dynamic_attach(struct dma_buf *dmabuf, struct device *dev,
+ 	if (dma_buf_is_dynamic(attach->dmabuf))
+ 		dma_resv_unlock(attach->dmabuf->resv);
+ 
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_detach called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_detach\n");
+ 	dma_buf_detach(dmabuf, attach);
+ 	return ERR_PTR(ret);
+ }
+@@ -1126,6 +1148,10 @@ dma_buf_map_attachment_unlocked(struct dma_buf_attachment *attach,
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	dma_resv_lock(attach->dmabuf->resv, NULL);
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_map_attachment from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_map_attachment called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_map_attachment\n");
+ 	sg_table = dma_buf_map_attachment(attach, direction);
+ 	dma_resv_unlock(attach->dmabuf->resv);
+ 
+@@ -1189,6 +1215,10 @@ void dma_buf_unmap_attachment_unlocked(struct dma_buf_attachment *attach,
+ 		return;
+ 
+ 	dma_resv_lock(attach->dmabuf->resv, NULL);
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\n");
+ 	dma_buf_unmap_attachment(attach, sg_table, direction);
+ 	dma_resv_unlock(attach->dmabuf->resv);
+ }
+diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
+index 2b7b9cbd74245..eec8051810b95 100644
+--- a/drivers/dma-buf/dma-heap.c
++++ b/drivers/dma-buf/dma-heap.c
+@@ -6,6 +6,14 @@
+  * Copyright (C) 2019 Linaro Ltd.
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include <linux/cdev.h>
+ #include <linux/debugfs.h>
+ #include <linux/device.h>
+@@ -69,6 +77,10 @@ static int dma_heap_buffer_alloc(struct dma_heap *heap, size_t len,
+ 		return PTR_ERR(dmabuf);
+ 
+ 	fd = dma_buf_fd(dmabuf, fd_flags);
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_put called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
+ 	if (fd < 0) {
+ 		dma_buf_put(dmabuf);
+ 		/* just return, as put will call release and that will free */
+@@ -78,6 +90,7 @@ static int dma_heap_buffer_alloc(struct dma_heap *heap, size_t len,
+ 
+ static int dma_heap_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function dma_heap_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct dma_heap *heap;
+ 
+ 	heap = xa_load(&dma_heap_minors, iminor(inode));
+@@ -95,6 +108,7 @@ static int dma_heap_open(struct inode *inode, struct file *file)
+ 
+ static long dma_heap_ioctl_allocate(struct file *file, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function dma_heap_ioctl_allocate called at %s:%d\n", __FILE__, __LINE__);
+ 	struct dma_heap_allocation_data *heap_allocation = data;
+ 	struct dma_heap *heap = file->private_data;
+ 	int fd;
+@@ -126,6 +140,7 @@ static unsigned int dma_heap_ioctl_cmds[] = {
+ static long dma_heap_ioctl(struct file *file, unsigned int ucmd,
+ 			   unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function dma_heap_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	char stack_kdata[128];
+ 	char *kdata = stack_kdata;
+ 	unsigned int kcmd;
+@@ -157,6 +172,8 @@ static long dma_heap_ioctl(struct file *file, unsigned int ucmd,
+ 			return -ENOMEM;
+ 	}
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(kdata, (void __user *)arg, in_size) != 0) {
+ 		ret = -EFAULT;
+ 		goto err;
+@@ -175,6 +192,8 @@ static long dma_heap_ioctl(struct file *file, unsigned int ucmd,
+ 		goto err;
+ 	}
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_to_user((void __user *)arg, kdata, out_size) != 0)
+ 		ret = -EFAULT;
+ err:
 diff --git a/drivers/dma-buf/heaps/carveout-heap.c b/drivers/dma-buf/heaps/carveout-heap.c
 index 10169f6c34747..7cefd81f44db5 100644
 --- a/drivers/dma-buf/heaps/carveout-heap.c
@@ -222,8 +398,340 @@ index fcf836ba9c1fd..ef1a82d0bab84 100644
  	dmabuf = dma_buf_export(&exp_info);
  	if (IS_ERR(dmabuf)) {
  		ret = PTR_ERR(dmabuf);
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index 7f5ed1aa7a9f8..77c79e17e4c17 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -5,6 +5,14 @@
+  * Copyright (C) 2012 Google, Inc.
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include <linux/file.h>
+ #include <linux/fs.h>
+ #include <linux/uaccess.h>
+@@ -292,6 +300,7 @@ static struct sync_pt *sync_pt_create(struct sync_timeline *obj,
+ /* opening sw_sync create a new sync obj */
+ static int sw_sync_debugfs_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sw_sync_debugfs_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct sync_timeline *obj;
+ 	char task_comm[TASK_COMM_LEN];
+ 
+@@ -308,6 +317,7 @@ static int sw_sync_debugfs_open(struct inode *inode, struct file *file)
+ 
+ static int sw_sync_debugfs_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sw_sync_debugfs_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct sync_timeline *obj = file->private_data;
+ 	struct sync_pt *pt, *next;
+ 
+@@ -327,6 +337,7 @@ static int sw_sync_debugfs_release(struct inode *inode, struct file *file)
+ static long sw_sync_ioctl_create_fence(struct sync_timeline *obj,
+ 				       unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sw_sync_ioctl_create_fence called at %s:%d\n", __FILE__, __LINE__);
+ 	int fd = get_unused_fd_flags(O_CLOEXEC);
+ 	int err;
+ 	struct sync_pt *pt;
+@@ -336,6 +347,8 @@ static long sw_sync_ioctl_create_fence(struct sync_timeline *obj,
+ 	if (fd < 0)
+ 		return fd;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(&data, (void __user *)arg, sizeof(data))) {
+ 		err = -EFAULT;
+ 		goto err;
+@@ -355,6 +368,8 @@ static long sw_sync_ioctl_create_fence(struct sync_timeline *obj,
+ 	}
+ 
+ 	data.fence = fd;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_to_user((void __user *)arg, &data, sizeof(data))) {
+ 		fput(sync_file->file);
+ 		err = -EFAULT;
+@@ -372,8 +387,11 @@ static long sw_sync_ioctl_create_fence(struct sync_timeline *obj,
+ 
+ static long sw_sync_ioctl_inc(struct sync_timeline *obj, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sw_sync_ioctl_inc called at %s:%d\n", __FILE__, __LINE__);
+ 	u32 value;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(&value, (void __user *)arg, sizeof(value)))
+ 		return -EFAULT;
+ 
+@@ -390,6 +408,7 @@ static long sw_sync_ioctl_inc(struct sync_timeline *obj, unsigned long arg)
+ static long sw_sync_ioctl(struct file *file, unsigned int cmd,
+ 			  unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sw_sync_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct sync_timeline *obj = file->private_data;
+ 
+ 	switch (cmd) {
+diff --git a/drivers/dma-buf/sync_file.c b/drivers/dma-buf/sync_file.c
+index 2e9a316c596a3..aa56c864691b8 100644
+--- a/drivers/dma-buf/sync_file.c
++++ b/drivers/dma-buf/sync_file.c
+@@ -178,6 +178,7 @@ static struct sync_file *sync_file_merge(const char *name, struct sync_file *a,
+ 
+ static int sync_file_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sync_file_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct sync_file *sync_file = file->private_data;
+ 
+ 	if (test_bit(POLL_ENABLED, &sync_file->flags))
+@@ -207,6 +208,7 @@ static __poll_t sync_file_poll(struct file *file, poll_table *wait)
+ static long sync_file_ioctl_merge(struct sync_file *sync_file,
+ 				  unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sync_file_ioctl_merge called at %s:%d\n", __FILE__, __LINE__);
+ 	int fd = get_unused_fd_flags(O_CLOEXEC);
+ 	int err;
+ 	struct sync_file *fence2, *fence3;
+@@ -215,6 +217,8 @@ static long sync_file_ioctl_merge(struct sync_file *sync_file,
+ 	if (fd < 0)
+ 		return fd;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(&data, (void __user *)arg, sizeof(data))) {
+ 		err = -EFAULT;
+ 		goto err_put_fd;
+@@ -239,6 +243,8 @@ static long sync_file_ioctl_merge(struct sync_file *sync_file,
+ 	}
+ 
+ 	data.fence = fd;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_to_user((void __user *)arg, &data, sizeof(data))) {
+ 		err = -EFAULT;
+ 		goto err_put_fence3;
+@@ -279,6 +285,7 @@ static int sync_fill_fence_info(struct dma_fence *fence,
+ static long sync_file_ioctl_fence_info(struct sync_file *sync_file,
+ 				       unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sync_file_ioctl_fence_info called at %s:%d\n", __FILE__, __LINE__);
+ 	struct sync_fence_info *fence_info = NULL;
+ 	struct dma_fence_unwrap iter;
+ 	struct sync_file_info info;
+@@ -287,6 +294,8 @@ static long sync_file_ioctl_fence_info(struct sync_file *sync_file,
+ 	int ret;
+ 	__u32 size;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(&info, (void __user *)arg, sizeof(info)))
+ 		return -EFAULT;
+ 
+@@ -326,6 +335,8 @@ static long sync_file_ioctl_fence_info(struct sync_file *sync_file,
+ 		info.status = info.status <= 0 ? info.status : status;
+ 	}
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_to_user(u64_to_user_ptr(info.sync_fence_info), fence_info,
+ 			 size)) {
+ 		ret = -EFAULT;
+@@ -336,6 +347,8 @@ static long sync_file_ioctl_fence_info(struct sync_file *sync_file,
+ 	sync_file_get_name(sync_file, info.name, sizeof(info.name));
+ 	info.num_fences = num_fences;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_to_user((void __user *)arg, &info, sizeof(info)))
+ 		ret = -EFAULT;
+ 	else
+@@ -350,6 +363,7 @@ static long sync_file_ioctl_fence_info(struct sync_file *sync_file,
+ static long sync_file_ioctl(struct file *file, unsigned int cmd,
+ 			    unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function sync_file_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct sync_file *sync_file = file->private_data;
+ 
+ 	switch (cmd) {
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index 2bcdb935a3ac4..680bb16a9ce94 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -30,6 +30,7 @@ struct udmabuf {
+ 
+ static vm_fault_t udmabuf_vm_fault(struct vm_fault *vmf)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function udmabuf_vm_fault at %s:%d\n", __FILE__, __LINE__);
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct udmabuf *ubuf = vma->vm_private_data;
+ 	pgoff_t pgoff = vmf->pgoff;
+@@ -47,6 +48,7 @@ static const struct vm_operations_struct udmabuf_vm_ops = {
+ 
+ static int mmap_udmabuf(struct dma_buf *buf, struct vm_area_struct *vma)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mmap_udmabuf at %s:%d\n", __FILE__, __LINE__);
+ 	struct udmabuf *ubuf = buf->priv;
+ 
+ 	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) == 0)
+@@ -60,6 +62,7 @@ static int mmap_udmabuf(struct dma_buf *buf, struct vm_area_struct *vma)
+ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
+ 				     enum dma_data_direction direction)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function get_sg_table at %s:%d\n", __FILE__, __LINE__);
+ 	struct udmabuf *ubuf = buf->priv;
+ 	struct sg_table *sg;
+ 	int ret;
+@@ -86,6 +89,7 @@ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
+ static void put_sg_table(struct device *dev, struct sg_table *sg,
+ 			 enum dma_data_direction direction)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function put_sg_table at %s:%d\n", __FILE__, __LINE__);
+ 	dma_unmap_sgtable(dev, sg, direction, 0);
+ 	sg_free_table(sg);
+ 	kfree(sg);
+@@ -94,6 +98,7 @@ static void put_sg_table(struct device *dev, struct sg_table *sg,
+ static struct sg_table *map_udmabuf(struct dma_buf_attachment *at,
+ 				    enum dma_data_direction direction)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function map_udmabuf at %s:%d\n", __FILE__, __LINE__);
+ 	return get_sg_table(at->dev, at->dmabuf, direction);
+ }
+ 
+@@ -101,11 +106,13 @@ static void unmap_udmabuf(struct dma_buf_attachment *at,
+ 			  struct sg_table *sg,
+ 			  enum dma_data_direction direction)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function unmap_udmabuf at %s:%d\n", __FILE__, __LINE__);
+ 	return put_sg_table(at->dev, sg, direction);
+ }
+ 
+ static void release_udmabuf(struct dma_buf *buf)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function release_udmabuf at %s:%d\n", __FILE__, __LINE__);
+ 	struct udmabuf *ubuf = buf->priv;
+ 	struct device *dev = ubuf->device->this_device;
+ 	pgoff_t pg;
+@@ -122,6 +129,7 @@ static void release_udmabuf(struct dma_buf *buf)
+ static int begin_cpu_udmabuf(struct dma_buf *buf,
+ 			     enum dma_data_direction direction)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function begin_cpu_udmabuf at %s:%d\n", __FILE__, __LINE__);
+ 	struct udmabuf *ubuf = buf->priv;
+ 	struct device *dev = ubuf->device->this_device;
+ 	int ret = 0;
+@@ -132,6 +140,10 @@ static int begin_cpu_udmabuf(struct dma_buf *buf,
+ 			ret = PTR_ERR(ubuf->sg);
+ 			ubuf->sg = NULL;
+ 		}
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\n");
+ 	} else {
+ 		dma_sync_sg_for_cpu(dev, ubuf->sg->sgl, ubuf->sg->nents,
+ 				    direction);
+@@ -143,12 +155,17 @@ static int begin_cpu_udmabuf(struct dma_buf *buf,
+ static int end_cpu_udmabuf(struct dma_buf *buf,
+ 			   enum dma_data_direction direction)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function end_cpu_udmabuf at %s:%d\n", __FILE__, __LINE__);
+ 	struct udmabuf *ubuf = buf->priv;
+ 	struct device *dev = ubuf->device->this_device;
+ 
+ 	if (!ubuf->sg)
+ 		return -EINVAL;
+ 
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\n");
+ 	dma_sync_sg_for_device(dev, ubuf->sg->sgl, ubuf->sg->nents, direction);
+ 	return 0;
+ }
+@@ -170,6 +187,7 @@ static long udmabuf_create(struct miscdevice *device,
+ 			   struct udmabuf_create_list *head,
+ 			   struct udmabuf_create_item *list)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function udmabuf_create at %s:%d\n", __FILE__, __LINE__);
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 	struct file *memfd = NULL;
+ 	struct address_space *mapping = NULL;
+@@ -275,6 +293,10 @@ static long udmabuf_create(struct miscdevice *device,
+ 	exp_info.flags = O_RDWR;
+ 
+ 	ubuf->device = device;
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_export called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_export\n");
+ 	buf = dma_buf_export(&exp_info);
+ 	if (IS_ERR(buf)) {
+ 		ret = PTR_ERR(buf);
+@@ -298,10 +320,14 @@ static long udmabuf_create(struct miscdevice *device,
+ 
+ static long udmabuf_ioctl_create(struct file *filp, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function udmabuf_ioctl_create called at %s:%d\n", __FILE__, __LINE__);
++    printk(KERN_INFO "FUNC_ENTRY: Entering function udmabuf_ioctl_create at %s:%d\n", __FILE__, __LINE__);
+ 	struct udmabuf_create create;
+ 	struct udmabuf_create_list head;
+ 	struct udmabuf_create_item list;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(&create, (void __user *)arg,
+ 			   sizeof(create)))
+ 		return -EFAULT;
+@@ -317,11 +343,15 @@ static long udmabuf_ioctl_create(struct file *filp, unsigned long arg)
+ 
+ static long udmabuf_ioctl_create_list(struct file *filp, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function udmabuf_ioctl_create_list called at %s:%d\n", __FILE__, __LINE__);
++    printk(KERN_INFO "FUNC_ENTRY: Entering function udmabuf_ioctl_create_list at %s:%d\n", __FILE__, __LINE__);
+ 	struct udmabuf_create_list head;
+ 	struct udmabuf_create_item *list;
+ 	int ret = -EINVAL;
+ 	u32 lsize;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (copy_from_user(&head, (void __user *)arg, sizeof(head)))
+ 		return -EFAULT;
+ 	if (head.count > list_limit)
+@@ -339,6 +369,8 @@ static long udmabuf_ioctl_create_list(struct file *filp, unsigned long arg)
+ static long udmabuf_ioctl(struct file *filp, unsigned int ioctl,
+ 			  unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function udmabuf_ioctl called at %s:%d\n", __FILE__, __LINE__);
++    printk(KERN_INFO "FUNC_ENTRY: Entering function udmabuf_ioctl at %s:%d\n", __FILE__, __LINE__);
+ 	long ret;
+ 
+ 	switch (ioctl) {
+@@ -371,6 +403,7 @@ static struct miscdevice udmabuf_misc = {
+ 
+ static int __init udmabuf_dev_init(void)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function udmabuf_dev_init at %s:%d\n", __FILE__, __LINE__);
+ 	int ret;
+ 
+ 	ret = misc_register(&udmabuf_misc);
+@@ -392,6 +425,7 @@ static int __init udmabuf_dev_init(void)
+ 
+ static void __exit udmabuf_dev_exit(void)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function udmabuf_dev_exit at %s:%d\n", __FILE__, __LINE__);
+ 	misc_deregister(&udmabuf_misc);
+ }
+ 
 diff --git a/drivers/misc/bcm-vk/bcm_vk_dev.c b/drivers/misc/bcm-vk/bcm_vk_dev.c
-index d4a96137728db..f1228afb2b928 100644
+index d4a96137728db..05590f29bea93 100644
 --- a/drivers/misc/bcm-vk/bcm_vk_dev.c
 +++ b/drivers/misc/bcm-vk/bcm_vk_dev.c
 @@ -3,6 +3,14 @@
@@ -490,15 +998,16 @@ index d4a96137728db..f1228afb2b928 100644
  	struct bcm_vk_ctx *ctx = file->private_data;
  	struct bcm_vk *vk = container_of(ctx->miscdev, struct bcm_vk, miscdev);
  	unsigned long pg_size;
-@@ -1226,6 +1276,7 @@ static int bcm_vk_mmap(struct file *file, struct vm_area_struct *vma)
+@@ -1226,6 +1276,8 @@ static int bcm_vk_mmap(struct file *file, struct vm_area_struct *vma)
  
  static long bcm_vk_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function bcm_vk_ioctl called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function bcm_vk_ioctl at %s:%d\n", __FILE__, __LINE__);
  	long ret = -EINVAL;
  	struct bcm_vk_ctx *ctx = file->private_data;
  	struct bcm_vk *vk = container_of(ctx->miscdev, struct bcm_vk, miscdev);
-@@ -1269,6 +1320,7 @@ static const struct file_operations bcm_vk_fops = {
+@@ -1269,6 +1321,7 @@ static const struct file_operations bcm_vk_fops = {
  static int bcm_vk_on_panic(struct notifier_block *nb,
  			   unsigned long e, void *p)
  {
@@ -506,7 +1015,7 @@ index d4a96137728db..f1228afb2b928 100644
  	struct bcm_vk *vk = container_of(nb, struct bcm_vk, panic_nb);
  
  	bcm_to_v_reset_doorbell(vk, VK_BAR0_RESET_DB_HARD);
-@@ -1278,6 +1330,7 @@ static int bcm_vk_on_panic(struct notifier_block *nb,
+@@ -1278,6 +1331,7 @@ static int bcm_vk_on_panic(struct notifier_block *nb,
  
  static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  {
@@ -514,7 +1023,7 @@ index d4a96137728db..f1228afb2b928 100644
  	int err;
  	int i;
  	int id;
-@@ -1324,6 +1377,10 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+@@ -1324,6 +1378,10 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  	}
  
  	/* The tdma is a scratch area for some DMA testings. */
@@ -525,7 +1034,7 @@ index d4a96137728db..f1228afb2b928 100644
  	if (nr_scratch_pages) {
  		vk->tdma_vaddr = dma_alloc_coherent
  					(dev,
-@@ -1517,6 +1574,10 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+@@ -1517,6 +1575,10 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  	pci_release_regions(pdev);
  
  err_disable_pdev:
@@ -536,7 +1045,7 @@ index d4a96137728db..f1228afb2b928 100644
  	if (vk->tdma_vaddr)
  		dma_free_coherent(&pdev->dev, nr_scratch_pages * PAGE_SIZE,
  				  vk->tdma_vaddr, vk->tdma_addr);
-@@ -1533,6 +1594,7 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+@@ -1533,6 +1595,7 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
  void bcm_vk_release_data(struct kref *kref)
  {
@@ -544,7 +1053,7 @@ index d4a96137728db..f1228afb2b928 100644
  	struct bcm_vk *vk = container_of(kref, struct bcm_vk, kref);
  	struct pci_dev *pdev = vk->pdev;
  
-@@ -1543,6 +1605,7 @@ void bcm_vk_release_data(struct kref *kref)
+@@ -1543,6 +1606,7 @@ void bcm_vk_release_data(struct kref *kref)
  
  static void bcm_vk_remove(struct pci_dev *pdev)
  {
@@ -552,7 +1061,7 @@ index d4a96137728db..f1228afb2b928 100644
  	int i;
  	struct bcm_vk *vk = pci_get_drvdata(pdev);
  	struct miscdevice *misc_device = &vk->miscdev;
-@@ -1565,6 +1628,10 @@ static void bcm_vk_remove(struct pci_dev *pdev)
+@@ -1565,6 +1629,10 @@ static void bcm_vk_remove(struct pci_dev *pdev)
  	bcm_vk_msg_remove(vk);
  	bcm_vk_tty_exit(vk);
  
@@ -563,7 +1072,7 @@ index d4a96137728db..f1228afb2b928 100644
  	if (vk->tdma_vaddr)
  		dma_free_coherent(&pdev->dev, nr_scratch_pages * PAGE_SIZE,
  				  vk->tdma_vaddr, vk->tdma_addr);
-@@ -1601,6 +1668,7 @@ static void bcm_vk_remove(struct pci_dev *pdev)
+@@ -1601,6 +1669,7 @@ static void bcm_vk_remove(struct pci_dev *pdev)
  
  static void bcm_vk_shutdown(struct pci_dev *pdev)
  {
@@ -572,7 +1081,7 @@ index d4a96137728db..f1228afb2b928 100644
  	u32 reg, boot_stat;
  
 diff --git a/drivers/misc/bcm-vk/bcm_vk_msg.c b/drivers/misc/bcm-vk/bcm_vk_msg.c
-index 3c081504f38ca..6866f3b1f4233 100644
+index 3c081504f38ca..40bf8c4dca877 100644
 --- a/drivers/misc/bcm-vk/bcm_vk_msg.c
 +++ b/drivers/misc/bcm-vk/bcm_vk_msg.c
 @@ -3,6 +3,14 @@
@@ -590,7 +1099,15 @@ index 3c081504f38ca..6866f3b1f4233 100644
  #include <linux/delay.h>
  #include <linux/fs.h>
  #include <linux/hash.h>
-@@ -1047,6 +1055,8 @@ ssize_t bcm_vk_read(struct file *p_file,
+@@ -970,6 +978,7 @@ irqreturn_t bcm_vk_msgq_irqhandler(int irq, void *dev_id)
+ 
+ int bcm_vk_open(struct inode *inode, struct file *p_file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function bcm_vk_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct bcm_vk_ctx *ctx;
+ 	struct miscdevice *miscdev = (struct miscdevice *)p_file->private_data;
+ 	struct bcm_vk *vk = container_of(miscdev, struct bcm_vk, miscdev);
+@@ -1047,6 +1056,8 @@ ssize_t bcm_vk_read(struct file *p_file,
  		/* retrieve the passed down msg_id */
  		set_msg_id(&entry->to_h_msg[0], entry->usr_msg_id);
  		rsp_length = entry->to_h_blks * VK_MSGQ_BLK_SIZE;
@@ -599,7 +1116,7 @@ index 3c081504f38ca..6866f3b1f4233 100644
  		if (copy_to_user(buf, entry->to_h_msg, rsp_length) == 0)
  			rc = rsp_length;
  
-@@ -1060,6 +1070,8 @@ ssize_t bcm_vk_read(struct file *p_file,
+@@ -1060,6 +1071,8 @@ ssize_t bcm_vk_read(struct file *p_file,
  		 */
  		set_msg_id(&tmp_msg, entry->usr_msg_id);
  		tmp_msg.size = entry->to_h_blks - 1;
@@ -608,7 +1125,7 @@ index 3c081504f38ca..6866f3b1f4233 100644
  		if (copy_to_user(buf, &tmp_msg, VK_MSGQ_BLK_SIZE) != 0) {
  			dev_err(dev, "Error return 1st block in -EMSGSIZE\n");
  			rc = -EFAULT;
-@@ -1107,6 +1119,8 @@ ssize_t bcm_vk_write(struct file *p_file,
+@@ -1107,6 +1120,8 @@ ssize_t bcm_vk_write(struct file *p_file,
  	}
  
  	/* now copy msg from user space, and then formulate the work entry */
@@ -617,6 +1134,14 @@ index 3c081504f38ca..6866f3b1f4233 100644
  	if (copy_from_user(&entry->to_v_msg[0], buf, count)) {
  		rc = -EFAULT;
  		goto write_free_ent;
+@@ -1270,6 +1285,7 @@ __poll_t bcm_vk_poll(struct file *p_file, struct poll_table_struct *wait)
+ 
+ int bcm_vk_release(struct inode *inode, struct file *p_file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function bcm_vk_release called at %s:%d\n", __FILE__, __LINE__);
+ 	int ret;
+ 	struct bcm_vk_ctx *ctx = p_file->private_data;
+ 	struct bcm_vk *vk = container_of(ctx->miscdev, struct bcm_vk, miscdev);
 diff --git a/drivers/misc/bcm-vk/bcm_vk_sg.c b/drivers/misc/bcm-vk/bcm_vk_sg.c
 index 2e9daaf3e492b..2f8d4e171cebd 100644
 --- a/drivers/misc/bcm-vk/bcm_vk_sg.c
@@ -1308,11 +1833,86 @@ index a30751ad37330..8a67311e11ab7 100644
  	struct pci_dev *pcidev = to_pci_dev(device);
  	struct pcr_handle *handle = pci_get_drvdata(pcidev);
  	struct rtsx_pcr *pcr = handle->pcr;
+diff --git a/drivers/misc/cxl/api.c b/drivers/misc/cxl/api.c
+index d85c565308635..887eb2e568451 100644
+--- a/drivers/misc/cxl/api.c
++++ b/drivers/misc/cxl/api.c
+@@ -3,6 +3,14 @@
+  * Copyright 2014 IBM Corp.
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/file.h>
+@@ -352,16 +360,19 @@ EXPORT_SYMBOL_GPL(cxl_set_master);
+ /* wrappers around afu_* file ops which are EXPORTED */
+ int cxl_fd_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cxl_fd_open called at %s:%d\n", __FILE__, __LINE__);
+ 	return afu_open(inode, file);
+ }
+ EXPORT_SYMBOL_GPL(cxl_fd_open);
+ int cxl_fd_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cxl_fd_release called at %s:%d\n", __FILE__, __LINE__);
+ 	return afu_release(inode, file);
+ }
+ EXPORT_SYMBOL_GPL(cxl_fd_release);
+ long cxl_fd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cxl_fd_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	return afu_ioctl(file, cmd, arg);
+ }
+ EXPORT_SYMBOL_GPL(cxl_fd_ioctl);
 diff --git a/drivers/misc/cxl/file.c b/drivers/misc/cxl/file.c
-index 3dbdce96fae0d..8b55127442c33 100644
+index 3dbdce96fae0d..bfd5a074964d3 100644
 --- a/drivers/misc/cxl/file.c
 +++ b/drivers/misc/cxl/file.c
-@@ -155,6 +155,8 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
+@@ -42,6 +42,7 @@ static struct class *cxl_class;
+ 
+ static int __afu_open(struct inode *inode, struct file *file, bool master)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function __afu_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct cxl *adapter;
+ 	struct cxl_afu *afu;
+ 	struct cxl_context *ctx;
+@@ -106,16 +107,19 @@ static int __afu_open(struct inode *inode, struct file *file, bool master)
+ 
+ int afu_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_open called at %s:%d\n", __FILE__, __LINE__);
+ 	return __afu_open(inode, file, false);
+ }
+ 
+ static int afu_master_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_master_open called at %s:%d\n", __FILE__, __LINE__);
+ 	return __afu_open(inode, file, true);
+ }
+ 
+ int afu_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct cxl_context *ctx = file->private_data;
+ 
+ 	pr_devel("%s: closing cxl file descriptor. pe: %i\n",
+@@ -147,6 +151,7 @@ int afu_release(struct inode *inode, struct file *file)
+ static long afu_ioctl_start_work(struct cxl_context *ctx,
+ 				 struct cxl_ioctl_start_work __user *uwork)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl_start_work called at %s:%d\n", __FILE__, __LINE__);
+ 	struct cxl_ioctl_start_work work;
+ 	u64 amr = 0;
+ 	int rc;
+@@ -155,6 +160,8 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
  
  	/* Do this outside the status_mutex to avoid a circular dependency with
  	 * the locking in cxl_mmap_fault() */
@@ -1321,7 +1921,7 @@ index 3dbdce96fae0d..8b55127442c33 100644
  	if (copy_from_user(&work, uwork, sizeof(work)))
  		return -EFAULT;
  
-@@ -266,6 +268,8 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
+@@ -266,6 +273,8 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
  	rc = 0;
  	if (work.flags & CXL_START_WORK_TID) {
  		work.tid = ctx->tidr;
@@ -1330,8 +1930,11 @@ index 3dbdce96fae0d..8b55127442c33 100644
  		if (copy_to_user(uwork, &work, sizeof(work)))
  			rc = -EFAULT;
  	}
-@@ -282,6 +286,8 @@ static long afu_ioctl_process_element(struct cxl_context *ctx,
+@@ -280,8 +289,11 @@ static long afu_ioctl_start_work(struct cxl_context *ctx,
+ static long afu_ioctl_process_element(struct cxl_context *ctx,
+ 				      int __user *upe)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl_process_element called at %s:%d\n", __FILE__, __LINE__);
  	pr_devel("%s: pe: %i\n", __func__, ctx->pe);
  
 + printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
@@ -1339,7 +1942,15 @@ index 3dbdce96fae0d..8b55127442c33 100644
  	if (copy_to_user(upe, &ctx->external_pe, sizeof(__u32)))
  		return -EFAULT;
  
-@@ -301,6 +307,8 @@ static long afu_ioctl_get_afu_id(struct cxl_context *ctx,
+@@ -291,6 +303,7 @@ static long afu_ioctl_process_element(struct cxl_context *ctx,
+ static long afu_ioctl_get_afu_id(struct cxl_context *ctx,
+ 				 struct cxl_afu_id __user *upafuid)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl_get_afu_id called at %s:%d\n", __FILE__, __LINE__);
+ 	struct cxl_afu_id afuid = { 0 };
+ 
+ 	afuid.card_id = ctx->afu->adapter->adapter_num;
+@@ -301,6 +314,8 @@ static long afu_ioctl_get_afu_id(struct cxl_context *ctx,
  	if (ctx->afu->current_mode == CXL_MODE_DIRECTED && !ctx->master)
  		afuid.flags |= CXL_AFUID_FLAG_SLAVE;
  
@@ -1348,7 +1959,23 @@ index 3dbdce96fae0d..8b55127442c33 100644
  	if (copy_to_user(upafuid, &afuid, sizeof(afuid)))
  		return -EFAULT;
  
-@@ -405,6 +413,8 @@ static ssize_t afu_driver_event_copy(struct cxl_context *ctx,
+@@ -309,6 +324,7 @@ static long afu_ioctl_get_afu_id(struct cxl_context *ctx,
+ 
+ long afu_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct cxl_context *ctx = file->private_data;
+ 
+ 	if (ctx->status == CLOSED)
+@@ -333,6 +349,7 @@ long afu_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ static long afu_compat_ioctl(struct file *file, unsigned int cmd,
+ 			     unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_compat_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	return afu_ioctl(file, cmd, arg);
+ }
+ 
+@@ -405,6 +422,8 @@ static ssize_t afu_driver_event_copy(struct cxl_context *ctx,
  	}
  
  	/* Copy event header */
@@ -1357,7 +1984,7 @@ index 3dbdce96fae0d..8b55127442c33 100644
  	if (copy_to_user(buf, event, sizeof(struct cxl_event_header))) {
  		ctx->afu_driver_ops->event_delivered(ctx, pl, -EFAULT);
  		return -EFAULT;
-@@ -412,6 +422,8 @@ static ssize_t afu_driver_event_copy(struct cxl_context *ctx,
+@@ -412,6 +431,8 @@ static ssize_t afu_driver_event_copy(struct cxl_context *ctx,
  
  	/* Copy event data */
  	buf += sizeof(struct cxl_event_header);
@@ -1366,7 +1993,7 @@ index 3dbdce96fae0d..8b55127442c33 100644
  	if (copy_to_user(buf, &pl->data, pl->data_size)) {
  		ctx->afu_driver_ops->event_delivered(ctx, pl, -EFAULT);
  		return -EFAULT;
-@@ -509,6 +521,8 @@ ssize_t afu_read(struct file *file, char __user *buf, size_t count,
+@@ -509,6 +530,8 @@ ssize_t afu_read(struct file *file, char __user *buf, size_t count,
  	if (event.header.type == CXL_EVENT_AFU_DRIVER)
  		return afu_driver_event_copy(ctx, buf, &event, pl);
  
@@ -1376,7 +2003,7 @@ index 3dbdce96fae0d..8b55127442c33 100644
  		return -EFAULT;
  	return event.header.size;
 diff --git a/drivers/misc/cxl/flash.c b/drivers/misc/cxl/flash.c
-index eee9decc121ed..63d6ec04c8686 100644
+index eee9decc121ed..5baf4c86a90f9 100644
 --- a/drivers/misc/cxl/flash.c
 +++ b/drivers/misc/cxl/flash.c
 @@ -292,6 +292,8 @@ static int handle_image(struct cxl *adapter, int operation,
@@ -1388,7 +2015,12 @@ index eee9decc121ed..63d6ec04c8686 100644
  		if (copy_from_user(dest, from, s_copy))
  			goto err;
  
-@@ -376,6 +378,8 @@ static long ioctl_transfer_image(struct cxl *adapter, int operation,
+@@ -372,10 +374,13 @@ static int transfer_image(struct cxl *adapter, int operation,
+ static long ioctl_transfer_image(struct cxl *adapter, int operation,
+ 				struct cxl_adapter_image __user *uai)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ioctl_transfer_image called at %s:%d\n", __FILE__, __LINE__);
+ 	struct cxl_adapter_image ai;
  
  	pr_devel("%s\n", __func__);
  
@@ -1397,12 +2029,47 @@ index eee9decc121ed..63d6ec04c8686 100644
  	if (copy_from_user(&ai, uai, sizeof(struct cxl_adapter_image)))
  		return -EFAULT;
  
+@@ -391,6 +396,7 @@ static long ioctl_transfer_image(struct cxl *adapter, int operation,
+ 
+ static int device_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function device_open called at %s:%d\n", __FILE__, __LINE__);
+ 	int adapter_num = CXL_DEVT_ADAPTER(inode->i_rdev);
+ 	struct cxl *adapter;
+ 	int rc = 0, i;
+@@ -458,6 +464,7 @@ static int device_open(struct inode *inode, struct file *file)
+ 
+ static long device_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function device_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct cxl *adapter = file->private_data;
+ 
+ 	pr_devel("in %s\n", __func__);
+@@ -476,6 +483,7 @@ static long device_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 
+ static int device_close(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function device_close called at %s:%d\n", __FILE__, __LINE__);
+ 	struct cxl *adapter = file->private_data;
+ 	int i;
+ 
 diff --git a/drivers/misc/dma-buf-phys.c b/drivers/misc/dma-buf-phys.c
-index c38cfa343dd7c..2da00f5de15db 100644
+index c38cfa343dd7c..b0b1cdc7b9698 100644
 --- a/drivers/misc/dma-buf-phys.c
 +++ b/drivers/misc/dma-buf-phys.c
-@@ -51,10 +51,22 @@ static int dma_buf_phys_release(struct inode *inode, struct file *file)
+@@ -34,6 +34,7 @@ struct dma_buf_phys_file {
+ 
+ static int dma_buf_phys_open(struct inode *inode, struct file *file)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function dma_buf_phys_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct miscdevice *miscdev = file->private_data;
+ 	struct device *dev = miscdev->this_device;
+ 	struct dma_buf_phys_file *priv;
+@@ -49,12 +50,25 @@ static int dma_buf_phys_open(struct inode *inode, struct file *file)
+ 
+ static int dma_buf_phys_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function dma_buf_phys_release called at %s:%d\n", __FILE__, __LINE__);
  	struct dma_buf_phys_file *priv = file->private_data;
  
 + printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
@@ -1424,7 +2091,7 @@ index c38cfa343dd7c..2da00f5de15db 100644
  	if (priv->dma_buf)
  		dma_buf_put(priv->dma_buf);
  
-@@ -72,17 +84,29 @@ static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phy
+@@ -72,17 +86,29 @@ static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phy
  	dma_addr_t dma_addr;
  	int ret;
  
@@ -1454,7 +2121,7 @@ index c38cfa343dd7c..2da00f5de15db 100644
  	sgt = dma_buf_map_attachment(attachment, DMA_BIDIRECTIONAL);
  	if (IS_ERR(sgt)) {
  		ret = PTR_ERR(sgt);
-@@ -107,10 +131,22 @@ static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phy
+@@ -107,10 +133,22 @@ static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phy
  	return 0;
  
  fail_unmap:
@@ -1477,7 +2144,15 @@ index c38cfa343dd7c..2da00f5de15db 100644
  	dma_buf_put(dma_buf);
  
  	return ret;
-@@ -134,6 +170,8 @@ static long dma_buf_phys_ioctl(struct file *file, unsigned int cmd, unsigned lon
+@@ -118,6 +156,7 @@ static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phy
+ 
+ static long dma_buf_phys_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function dma_buf_phys_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct dma_buf_phys_file *priv = file->private_data;
+ 
+ 	switch (cmd) {
+@@ -134,6 +173,8 @@ static long dma_buf_phys_ioctl(struct file *file, unsigned int cmd, unsigned lon
  		if (priv->dma_buf)
  			return -EFAULT;
  
@@ -1486,7 +2161,7 @@ index c38cfa343dd7c..2da00f5de15db 100644
  		if (copy_from_user(&data, (void __user *)arg, _IOC_SIZE(cmd)))
  			return -EFAULT;
  
-@@ -141,6 +179,8 @@ static long dma_buf_phys_ioctl(struct file *file, unsigned int cmd, unsigned lon
+@@ -141,6 +182,8 @@ static long dma_buf_phys_ioctl(struct file *file, unsigned int cmd, unsigned lon
  		if (ret)
  			return ret;
  
@@ -1509,7 +2184,7 @@ index 367054e0ced4e..3948bb9c17fe6 100644
  		ret = -EFAULT;
  		goto free_buf;
 diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index 69cc24962706c..c80c4f2eac038 100644
+index 69cc24962706c..783291c260c89 100644
 --- a/drivers/misc/fastrpc.c
 +++ b/drivers/misc/fastrpc.c
 @@ -2,6 +2,14 @@
@@ -1908,23 +2583,25 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_invoke_args args[1];
  	int tgid = 0;
  	u32 sc;
-@@ -1330,6 +1414,7 @@ static int fastrpc_release_current_dsp_process(struct fastrpc_user *fl)
+@@ -1330,6 +1414,8 @@ static int fastrpc_release_current_dsp_process(struct fastrpc_user *fl)
  
  static int fastrpc_device_release(struct inode *inode, struct file *file)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function fastrpc_device_release called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function fastrpc_device_release at %s:%d\n", __FILE__, __LINE__);
  	struct fastrpc_user *fl = (struct fastrpc_user *)file->private_data;
  	struct fastrpc_channel_ctx *cctx = fl->cctx;
  	struct fastrpc_invoke_ctx *ctx, *n;
-@@ -1371,6 +1456,7 @@ static int fastrpc_device_release(struct inode *inode, struct file *file)
+@@ -1371,6 +1457,8 @@ static int fastrpc_device_release(struct inode *inode, struct file *file)
  
  static int fastrpc_device_open(struct inode *inode, struct file *filp)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function fastrpc_device_open called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function fastrpc_device_open at %s:%d\n", __FILE__, __LINE__);
  	struct fastrpc_channel_ctx *cctx;
  	struct fastrpc_device *fdevice;
  	struct fastrpc_user *fl = NULL;
-@@ -1415,11 +1501,14 @@ static int fastrpc_device_open(struct inode *inode, struct file *filp)
+@@ -1415,11 +1503,14 @@ static int fastrpc_device_open(struct inode *inode, struct file *filp)
  
  static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
  {
@@ -1939,7 +2616,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_from_user(&bp, argp, sizeof(bp)))
  		return -EFAULT;
  
-@@ -1430,6 +1519,10 @@ static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
+@@ -1430,6 +1521,10 @@ static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
  	exp_info.size = bp.size;
  	exp_info.flags = O_RDWR;
  	exp_info.priv = buf;
@@ -1950,7 +2627,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	buf->dmabuf = dma_buf_export(&exp_info);
  	if (IS_ERR(buf->dmabuf)) {
  		err = PTR_ERR(buf->dmabuf);
-@@ -1438,11 +1531,17 @@ static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
+@@ -1438,11 +1533,17 @@ static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
  	}
  
  	bp.fd = dma_buf_fd(buf->dmabuf, O_ACCMODE);
@@ -1968,7 +2645,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_to_user(argp, &bp, sizeof(bp))) {
  		/*
  		 * The usercopy failed, but we can't do much about it, as
-@@ -1460,6 +1559,7 @@ static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
+@@ -1460,6 +1561,7 @@ static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
  
  static int fastrpc_init_attach(struct fastrpc_user *fl, int pd)
  {
@@ -1976,7 +2653,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_invoke_args args[1];
  	int tgid = fl->tgid;
  	u32 sc;
-@@ -1476,11 +1576,14 @@ static int fastrpc_init_attach(struct fastrpc_user *fl, int pd)
+@@ -1476,11 +1578,14 @@ static int fastrpc_init_attach(struct fastrpc_user *fl, int pd)
  
  static int fastrpc_invoke(struct fastrpc_user *fl, char __user *argp)
  {
@@ -1991,7 +2668,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_from_user(&inv, argp, sizeof(inv)))
  		return -EFAULT;
  
-@@ -1491,6 +1594,8 @@ static int fastrpc_invoke(struct fastrpc_user *fl, char __user *argp)
+@@ -1491,6 +1596,8 @@ static int fastrpc_invoke(struct fastrpc_user *fl, char __user *argp)
  		if (!args)
  			return -ENOMEM;
  
@@ -2000,7 +2677,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  		if (copy_from_user(args, (void __user *)(uintptr_t)inv.args,
  				   nscalars * sizeof(*args))) {
  			kfree(args);
-@@ -1507,6 +1612,7 @@ static int fastrpc_invoke(struct fastrpc_user *fl, char __user *argp)
+@@ -1507,6 +1614,7 @@ static int fastrpc_invoke(struct fastrpc_user *fl, char __user *argp)
  static int fastrpc_get_info_from_dsp(struct fastrpc_user *fl, uint32_t *dsp_attr_buf,
  				     uint32_t dsp_attr_buf_len)
  {
@@ -2008,7 +2685,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_invoke_args args[2] = { 0 };
  
  	/* Capability filled in userspace */
-@@ -1527,6 +1633,7 @@ static int fastrpc_get_info_from_dsp(struct fastrpc_user *fl, uint32_t *dsp_attr
+@@ -1527,6 +1635,7 @@ static int fastrpc_get_info_from_dsp(struct fastrpc_user *fl, uint32_t *dsp_attr
  static int fastrpc_get_info_from_kernel(struct fastrpc_ioctl_capability *cap,
  					struct fastrpc_user *fl)
  {
@@ -2016,7 +2693,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_channel_ctx *cctx = fl->cctx;
  	uint32_t attribute_id = cap->attribute_id;
  	uint32_t *dsp_attributes;
-@@ -1570,9 +1677,12 @@ static int fastrpc_get_info_from_kernel(struct fastrpc_ioctl_capability *cap,
+@@ -1570,9 +1679,12 @@ static int fastrpc_get_info_from_kernel(struct fastrpc_ioctl_capability *cap,
  
  static int fastrpc_get_dsp_info(struct fastrpc_user *fl, char __user *argp)
  {
@@ -2029,7 +2706,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_from_user(&cap, argp, sizeof(cap)))
  		return  -EFAULT;
  
-@@ -1599,6 +1709,8 @@ static int fastrpc_get_dsp_info(struct fastrpc_user *fl, char __user *argp)
+@@ -1599,6 +1711,8 @@ static int fastrpc_get_dsp_info(struct fastrpc_user *fl, char __user *argp)
  	if (err)
  		return err;
  
@@ -2038,7 +2715,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_to_user(argp, &cap.capability, sizeof(cap.capability)))
  		return -EFAULT;
  
-@@ -1608,6 +1720,7 @@ static int fastrpc_get_dsp_info(struct fastrpc_user *fl, char __user *argp)
+@@ -1608,6 +1722,7 @@ static int fastrpc_get_dsp_info(struct fastrpc_user *fl, char __user *argp)
  static int fastrpc_req_munmap_impl(struct fastrpc_user *fl,
  				   struct fastrpc_req_munmap *req)
  {
@@ -2046,7 +2723,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_invoke_args args[1] = { [0] = { 0 } };
  	struct fastrpc_buf *buf = NULL, *iter, *b;
  	struct fastrpc_munmap_req_msg req_msg;
-@@ -1654,8 +1767,11 @@ static int fastrpc_req_munmap_impl(struct fastrpc_user *fl,
+@@ -1654,8 +1769,11 @@ static int fastrpc_req_munmap_impl(struct fastrpc_user *fl,
  
  static int fastrpc_req_munmap(struct fastrpc_user *fl, char __user *argp)
  {
@@ -2058,7 +2735,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_from_user(&req, argp, sizeof(req)))
  		return -EFAULT;
  
-@@ -1664,6 +1780,7 @@ static int fastrpc_req_munmap(struct fastrpc_user *fl, char __user *argp)
+@@ -1664,6 +1782,7 @@ static int fastrpc_req_munmap(struct fastrpc_user *fl, char __user *argp)
  
  static int fastrpc_req_mmap(struct fastrpc_user *fl, char __user *argp)
  {
@@ -2066,7 +2743,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_invoke_args args[3] = { [0 ... 2] = { 0 } };
  	struct fastrpc_buf *buf = NULL;
  	struct fastrpc_mmap_req_msg req_msg;
-@@ -1675,6 +1792,8 @@ static int fastrpc_req_mmap(struct fastrpc_user *fl, char __user *argp)
+@@ -1675,6 +1794,8 @@ static int fastrpc_req_mmap(struct fastrpc_user *fl, char __user *argp)
  	int err;
  	u32 sc;
  
@@ -2075,7 +2752,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_from_user(&req, argp, sizeof(req)))
  		return -EFAULT;
  
-@@ -1729,6 +1848,8 @@ static int fastrpc_req_mmap(struct fastrpc_user *fl, char __user *argp)
+@@ -1729,6 +1850,8 @@ static int fastrpc_req_mmap(struct fastrpc_user *fl, char __user *argp)
  	list_add_tail(&buf->node, &fl->mmaps);
  	spin_unlock(&fl->lock);
  
@@ -2084,7 +2761,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_to_user((void __user *)argp, &req, sizeof(req))) {
  		/* unmap the memory and release the buffer */
  		req_unmap.vaddrout = buf->raddr;
-@@ -1750,6 +1871,7 @@ static int fastrpc_req_mmap(struct fastrpc_user *fl, char __user *argp)
+@@ -1750,6 +1873,7 @@ static int fastrpc_req_mmap(struct fastrpc_user *fl, char __user *argp)
  
  static int fastrpc_req_mem_unmap_impl(struct fastrpc_user *fl, struct fastrpc_mem_unmap *req)
  {
@@ -2092,7 +2769,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_invoke_args args[1] = { [0] = { 0 } };
  	struct fastrpc_map *map = NULL, *iter, *m;
  	struct fastrpc_mem_unmap_req_msg req_msg = { 0 };
-@@ -1794,8 +1916,11 @@ static int fastrpc_req_mem_unmap_impl(struct fastrpc_user *fl, struct fastrpc_me
+@@ -1794,8 +1918,11 @@ static int fastrpc_req_mem_unmap_impl(struct fastrpc_user *fl, struct fastrpc_me
  
  static int fastrpc_req_mem_unmap(struct fastrpc_user *fl, char __user *argp)
  {
@@ -2104,7 +2781,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_from_user(&req, argp, sizeof(req)))
  		return -EFAULT;
  
-@@ -1804,6 +1929,7 @@ static int fastrpc_req_mem_unmap(struct fastrpc_user *fl, char __user *argp)
+@@ -1804,6 +1931,7 @@ static int fastrpc_req_mem_unmap(struct fastrpc_user *fl, char __user *argp)
  
  static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
  {
@@ -2112,7 +2789,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_invoke_args args[4] = { [0 ... 3] = { 0 } };
  	struct fastrpc_mem_map_req_msg req_msg = { 0 };
  	struct fastrpc_mmap_rsp_msg rsp_msg = { 0 };
-@@ -1815,6 +1941,8 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
+@@ -1815,6 +1943,8 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
  	int err;
  	u32 sc;
  
@@ -2121,7 +2798,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_from_user(&req, argp, sizeof(req)))
  		return -EFAULT;
  
-@@ -1863,6 +1991,8 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
+@@ -1863,6 +1993,8 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
  	/* let the client know the address to use */
  	req.vaddrout = rsp_msg.vaddr;
  
@@ -2130,15 +2807,16 @@ index 69cc24962706c..c80c4f2eac038 100644
  	if (copy_to_user((void __user *)argp, &req, sizeof(req))) {
  		/* unmap the memory and release the buffer */
  		req_unmap.vaddr = (uintptr_t) rsp_msg.vaddr;
-@@ -1882,6 +2012,7 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
+@@ -1882,6 +2014,8 @@ static int fastrpc_req_mem_map(struct fastrpc_user *fl, char __user *argp)
  static long fastrpc_device_ioctl(struct file *file, unsigned int cmd,
  				 unsigned long arg)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function fastrpc_device_ioctl called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function fastrpc_device_ioctl at %s:%d\n", __FILE__, __LINE__);
  	struct fastrpc_user *fl = (struct fastrpc_user *)file->private_data;
  	char __user *argp = (char __user *)arg;
  	int err;
-@@ -1934,6 +2065,7 @@ static const struct file_operations fastrpc_fops = {
+@@ -1934,6 +2068,7 @@ static const struct file_operations fastrpc_fops = {
  
  static int fastrpc_cb_probe(struct platform_device *pdev)
  {
@@ -2146,7 +2824,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_channel_ctx *cctx;
  	struct fastrpc_session_ctx *sess;
  	struct device *dev = &pdev->dev;
-@@ -1984,6 +2116,7 @@ static int fastrpc_cb_probe(struct platform_device *pdev)
+@@ -1984,6 +2119,7 @@ static int fastrpc_cb_probe(struct platform_device *pdev)
  
  static int fastrpc_cb_remove(struct platform_device *pdev)
  {
@@ -2154,7 +2832,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_channel_ctx *cctx = dev_get_drvdata(pdev->dev.parent);
  	struct fastrpc_session_ctx *sess = dev_get_drvdata(&pdev->dev);
  	unsigned long flags;
-@@ -2019,6 +2152,7 @@ static struct platform_driver fastrpc_cb_driver = {
+@@ -2019,6 +2155,7 @@ static struct platform_driver fastrpc_cb_driver = {
  static int fastrpc_device_register(struct device *dev, struct fastrpc_channel_ctx *cctx,
  				   bool is_secured, const char *domain)
  {
@@ -2162,7 +2840,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_device *fdev;
  	int err;
  
-@@ -2048,6 +2182,7 @@ static int fastrpc_device_register(struct device *dev, struct fastrpc_channel_ct
+@@ -2048,6 +2185,7 @@ static int fastrpc_device_register(struct device *dev, struct fastrpc_channel_ct
  
  static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
  {
@@ -2170,7 +2848,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct device *rdev = &rpdev->dev;
  	struct fastrpc_channel_ctx *data;
  	int i, err, domain_id = -1, vmcount;
-@@ -2151,6 +2286,7 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+@@ -2151,6 +2289,7 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
  
  static void fastrpc_notify_users(struct fastrpc_user *user)
  {
@@ -2178,7 +2856,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_invoke_ctx *ctx;
  
  	spin_lock(&user->lock);
-@@ -2163,6 +2299,7 @@ static void fastrpc_notify_users(struct fastrpc_user *user)
+@@ -2163,6 +2302,7 @@ static void fastrpc_notify_users(struct fastrpc_user *user)
  
  static void fastrpc_rpmsg_remove(struct rpmsg_device *rpdev)
  {
@@ -2186,7 +2864,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_channel_ctx *cctx = dev_get_drvdata(&rpdev->dev);
  	struct fastrpc_user *user;
  	unsigned long flags;
-@@ -2188,6 +2325,7 @@ static void fastrpc_rpmsg_remove(struct rpmsg_device *rpdev)
+@@ -2188,6 +2328,7 @@ static void fastrpc_rpmsg_remove(struct rpmsg_device *rpdev)
  static int fastrpc_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
  				  int len, void *priv, u32 addr)
  {
@@ -2194,7 +2872,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	struct fastrpc_channel_ctx *cctx = dev_get_drvdata(&rpdev->dev);
  	struct fastrpc_invoke_rsp *rsp = data;
  	struct fastrpc_invoke_ctx *ctx;
-@@ -2239,6 +2377,7 @@ static struct rpmsg_driver fastrpc_driver = {
+@@ -2239,6 +2380,7 @@ static struct rpmsg_driver fastrpc_driver = {
  
  static int fastrpc_init(void)
  {
@@ -2202,7 +2880,7 @@ index 69cc24962706c..c80c4f2eac038 100644
  	int ret;
  
  	ret = platform_driver_register(&fastrpc_cb_driver);
-@@ -2260,6 +2399,7 @@ module_init(fastrpc_init);
+@@ -2260,6 +2402,7 @@ module_init(fastrpc_init);
  
  static void fastrpc_exit(void)
  {
@@ -2248,10 +2926,26 @@ index 500b1feaf1f6f..147098c8b7229 100644
  				 (unsigned long)cmd->ddata_addr,
  				 &req->debug_data,
 diff --git a/drivers/misc/genwqe/card_dev.c b/drivers/misc/genwqe/card_dev.c
-index 55fc5b80e649f..80018048595ec 100644
+index 55fc5b80e649f..f364d9169f55c 100644
 --- a/drivers/misc/genwqe/card_dev.c
 +++ b/drivers/misc/genwqe/card_dev.c
-@@ -551,6 +551,8 @@ static int do_flash_update(struct genwqe_file *cfile,
+@@ -298,6 +298,7 @@ static int genwqe_terminate(struct genwqe_dev *cd)
+  */
+ static int genwqe_open(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function genwqe_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct genwqe_dev *cd;
+ 	struct genwqe_file *cfile;
+ 
+@@ -356,6 +357,7 @@ static int genwqe_fasync(int fd, struct file *filp, int mode)
+  */
+ static int genwqe_release(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function genwqe_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct genwqe_file *cfile = (struct genwqe_file *)filp->private_data;
+ 	struct genwqe_dev *cd = cfile->cd;
+ 
+@@ -551,6 +553,8 @@ static int do_flash_update(struct genwqe_file *cfile,
  		 */
  		tocopy = min_t(size_t, load->size, FLASH_BLOCK);
  
@@ -2260,7 +2954,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		rc = copy_from_user(xbuf, buf, tocopy);
  		if (rc) {
  			rc = -EFAULT;
-@@ -736,6 +738,8 @@ static int do_flash_read(struct genwqe_file *cfile,
+@@ -736,6 +740,8 @@ static int do_flash_read(struct genwqe_file *cfile,
  			goto free_buffer;
  		}
  
@@ -2269,7 +2963,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		rc = copy_to_user(buf, xbuf, tocopy);
  		if (rc) {
  			rc = -EFAULT;
-@@ -1019,6 +1023,8 @@ static int do_execute_ddcb(struct genwqe_file *cfile,
+@@ -1019,6 +1025,8 @@ static int do_execute_ddcb(struct genwqe_file *cfile,
  	if (cmd == NULL)
  		return -ENOMEM;
  
@@ -2278,7 +2972,7 @@ index 55fc5b80e649f..80018048595ec 100644
  	if (copy_from_user(cmd, (void __user *)arg, sizeof(*cmd))) {
  		ddcb_requ_free(cmd);
  		return -EFAULT;
-@@ -1031,6 +1037,8 @@ static int do_execute_ddcb(struct genwqe_file *cfile,
+@@ -1031,6 +1039,8 @@ static int do_execute_ddcb(struct genwqe_file *cfile,
  
  	/* Copy back only the modifed fields. Do not copy ASIV
  	   back since the copy got modified by the driver. */
@@ -2287,7 +2981,15 @@ index 55fc5b80e649f..80018048595ec 100644
  	if (copy_to_user((void __user *)arg, cmd,
  			 sizeof(*cmd) - DDCB_ASIV_LENGTH)) {
  		ddcb_requ_free(cmd);
-@@ -1070,6 +1078,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1052,6 +1062,7 @@ static int do_execute_ddcb(struct genwqe_file *cfile,
+ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+ 			 unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function genwqe_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	int rc = 0;
+ 	struct genwqe_file *cfile = (struct genwqe_file *)filp->private_data;
+ 	struct genwqe_dev *cd = cfile->cd;
+@@ -1070,6 +1081,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  	switch (cmd) {
  
  	case GENWQE_GET_CARD_STATE:
@@ -2296,7 +2998,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		put_user(cd->card_state, (enum genwqe_card_state __user *)arg);
  		return 0;
  
-@@ -1077,6 +1087,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1077,6 +1090,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  	case GENWQE_READ_REG64: {
  		io = (struct genwqe_reg_io __user *)arg;
  
@@ -2305,7 +3007,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		if (get_user(reg_offs, &io->num))
  			return -EFAULT;
  
-@@ -1084,6 +1096,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1084,6 +1099,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  			return -EINVAL;
  
  		val = __genwqe_readq(cd, reg_offs);
@@ -2314,7 +3016,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		put_user(val, &io->val64);
  		return 0;
  	}
-@@ -1097,12 +1111,16 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1097,12 +1114,16 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  		if ((filp->f_flags & O_ACCMODE) == O_RDONLY)
  			return -EPERM;
  
@@ -2331,7 +3033,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		if (get_user(val, &io->val64))
  			return -EFAULT;
  
-@@ -1113,6 +1131,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1113,6 +1134,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  	case GENWQE_READ_REG32: {
  		io = (struct genwqe_reg_io __user *)arg;
  
@@ -2340,7 +3042,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		if (get_user(reg_offs, &io->num))
  			return -EFAULT;
  
-@@ -1120,6 +1140,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1120,6 +1143,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  			return -EINVAL;
  
  		val = __genwqe_readl(cd, reg_offs);
@@ -2349,7 +3051,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		put_user(val, &io->val64);
  		return 0;
  	}
-@@ -1133,12 +1155,16 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1133,12 +1158,16 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  		if ((filp->f_flags & O_ACCMODE) == O_RDONLY)
  			return -EPERM;
  
@@ -2366,7 +3068,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		if (get_user(val, &io->val64))
  			return -EFAULT;
  
-@@ -1156,12 +1182,16 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1156,12 +1185,16 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  		if ((filp->f_flags & O_ACCMODE) == O_RDONLY)
  			return -EPERM;
  
@@ -2383,7 +3085,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		if (copy_to_user((void __user *)arg, &load, sizeof(load)))
  			return -EFAULT;
  
-@@ -1177,11 +1207,15 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1177,11 +1210,15 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  		if (genwqe_flash_readback_fails(cd))
  			return -ENOSPC;	 /* known to fail for old versions */
  
@@ -2399,7 +3101,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		if (copy_to_user((void __user *)arg, &load, sizeof(load)))
  			return -EFAULT;
  
-@@ -1192,6 +1226,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1192,6 +1229,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  	case GENWQE_PIN_MEM: {
  		struct genwqe_mem m;
  
@@ -2408,7 +3110,7 @@ index 55fc5b80e649f..80018048595ec 100644
  		if (copy_from_user(&m, (void __user *)arg, sizeof(m)))
  			return -EFAULT;
  
-@@ -1201,6 +1237,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
+@@ -1201,6 +1240,8 @@ static long genwqe_ioctl(struct file *filp, unsigned int cmd,
  	case GENWQE_UNPIN_MEM: {
  		struct genwqe_mem m;
  
@@ -2703,8 +3405,35 @@ index 1167463f26fb9..20cf22c1c7cb9 100644
  	__genwqe_writeq(cd, IO_SLC_MISC_DEBUG_CLR, 0xcull);
  
  	if (genwqe_need_err_masking(cd))
+diff --git a/drivers/misc/habanalabs/common/command_buffer.c b/drivers/misc/habanalabs/common/command_buffer.c
+index 2b332991ac6a7..ffc63f4d976ff 100644
+--- a/drivers/misc/habanalabs/common/command_buffer.c
++++ b/drivers/misc/habanalabs/common/command_buffer.c
+@@ -5,6 +5,14 @@
+  * All Rights Reserved.
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include <uapi/misc/habanalabs.h>
+ #include "habanalabs.h"
+ 
+@@ -342,6 +350,7 @@ static int hl_cb_info(struct hl_mem_mgr *mmg,
+ 
+ int hl_cb_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_cb_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	union hl_cb_args *args = data;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	u64 handle = 0, device_va = 0;
 diff --git a/drivers/misc/habanalabs/common/command_submission.c b/drivers/misc/habanalabs/common/command_submission.c
-index 1071bf492e423..b9238ef4fcd91 100644
+index 1071bf492e423..5d61c1f09ebdd 100644
 --- a/drivers/misc/habanalabs/common/command_submission.c
 +++ b/drivers/misc/habanalabs/common/command_submission.c
 @@ -5,6 +5,14 @@
@@ -2731,7 +3460,23 @@ index 1071bf492e423..b9238ef4fcd91 100644
  	if (copy_from_user(*cs_chunk_array, chunks, size_to_copy)) {
  		atomic64_inc(&ctx->cs_counters.validation_drop_cnt);
  		atomic64_inc(&hdev->aggregated_cs_counters.validation_drop_cnt);
-@@ -1820,6 +1830,8 @@ static int cs_ioctl_extract_signal_seq(struct hl_device *hdev,
+@@ -1391,6 +1401,7 @@ static int cs_ioctl_default(struct hl_fpriv *hpriv, void __user *chunks,
+ 				u32 encaps_signals_handle, u32 timeout,
+ 				u16 *signal_initial_sob_count)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cs_ioctl_default called at %s:%d\n", __FILE__, __LINE__);
+ 	bool staged_mid, int_queues_only = true, using_hw_queues = false;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	struct hl_cs_chunk *cs_chunk_array;
+@@ -1786,6 +1797,7 @@ static int cs_ioctl_extract_signal_seq(struct hl_device *hdev,
+ 		struct hl_cs_chunk *chunk, u64 *signal_seq, struct hl_ctx *ctx,
+ 		bool encaps_signals)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cs_ioctl_extract_signal_seq called at %s:%d\n", __FILE__, __LINE__);
+ 	u64 *signal_seq_arr = NULL;
+ 	u32 size_to_copy, signal_seq_arr_len;
+ 	int rc = 0;
+@@ -1820,6 +1832,8 @@ static int cs_ioctl_extract_signal_seq(struct hl_device *hdev,
  	}
  
  	size_to_copy = signal_seq_arr_len * sizeof(*signal_seq_arr);
@@ -2740,7 +3485,47 @@ index 1071bf492e423..b9238ef4fcd91 100644
  	if (copy_from_user(signal_seq_arr,
  				u64_to_user_ptr(chunk->signal_seq_arr),
  				size_to_copy)) {
-@@ -2382,6 +2394,8 @@ static int cs_ioctl_engine_cores(struct hl_fpriv *hpriv, u64 engine_cores,
+@@ -1844,6 +1858,7 @@ static int cs_ioctl_signal_wait_create_jobs(struct hl_device *hdev,
+ 		struct hl_ctx *ctx, struct hl_cs *cs,
+ 		enum hl_queue_type q_type, u32 q_idx, u32 encaps_signal_offset)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cs_ioctl_signal_wait_create_jobs called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_cs_counters_atomic *cntr;
+ 	struct hl_cs_job *job;
+ 	struct hl_cb *cb;
+@@ -1911,6 +1926,7 @@ static int cs_ioctl_reserve_signals(struct hl_fpriv *hpriv,
+ 				u32 *handle_id, u32 *sob_addr,
+ 				u32 *signals_count)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cs_ioctl_reserve_signals called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hw_queue_properties *hw_queue_prop;
+ 	struct hl_sync_stream_properties *prop;
+ 	struct hl_device *hdev = hpriv->hdev;
+@@ -2028,6 +2044,7 @@ static int cs_ioctl_reserve_signals(struct hl_fpriv *hpriv,
+ 
+ static int cs_ioctl_unreserve_signals(struct hl_fpriv *hpriv, u32 handle_id)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cs_ioctl_unreserve_signals called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_cs_encaps_sig_handle *encaps_sig_hdl;
+ 	struct hl_sync_stream_properties *prop;
+ 	struct hl_device *hdev = hpriv->hdev;
+@@ -2098,6 +2115,7 @@ static int cs_ioctl_signal_wait(struct hl_fpriv *hpriv, enum hl_cs_type cs_type,
+ 				u64 *cs_seq, u32 flags, u32 timeout,
+ 				u32 *signal_sob_addr_offset, u16 *signal_initial_sob_count)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cs_ioctl_signal_wait called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_cs_encaps_sig_handle *encaps_sig_hdl = NULL;
+ 	bool handle_found = false, is_wait_cs = false,
+ 			wait_cs_submitted = false,
+@@ -2362,6 +2380,7 @@ static int cs_ioctl_signal_wait(struct hl_fpriv *hpriv, enum hl_cs_type cs_type,
+ static int cs_ioctl_engine_cores(struct hl_fpriv *hpriv, u64 engine_cores,
+ 						u32 num_engine_cores, u32 core_command)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function cs_ioctl_engine_cores called at %s:%d\n", __FILE__, __LINE__);
+ 	int rc;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	void __user *engine_cores_arr;
+@@ -2382,6 +2401,8 @@ static int cs_ioctl_engine_cores(struct hl_fpriv *hpriv, u64 engine_cores,
  	if (!cores)
  		return -ENOMEM;
  
@@ -2749,7 +3534,31 @@ index 1071bf492e423..b9238ef4fcd91 100644
  	if (copy_from_user(cores, engine_cores_arr, num_engine_cores * sizeof(u32))) {
  		dev_err(hdev->dev, "Failed to copy core-ids array from user\n");
  		kfree(cores);
-@@ -2866,6 +2880,8 @@ static int hl_multi_cs_wait_ioctl(struct hl_fpriv *hpriv, void *data)
+@@ -2396,6 +2417,7 @@ static int cs_ioctl_engine_cores(struct hl_fpriv *hpriv, u64 engine_cores,
+ 
+ int hl_cs_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_cs_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	union hl_cs_args *args = data;
+ 	enum hl_cs_type cs_type = 0;
+ 	u64 cs_seq = ULONG_MAX;
+@@ -2688,6 +2710,7 @@ static int hl_cs_poll_fences(struct multi_cs_data *mcs_data, struct multi_cs_com
+ static int _hl_cs_wait_ioctl(struct hl_device *hdev, struct hl_ctx *ctx, u64 timeout_us, u64 seq,
+ 				enum hl_cs_wait_status *status, s64 *timestamp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function _hl_cs_wait_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_fence *fence;
+ 	int rc = 0;
+ 
+@@ -2832,6 +2855,7 @@ void hl_multi_cs_completion_init(struct hl_device *hdev)
+  */
+ static int hl_multi_cs_wait_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_multi_cs_wait_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct multi_cs_completion *mcs_compl;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	struct multi_cs_data mcs_data = {};
+@@ -2866,6 +2890,8 @@ static int hl_multi_cs_wait_ioctl(struct hl_fpriv *hpriv, void *data)
  	/* copy CS sequence array from user */
  	seq_arr = (void __user *) (uintptr_t) args->in.seq;
  	size_to_copy = seq_arr_len * sizeof(*cs_seq_arr);
@@ -2758,7 +3567,31 @@ index 1071bf492e423..b9238ef4fcd91 100644
  	if (copy_from_user(cs_seq_arr, seq_arr, size_to_copy)) {
  		dev_err(hdev->dev, "Failed to copy multi-cs sequence array from user\n");
  		rc = -EFAULT;
-@@ -3313,6 +3329,8 @@ static int _hl_interrupt_wait_ioctl_user_addr(struct hl_device *hdev, struct hl_
+@@ -2979,6 +3005,7 @@ static int hl_multi_cs_wait_ioctl(struct hl_fpriv *hpriv, void *data)
+ 
+ static int hl_cs_wait_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_cs_wait_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	union hl_wait_cs_args *args = data;
+ 	enum hl_cs_wait_status status;
+@@ -3117,6 +3144,7 @@ static int _hl_interrupt_wait_ioctl(struct hl_device *hdev, struct hl_ctx *ctx,
+ 				bool register_ts_record, u64 ts_handle, u64 ts_offset,
+ 				u32 *status, u64 *timestamp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function _hl_interrupt_wait_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_user_pending_interrupt *pend;
+ 	struct hl_mmap_mem_buf *buf;
+ 	struct hl_cb *cq_cb;
+@@ -3285,6 +3313,7 @@ static int _hl_interrupt_wait_ioctl_user_addr(struct hl_device *hdev, struct hl_
+ 				u32 *status,
+ 				u64 *timestamp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function _hl_interrupt_wait_ioctl_user_addr called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_user_pending_interrupt *pend;
+ 	unsigned long timeout, flags;
+ 	u64 completion_value;
+@@ -3313,6 +3342,8 @@ static int _hl_interrupt_wait_ioctl_user_addr(struct hl_device *hdev, struct hl_
  	/* We check for completion value as interrupt could have been received
  	 * before we added the node to the wait list
  	 */
@@ -2767,7 +3600,7 @@ index 1071bf492e423..b9238ef4fcd91 100644
  	if (copy_from_user(&completion_value, u64_to_user_ptr(user_address), 8)) {
  		dev_err(hdev->dev, "Failed to copy completion value from user\n");
  		rc = -EFAULT;
-@@ -3348,6 +3366,8 @@ static int _hl_interrupt_wait_ioctl_user_addr(struct hl_device *hdev, struct hl_
+@@ -3348,6 +3379,8 @@ static int _hl_interrupt_wait_ioctl_user_addr(struct hl_device *hdev, struct hl_
  		reinit_completion(&pend->fence.completion);
  		spin_unlock_irqrestore(&interrupt->wait_list_lock, flags);
  
@@ -2776,8 +3609,24 @@ index 1071bf492e423..b9238ef4fcd91 100644
  		if (copy_from_user(&completion_value, u64_to_user_ptr(user_address), 8)) {
  			dev_err(hdev->dev, "Failed to copy completion value from user\n");
  			rc = -EFAULT;
+@@ -3397,6 +3430,7 @@ static int _hl_interrupt_wait_ioctl_user_addr(struct hl_device *hdev, struct hl_
+ 
+ static int hl_interrupt_wait_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_interrupt_wait_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	u16 interrupt_id, first_interrupt, last_interrupt;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	struct asic_fixed_properties *prop;
+@@ -3472,6 +3506,7 @@ static int hl_interrupt_wait_ioctl(struct hl_fpriv *hpriv, void *data)
+ 
+ int hl_wait_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_wait_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	union hl_wait_cs_args *args = data;
+ 	u32 flags = args->in.flags;
+ 	int rc;
 diff --git a/drivers/misc/habanalabs/common/debugfs.c b/drivers/misc/habanalabs/common/debugfs.c
-index 48d3ec8b5c825..b132201377868 100644
+index 48d3ec8b5c825..057a25a68eaeb 100644
 --- a/drivers/misc/habanalabs/common/debugfs.c
 +++ b/drivers/misc/habanalabs/common/debugfs.c
 @@ -5,6 +5,14 @@
@@ -2813,8 +3662,86 @@ index 48d3ec8b5c825..b132201377868 100644
  	if (copy_from_user(kbuf, buf, count))
  		goto err;
  
+@@ -1557,6 +1569,7 @@ static const struct hl_info_list hl_debugfs_list[] = {
+ 
+ static int hl_debugfs_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_debugfs_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_debugfs_entry *node = inode->i_private;
+ 
+ 	return single_open(file, node->info_ent->show, node);
+diff --git a/drivers/misc/habanalabs/common/device.c b/drivers/misc/habanalabs/common/device.c
+index 9ee1b6abd8a05..afd00fc53bacb 100644
+--- a/drivers/misc/habanalabs/common/device.c
++++ b/drivers/misc/habanalabs/common/device.c
+@@ -5,6 +5,14 @@
+  * All Rights Reserved.
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #define pr_fmt(fmt)			"habanalabs: " fmt
+ 
+ #include <uapi/misc/habanalabs.h>
+@@ -447,6 +455,7 @@ int hl_hpriv_put(struct hl_fpriv *hpriv)
+  */
+ static int hl_device_release(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_device_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_fpriv *hpriv = filp->private_data;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 
+@@ -480,6 +489,7 @@ static int hl_device_release(struct inode *inode, struct file *filp)
+ 
+ static int hl_device_release_ctrl(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_device_release_ctrl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_fpriv *hpriv = filp->private_data;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 
+diff --git a/drivers/misc/habanalabs/common/habanalabs_drv.c b/drivers/misc/habanalabs/common/habanalabs_drv.c
+index ae3cab3f4aa55..f3cab5aa4e756 100644
+--- a/drivers/misc/habanalabs/common/habanalabs_drv.c
++++ b/drivers/misc/habanalabs/common/habanalabs_drv.c
+@@ -6,6 +6,14 @@
+  *
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #define pr_fmt(fmt)		"habanalabs: " fmt
+ 
+ #include "habanalabs.h"
+@@ -122,6 +130,7 @@ static bool is_asic_secured(enum hl_asic_type asic_type)
+  */
+ int hl_device_open(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_device_open called at %s:%d\n", __FILE__, __LINE__);
+ 	enum hl_device_status status;
+ 	struct hl_device *hdev;
+ 	struct hl_fpriv *hpriv;
+@@ -236,6 +245,7 @@ int hl_device_open(struct inode *inode, struct file *filp)
+ 
+ int hl_device_open_ctrl(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_device_open_ctrl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_device *hdev;
+ 	struct hl_fpriv *hpriv;
+ 	int rc;
 diff --git a/drivers/misc/habanalabs/common/habanalabs_ioctl.c b/drivers/misc/habanalabs/common/habanalabs_ioctl.c
-index 1ea1ae34b7a74..b2a11ced04dbd 100644
+index 1ea1ae34b7a74..840b351ab2b7f 100644
 --- a/drivers/misc/habanalabs/common/habanalabs_ioctl.c
 +++ b/drivers/misc/habanalabs/common/habanalabs_ioctl.c
 @@ -38,6 +38,8 @@ static int device_status_info(struct hl_device *hdev, struct hl_info_args *args)
@@ -3078,7 +4005,43 @@ index 1ea1ae34b7a74..b2a11ced04dbd 100644
  	rc = copy_to_user(out, eng_data.buf, min_t(size_t, status_buf_size, eng_data.actual_size)) ?
  				-EFAULT : 0;
  
-@@ -1026,6 +1084,8 @@ static long _hl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg,
+@@ -787,6 +845,7 @@ static int engine_status_info(struct hl_fpriv *hpriv, struct hl_info_args *args)
+ static int _hl_info_ioctl(struct hl_fpriv *hpriv, void *data,
+ 				struct device *dev)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function _hl_info_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	enum hl_device_status status;
+ 	struct hl_info_args *args = data;
+ 	struct hl_device *hdev = hpriv->hdev;
+@@ -916,16 +975,19 @@ static int _hl_info_ioctl(struct hl_fpriv *hpriv, void *data,
+ 
+ static int hl_info_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_info_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	return _hl_info_ioctl(hpriv, data, hpriv->hdev->dev);
+ }
+ 
+ static int hl_info_ioctl_control(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_info_ioctl_control called at %s:%d\n", __FILE__, __LINE__);
+ 	return _hl_info_ioctl(hpriv, data, hpriv->hdev->dev_ctrl);
+ }
+ 
+ static int hl_debug_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_debug_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_debug_args *args = data;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	enum hl_device_status status;
+@@ -988,6 +1050,7 @@ static const struct hl_ioctl_desc hl_ioctls_control[] = {
+ static long _hl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg,
+ 		const struct hl_ioctl_desc *ioctl, struct device *dev)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function _hl_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_fpriv *hpriv = filep->private_data;
+ 	unsigned int nr = _IOC_NR(cmd);
+ 	char stack_kdata[128] = {0};
+@@ -1026,6 +1089,8 @@ static long _hl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg,
  	}
  
  	if (cmd & IOC_IN) {
@@ -3087,7 +4050,7 @@ index 1ea1ae34b7a74..b2a11ced04dbd 100644
  		if (copy_from_user(kdata, (void __user *)arg, usize)) {
  			retcode = -EFAULT;
  			goto out_err;
-@@ -1036,6 +1096,8 @@ static long _hl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg,
+@@ -1036,6 +1101,8 @@ static long _hl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg,
  
  	retcode = func(hpriv, kdata);
  
@@ -3096,8 +4059,24 @@ index 1ea1ae34b7a74..b2a11ced04dbd 100644
  	if ((cmd & IOC_OUT) && copy_to_user((void __user *)arg, kdata, usize))
  		retcode = -EFAULT;
  
+@@ -1052,6 +1119,7 @@ static long _hl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg,
+ 
+ long hl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_fpriv *hpriv = filep->private_data;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	const struct hl_ioctl_desc *ioctl = NULL;
+@@ -1075,6 +1143,7 @@ long hl_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 
+ long hl_ioctl_control(struct file *filep, unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_ioctl_control called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_fpriv *hpriv = filep->private_data;
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	const struct hl_ioctl_desc *ioctl = NULL;
 diff --git a/drivers/misc/habanalabs/common/memory.c b/drivers/misc/habanalabs/common/memory.c
-index a49038da3f6d0..209c8aae152c1 100644
+index a49038da3f6d0..a2cf6fc462f9e 100644
 --- a/drivers/misc/habanalabs/common/memory.c
 +++ b/drivers/misc/habanalabs/common/memory.c
 @@ -5,6 +5,14 @@
@@ -3137,6 +4116,22 @@ index a49038da3f6d0..209c8aae152c1 100644
  	dma_buf_put(hl_dmabuf->dmabuf);
  	return rc;
  }
+@@ -2001,6 +2017,7 @@ static int export_dmabuf_from_handle(struct hl_ctx *ctx, u64 handle, int flags,
+ 
+ static int mem_ioctl_no_mmu(struct hl_fpriv *hpriv, union hl_mem_args *args)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mem_ioctl_no_mmu called at %s:%d\n", __FILE__, __LINE__);
+ 	struct hl_device *hdev = hpriv->hdev;
+ 	u64 block_handle, device_addr = 0;
+ 	struct hl_ctx *ctx = hpriv->ctx;
+@@ -2172,6 +2189,7 @@ static int allocate_timestamps_buffers(struct hl_fpriv *hpriv, struct hl_mem_in
+ 
+ int hl_mem_ioctl(struct hl_fpriv *hpriv, void *data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function hl_mem_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	enum hl_device_status status;
+ 	union hl_mem_args *args = data;
+ 	struct hl_device *hdev = hpriv->hdev;
 diff --git a/drivers/misc/habanalabs/gaudi/gaudi.c b/drivers/misc/habanalabs/gaudi/gaudi.c
 index 92560414e8433..cd583cafcf693 100644
 --- a/drivers/misc/habanalabs/gaudi/gaudi.c
@@ -8406,7 +9401,7 @@ index 5ef9e3ca97a69..b1aa303cce076 100644
  	hdev->asic_funcs = &goya_funcs;
  }
 diff --git a/drivers/misc/hpilo.c b/drivers/misc/hpilo.c
-index 8d00df9243c43..2c84faa47a5f4 100644
+index 8d00df9243c43..5a06cceeae9b7 100644
 --- a/drivers/misc/hpilo.c
 +++ b/drivers/misc/hpilo.c
 @@ -39,22 +39,26 @@ static const struct pci_device_id ilo_blacklist[] = {
@@ -8689,23 +9684,25 @@ index 8d00df9243c43..2c84faa47a5f4 100644
  	struct ccb_data *data = fp->private_data;
  	struct ccb *driver_ccb = &data->driver_ccb;
  
-@@ -534,6 +579,7 @@ static __poll_t ilo_poll(struct file *fp, poll_table *wait)
+@@ -534,6 +579,8 @@ static __poll_t ilo_poll(struct file *fp, poll_table *wait)
  
  static int ilo_close(struct inode *ip, struct file *fp)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ilo_close called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function ilo_close at %s:%d\n", __FILE__, __LINE__);
  	int slot;
  	struct ccb_data *data;
  	struct ilo_hwinfo *hw;
-@@ -565,6 +611,7 @@ static int ilo_close(struct inode *ip, struct file *fp)
+@@ -565,6 +612,8 @@ static int ilo_close(struct inode *ip, struct file *fp)
  
  static int ilo_open(struct inode *ip, struct file *fp)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ilo_open called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function ilo_open at %s:%d\n", __FILE__, __LINE__);
  	int slot, error;
  	struct ccb_data *data;
  	struct ilo_hwinfo *hw;
-@@ -649,6 +696,7 @@ static const struct file_operations ilo_fops = {
+@@ -649,6 +698,7 @@ static const struct file_operations ilo_fops = {
  
  static irqreturn_t ilo_isr(int irq, void *data)
  {
@@ -8713,7 +9710,7 @@ index 8d00df9243c43..2c84faa47a5f4 100644
  	struct ilo_hwinfo *hw = data;
  	int pending, i;
  
-@@ -684,6 +732,7 @@ static irqreturn_t ilo_isr(int irq, void *data)
+@@ -684,6 +734,7 @@ static irqreturn_t ilo_isr(int irq, void *data)
  
  static void ilo_unmap_device(struct pci_dev *pdev, struct ilo_hwinfo *hw)
  {
@@ -8721,7 +9718,7 @@ index 8d00df9243c43..2c84faa47a5f4 100644
  	pci_iounmap(pdev, hw->db_vaddr);
  	pci_iounmap(pdev, hw->ram_vaddr);
  	pci_iounmap(pdev, hw->mmio_vaddr);
-@@ -691,6 +740,7 @@ static void ilo_unmap_device(struct pci_dev *pdev, struct ilo_hwinfo *hw)
+@@ -691,6 +742,7 @@ static void ilo_unmap_device(struct pci_dev *pdev, struct ilo_hwinfo *hw)
  
  static int ilo_map_device(struct pci_dev *pdev, struct ilo_hwinfo *hw)
  {
@@ -8729,7 +9726,7 @@ index 8d00df9243c43..2c84faa47a5f4 100644
  	int bar;
  	unsigned long off;
  	u8 pci_rev_id;
-@@ -742,6 +792,7 @@ static int ilo_map_device(struct pci_dev *pdev, struct ilo_hwinfo *hw)
+@@ -742,6 +794,7 @@ static int ilo_map_device(struct pci_dev *pdev, struct ilo_hwinfo *hw)
  
  static void ilo_remove(struct pci_dev *pdev)
  {
@@ -8737,7 +9734,7 @@ index 8d00df9243c43..2c84faa47a5f4 100644
  	int i, minor;
  	struct ilo_hwinfo *ilo_hw = pci_get_drvdata(pdev);
  
-@@ -774,6 +825,7 @@ static void ilo_remove(struct pci_dev *pdev)
+@@ -774,6 +827,7 @@ static void ilo_remove(struct pci_dev *pdev)
  static int ilo_probe(struct pci_dev *pdev,
  			       const struct pci_device_id *ent)
  {
@@ -8745,7 +9742,7 @@ index 8d00df9243c43..2c84faa47a5f4 100644
  	int devnum, minor, start, error = 0;
  	struct ilo_hwinfo *ilo_hw;
  
-@@ -885,6 +937,7 @@ static struct pci_driver ilo_driver = {
+@@ -885,6 +939,7 @@ static struct pci_driver ilo_driver = {
  
  static int __init ilo_init(void)
  {
@@ -8753,7 +9750,7 @@ index 8d00df9243c43..2c84faa47a5f4 100644
  	int error;
  	dev_t dev;
  
-@@ -915,6 +968,7 @@ static int __init ilo_init(void)
+@@ -915,6 +970,7 @@ static int __init ilo_init(void)
  
  static void __exit ilo_exit(void)
  {
@@ -8762,7 +9759,7 @@ index 8d00df9243c43..2c84faa47a5f4 100644
  	unregister_chrdev_region(MKDEV(ilo_major, 0), MAX_OPEN);
  	class_destroy(ilo_class);
 diff --git a/drivers/misc/ibmasm/ibmasmfs.c b/drivers/misc/ibmasm/ibmasmfs.c
-index 35fec1bf1b3dd..af9bfaaded916 100644
+index 35fec1bf1b3dd..22e1c9d139d20 100644
 --- a/drivers/misc/ibmasm/ibmasmfs.c
 +++ b/drivers/misc/ibmasm/ibmasmfs.c
 @@ -59,6 +59,14 @@
@@ -8780,7 +9777,23 @@ index 35fec1bf1b3dd..af9bfaaded916 100644
  #include <linux/fs.h>
  #include <linux/fs_context.h>
  #include <linux/pagemap.h>
-@@ -284,6 +292,8 @@ static ssize_t command_file_read(struct file *file, char __user *buf, size_t cou
+@@ -230,6 +238,7 @@ struct ibmasmfs_heartbeat_data {
+ 
+ static int command_file_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function command_file_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ibmasmfs_command_data *command_data;
+ 
+ 	if (!inode->i_private)
+@@ -247,6 +256,7 @@ static int command_file_open(struct inode *inode, struct file *file)
+ 
+ static int command_file_close(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function command_file_close called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ibmasmfs_command_data *command_data = file->private_data;
+ 
+ 	if (command_data->command)
+@@ -284,6 +294,8 @@ static ssize_t command_file_read(struct file *file, char __user *buf, size_t cou
  		return -EIO;
  	}
  	len = min(count, cmd->buffer_size);
@@ -8789,7 +9802,7 @@ index 35fec1bf1b3dd..af9bfaaded916 100644
  	if (copy_to_user(buf, cmd->buffer, len)) {
  		command_put(cmd);
  		return -EFAULT;
-@@ -314,6 +324,8 @@ static ssize_t command_file_write(struct file *file, const char __user *ubuff, s
+@@ -314,6 +326,8 @@ static ssize_t command_file_write(struct file *file, const char __user *ubuff, s
  	if (!cmd)
  		return -ENOMEM;
  
@@ -8798,7 +9811,23 @@ index 35fec1bf1b3dd..af9bfaaded916 100644
  	if (copy_from_user(cmd->buffer, ubuff, count)) {
  		command_put(cmd);
  		return -EFAULT;
-@@ -397,6 +409,8 @@ static ssize_t event_file_read(struct file *file, char __user *buf, size_t count
+@@ -336,6 +350,7 @@ static ssize_t command_file_write(struct file *file, const char __user *ubuff, s
+ 
+ static int event_file_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function event_file_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ibmasmfs_event_data *event_data;
+ 	struct service_processor *sp;
+ 
+@@ -358,6 +373,7 @@ static int event_file_open(struct inode *inode, struct file *file)
+ 
+ static int event_file_close(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function event_file_close called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ibmasmfs_event_data *event_data = file->private_data;
+ 
+ 	ibmasm_event_reader_unregister(event_data->sp, &event_data->reader);
+@@ -397,6 +413,8 @@ static ssize_t event_file_read(struct file *file, char __user *buf, size_t count
  		goto out;
  	}
  
@@ -8807,7 +9836,31 @@ index 35fec1bf1b3dd..af9bfaaded916 100644
          if (copy_to_user(buf, reader->data, reader->data_size)) {
  		ret = -EFAULT;
  		goto out;
-@@ -530,6 +544,8 @@ static ssize_t remote_settings_file_write(struct file *file, const char __user *
+@@ -425,6 +443,7 @@ static ssize_t event_file_write(struct file *file, const char __user *buf, size_
+ 
+ static int r_heartbeat_file_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function r_heartbeat_file_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ibmasmfs_heartbeat_data *rhbeat;
+ 
+ 	if (!inode->i_private)
+@@ -443,6 +462,7 @@ static int r_heartbeat_file_open(struct inode *inode, struct file *file)
+ 
+ static int r_heartbeat_file_close(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function r_heartbeat_file_close called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ibmasmfs_heartbeat_data *rhbeat = file->private_data;
+ 
+ 	kfree(rhbeat);
+@@ -496,6 +516,7 @@ static ssize_t r_heartbeat_file_write(struct file *file, const char __user *buf,
+ 
+ static int remote_settings_file_close(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function remote_settings_file_close called at %s:%d\n", __FILE__, __LINE__);
+ 	return 0;
+ }
+ 
+@@ -530,6 +551,8 @@ static ssize_t remote_settings_file_write(struct file *file, const char __user *
  		return -ENOMEM;
  
  
@@ -8817,7 +9870,7 @@ index 35fec1bf1b3dd..af9bfaaded916 100644
  		kfree(buff);
  		return -EFAULT;
 diff --git a/drivers/misc/ibmvmc.c b/drivers/misc/ibmvmc.c
-index cbaf6d35e854e..f0b03158fea71 100644
+index cbaf6d35e854e..5190eee1db86a 100644
 --- a/drivers/misc/ibmvmc.c
 +++ b/drivers/misc/ibmvmc.c
 @@ -54,6 +54,7 @@ static int ibmvmc_max_mtu = DEFAULT_MTU;
@@ -9023,23 +10076,25 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct ibmvmc_crq_msg crq_msg;
  	__be64 *crq_as_u64 = (__be64 *)&crq_msg;
  	int rc = 0;
-@@ -824,6 +858,7 @@ static int ibmvmc_send_msg(struct crq_server_adapter *adapter,
+@@ -824,6 +858,8 @@ static int ibmvmc_send_msg(struct crq_server_adapter *adapter,
   */
  static int ibmvmc_open(struct inode *inode, struct file *file)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ibmvmc_open called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function ibmvmc_open at %s:%d\n", __FILE__, __LINE__);
  	struct ibmvmc_file_session *session;
  
  	pr_debug("%s: inode = 0x%lx, file = 0x%lx, state = 0x%x\n", __func__,
-@@ -852,6 +887,7 @@ static int ibmvmc_open(struct inode *inode, struct file *file)
+@@ -852,6 +888,8 @@ static int ibmvmc_open(struct inode *inode, struct file *file)
   */
  static int ibmvmc_close(struct inode *inode, struct file *file)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ibmvmc_close called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function ibmvmc_close at %s:%d\n", __FILE__, __LINE__);
  	struct ibmvmc_file_session *session;
  	struct ibmvmc_hmc *hmc;
  	int rc = 0;
-@@ -903,6 +939,7 @@ static int ibmvmc_close(struct inode *inode, struct file *file)
+@@ -903,6 +941,7 @@ static int ibmvmc_close(struct inode *inode, struct file *file)
  static ssize_t ibmvmc_read(struct file *file, char *buf, size_t nbytes,
  			   loff_t *ppos)
  {
@@ -9047,7 +10102,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct ibmvmc_file_session *session;
  	struct ibmvmc_hmc *hmc;
  	struct crq_server_adapter *adapter;
-@@ -977,6 +1014,8 @@ static ssize_t ibmvmc_read(struct file *file, char *buf, size_t nbytes,
+@@ -977,6 +1016,8 @@ static ssize_t ibmvmc_read(struct file *file, char *buf, size_t nbytes,
  	spin_unlock_irqrestore(&hmc->lock, flags);
  
  	nbytes = min_t(size_t, nbytes, buffer->msg_len);
@@ -9056,7 +10111,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	n = copy_to_user((void *)buf, buffer->real_addr_local, nbytes);
  	dev_dbg(adapter->dev, "read: copy to user nbytes = 0x%lx.\n", nbytes);
  	ibmvmc_free_hmc_buffer(hmc, buffer);
-@@ -1004,6 +1043,7 @@ static ssize_t ibmvmc_read(struct file *file, char *buf, size_t nbytes,
+@@ -1004,6 +1045,7 @@ static ssize_t ibmvmc_read(struct file *file, char *buf, size_t nbytes,
   */
  static unsigned int ibmvmc_poll(struct file *file, poll_table *wait)
  {
@@ -9064,7 +10119,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct ibmvmc_file_session *session;
  	struct ibmvmc_hmc *hmc;
  	unsigned int mask = 0;
-@@ -1039,6 +1079,7 @@ static unsigned int ibmvmc_poll(struct file *file, poll_table *wait)
+@@ -1039,6 +1081,7 @@ static unsigned int ibmvmc_poll(struct file *file, poll_table *wait)
  static ssize_t ibmvmc_write(struct file *file, const char *buffer,
  			    size_t count, loff_t *ppos)
  {
@@ -9072,7 +10127,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct inode *inode;
  	struct ibmvmc_buffer *vmc_buffer;
  	struct ibmvmc_file_session *session;
-@@ -1112,6 +1153,8 @@ static ssize_t ibmvmc_write(struct file *file, const char *buffer,
+@@ -1112,6 +1155,8 @@ static ssize_t ibmvmc_write(struct file *file, const char *buffer,
  	while (c > 0) {
  		bytes = min_t(size_t, c, vmc_buffer->size);
  
@@ -9081,7 +10136,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  		bytes -= copy_from_user(buf, p, bytes);
  		if (!bytes) {
  			ret = -EFAULT;
-@@ -1148,6 +1191,7 @@ static ssize_t ibmvmc_write(struct file *file, const char *buffer,
+@@ -1148,6 +1193,7 @@ static ssize_t ibmvmc_write(struct file *file, const char *buffer,
   */
  static long ibmvmc_setup_hmc(struct ibmvmc_file_session *session)
  {
@@ -9089,15 +10144,16 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct ibmvmc_hmc *hmc;
  	unsigned int valid, free, index;
  
-@@ -1208,6 +1252,7 @@ static long ibmvmc_setup_hmc(struct ibmvmc_file_session *session)
+@@ -1208,6 +1254,8 @@ static long ibmvmc_setup_hmc(struct ibmvmc_file_session *session)
  static long ibmvmc_ioctl_sethmcid(struct ibmvmc_file_session *session,
  				  unsigned char __user *new_hmc_id)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ibmvmc_ioctl_sethmcid called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function ibmvmc_ioctl_sethmcid at %s:%d\n", __FILE__, __LINE__);
  	struct ibmvmc_hmc *hmc;
  	struct ibmvmc_buffer *buffer;
  	size_t bytes;
-@@ -1235,6 +1280,8 @@ static long ibmvmc_ioctl_sethmcid(struct ibmvmc_file_session *session,
+@@ -1235,6 +1283,8 @@ static long ibmvmc_ioctl_sethmcid(struct ibmvmc_file_session *session,
  		return -EIO;
  	}
  
@@ -9106,15 +10162,16 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	bytes = copy_from_user(hmc->hmc_id, new_hmc_id, HMC_ID_LEN);
  	if (bytes)
  		return -EFAULT;
-@@ -1274,6 +1321,7 @@ static long ibmvmc_ioctl_sethmcid(struct ibmvmc_file_session *session,
+@@ -1274,6 +1324,8 @@ static long ibmvmc_ioctl_sethmcid(struct ibmvmc_file_session *session,
  static long ibmvmc_ioctl_query(struct ibmvmc_file_session *session,
  			       struct ibmvmc_query_struct __user *ret_struct)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ibmvmc_ioctl_query called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function ibmvmc_ioctl_query at %s:%d\n", __FILE__, __LINE__);
  	struct ibmvmc_query_struct query_struct;
  	size_t bytes;
  
-@@ -1282,6 +1330,8 @@ static long ibmvmc_ioctl_query(struct ibmvmc_file_session *session,
+@@ -1282,6 +1334,8 @@ static long ibmvmc_ioctl_query(struct ibmvmc_file_session *session,
  	query_struct.state = ibmvmc.state;
  	query_struct.vmc_drc_index = ibmvmc.vmc_drc_index;
  
@@ -9123,15 +10180,17 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	bytes = copy_to_user(ret_struct, &query_struct,
  			     sizeof(query_struct));
  	if (bytes)
-@@ -1303,6 +1353,7 @@ static long ibmvmc_ioctl_query(struct ibmvmc_file_session *session,
+@@ -1303,7 +1357,9 @@ static long ibmvmc_ioctl_query(struct ibmvmc_file_session *session,
  static long ibmvmc_ioctl_requestvmc(struct ibmvmc_file_session *session,
  				    u32 __user *ret_vmc_index)
  {
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function ibmvmc_ioctl_requestvmc at %s:%d\n", __FILE__, __LINE__);
  	/* TODO: (adreznec) Add locking to control multiple process access */
++ printk(KERN_INFO "IOCTL_HANDLER: Function ibmvmc_ioctl_requestvmc called at %s:%d\n", __FILE__, __LINE__);
  	size_t bytes;
  	long rc;
-@@ -1337,6 +1388,8 @@ static long ibmvmc_ioctl_requestvmc(struct ibmvmc_file_session *session,
+ 	u32 vmc_drc_index;
+@@ -1337,6 +1393,8 @@ static long ibmvmc_ioctl_requestvmc(struct ibmvmc_file_session *session,
  	/* Success, set the vmc index in global struct */
  	ibmvmc.vmc_drc_index = vmc_drc_index;
  
@@ -9140,15 +10199,16 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	bytes = copy_to_user(ret_vmc_index, &vmc_drc_index,
  			     sizeof(*ret_vmc_index));
  	if (bytes) {
-@@ -1360,6 +1413,7 @@ static long ibmvmc_ioctl_requestvmc(struct ibmvmc_file_session *session,
+@@ -1360,6 +1418,8 @@ static long ibmvmc_ioctl_requestvmc(struct ibmvmc_file_session *session,
  static long ibmvmc_ioctl(struct file *file,
  			 unsigned int cmd, unsigned long arg)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ibmvmc_ioctl called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function ibmvmc_ioctl at %s:%d\n", __FILE__, __LINE__);
  	struct ibmvmc_file_session *session = file->private_data;
  
  	pr_debug("ibmvmc: ioctl file=0x%lx, cmd=0x%x, arg=0x%lx, ses=0x%lx\n",
-@@ -1427,6 +1481,7 @@ static const struct file_operations ibmvmc_fops = {
+@@ -1427,6 +1487,7 @@ static const struct file_operations ibmvmc_fops = {
  static int ibmvmc_add_buffer(struct crq_server_adapter *adapter,
  			     struct ibmvmc_crq_msg *crq)
  {
@@ -9156,7 +10216,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct ibmvmc_buffer *buffer;
  	u8 hmc_index;
  	u8 hmc_session;
-@@ -1544,6 +1599,7 @@ static int ibmvmc_add_buffer(struct crq_server_adapter *adapter,
+@@ -1544,6 +1605,7 @@ static int ibmvmc_add_buffer(struct crq_server_adapter *adapter,
  static int ibmvmc_rem_buffer(struct crq_server_adapter *adapter,
  			     struct ibmvmc_crq_msg *crq)
  {
@@ -9164,7 +10224,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct ibmvmc_buffer *buffer;
  	u8 hmc_index;
  	u8 hmc_session;
-@@ -1597,6 +1653,7 @@ static int ibmvmc_rem_buffer(struct crq_server_adapter *adapter,
+@@ -1597,6 +1659,7 @@ static int ibmvmc_rem_buffer(struct crq_server_adapter *adapter,
  static int ibmvmc_recv_msg(struct crq_server_adapter *adapter,
  			   struct ibmvmc_crq_msg *crq)
  {
@@ -9172,7 +10232,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct ibmvmc_buffer *buffer;
  	struct ibmvmc_hmc *hmc;
  	unsigned long msg_len;
-@@ -1702,6 +1759,7 @@ static int ibmvmc_recv_msg(struct crq_server_adapter *adapter,
+@@ -1702,6 +1765,7 @@ static int ibmvmc_recv_msg(struct crq_server_adapter *adapter,
  static void ibmvmc_process_capabilities(struct crq_server_adapter *adapter,
  					struct ibmvmc_crq_msg *crqp)
  {
@@ -9180,7 +10240,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct ibmvmc_admin_crq_msg *crq = (struct ibmvmc_admin_crq_msg *)crqp;
  
  	if ((be16_to_cpu(crq->version) >> 8) !=
-@@ -1737,6 +1795,7 @@ static void ibmvmc_process_capabilities(struct crq_server_adapter *adapter,
+@@ -1737,6 +1801,7 @@ static void ibmvmc_process_capabilities(struct crq_server_adapter *adapter,
  static int ibmvmc_validate_hmc_session(struct crq_server_adapter *adapter,
  				       struct ibmvmc_crq_msg *crq)
  {
@@ -9188,7 +10248,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	unsigned char hmc_index;
  
  	hmc_index = crq->hmc_index;
-@@ -1768,6 +1827,7 @@ static int ibmvmc_validate_hmc_session(struct crq_server_adapter *adapter,
+@@ -1768,6 +1833,7 @@ static int ibmvmc_validate_hmc_session(struct crq_server_adapter *adapter,
   */
  static void ibmvmc_reset(struct crq_server_adapter *adapter, bool xport_event)
  {
@@ -9196,7 +10256,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	int i;
  
  	if (ibmvmc.state != ibmvmc_state_sched_reset) {
-@@ -1808,6 +1868,7 @@ static void ibmvmc_reset(struct crq_server_adapter *adapter, bool xport_event)
+@@ -1808,6 +1874,7 @@ static void ibmvmc_reset(struct crq_server_adapter *adapter, bool xport_event)
   */
  static int ibmvmc_reset_task(void *data)
  {
@@ -9204,7 +10264,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct crq_server_adapter *adapter = data;
  	int rc;
  
-@@ -1858,6 +1919,7 @@ static int ibmvmc_reset_task(void *data)
+@@ -1858,6 +1925,7 @@ static int ibmvmc_reset_task(void *data)
  static void ibmvmc_process_open_resp(struct ibmvmc_crq_msg *crq,
  				     struct crq_server_adapter *adapter)
  {
@@ -9212,7 +10272,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	unsigned char hmc_index;
  	unsigned short buffer_id;
  
-@@ -1908,6 +1970,7 @@ static void ibmvmc_process_open_resp(struct ibmvmc_crq_msg *crq,
+@@ -1908,6 +1976,7 @@ static void ibmvmc_process_open_resp(struct ibmvmc_crq_msg *crq,
  static void ibmvmc_process_close_resp(struct ibmvmc_crq_msg *crq,
  				      struct crq_server_adapter *adapter)
  {
@@ -9220,7 +10280,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	unsigned char hmc_index;
  
  	hmc_index = crq->hmc_index;
-@@ -1938,6 +2001,7 @@ static void ibmvmc_process_close_resp(struct ibmvmc_crq_msg *crq,
+@@ -1938,6 +2007,7 @@ static void ibmvmc_process_close_resp(struct ibmvmc_crq_msg *crq,
  static void ibmvmc_crq_process(struct crq_server_adapter *adapter,
  			       struct ibmvmc_crq_msg *crq)
  {
@@ -9228,7 +10288,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	switch (crq->type) {
  	case VMC_MSG_CAP_RESP:
  		dev_dbg(adapter->dev, "CRQ recv: capabilities resp (0x%x)\n",
-@@ -2006,6 +2070,7 @@ static void ibmvmc_crq_process(struct crq_server_adapter *adapter,
+@@ -2006,6 +2076,7 @@ static void ibmvmc_crq_process(struct crq_server_adapter *adapter,
  static void ibmvmc_handle_crq_init(struct ibmvmc_crq_msg *crq,
  				   struct crq_server_adapter *adapter)
  {
@@ -9236,7 +10296,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	switch (crq->type) {
  	case 0x01:	/* Initialization message */
  		dev_dbg(adapter->dev, "CRQ recv: CRQ init msg - state 0x%x\n",
-@@ -2048,6 +2113,7 @@ static void ibmvmc_handle_crq_init(struct ibmvmc_crq_msg *crq,
+@@ -2048,6 +2119,7 @@ static void ibmvmc_handle_crq_init(struct ibmvmc_crq_msg *crq,
  static void ibmvmc_handle_crq(struct ibmvmc_crq_msg *crq,
  			      struct crq_server_adapter *adapter)
  {
@@ -9244,7 +10304,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	switch (crq->valid) {
  	case 0xC0:		/* initialization */
  		ibmvmc_handle_crq_init(crq, adapter);
-@@ -2068,6 +2134,7 @@ static void ibmvmc_handle_crq(struct ibmvmc_crq_msg *crq,
+@@ -2068,6 +2140,7 @@ static void ibmvmc_handle_crq(struct ibmvmc_crq_msg *crq,
  
  static void ibmvmc_task(unsigned long data)
  {
@@ -9252,7 +10312,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct crq_server_adapter *adapter =
  		(struct crq_server_adapter *)data;
  	struct vio_dev *vdev = to_vio_dev(adapter->dev);
-@@ -2114,6 +2181,7 @@ static void ibmvmc_task(unsigned long data)
+@@ -2114,6 +2187,7 @@ static void ibmvmc_task(unsigned long data)
   */
  static int ibmvmc_init_crq_queue(struct crq_server_adapter *adapter)
  {
@@ -9260,7 +10320,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct vio_dev *vdev = to_vio_dev(adapter->dev);
  	struct crq_queue *queue = &adapter->queue;
  	int rc = 0;
-@@ -2126,6 +2194,10 @@ static int ibmvmc_init_crq_queue(struct crq_server_adapter *adapter)
+@@ -2126,6 +2200,10 @@ static int ibmvmc_init_crq_queue(struct crq_server_adapter *adapter)
  
  	queue->size = PAGE_SIZE / sizeof(*queue->msgs);
  
@@ -9271,7 +10331,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	queue->msg_token = dma_map_single(adapter->dev, queue->msgs,
  					  queue->size * sizeof(*queue->msgs),
  					  DMA_BIDIRECTIONAL);
-@@ -2177,6 +2249,10 @@ static int ibmvmc_init_crq_queue(struct crq_server_adapter *adapter)
+@@ -2177,6 +2255,10 @@ static int ibmvmc_init_crq_queue(struct crq_server_adapter *adapter)
  	tasklet_kill(&adapter->work_task);
  	h_free_crq(vdev->unit_address);
  reg_crq_failed:
@@ -9282,7 +10342,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	dma_unmap_single(adapter->dev,
  			 queue->msg_token,
  			 queue->size * sizeof(*queue->msgs), DMA_BIDIRECTIONAL);
-@@ -2190,6 +2266,7 @@ static int ibmvmc_init_crq_queue(struct crq_server_adapter *adapter)
+@@ -2190,6 +2272,7 @@ static int ibmvmc_init_crq_queue(struct crq_server_adapter *adapter)
  static int read_dma_window(struct vio_dev *vdev,
  			   struct crq_server_adapter *adapter)
  {
@@ -9290,7 +10350,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	const __be32 *dma_window;
  	const __be32 *prop;
  
-@@ -2234,6 +2311,7 @@ static int read_dma_window(struct vio_dev *vdev,
+@@ -2234,6 +2317,7 @@ static int read_dma_window(struct vio_dev *vdev,
  
  static int ibmvmc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
  {
@@ -9298,7 +10358,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct crq_server_adapter *adapter = &ibmvmc_adapter;
  	int rc;
  
-@@ -2292,6 +2370,7 @@ static int ibmvmc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+@@ -2292,6 +2376,7 @@ static int ibmvmc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
  
  static void ibmvmc_remove(struct vio_dev *vdev)
  {
@@ -9306,7 +10366,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	struct crq_server_adapter *adapter = dev_get_drvdata(&vdev->dev);
  
  	dev_info(adapter->dev, "Entering remove for UA 0x%x\n",
-@@ -2314,6 +2393,7 @@ static struct vio_driver ibmvmc_driver = {
+@@ -2314,6 +2399,7 @@ static struct vio_driver ibmvmc_driver = {
  
  static void __init ibmvmc_scrub_module_parms(void)
  {
@@ -9314,7 +10374,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	if (ibmvmc_max_mtu > MAX_MTU) {
  		pr_warn("ibmvmc: Max MTU reduced to %d\n", MAX_MTU);
  		ibmvmc_max_mtu = MAX_MTU;
-@@ -2349,6 +2429,7 @@ static struct miscdevice ibmvmc_miscdev = {
+@@ -2349,6 +2435,7 @@ static struct miscdevice ibmvmc_miscdev = {
  
  static int __init ibmvmc_module_init(void)
  {
@@ -9322,7 +10382,7 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	int rc, i, j;
  
  	ibmvmc.state = ibmvmc_state_initial;
-@@ -2399,6 +2480,7 @@ static int __init ibmvmc_module_init(void)
+@@ -2399,6 +2486,7 @@ static int __init ibmvmc_module_init(void)
  
  static void __exit ibmvmc_module_exit(void)
  {
@@ -9331,10 +10391,26 @@ index cbaf6d35e854e..f0b03158fea71 100644
  	vio_unregister_driver(&ibmvmc_driver);
  	misc_deregister(&ibmvmc_miscdev);
 diff --git a/drivers/misc/lis3lv02d/lis3lv02d.c b/drivers/misc/lis3lv02d/lis3lv02d.c
-index 3a7808b796b1b..a9b15680ace2b 100644
+index 3a7808b796b1b..0de4ce688a84c 100644
 --- a/drivers/misc/lis3lv02d/lis3lv02d.c
 +++ b/drivers/misc/lis3lv02d/lis3lv02d.c
-@@ -638,6 +638,8 @@ static ssize_t lis3lv02d_misc_read(struct file *file, char __user *buf,
+@@ -572,6 +572,7 @@ static irqreturn_t lis302dl_interrupt_thread2_8b(int irq, void *data)
+ 
+ static int lis3lv02d_misc_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function lis3lv02d_misc_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct lis3lv02d *lis3 = container_of(file->private_data,
+ 					      struct lis3lv02d, miscdev);
+ 
+@@ -587,6 +588,7 @@ static int lis3lv02d_misc_open(struct inode *inode, struct file *file)
+ 
+ static int lis3lv02d_misc_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function lis3lv02d_misc_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct lis3lv02d *lis3 = container_of(file->private_data,
+ 					      struct lis3lv02d, miscdev);
+ 
+@@ -638,6 +640,8 @@ static ssize_t lis3lv02d_misc_read(struct file *file, char __user *buf,
  	/* make sure we are not going into copy_to_user() with
  	 * TASK_INTERRUPTIBLE state */
  	set_current_state(TASK_RUNNING);
@@ -9344,7 +10420,7 @@ index 3a7808b796b1b..a9b15680ace2b 100644
  		retval = -EFAULT;
  
 diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index 0772e4a4757e9..487cec8bc9f7b 100644
+index 0772e4a4757e9..9c7a75df7e78e 100644
 --- a/drivers/misc/lkdtm/core.c
 +++ b/drivers/misc/lkdtm/core.c
 @@ -17,6 +17,14 @@
@@ -9371,7 +10447,15 @@ index 0772e4a4757e9..487cec8bc9f7b 100644
  	if (copy_from_user(buf, user_buf, count)) {
  		free_page((unsigned long) buf);
  		return -EFAULT;
-@@ -312,6 +322,8 @@ static ssize_t direct_entry(struct file *f, const char __user *user_buf,
+@@ -294,6 +304,7 @@ static ssize_t lkdtm_debugfs_read(struct file *f, char __user *user_buf,
+ 
+ static int lkdtm_debugfs_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function lkdtm_debugfs_open called at %s:%d\n", __FILE__, __LINE__);
+ 	return 0;
+ }
+ 
+@@ -312,6 +323,8 @@ static ssize_t direct_entry(struct file *f, const char __user *user_buf,
  	buf = (char *)__get_free_page(GFP_KERNEL);
  	if (!buf)
  		return -ENOMEM;
@@ -9648,10 +10732,26 @@ index ef56f849b251d..50bb73863ef49 100644
  	dscr->vaddr = NULL;
  }
 diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
-index 930887e7e38d6..ce5641b271e5a 100644
+index 930887e7e38d6..980a658bdd793 100644
 --- a/drivers/misc/mei/main.c
 +++ b/drivers/misc/mei/main.c
-@@ -253,6 +253,8 @@ static ssize_t mei_read(struct file *file, char __user *ubuf,
+@@ -44,6 +44,7 @@ static DEFINE_IDR(mei_idr);
+  */
+ static int mei_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mei_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct mei_device *dev;
+ 	struct mei_cl *cl;
+ 
+@@ -109,6 +110,7 @@ static void mei_cl_vtag_remove_by_fp(const struct mei_cl *cl,
+  */
+ static int mei_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mei_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct mei_cl *cl = file->private_data;
+ 	struct mei_device *dev;
+ 	int rets;
+@@ -253,6 +255,8 @@ static ssize_t mei_read(struct file *file, char __user *ubuf,
  	 * however buf_idx may point beyond that */
  	length = min_t(size_t, length, cb->buf_idx - *offset);
  
@@ -9660,7 +10760,7 @@ index 930887e7e38d6..ce5641b271e5a 100644
  	if (copy_to_user(ubuf, cb->buf.data + *offset, length)) {
  		dev_dbg(dev->dev, "failed to copy data to userland\n");
  		rets = -EFAULT;
-@@ -375,6 +377,8 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
+@@ -375,6 +379,8 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
  	}
  	cb->vtag = mei_cl_vtag_by_fp(cl, file);
  
@@ -9669,7 +10769,47 @@ index 930887e7e38d6..ce5641b271e5a 100644
  	rets = copy_from_user(cb->buf.data, ubuf, length);
  	if (rets) {
  		dev_dbg(dev->dev, "failed to copy data from userland\n");
-@@ -665,6 +669,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+@@ -404,6 +410,7 @@ static int mei_ioctl_connect_client(struct file *file,
+ 				    const uuid_le *in_client_uuid,
+ 				    struct mei_client *client)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mei_ioctl_connect_client called at %s:%d\n", __FILE__, __LINE__);
+ 	struct mei_device *dev;
+ 	struct mei_me_client *me_cl;
+ 	struct mei_cl *cl;
+@@ -505,6 +512,7 @@ static int mei_ioctl_connect_vtag(struct file *file,
+ 				  struct mei_client *client,
+ 				  u8 vtag)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mei_ioctl_connect_vtag called at %s:%d\n", __FILE__, __LINE__);
+ 	struct mei_device *dev;
+ 	struct mei_cl *cl;
+ 	struct mei_cl *pos;
+@@ -595,6 +603,7 @@ static int mei_ioctl_connect_vtag(struct file *file,
+  */
+ static int mei_ioctl_client_notify_request(const struct file *file, u32 request)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mei_ioctl_client_notify_request called at %s:%d\n", __FILE__, __LINE__);
+ 	struct mei_cl *cl = file->private_data;
+ 
+ 	if (request != MEI_HBM_NOTIFICATION_START &&
+@@ -614,6 +623,7 @@ static int mei_ioctl_client_notify_request(const struct file *file, u32 request)
+  */
+ static int mei_ioctl_client_notify_get(const struct file *file, u32 *notify_get)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mei_ioctl_client_notify_get called at %s:%d\n", __FILE__, __LINE__);
+ 	struct mei_cl *cl = file->private_data;
+ 	bool notify_ev;
+ 	bool block = (file->f_flags & O_NONBLOCK) == 0;
+@@ -638,6 +648,7 @@ static int mei_ioctl_client_notify_get(const struct file *file, u32 *notify_get)
+  */
+ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mei_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct mei_device *dev;
+ 	struct mei_cl *cl = file->private_data;
+ 	struct mei_connect_client_data conn;
+@@ -665,6 +676,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
  	switch (cmd) {
  	case IOCTL_MEI_CONNECT_CLIENT:
  		dev_dbg(dev->dev, ": IOCTL_MEI_CONNECT_CLIENT.\n");
@@ -9678,7 +10818,7 @@ index 930887e7e38d6..ce5641b271e5a 100644
  		if (copy_from_user(&conn, (char __user *)data, sizeof(conn))) {
  			dev_dbg(dev->dev, "failed to copy data from userland\n");
  			rets = -EFAULT;
-@@ -686,6 +692,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+@@ -686,6 +699,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
  			goto out;
  
  		/* if all is ok, copying the data back to user. */
@@ -9687,7 +10827,7 @@ index 930887e7e38d6..ce5641b271e5a 100644
  		if (copy_to_user((char __user *)data, &conn, sizeof(conn))) {
  			dev_dbg(dev->dev, "failed to copy data to userland\n");
  			rets = -EFAULT;
-@@ -696,6 +704,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+@@ -696,6 +711,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
  
  	case IOCTL_MEI_CONNECT_CLIENT_VTAG:
  		dev_dbg(dev->dev, "IOCTL_MEI_CONNECT_CLIENT_VTAG\n");
@@ -9696,7 +10836,7 @@ index 930887e7e38d6..ce5641b271e5a 100644
  		if (copy_from_user(&conn_vtag, (char __user *)data,
  				   sizeof(conn_vtag))) {
  			dev_dbg(dev->dev, "failed to copy data from userland\n");
-@@ -725,6 +735,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+@@ -725,6 +742,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
  			goto out;
  
  		/* if all is ok, copying the data back to user. */
@@ -9705,7 +10845,7 @@ index 930887e7e38d6..ce5641b271e5a 100644
  		if (copy_to_user((char __user *)data, &conn_vtag,
  				 sizeof(conn_vtag))) {
  			dev_dbg(dev->dev, "failed to copy data to userland\n");
-@@ -736,6 +748,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+@@ -736,6 +755,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
  
  	case IOCTL_MEI_NOTIFY_SET:
  		dev_dbg(dev->dev, ": IOCTL_MEI_NOTIFY_SET.\n");
@@ -9714,7 +10854,7 @@ index 930887e7e38d6..ce5641b271e5a 100644
  		if (copy_from_user(&notify_req,
  				   (char __user *)data, sizeof(notify_req))) {
  			dev_dbg(dev->dev, "failed to copy data from userland\n");
-@@ -752,6 +766,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
+@@ -752,6 +773,8 @@ static long mei_ioctl(struct file *file, unsigned int cmd, unsigned long data)
  			goto out;
  
  		dev_dbg(dev->dev, "copy connect data to user\n");
@@ -9724,7 +10864,7 @@ index 930887e7e38d6..ce5641b271e5a 100644
  				&notify_get, sizeof(notify_get))) {
  			dev_dbg(dev->dev, "failed to copy data to userland\n");
 diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-index 452d5777a0e4c..cd7860d656d34 100644
+index 452d5777a0e4c..e3b3e1b17ce13 100644
 --- a/drivers/misc/ocxl/file.c
 +++ b/drivers/misc/ocxl/file.c
 @@ -1,5 +1,13 @@
@@ -9741,7 +10881,21 @@ index 452d5777a0e4c..cd7860d656d34 100644
  #include <linux/fs.h>
  #include <linux/poll.h>
  #include <linux/sched/signal.h>
-@@ -77,6 +85,8 @@ static long afu_ioctl_attach(struct ocxl_context *ctx,
+@@ -49,6 +57,7 @@ static void free_minor(struct ocxl_file_info *info)
+ 
+ static int afu_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ocxl_file_info *info;
+ 	struct ocxl_context *ctx;
+ 	int rc;
+@@ -72,11 +81,14 @@ static int afu_open(struct inode *inode, struct file *file)
+ static long afu_ioctl_attach(struct ocxl_context *ctx,
+ 			struct ocxl_ioctl_attach __user *uarg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl_attach called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ocxl_ioctl_attach arg;
+ 	u64 amr = 0;
  
  	pr_debug("%s for context %d\n", __func__, ctx->pasid);
  
@@ -9750,7 +10904,15 @@ index 452d5777a0e4c..cd7860d656d34 100644
  	if (copy_from_user(&arg, uarg, sizeof(arg)))
  		return -EFAULT;
  
-@@ -103,6 +113,8 @@ static long afu_ioctl_get_metadata(struct ocxl_context *ctx,
+@@ -91,6 +103,7 @@ static long afu_ioctl_attach(struct ocxl_context *ctx,
+ static long afu_ioctl_get_metadata(struct ocxl_context *ctx,
+ 		struct ocxl_ioctl_metadata __user *uarg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl_get_metadata called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ocxl_ioctl_metadata arg;
+ 
+ 	memset(&arg, 0, sizeof(arg));
+@@ -103,6 +116,8 @@ static long afu_ioctl_get_metadata(struct ocxl_context *ctx,
  	arg.pp_mmio_size = ctx->afu->config.pp_mmio_stride;
  	arg.global_mmio_size = ctx->afu->config.global_mmio_size;
  
@@ -9759,7 +10921,15 @@ index 452d5777a0e4c..cd7860d656d34 100644
  	if (copy_to_user(uarg, &arg, sizeof(arg)))
  		return -EFAULT;
  
-@@ -146,6 +158,8 @@ static long afu_ioctl_enable_p9_wait(struct ocxl_context *ctx,
+@@ -113,6 +128,7 @@ static long afu_ioctl_get_metadata(struct ocxl_context *ctx,
+ static long afu_ioctl_enable_p9_wait(struct ocxl_context *ctx,
+ 		struct ocxl_ioctl_p9_wait __user *uarg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl_enable_p9_wait called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ocxl_ioctl_p9_wait arg;
+ 
+ 	memset(&arg, 0, sizeof(arg));
+@@ -146,6 +162,8 @@ static long afu_ioctl_enable_p9_wait(struct ocxl_context *ctx,
  	} else
  		return -ENOENT;
  
@@ -9768,7 +10938,15 @@ index 452d5777a0e4c..cd7860d656d34 100644
  	if (copy_to_user(uarg, &arg, sizeof(arg)))
  		return -EFAULT;
  
-@@ -166,6 +180,8 @@ static long afu_ioctl_get_features(struct ocxl_context *ctx,
+@@ -157,6 +175,7 @@ static long afu_ioctl_enable_p9_wait(struct ocxl_context *ctx,
+ static long afu_ioctl_get_features(struct ocxl_context *ctx,
+ 		struct ocxl_ioctl_features __user *uarg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl_get_features called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ocxl_ioctl_features arg;
+ 
+ 	memset(&arg, 0, sizeof(arg));
+@@ -166,6 +185,8 @@ static long afu_ioctl_get_features(struct ocxl_context *ctx,
  		arg.flags[0] |= OCXL_IOCTL_FEATURES_FLAGS0_P9_WAIT;
  #endif
  
@@ -9777,7 +10955,15 @@ index 452d5777a0e4c..cd7860d656d34 100644
  	if (copy_to_user(uarg, &arg, sizeof(arg)))
  		return -EFAULT;
  
-@@ -225,6 +241,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+@@ -199,6 +220,7 @@ static void irq_free(void *private)
+ static long afu_ioctl(struct file *file, unsigned int cmd,
+ 		unsigned long args)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ocxl_context *ctx = file->private_data;
+ 	struct ocxl_ioctl_irq_fd irq_fd;
+ 	struct eventfd_ctx *ev_ctx;
+@@ -225,6 +247,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
  
  	case OCXL_IOCTL_IRQ_ALLOC:
  		rc = ocxl_afu_irq_alloc(ctx, &irq_id);
@@ -9786,7 +10972,7 @@ index 452d5777a0e4c..cd7860d656d34 100644
  		if (!rc) {
  			irq_offset = ocxl_irq_id_to_offset(ctx, irq_id);
  			rc = copy_to_user((u64 __user *) args, &irq_offset,
-@@ -237,6 +255,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+@@ -237,6 +261,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
  		break;
  
  	case OCXL_IOCTL_IRQ_FREE:
@@ -9795,7 +10981,7 @@ index 452d5777a0e4c..cd7860d656d34 100644
  		rc = copy_from_user(&irq_offset, (u64 __user *) args,
  				sizeof(irq_offset));
  		if (rc)
-@@ -246,6 +266,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+@@ -246,6 +272,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
  		break;
  
  	case OCXL_IOCTL_IRQ_SET_FD:
@@ -9804,7 +10990,15 @@ index 452d5777a0e4c..cd7860d656d34 100644
  		rc = copy_from_user(&irq_fd, (u64 __user *) args,
  				sizeof(irq_fd));
  		if (rc)
-@@ -377,6 +399,8 @@ static ssize_t append_xsl_error(struct ocxl_context *ctx,
+@@ -287,6 +315,7 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+ static long afu_compat_ioctl(struct file *file, unsigned int cmd,
+ 			unsigned long args)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_compat_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	return afu_ioctl(file, cmd, args);
+ }
+ 
+@@ -377,6 +406,8 @@ static ssize_t append_xsl_error(struct ocxl_context *ctx,
  
  	header->type = OCXL_AFU_EVENT_XSL_FAULT_ERROR;
  
@@ -9813,7 +11007,7 @@ index 452d5777a0e4c..cd7860d656d34 100644
  	if (copy_to_user(buf, &body, sizeof(body)))
  		return -EFAULT;
  
-@@ -445,6 +469,8 @@ static ssize_t afu_read(struct file *file, char __user *buf, size_t count,
+@@ -445,6 +476,8 @@ static ssize_t afu_read(struct file *file, char __user *buf, size_t count,
  	if (!afu_events_pending(ctx))
  		header.flags |= OCXL_KERNEL_EVENT_FLAG_LAST;
  
@@ -9822,8 +11016,16 @@ index 452d5777a0e4c..cd7860d656d34 100644
  	if (copy_to_user(buf, &header, sizeof(header)))
  		return -EFAULT;
  
+@@ -456,6 +489,7 @@ static ssize_t afu_read(struct file *file, char __user *buf, size_t count,
+ 
+ static int afu_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function afu_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ocxl_context *ctx = file->private_data;
+ 	int rc;
+ 
 diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 159a039613c2a..02d4b8a1a639a 100644
+index 159a039613c2a..cc2416ce04782 100644
 --- a/drivers/misc/pci_endpoint_test.c
 +++ b/drivers/misc/pci_endpoint_test.c
 @@ -6,6 +6,14 @@
@@ -10095,15 +11297,16 @@ index 159a039613c2a..02d4b8a1a639a 100644
  	struct pci_dev *pdev = test->pdev;
  	struct device *dev = &pdev->dev;
  
-@@ -727,6 +791,7 @@ static bool pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
+@@ -727,6 +791,8 @@ static bool pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
  static long pci_endpoint_test_ioctl(struct file *file, unsigned int cmd,
  				    unsigned long arg)
  {
++ printk(KERN_INFO "IOCTL_HANDLER: Function pci_endpoint_test_ioctl called at %s:%d\n", __FILE__, __LINE__);
 +    printk(KERN_INFO "FUNC_ENTRY: Entering function pci_endpoint_test_ioctl at %s:%d\n", __FILE__, __LINE__);
  	int ret = -EINVAL;
  	enum pci_barno bar;
  	struct pci_endpoint_test *test = to_endpoint_test(file->private_data);
-@@ -786,6 +851,7 @@ static const struct file_operations pci_endpoint_test_fops = {
+@@ -786,6 +852,7 @@ static const struct file_operations pci_endpoint_test_fops = {
  static int pci_endpoint_test_probe(struct pci_dev *pdev,
  				   const struct pci_device_id *ent)
  {
@@ -10111,7 +11314,7 @@ index 159a039613c2a..02d4b8a1a639a 100644
  	int err;
  	int id;
  	char name[24];
-@@ -940,6 +1006,7 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+@@ -940,6 +1007,7 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
  
  static void pci_endpoint_test_remove(struct pci_dev *pdev)
  {
@@ -10120,10 +11323,18 @@ index 159a039613c2a..02d4b8a1a639a 100644
  	enum pci_barno bar;
  	struct pci_endpoint_test *test = pci_get_drvdata(pdev);
 diff --git a/drivers/misc/phantom.c b/drivers/misc/phantom.c
-index ce72e46a2e735..94049d3c7efab 100644
+index ce72e46a2e735..cc9edb6931ce8 100644
 --- a/drivers/misc/phantom.c
 +++ b/drivers/misc/phantom.c
-@@ -95,6 +95,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
+@@ -85,6 +85,7 @@ static int phantom_status(struct phantom_device *dev, unsigned long newstat)
+ static long phantom_ioctl(struct file *file, unsigned int cmd,
+ 		unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function phantom_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct phantom_device *dev = file->private_data;
+ 	struct phm_regs rs;
+ 	struct phm_reg r;
+@@ -95,6 +96,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
  	switch (cmd) {
  	case PHN_SETREG:
  	case PHN_SET_REG:
@@ -10132,7 +11343,7 @@ index ce72e46a2e735..94049d3c7efab 100644
  		if (copy_from_user(&r, argp, sizeof(r)))
  			return -EFAULT;
  
-@@ -126,6 +128,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
+@@ -126,6 +129,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
  		break;
  	case PHN_SETREGS:
  	case PHN_SET_REGS:
@@ -10141,7 +11352,7 @@ index ce72e46a2e735..94049d3c7efab 100644
  		if (copy_from_user(&rs, argp, sizeof(rs)))
  			return -EFAULT;
  
-@@ -144,6 +148,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
+@@ -144,6 +149,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
  		break;
  	case PHN_GETREG:
  	case PHN_GET_REG:
@@ -10150,7 +11361,7 @@ index ce72e46a2e735..94049d3c7efab 100644
  		if (copy_from_user(&r, argp, sizeof(r)))
  			return -EFAULT;
  
-@@ -152,6 +158,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
+@@ -152,6 +159,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
  
  		r.value = ioread32(dev->iaddr + r.reg);
  
@@ -10159,7 +11370,7 @@ index ce72e46a2e735..94049d3c7efab 100644
  		if (copy_to_user(argp, &r, sizeof(r)))
  			return -EFAULT;
  		break;
-@@ -159,6 +167,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
+@@ -159,6 +168,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
  	case PHN_GET_REGS: {
  		u32 m;
  
@@ -10168,7 +11379,7 @@ index ce72e46a2e735..94049d3c7efab 100644
  		if (copy_from_user(&rs, argp, sizeof(rs)))
  			return -EFAULT;
  
-@@ -172,6 +182,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
+@@ -172,6 +183,8 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
  		atomic_set(&dev->counter, 0);
  		spin_unlock_irqrestore(&dev->regs_lock, flags);
  
@@ -10177,6 +11388,30 @@ index ce72e46a2e735..94049d3c7efab 100644
  		if (copy_to_user(argp, &rs, sizeof(rs)))
  			return -EFAULT;
  		break;
+@@ -197,6 +210,7 @@ static long phantom_ioctl(struct file *file, unsigned int cmd,
+ static long phantom_compat_ioctl(struct file *filp, unsigned int cmd,
+ 		unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function phantom_compat_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	if (_IOC_NR(cmd) <= 3 && _IOC_SIZE(cmd) == sizeof(compat_uptr_t)) {
+ 		cmd &= ~(_IOC_SIZEMASK << _IOC_SIZESHIFT);
+ 		cmd |= sizeof(void *) << _IOC_SIZESHIFT;
+@@ -209,6 +223,7 @@ static long phantom_compat_ioctl(struct file *filp, unsigned int cmd,
+ 
+ static int phantom_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function phantom_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct phantom_device *dev = container_of(inode->i_cdev,
+ 			struct phantom_device, cdev);
+ 
+@@ -239,6 +254,7 @@ static int phantom_open(struct inode *inode, struct file *file)
+ 
+ static int phantom_release(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function phantom_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct phantom_device *dev = file->private_data;
+ 
+ 	mutex_lock(&dev->open_lock);
 diff --git a/drivers/misc/sgi-gru/grufault.c b/drivers/misc/sgi-gru/grufault.c
 index b836936e97471..df08b4dd73d8a 100644
 --- a/drivers/misc/sgi-gru/grufault.c
@@ -10245,7 +11480,7 @@ index b836936e97471..df08b4dd73d8a 100644
  		return -EFAULT;
  	gru_dbg(grudev, "op %d, gseg 0x%lx, value1 0x%lx\n", req.op, req.gseg, req.val1);
 diff --git a/drivers/misc/sgi-gru/grufile.c b/drivers/misc/sgi-gru/grufile.c
-index 7ffcfc0bb5872..44eb9ff624dba 100644
+index 7ffcfc0bb5872..4d2c112e138e3 100644
 --- a/drivers/misc/sgi-gru/grufile.c
 +++ b/drivers/misc/sgi-gru/grufile.c
 @@ -125,6 +125,8 @@ static int gru_create_new_context(unsigned long arg)
@@ -10266,6 +11501,14 @@ index 7ffcfc0bb5872..44eb9ff624dba 100644
  	if (copy_to_user((void __user *)arg, &info, sizeof(info)))
  		return -EFAULT;
  	return 0;
+@@ -184,6 +188,7 @@ static long gru_get_config_info(unsigned long arg)
+ static long gru_file_unlocked_ioctl(struct file *file, unsigned int req,
+ 				    unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function gru_file_unlocked_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	int err = -EBADRQC;
+ 
+ 	gru_dbg(grudev, "file %p, req 0x%x, 0x%lx\n", file, req, arg);
 diff --git a/drivers/misc/sgi-gru/grukdump.c b/drivers/misc/sgi-gru/grukdump.c
 index 9869f4f2f4768..5df4854fb3487 100644
 --- a/drivers/misc/sgi-gru/grukdump.c
@@ -10306,6 +11549,45 @@ index 9869f4f2f4768..5df4854fb3487 100644
  	if (copy_to_user((void __user *)arg, &req, sizeof(req)))
  		return -EFAULT;
  	return cnt;
+diff --git a/drivers/misc/sgi-gru/gruprocfs.c b/drivers/misc/sgi-gru/gruprocfs.c
+index 97b8b38ab47df..a387bdc815af5 100644
+--- a/drivers/misc/sgi-gru/gruprocfs.c
++++ b/drivers/misc/sgi-gru/gruprocfs.c
+@@ -9,6 +9,14 @@
+  *  Copyright (c) 2008 Silicon Graphics, Inc.  All Rights Reserved.
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include <linux/proc_fs.h>
+ #include <linux/device.h>
+ #include <linux/seq_file.h>
+@@ -241,16 +249,19 @@ static const struct seq_operations gru_seq_ops = {
+ 
+ static int statistics_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function statistics_open called at %s:%d\n", __FILE__, __LINE__);
+ 	return single_open(file, statistics_show, NULL);
+ }
+ 
+ static int mcs_statistics_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function mcs_statistics_open called at %s:%d\n", __FILE__, __LINE__);
+ 	return single_open(file, mcs_statistics_show, NULL);
+ }
+ 
+ static int options_open(struct inode *inode, struct file *file)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function options_open called at %s:%d\n", __FILE__, __LINE__);
+ 	return single_open(file, options_show, NULL);
+ }
+ 
 diff --git a/drivers/misc/sram-dma-heap.c b/drivers/misc/sram-dma-heap.c
 index d31a0289acdb5..e35f3d4ec01fc 100644
 --- a/drivers/misc/sram-dma-heap.c
@@ -10637,7 +11919,7 @@ index a3098fea3bf7e..b4bf956280086 100644
  	bus_unregister(&tifm_bus_type);
  	destroy_workqueue(workqueue);
 diff --git a/drivers/misc/tps6594-pfsm.c b/drivers/misc/tps6594-pfsm.c
-index 5223d1580807e..6ed5b8d6a4f64 100644
+index 5223d1580807e..3f0a1795e4843 100644
 --- a/drivers/misc/tps6594-pfsm.c
 +++ b/drivers/misc/tps6594-pfsm.c
 @@ -5,6 +5,14 @@
@@ -10673,7 +11955,15 @@ index 5223d1580807e..6ed5b8d6a4f64 100644
  		if (get_user(val, buf + i))
  			return -EFAULT;
  
-@@ -169,6 +181,8 @@ static long tps6594_pfsm_ioctl(struct file *f, unsigned int cmd, unsigned long a
+@@ -130,6 +142,7 @@ static int tps6594_pfsm_configure_ret_trig(struct regmap *regmap, u8 gpio_ret, u
+ 
+ static long tps6594_pfsm_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function tps6594_pfsm_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct tps6594_pfsm *pfsm = TPS6594_FILE_TO_PFSM(f);
+ 	struct pmic_state_opt state_opt;
+ 	void __user *argp = (void __user *)arg;
+@@ -169,6 +182,8 @@ static long tps6594_pfsm_ioctl(struct file *f, unsigned int cmd, unsigned long a
  				      TPS6594_BIT_NSLEEP1B | TPS6594_BIT_NSLEEP2B);
  		break;
  	case PMIC_SET_MCU_ONLY_STATE:
@@ -10682,7 +11972,7 @@ index 5223d1580807e..6ed5b8d6a4f64 100644
  		if (copy_from_user(&state_opt, argp, sizeof(state_opt)))
  			return -EFAULT;
  
-@@ -188,6 +202,8 @@ static long tps6594_pfsm_ioctl(struct file *f, unsigned int cmd, unsigned long a
+@@ -188,6 +203,8 @@ static long tps6594_pfsm_ioctl(struct file *f, unsigned int cmd, unsigned long a
  				      TPS6594_BIT_NSLEEP2B);
  		break;
  	case PMIC_SET_RETENTION_STATE:
@@ -10690,6 +11980,55 @@ index 5223d1580807e..6ed5b8d6a4f64 100644
 +printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
  		if (copy_from_user(&state_opt, argp, sizeof(state_opt)))
  			return -EFAULT;
+ 
+diff --git a/drivers/misc/uacce/uacce.c b/drivers/misc/uacce/uacce.c
+index b70a013139c74..0a4a97ded5350 100644
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -1,4 +1,12 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include <linux/compat.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/iommu.h>
+@@ -56,6 +64,7 @@ static int uacce_put_queue(struct uacce_queue *q)
+ static long uacce_fops_unl_ioctl(struct file *filep,
+ 				 unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function uacce_fops_unl_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct uacce_queue *q = filep->private_data;
+ 	struct uacce_device *uacce = q->uacce;
+ 	long ret = -ENXIO;
+@@ -94,6 +103,7 @@ static long uacce_fops_unl_ioctl(struct file *filep,
+ static long uacce_fops_compat_ioctl(struct file *filep,
+ 				   unsigned int cmd, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function uacce_fops_compat_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	arg = (unsigned long)compat_ptr(arg);
+ 
+ 	return uacce_fops_unl_ioctl(filep, cmd, arg);
+@@ -133,6 +143,7 @@ static void uacce_unbind_queue(struct uacce_queue *q)
+ 
+ static int uacce_fops_open(struct inode *inode, struct file *filep)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function uacce_fops_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct uacce_device *uacce;
+ 	struct uacce_queue *q;
+ 	int ret;
+@@ -184,6 +195,7 @@ static int uacce_fops_open(struct inode *inode, struct file *filep)
+ 
+ static int uacce_fops_release(struct inode *inode, struct file *filep)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function uacce_fops_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct uacce_queue *q = filep->private_data;
+ 	struct uacce_device *uacce = q->uacce;
  
 diff --git a/drivers/misc/vmw_vmci/vmci_guest.c b/drivers/misc/vmw_vmci/vmci_guest.c
 index 4f8d962bb5b2a..775028b0bd2cc 100644
@@ -10913,10 +12252,26 @@ index 4f8d962bb5b2a..775028b0bd2cc 100644
  	pci_unregister_driver(&vmci_guest_driver);
  }
 diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
-index abe79f6fd2a79..1e5737870ddb4 100644
+index abe79f6fd2a79..272f1795a12e9 100644
 --- a/drivers/misc/vmw_vmci/vmci_host.c
 +++ b/drivers/misc/vmw_vmci/vmci_host.c
-@@ -212,6 +212,8 @@ static int drv_cp_harray_to_user(void __user *user_buf_uva,
+@@ -118,6 +118,7 @@ int vmci_host_users(void)
+  */
+ static int vmci_host_open(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function vmci_host_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct vmci_host_dev *vmci_host_dev;
+ 
+ 	vmci_host_dev = kzalloc(sizeof(struct vmci_host_dev), GFP_KERNEL);
+@@ -137,6 +138,7 @@ static int vmci_host_open(struct inode *inode, struct file *filp)
+  */
+ static int vmci_host_close(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function vmci_host_close called at %s:%d\n", __FILE__, __LINE__);
+ 	struct vmci_host_dev *vmci_host_dev = filp->private_data;
+ 
+ 	if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
+@@ -212,6 +214,8 @@ static int drv_cp_harray_to_user(void __user *user_buf_uva,
  		return VMCI_ERROR_MORE_DATA;
  
  	*user_buf_size = array_size * sizeof(*handles);
@@ -10925,7 +12280,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (*user_buf_size)
  		*retval = copy_to_user(user_buf_uva,
  				       vmci_handle_arr_get_handles
-@@ -265,6 +267,8 @@ static int vmci_host_get_version(struct vmci_host_dev *vmci_host_dev,
+@@ -265,6 +269,8 @@ static int vmci_host_get_version(struct vmci_host_dev *vmci_host_dev,
  {
  	if (cmd == IOCTL_VMCI_VERSION2) {
  		int __user *vptr = uptr;
@@ -10934,7 +12289,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  		if (get_user(vmci_host_dev->user_version, vptr))
  			return -EFAULT;
  	}
-@@ -302,6 +306,8 @@ static int vmci_host_do_init_context(struct vmci_host_dev *vmci_host_dev,
+@@ -302,6 +308,8 @@ static int vmci_host_do_init_context(struct vmci_host_dev *vmci_host_dev,
  	const struct cred *cred;
  	int retval;
  
@@ -10943,7 +12298,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&init_block, uptr, sizeof(init_block))) {
  		vmci_ioctl_err("error reading init block\n");
  		return -EFAULT;
-@@ -338,6 +344,8 @@ static int vmci_host_do_init_context(struct vmci_host_dev *vmci_host_dev,
+@@ -338,6 +346,8 @@ static int vmci_host_do_init_context(struct vmci_host_dev *vmci_host_dev,
  	 * to enforce its policy on cid generation.
  	 */
  	init_block.cid = vmci_ctx_get_id(vmci_host_dev->context);
@@ -10952,7 +12307,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_to_user(uptr, &init_block, sizeof(init_block))) {
  		vmci_ctx_destroy(vmci_host_dev->context);
  		vmci_host_dev->context = NULL;
-@@ -371,6 +379,8 @@ static int vmci_host_do_send_datagram(struct vmci_host_dev *vmci_host_dev,
+@@ -371,6 +381,8 @@ static int vmci_host_do_send_datagram(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -10961,7 +12316,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&send_info, uptr, sizeof(send_info)))
  		return -EFAULT;
  
-@@ -410,6 +420,8 @@ static int vmci_host_do_send_datagram(struct vmci_host_dev *vmci_host_dev,
+@@ -410,6 +422,8 @@ static int vmci_host_do_send_datagram(struct vmci_host_dev *vmci_host_dev,
  	send_info.result = vmci_datagram_dispatch(cid, dg, true);
  	kfree(dg);
  
@@ -10970,7 +12325,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return copy_to_user(uptr, &send_info, sizeof(send_info)) ? -EFAULT : 0;
  }
  
-@@ -427,6 +439,8 @@ static int vmci_host_do_receive_datagram(struct vmci_host_dev *vmci_host_dev,
+@@ -427,6 +441,8 @@ static int vmci_host_do_receive_datagram(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -10979,7 +12334,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&recv_info, uptr, sizeof(recv_info)))
  		return -EFAULT;
  
-@@ -434,6 +448,8 @@ static int vmci_host_do_receive_datagram(struct vmci_host_dev *vmci_host_dev,
+@@ -434,6 +450,8 @@ static int vmci_host_do_receive_datagram(struct vmci_host_dev *vmci_host_dev,
  	recv_info.result = vmci_ctx_dequeue_datagram(vmci_host_dev->context,
  						     &size, &dg);
  
@@ -10988,7 +12343,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (recv_info.result >= VMCI_SUCCESS) {
  		void __user *ubuf = (void __user *)(uintptr_t)recv_info.addr;
  		retval = copy_to_user(ubuf, dg, VMCI_DG_SIZE(dg));
-@@ -442,6 +458,8 @@ static int vmci_host_do_receive_datagram(struct vmci_host_dev *vmci_host_dev,
+@@ -442,6 +460,8 @@ static int vmci_host_do_receive_datagram(struct vmci_host_dev *vmci_host_dev,
  			return -EFAULT;
  	}
  
@@ -10997,7 +12352,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return copy_to_user(uptr, &recv_info, sizeof(recv_info)) ? -EFAULT : 0;
  }
  
-@@ -462,6 +480,8 @@ static int vmci_host_do_alloc_queuepair(struct vmci_host_dev *vmci_host_dev,
+@@ -462,6 +482,8 @@ static int vmci_host_do_alloc_queuepair(struct vmci_host_dev *vmci_host_dev,
  		struct vmci_qp_alloc_info_vmvm alloc_info;
  		struct vmci_qp_alloc_info_vmvm __user *info = uptr;
  
@@ -11006,7 +12361,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  		if (copy_from_user(&alloc_info, uptr, sizeof(alloc_info)))
  			return -EFAULT;
  
-@@ -484,6 +504,8 @@ static int vmci_host_do_alloc_queuepair(struct vmci_host_dev *vmci_host_dev,
+@@ -484,6 +506,8 @@ static int vmci_host_do_alloc_queuepair(struct vmci_host_dev *vmci_host_dev,
  		struct vmci_qp_alloc_info __user *info = uptr;
  		struct vmci_qp_page_store page_store;
  
@@ -11015,7 +12370,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  		if (copy_from_user(&alloc_info, uptr, sizeof(alloc_info)))
  			return -EFAULT;
  
-@@ -503,6 +525,8 @@ static int vmci_host_do_alloc_queuepair(struct vmci_host_dev *vmci_host_dev,
+@@ -503,6 +527,8 @@ static int vmci_host_do_alloc_queuepair(struct vmci_host_dev *vmci_host_dev,
  						vmci_host_dev->context);
  	}
  
@@ -11024,7 +12379,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (put_user(vmci_status, retptr)) {
  		if (vmci_status >= VMCI_SUCCESS) {
  			vmci_status = vmci_qp_broker_detach(handle,
-@@ -532,6 +556,8 @@ static int vmci_host_do_queuepair_setva(struct vmci_host_dev *vmci_host_dev,
+@@ -532,6 +558,8 @@ static int vmci_host_do_queuepair_setva(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11033,7 +12388,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&set_va_info, uptr, sizeof(set_va_info)))
  		return -EFAULT;
  
-@@ -552,6 +578,8 @@ static int vmci_host_do_queuepair_setva(struct vmci_host_dev *vmci_host_dev,
+@@ -552,6 +580,8 @@ static int vmci_host_do_queuepair_setva(struct vmci_host_dev *vmci_host_dev,
  					 vmci_host_dev->context, 0);
  	}
  
@@ -11042,7 +12397,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return put_user(result, &info->result) ? -EFAULT : 0;
  }
  
-@@ -575,6 +603,8 @@ static int vmci_host_do_queuepair_setpf(struct vmci_host_dev *vmci_host_dev,
+@@ -575,6 +605,8 @@ static int vmci_host_do_queuepair_setpf(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11051,7 +12406,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&page_file_info, uptr, sizeof(*info)))
  		return -EFAULT;
  
-@@ -594,6 +624,8 @@ static int vmci_host_do_queuepair_setpf(struct vmci_host_dev *vmci_host_dev,
+@@ -594,6 +626,8 @@ static int vmci_host_do_queuepair_setpf(struct vmci_host_dev *vmci_host_dev,
  	 * VMCI_Enqueue() code path.  Ugh.
  	 */
  
@@ -11060,7 +12415,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (put_user(VMCI_SUCCESS, &info->result)) {
  		/*
  		 * In this case, we can't write a result field of the
-@@ -608,6 +640,8 @@ static int vmci_host_do_queuepair_setpf(struct vmci_host_dev *vmci_host_dev,
+@@ -608,6 +642,8 @@ static int vmci_host_do_queuepair_setpf(struct vmci_host_dev *vmci_host_dev,
  						page_file_info.consume_va,
  						vmci_host_dev->context);
  	if (result < VMCI_SUCCESS) {
@@ -11069,7 +12424,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  		if (put_user(result, &info->result)) {
  			/*
  			 * Note that in this case the SetPageStore()
-@@ -646,6 +680,8 @@ static int vmci_host_do_qp_detach(struct vmci_host_dev *vmci_host_dev,
+@@ -646,6 +682,8 @@ static int vmci_host_do_qp_detach(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11078,7 +12433,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&detach_info, uptr, sizeof(detach_info)))
  		return -EFAULT;
  
-@@ -656,6 +692,8 @@ static int vmci_host_do_qp_detach(struct vmci_host_dev *vmci_host_dev,
+@@ -656,6 +694,8 @@ static int vmci_host_do_qp_detach(struct vmci_host_dev *vmci_host_dev,
  		result = VMCI_SUCCESS_LAST_DETACH;
  	}
  
@@ -11087,7 +12442,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return put_user(result, &info->result) ? -EFAULT : 0;
  }
  
-@@ -673,12 +711,16 @@ static int vmci_host_do_ctx_add_notify(struct vmci_host_dev *vmci_host_dev,
+@@ -673,12 +713,16 @@ static int vmci_host_do_ctx_add_notify(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11104,7 +12459,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return put_user(result, &info->result) ? -EFAULT : 0;
  }
  
-@@ -696,6 +738,8 @@ static int vmci_host_do_ctx_remove_notify(struct vmci_host_dev *vmci_host_dev,
+@@ -696,6 +740,8 @@ static int vmci_host_do_ctx_remove_notify(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11113,7 +12468,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&ar_info, uptr, sizeof(ar_info)))
  		return -EFAULT;
  
-@@ -703,6 +747,8 @@ static int vmci_host_do_ctx_remove_notify(struct vmci_host_dev *vmci_host_dev,
+@@ -703,6 +749,8 @@ static int vmci_host_do_ctx_remove_notify(struct vmci_host_dev *vmci_host_dev,
  	result = vmci_ctx_remove_notification(cid,
  					      ar_info.remote_cid);
  
@@ -11122,7 +12477,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return put_user(result, &info->result) ? -EFAULT : 0;
  }
  
-@@ -720,12 +766,16 @@ static int vmci_host_do_ctx_get_cpt_state(struct vmci_host_dev *vmci_host_dev,
+@@ -720,12 +768,16 @@ static int vmci_host_do_ctx_get_cpt_state(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11139,7 +12494,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (get_info.result == VMCI_SUCCESS && get_info.buf_size) {
  		void __user *ubuf = (void __user *)(uintptr_t)get_info.cpt_buf;
  		retval = copy_to_user(ubuf, cpt_buf, get_info.buf_size);
-@@ -735,6 +785,8 @@ static int vmci_host_do_ctx_get_cpt_state(struct vmci_host_dev *vmci_host_dev,
+@@ -735,6 +787,8 @@ static int vmci_host_do_ctx_get_cpt_state(struct vmci_host_dev *vmci_host_dev,
  			return -EFAULT;
  	}
  
@@ -11148,7 +12503,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return copy_to_user(uptr, &get_info, sizeof(get_info)) ? -EFAULT : 0;
  }
  
-@@ -752,6 +804,8 @@ static int vmci_host_do_ctx_set_cpt_state(struct vmci_host_dev *vmci_host_dev,
+@@ -752,6 +806,8 @@ static int vmci_host_do_ctx_set_cpt_state(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11157,7 +12512,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&set_info, uptr, sizeof(set_info)))
  		return -EFAULT;
  
-@@ -764,6 +818,8 @@ static int vmci_host_do_ctx_set_cpt_state(struct vmci_host_dev *vmci_host_dev,
+@@ -764,6 +820,8 @@ static int vmci_host_do_ctx_set_cpt_state(struct vmci_host_dev *vmci_host_dev,
  	set_info.result = vmci_ctx_set_chkpt_state(cid, set_info.cpt_type,
  						   set_info.buf_size, cpt_buf);
  
@@ -11166,7 +12521,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	retval = copy_to_user(uptr, &set_info, sizeof(set_info)) ? -EFAULT : 0;
  
  	kfree(cpt_buf);
-@@ -776,6 +832,8 @@ static int vmci_host_do_get_context_id(struct vmci_host_dev *vmci_host_dev,
+@@ -776,6 +834,8 @@ static int vmci_host_do_get_context_id(struct vmci_host_dev *vmci_host_dev,
  {
  	u32 __user *u32ptr = uptr;
  
@@ -11175,7 +12530,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return put_user(VMCI_HOST_CONTEXT_ID, u32ptr) ? -EFAULT : 0;
  }
  
-@@ -790,6 +848,8 @@ static int vmci_host_do_set_notify(struct vmci_host_dev *vmci_host_dev,
+@@ -790,6 +850,8 @@ static int vmci_host_do_set_notify(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11184,7 +12539,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&notify_info, uptr, sizeof(notify_info)))
  		return -EFAULT;
  
-@@ -802,6 +862,8 @@ static int vmci_host_do_set_notify(struct vmci_host_dev *vmci_host_dev,
+@@ -802,6 +864,8 @@ static int vmci_host_do_set_notify(struct vmci_host_dev *vmci_host_dev,
  		notify_info.result = VMCI_SUCCESS;
  	}
  
@@ -11193,7 +12548,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return copy_to_user(uptr, &notify_info, sizeof(notify_info)) ?
  		-EFAULT : 0;
  }
-@@ -823,6 +885,8 @@ static int vmci_host_do_notify_resource(struct vmci_host_dev *vmci_host_dev,
+@@ -823,6 +887,8 @@ static int vmci_host_do_notify_resource(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11202,7 +12557,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&info, uptr, sizeof(info)))
  		return -EFAULT;
  
-@@ -853,6 +917,8 @@ static int vmci_host_do_notify_resource(struct vmci_host_dev *vmci_host_dev,
+@@ -853,6 +919,8 @@ static int vmci_host_do_notify_resource(struct vmci_host_dev *vmci_host_dev,
  		info.result = VMCI_ERROR_INVALID_ARGS;
  	}
  
@@ -11211,7 +12566,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	return copy_to_user(uptr, &info, sizeof(info)) ? -EFAULT : 0;
  }
  
-@@ -877,6 +943,8 @@ static int vmci_host_do_recv_notifications(struct vmci_host_dev *vmci_host_dev,
+@@ -877,6 +945,8 @@ static int vmci_host_do_recv_notifications(struct vmci_host_dev *vmci_host_dev,
  		return -EINVAL;
  	}
  
@@ -11220,7 +12575,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (copy_from_user(&info, uptr, sizeof(info)))
  		return -EFAULT;
  
-@@ -889,6 +957,8 @@ static int vmci_host_do_recv_notifications(struct vmci_host_dev *vmci_host_dev,
+@@ -889,6 +959,8 @@ static int vmci_host_do_recv_notifications(struct vmci_host_dev *vmci_host_dev,
  
  	info.result = vmci_ctx_rcv_notifications_get(cid,
  				&db_handle_array, &qp_handle_array);
@@ -11229,7 +12584,7 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (info.result != VMCI_SUCCESS)
  		return copy_to_user(uptr, &info, sizeof(info)) ? -EFAULT : 0;
  
-@@ -902,6 +972,8 @@ static int vmci_host_do_recv_notifications(struct vmci_host_dev *vmci_host_dev,
+@@ -902,6 +974,8 @@ static int vmci_host_do_recv_notifications(struct vmci_host_dev *vmci_host_dev,
  						    qp_handle_array, &retval);
  	}
  
@@ -11238,6 +12593,14 @@ index abe79f6fd2a79..1e5737870ddb4 100644
  	if (!retval && copy_to_user(uptr, &info, sizeof(info)))
  		retval = -EFAULT;
  
+@@ -915,6 +989,7 @@ static int vmci_host_do_recv_notifications(struct vmci_host_dev *vmci_host_dev,
+ static long vmci_host_unlocked_ioctl(struct file *filp,
+ 				     unsigned int iocmd, unsigned long ioarg)
+ {
++printk(KERN_INFO "IOCTL_HANDLER: Function vmci_host_unlocked_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ #define VMCI_DO_IOCTL(ioctl_name, ioctl_fn) do {			\
+ 		char *name = "IOCTL_VMCI_" # ioctl_name;		\
+ 		return vmci_host_do_ ## ioctl_fn(			\
 diff --git a/drivers/misc/vmw_vmci/vmci_queue_pair.c b/drivers/misc/vmw_vmci/vmci_queue_pair.c
 index 73d71c4ec1399..f49dff56f1c5d 100644
 --- a/drivers/misc/vmw_vmci/vmci_queue_pair.c
@@ -11828,7 +13191,7 @@ index 73d71c4ec1399..f49dff56f1c5d 100644
  
  	if (!qpair)
 diff --git a/drivers/misc/xilinx_sdfec.c b/drivers/misc/xilinx_sdfec.c
-index cb9506f9cbd07..b1c3e9dff274d 100644
+index cb9506f9cbd07..6a2633bdd1c0a 100644
 --- a/drivers/misc/xilinx_sdfec.c
 +++ b/drivers/misc/xilinx_sdfec.c
 @@ -303,6 +303,8 @@ static int xsdfec_get_status(struct xsdfec_dev *xsdfec, void __user *arg)
@@ -11903,7 +13266,21 @@ index cb9506f9cbd07..b1c3e9dff274d 100644
  	err = put_user(is_active, arg);
  	if (err)
  		return -EFAULT;
-@@ -924,6 +940,8 @@ static int xsdfec_get_stats(struct xsdfec_dev *xsdfec, void __user *arg)
+@@ -857,11 +873,13 @@ static int xsdfec_cfg_axi_streams(struct xsdfec_dev *xsdfec)
+ 
+ static int xsdfec_dev_open(struct inode *iptr, struct file *fptr)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function xsdfec_dev_open called at %s:%d\n", __FILE__, __LINE__);
+ 	return 0;
+ }
+ 
+ static int xsdfec_dev_release(struct inode *iptr, struct file *fptr)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function xsdfec_dev_release called at %s:%d\n", __FILE__, __LINE__);
+ 	return 0;
+ }
+ 
+@@ -924,6 +942,8 @@ static int xsdfec_get_stats(struct xsdfec_dev *xsdfec, void __user *arg)
  	xsdfec->stats_updated = false;
  	spin_unlock_irqrestore(&xsdfec->error_data_lock, xsdfec->flags);
  
@@ -11912,6 +13289,14 @@ index cb9506f9cbd07..b1c3e9dff274d 100644
  	err = copy_to_user(arg, &user_stats, sizeof(user_stats));
  	if (err)
  		err = -EFAULT;
+@@ -944,6 +964,7 @@ static int xsdfec_set_default_config(struct xsdfec_dev *xsdfec)
+ static long xsdfec_dev_ioctl(struct file *fptr, unsigned int cmd,
+ 			     unsigned long data)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function xsdfec_dev_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct xsdfec_dev *xsdfec;
+ 	void __user *arg = (void __user *)data;
+ 	int rval;
 diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
 index d421a2ccaa1ea..b69b56ff36b75 100644
 --- a/drivers/remoteproc/mtk_scp.c
@@ -12648,7 +14033,7 @@ index 7dbab5fcbe1e7..3ff0ec15a3990 100644
  	struct rproc *rproc = qproc->rproc;
  
 diff --git a/drivers/remoteproc/remoteproc_cdev.c b/drivers/remoteproc/remoteproc_cdev.c
-index 687f205fd70a6..ffb970ea5a360 100644
+index 687f205fd70a6..990f562c7f294 100644
 --- a/drivers/remoteproc/remoteproc_cdev.c
 +++ b/drivers/remoteproc/remoteproc_cdev.c
 @@ -5,6 +5,14 @@
@@ -12675,7 +14060,14 @@ index 687f205fd70a6..ffb970ea5a360 100644
  	ret = copy_from_user(cmd, buf, len);
  	if (ret)
  		return -EFAULT;
-@@ -53,6 +63,8 @@ static long rproc_device_ioctl(struct file *filp, unsigned int ioctl, unsigned l
+@@ -47,12 +57,15 @@ static ssize_t rproc_cdev_write(struct file *filp, const char __user *buf, size_
+ 
+ static long rproc_device_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rproc_device_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rproc *rproc = container_of(filp->f_inode->i_cdev, struct rproc, cdev);
+ 	void __user *argp = (void __user *)arg;
+ 	s32 param;
  
  	switch (ioctl) {
  	case RPROC_SET_SHUTDOWN_ON_RELEASE:
@@ -12684,7 +14076,7 @@ index 687f205fd70a6..ffb970ea5a360 100644
  		if (copy_from_user(&param, argp, sizeof(s32)))
  			return -EFAULT;
  
-@@ -60,6 +72,8 @@ static long rproc_device_ioctl(struct file *filp, unsigned int ioctl, unsigned l
+@@ -60,6 +73,8 @@ static long rproc_device_ioctl(struct file *filp, unsigned int ioctl, unsigned l
  		break;
  	case RPROC_GET_SHUTDOWN_ON_RELEASE:
  		param = (s32)rproc->cdev_put_on_release;
@@ -12692,6 +14084,14 @@ index 687f205fd70a6..ffb970ea5a360 100644
 +printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
  		if (copy_to_user(argp, &param, sizeof(s32)))
  			return -EFAULT;
+ 
+@@ -74,6 +89,7 @@ static long rproc_device_ioctl(struct file *filp, unsigned int ioctl, unsigned l
+ 
+ static int rproc_cdev_release(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rproc_cdev_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rproc *rproc = container_of(inode->i_cdev, struct rproc, cdev);
+ 	int ret = 0;
  
 diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
 index c3f194d9384da..298a178646629 100644
@@ -13311,11 +14711,63 @@ index b86c1d09c70c0..d8c60eb24014b 100644
  	ret = copy_from_user(buf, user_buf, count);
  	if (ret)
  		return -EFAULT;
+diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
+index dd203b88399ea..0171c2bd2339b 100644
+--- a/drivers/rpmsg/rpmsg_char.c
++++ b/drivers/rpmsg/rpmsg_char.c
+@@ -117,6 +117,7 @@ static int rpmsg_ept_cb(struct rpmsg_device *rpdev, void *buf, int len,
+ 
+ static int rpmsg_eptdev_open(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rpmsg_eptdev_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rpmsg_eptdev *eptdev = cdev_to_eptdev(inode->i_cdev);
+ 	struct rpmsg_endpoint *ept;
+ 	struct rpmsg_device *rpdev = eptdev->rpdev;
+@@ -158,6 +159,7 @@ static int rpmsg_eptdev_open(struct inode *inode, struct file *filp)
+ 
+ static int rpmsg_eptdev_release(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rpmsg_eptdev_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rpmsg_eptdev *eptdev = cdev_to_eptdev(inode->i_cdev);
+ 	struct device *dev = &eptdev->dev;
+ 
+@@ -290,6 +292,7 @@ static __poll_t rpmsg_eptdev_poll(struct file *filp, poll_table *wait)
+ static long rpmsg_eptdev_ioctl(struct file *fp, unsigned int cmd,
+ 			       unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rpmsg_eptdev_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rpmsg_eptdev *eptdev = fp->private_data;
+ 
+ 	if (cmd != RPMSG_DESTROY_EPT_IOCTL)
 diff --git a/drivers/rpmsg/rpmsg_ctrl.c b/drivers/rpmsg/rpmsg_ctrl.c
-index 107da70fdbaaa..907c7debd2346 100644
+index 107da70fdbaaa..2998e933b7560 100644
 --- a/drivers/rpmsg/rpmsg_ctrl.c
 +++ b/drivers/rpmsg/rpmsg_ctrl.c
-@@ -81,6 +81,8 @@ static long rpmsg_ctrldev_ioctl(struct file *fp, unsigned int cmd,
+@@ -54,6 +54,7 @@ struct rpmsg_ctrldev {
+ 
+ static int rpmsg_ctrldev_open(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rpmsg_ctrldev_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rpmsg_ctrldev *ctrldev = cdev_to_ctrldev(inode->i_cdev);
+ 
+ 	get_device(&ctrldev->dev);
+@@ -64,6 +65,7 @@ static int rpmsg_ctrldev_open(struct inode *inode, struct file *filp)
+ 
+ static int rpmsg_ctrldev_release(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rpmsg_ctrldev_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rpmsg_ctrldev *ctrldev = cdev_to_ctrldev(inode->i_cdev);
+ 
+ 	put_device(&ctrldev->dev);
+@@ -74,6 +76,7 @@ static int rpmsg_ctrldev_release(struct inode *inode, struct file *filp)
+ static long rpmsg_ctrldev_ioctl(struct file *fp, unsigned int cmd,
+ 				unsigned long arg)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rpmsg_ctrldev_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rpmsg_ctrldev *ctrldev = fp->private_data;
+ 	void __user *argp = (void __user *)arg;
+ 	struct rpmsg_endpoint_info eptinfo;
+@@ -81,6 +84,8 @@ static long rpmsg_ctrldev_ioctl(struct file *fp, unsigned int cmd,
  	struct rpmsg_device *rpdev;
  	int ret = 0;
  
@@ -13325,10 +14777,26 @@ index 107da70fdbaaa..907c7debd2346 100644
  		return -EFAULT;
  
 diff --git a/drivers/rpmsg/rpmsg_pru.c b/drivers/rpmsg/rpmsg_pru.c
-index 9549dfff14ac6..4d4cdc8bceffc 100644
+index 9549dfff14ac6..28515e28035c4 100644
 --- a/drivers/rpmsg/rpmsg_pru.c
 +++ b/drivers/rpmsg/rpmsg_pru.c
-@@ -134,6 +134,8 @@ static ssize_t rpmsg_pru_write(struct file *filp, const char __user *buf,
+@@ -63,6 +63,7 @@ static DEFINE_IDR(rpmsg_pru_minors);
+ 
+ static int rpmsg_pru_open(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rpmsg_pru_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rpmsg_pru_dev *prudev;
+ 	int ret = -EACCES;
+ 
+@@ -84,6 +85,7 @@ static int rpmsg_pru_open(struct inode *inode, struct file *filp)
+ 
+ static int rpmsg_pru_release(struct inode *inode, struct file *filp)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function rpmsg_pru_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct rpmsg_pru_dev *prudev;
+ 
+ 	prudev = container_of(inode->i_cdev, struct rpmsg_pru_dev, cdev);
+@@ -134,6 +136,8 @@ static ssize_t rpmsg_pru_write(struct file *filp, const char __user *buf,
  		return -EINVAL;
  	}
  
