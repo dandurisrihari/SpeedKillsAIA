@@ -12,6 +12,7 @@ from unittest.mock import patch, MagicMock
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 from preprocess.web.ui import create_app
+from preprocess.web import ui
 
 
 class TestWebUI(unittest.TestCase):
@@ -22,6 +23,13 @@ class TestWebUI(unittest.TestCase):
         self.app = create_app()
         self.app.config['TESTING'] = True
         self.client = self.app.test_client()
+        
+        # Clear any existing session data
+        with self.client.session_transaction() as sess:
+            sess.clear()
+        
+        # Clear global parsed_data to prevent cross-test contamination
+        ui.parsed_data = None
         
         # Sample data for testing
         self.sample_results = {
@@ -107,6 +115,15 @@ class TestWebUI(unittest.TestCase):
                 "unique_ioctl_operations": 2
             }
         }
+    
+    def tearDown(self):
+        """Clean up test fixtures"""
+        # Clear session data after each test
+        with self.client.session_transaction() as sess:
+            sess.clear()
+        
+        # Clear global parsed_data to prevent cross-test contamination
+        ui.parsed_data = None
     
     def create_temp_json_file(self, data):
         """Create a temporary JSON file with test data"""
@@ -211,6 +228,13 @@ class TestWebUI(unittest.TestCase):
     
     def test_api_data_route_no_session(self):
         """Test API data route without session data"""
+        # Explicitly clear session to ensure no data
+        with self.client.session_transaction() as sess:
+            sess.clear()
+        
+        # Also clear global parsed_data
+        ui.parsed_data = None
+        
         response = self.client.get('/api/data')
         self.assertEqual(response.status_code, 404)
     
@@ -360,6 +384,13 @@ class TestWebUI(unittest.TestCase):
     
     def test_api_function_code_no_session(self):
         """Test API function code endpoint without session data"""
+        # Explicitly clear session to ensure no data
+        with self.client.session_transaction() as sess:
+            sess.clear()
+        
+        # Also clear global parsed_data
+        ui.parsed_data = None
+        
         response = self.client.get('/api/function-code?name=gasket_open&file=/gasket-driver/src/gasket_core.c&line=1229')
         self.assertEqual(response.status_code, 404)
         
@@ -413,6 +444,13 @@ class TestWebUI(unittest.TestCase):
     
     def test_api_ioctl_code_no_session(self):
         """Test API IOCTL code endpoint without session data"""
+        # Explicitly clear session to ensure no data
+        with self.client.session_transaction() as sess:
+            sess.clear()
+        
+        # Also clear global parsed_data
+        ui.parsed_data = None
+        
         response = self.client.get('/api/ioctl-code/0')
         self.assertEqual(response.status_code, 404)
         

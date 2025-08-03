@@ -92,8 +92,9 @@ class ParseStatistics:
     total_dma_operations_found: int = 0
     total_user_copy_operations_found: int = 0
     total_ioctl_operations_found: int = 0
-    files_with_functions: int = 0
-    total_files_analyzed: int = 0
+    files_with_functions_entrypoint_instrumented: int = 0
+    total_files: int = 0  # Total .c files found in source root
+    files_need_analysis: int = 0  # Previously total_files_analyzed
     files_instrumented_with_function_entries: int = 0
     total_duplicates_skipped: int = 0
 
@@ -214,8 +215,9 @@ class ParseResults:
                 'dma_operations_found': self.statistics.total_dma_operations_found,
                 'user_copy_operations_found': self.statistics.total_user_copy_operations_found,
                 'ioctl_operations_found': self.statistics.total_ioctl_operations_found,
-                'files_with_functions': self.statistics.files_with_functions,
-                'total_files_analyzed': self.statistics.total_files_analyzed,
+                'files_with_functions_entrypoint_instrumented': self.statistics.files_with_functions_entrypoint_instrumented,
+                'total_files': self.statistics.total_files,
+                'files_need_analysis': self.statistics.files_need_analysis,
                 'files_instrumented_with_function_entries': self.statistics.files_instrumented_with_function_entries,
                 'total_duplicates_skipped': self.statistics.total_duplicates_skipped
             }
