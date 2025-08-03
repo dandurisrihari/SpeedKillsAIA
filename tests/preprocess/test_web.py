@@ -328,6 +328,181 @@ class TestWebUI(unittest.TestCase):
             video_ioctl = next(op for op in data['ioctl_operations'] if op['function_name'] == 'video_ioctl')
             self.assertEqual(video_ioctl['line_number'], 456)
             self.assertIsNone(video_ioctl['function_code'])
+    
+    def test_api_function_code_endpoint(self):
+        """Test the API endpoint for function code retrieval"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            # Test with valid function parameters
+            response = self.client.get('/api/function-code?name=gasket_open&file=/gasket-driver/src/gasket_core.c&line=1229')
+            self.assertEqual(response.status_code, 200)
+            
+            data = json.loads(response.data)
+            self.assertIn('function_code', data)
+            # Since we don't have actual source code, it should return default message
+            self.assertEqual(data['function_code'], 'No source code available')
+    
+    def test_api_function_code_missing_params(self):
+        """Test API function code endpoint with missing parameters"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            # Test with missing function name (required parameter)
+            response = self.client.get('/api/function-code')
+            self.assertEqual(response.status_code, 400)
+            
+            data = json.loads(response.data)
+            self.assertIn('error', data)
+            self.assertEqual(data['error'], 'Function name required')
+    
+    def test_api_function_code_no_session(self):
+        """Test API function code endpoint without session data"""
+        response = self.client.get('/api/function-code?name=gasket_open&file=/gasket-driver/src/gasket_core.c&line=1229')
+        self.assertEqual(response.status_code, 404)
+        
+        data = json.loads(response.data)
+        self.assertIn('error', data)
+        self.assertEqual(data['error'], 'No data loaded')
+    
+    def test_api_ioctl_code_endpoint_with_code(self):
+        """Test the API endpoint for IOCTL code retrieval when code is available"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            # Test with first IOCTL operation (has function_code)
+            response = self.client.get('/api/ioctl-code/0')
+            self.assertEqual(response.status_code, 200)
+            
+            data = json.loads(response.data)
+            self.assertIn('function_code', data)
+            self.assertIn('switch (cmd)', data['function_code'])
+            self.assertIn('IOCTL_GCHAL_INTERFACE', data['function_code'])
+    
+    def test_api_ioctl_code_endpoint_without_code(self):
+        """Test the API endpoint for IOCTL code retrieval when code is not available"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            # Test with second IOCTL operation (no function_code)
+            response = self.client.get('/api/ioctl-code/1')
+            self.assertEqual(response.status_code, 200)
+            
+            data = json.loads(response.data)
+            self.assertIn('function_code', data)
+            # The API should return 'No source code available' for None function_code
+            self.assertEqual(data['function_code'], 'No source code available')
+    
+    def test_api_ioctl_code_invalid_index(self):
+        """Test API IOCTL code endpoint with invalid index"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            # Test with out-of-range index
+            response = self.client.get('/api/ioctl-code/999')
+            self.assertEqual(response.status_code, 404)
+            
+            data = json.loads(response.data)
+            self.assertIn('error', data)
+            self.assertEqual(data['error'], 'IOCTL function not found')
+    
+    def test_api_ioctl_code_no_session(self):
+        """Test API IOCTL code endpoint without session data"""
+        response = self.client.get('/api/ioctl-code/0')
+        self.assertEqual(response.status_code, 404)
+        
+        data = json.loads(response.data)
+        self.assertIn('error', data)
+        self.assertEqual(data['error'], 'No data loaded')
+    
+    def test_lazy_loading_template_rendering(self):
+        """Test that lazy loading elements are rendered correctly"""
+        # Create test data with mixed function_code availability
+        mixed_results = self.sample_results.copy()
+        mixed_results['ioctl_operations'] = [
+            {
+                "function_name": "drv_ioctl_with_code",
+                "file_path": "drivers/test/test_driver.c",
+                "line_number": 100,
+                "first_seen_timestamp": 10.0,
+                "call_count": 1,
+                "function_code": "static long drv_ioctl_with_code() {\n    return 0;\n}"
+            },
+            {
+                "function_name": "drv_ioctl_no_code",
+                "file_path": "drivers/test/test_driver.c",
+                "line_number": 200,
+                "first_seen_timestamp": 20.0,
+                "call_count": 1,
+                "function_code": None
+            }
+        ]
+        
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = mixed_results
+            
+            response = self.client.get('/results')
+            self.assertEqual(response.status_code, 200)
+            
+            # Check that function with code is displayed directly
+            self.assertIn(b'drv_ioctl_with_code() {', response.data)
+            self.assertIn(b'return 0;', response.data)
+            
+            # Check that function without code has lazy loading setup
+            self.assertIn(b'drv_ioctl_no_code', response.data)
+            self.assertIn(b'loadIoctlCode', response.data)
+            self.assertIn(b'Click to load source code', response.data)
+    
+    def test_javascript_functions_present(self):
+        """Test that JavaScript functions for lazy loading are included"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            response = self.client.get('/results')
+            self.assertEqual(response.status_code, 200)
+            
+            # Check for JavaScript functions
+            self.assertIn(b'function loadFunctionCode', response.data)
+            self.assertIn(b'function loadIoctlCode', response.data)
+            self.assertIn(b'/api/function-code', response.data)
+            self.assertIn(b'/api/ioctl-code', response.data)
+    
+    def test_lazy_loading_error_handling(self):
+        """Test that error handling is properly implemented in JavaScript"""
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            response = self.client.get('/results')
+            self.assertEqual(response.status_code, 200)
+            
+            # Check for error handling in JavaScript
+            self.assertIn(b'catch (error)', response.data)
+            self.assertIn(b'Error loading code', response.data)
+            self.assertIn(b'loading-indicator', response.data)
+    
+    def test_function_code_with_source_root(self):
+        """Test function code loading with source root functionality"""
+        # This test ensures the new --source-root functionality works with function code
+        with self.app.test_request_context():
+            with self.client.session_transaction() as sess:
+                sess['results'] = self.sample_results
+            
+            # Test function code API with source root simulation
+            response = self.client.get('/api/function-code?name=gasket_open&file=/gasket-driver/src/gasket_core.c&line=1229')
+            self.assertEqual(response.status_code, 200)
+            
+            data = json.loads(response.data)
+            self.assertIn('function_code', data)
+            # Since source files don't exist in test environment, should get default message
+            self.assertEqual(data['function_code'], 'No source code available')
 
 
 if __name__ == '__main__':

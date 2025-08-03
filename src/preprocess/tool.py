@@ -81,7 +81,7 @@ class KernelLogParserTool:
             return None
     
     def process_batch(self, log_files: List[str], output_dir: Optional[str] = None, 
-                     show_ui: bool = True) -> List[dict]:
+                     show_ui: bool = True, source_root_path: Optional[str] = None) -> List[dict]:
         """
         Process multiple log files in batch
         
@@ -89,6 +89,7 @@ class KernelLogParserTool:
             log_files: List of log file paths
             output_dir: Optional output directory for JSON files
             show_ui: Whether to show progress UI
+            source_root_path: Optional root path for resolving relative file paths
             
         Returns:
             List of parsing results
@@ -107,7 +108,7 @@ class KernelLogParserTool:
                 log_name = Path(log_file).stem
                 output_file = str(output_dir_path / f"{log_name}_parsed.json")
             
-            result = self.process_log(log_file, output_file, show_ui)
+            result = self.process_log(log_file, output_file, show_ui, source_root_path)
             if result:
                 results.append({
                     'file': log_file,
@@ -311,11 +312,12 @@ def main():
         description="Kernel Log Parser Tool - Process AI accelerator instrumentation logs",
         epilog="""
 Examples:
-  %(prog)s logfile.log                    # Process single file
-  %(prog)s logfile.log -o results.json    # Process and save to JSON
-  %(prog)s *.log --batch                  # Process multiple files
-  %(prog)s --interactive                  # Interactive mode
-  %(prog)s results.json --web-ui          # Start web UI with results
+  %(prog)s logfile.log                           # Process single file
+  %(prog)s logfile.log -o results.json           # Process and save to JSON
+  %(prog)s logfile.log --source-root kernel_src/ # Process with kernel source path
+  %(prog)s *.log --batch                         # Process multiple files
+  %(prog)s --interactive                         # Interactive mode
+  %(prog)s results.json --web-ui                 # Start web UI with results
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
@@ -331,6 +333,10 @@ Examples:
     parser.add_argument(
         "-o", "--output", 
         help="Output JSON file path"
+    )
+    parser.add_argument(
+        "--source-root", 
+        help="Root directory path for resolving relative file paths in kernel sources"
     )
     parser.add_argument(
         "--batch", 
@@ -418,7 +424,7 @@ Examples:
         if args.batch or len(args.files) > 1:
             # Batch processing
             print(f"📁 Batch processing {len(args.files)} files...")
-            results = tool.process_batch(args.files, args.output_dir, show_ui)
+            results = tool.process_batch(args.files, args.output_dir, show_ui, args.source_root)
             
             print(f"\n✅ Successfully processed {len(results)} files")
             
@@ -441,7 +447,7 @@ Examples:
                 sys.exit(1)
             
             # Process the file
-            results = tool.process_log(log_file, args.output, show_ui)
+            results = tool.process_log(log_file, args.output, show_ui, args.source_root)
             
             if results:
                 print(f"\n✅ Successfully processed: {log_file}")

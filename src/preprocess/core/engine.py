@@ -181,37 +181,37 @@ class KernelLogParserEngine:
         if not line:
             return False
         
-        # Extract timestamp
-        timestamp = self.function_parser.extract_timestamp(line)
-        if timestamp is None:
+        # Extract timestamp (returns tuple of readable_time_str, numeric_timestamp)
+        timestamp_data = self.function_parser.extract_timestamp(line)
+        if timestamp_data is None:
             return False
         
         parsed = False
         
         # Try DMA parser first (handles stack collection state)
         if self.dma_parser.can_parse(line):
-            success, result = self.dma_parser.parse(line, timestamp)
+            success, result = self.dma_parser.parse(line, timestamp_data)
             if success:
                 parsed = True
                 self._handle_dma_result(result)
         
         # Try function parser
         elif self.function_parser.can_parse(line):
-            success, result = self.function_parser.parse(line, timestamp)
+            success, result = self.function_parser.parse(line, timestamp_data)
             if success:
                 parsed = True
                 self._handle_function_result(result)
         
         # Try user copy parser
         elif self.user_copy_parser.can_parse(line):
-            success, result = self.user_copy_parser.parse(line, timestamp)
+            success, result = self.user_copy_parser.parse(line, timestamp_data)
             if success:
                 parsed = True
                 self._handle_user_copy_result(result)
         
         # Try IOCTL parser
         elif self.ioctl_parser.can_parse(line):
-            success, result = self.ioctl_parser.parse(line, timestamp)
+            success, result = self.ioctl_parser.parse(line, timestamp_data)
             if success:
                 parsed = True
                 self._handle_ioctl_result(result)
