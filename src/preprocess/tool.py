@@ -53,7 +53,7 @@ class KernelLogParserTool:
         self.results = None
     
     def process_log(self, log_file: str, output_file: Optional[str] = None, 
-                   show_ui: bool = True) -> dict:
+                   show_ui: bool = True, source_root_path: Optional[str] = None) -> dict:
         """
         Process a single log file
         
@@ -61,11 +61,12 @@ class KernelLogParserTool:
             log_file: Path to log file
             output_file: Optional output JSON file
             show_ui: Whether to show progress UI
+            source_root_path: Optional root path for resolving relative file paths
             
         Returns:
             Dictionary with parsing results
         """
-        self.parser = KernelLogParserEngine(show_ui=show_ui)
+        self.parser = KernelLogParserEngine(show_ui=show_ui, source_root_path=source_root_path)
         
         try:
             self.results = self.parser.parse_log_file(log_file, output_file)

@@ -53,15 +53,49 @@ class ProgressUI:
         self.print_message(f"📄 Files with functions: {statistics.files_with_functions}")
     
     def print_file_analysis(self, functions_by_file):
-        """Print file analysis summary"""
+        """Print file analysis summary with function code details"""
         if not self.show_ui or not functions_by_file:
             return
         
         self.print_message("\n📁 Files analyzed:")
         for file_path, functions in functions_by_file.items():
             self.print_message(f"  {file_path}: {len(functions)} unique functions")
+            
+            for func in functions:
+                self.print_message(f"    📍 {func.function_name} (called {func.call_count} times)")
+                if hasattr(func, 'function_code') and func.function_code:
+                    lines = func.function_code.split('\n')
+                    self.print_message(f"       📜 Function code: {len(lines)} lines")
+                    # Show first 2 lines as preview
+                    for i, line in enumerate(lines[:2]):
+                        self.print_message(f"       {i+1}: {line}")
+                    if len(lines) > 2:
+                        self.print_message(f"       ... ({len(lines) - 2} more lines)")
+                else:
+                    self.print_message(f"       ❌ No function code available")
+                self.print_message("")  # Empty line for spacing
     
     def print_operation(self, operation_type: str, details: str):
         """Print operation details"""
         if self.show_ui:
             self.print_message(f"  {operation_type}: {details}")
+    
+    def print_function_code(self, function_name: str, function_code: str, max_lines: int = 5):
+        """Print extracted function code with preview"""
+        if not self.show_ui or not function_code:
+            return
+        
+        lines = function_code.split('\n')
+        total_lines = len(lines)
+        
+        self.print_message(f"    📜 Function Code ({total_lines} lines):")
+        
+        # Show first few lines
+        for i, line in enumerate(lines[:max_lines]):
+            self.print_message(f"    {i+1:2d}: {line}")
+        
+        # Show truncation message if needed
+        if total_lines > max_lines:
+            self.print_message(f"    ... ({total_lines - max_lines} more lines)")
+        
+        self.print_message("")  # Empty line for spacing

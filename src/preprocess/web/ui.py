@@ -204,7 +204,7 @@ HTML_TEMPLATE = """
             font-size: 0.9em;
         }
         
-        .dma-item, .copy-item {
+        .dma-item, .copy-item, .ioctl-item {
             background: white;
             border-radius: 10px;
             padding: 20px;
@@ -260,6 +260,40 @@ HTML_TEMPLATE = """
             border-left: 3px solid #4caf50;
         }
         
+        .function-code {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .function-code details {
+            margin: 0;
+        }
+        
+        .function-code summary {
+            padding: 10px;
+            cursor: pointer;
+            background: #e9ecef;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+        
+        .function-code pre {
+            margin: 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 0 0 5px 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .function-code code {
+            color: #333;
+        }
+        
         .timestamp {
             color: #888;
             font-family: monospace;
@@ -274,6 +308,17 @@ HTML_TEMPLATE = """
             color: white;
             font-size: 0.8em;
             margin-left: 10px;
+        }
+        
+        .call-count {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: #ff9800;
+            color: white;
+            font-size: 0.75em;
+            margin-left: 8px;
+            font-weight: bold;
         }
         
         .toggle-btn {
@@ -367,6 +412,10 @@ HTML_TEMPLATE = """
                 <div class="stat-label">User Copy Ops</div>
             </div>
             <div class="stat-card">
+                <div class="stat-number">{{ data.statistics.unique_ioctl_operations }}</div>
+                <div class="stat-label">IOCTL Handlers</div>
+            </div>
+            <div class="stat-card">
                 <div class="stat-number">{{ data.statistics.total_files_analyzed }}</div>
                 <div class="stat-label">Total Files Analyzed</div>
             </div>
@@ -386,6 +435,7 @@ HTML_TEMPLATE = """
                     <button class="tab active" onclick="showTab('functions')">📍 Functions</button>
                     <button class="tab" onclick="showTab('dma')">🔄 DMA Operations</button>
                     <button class="tab" onclick="showTab('userCopy')">👤 User Copy</button>
+                    <button class="tab" onclick="showTab('ioctl')">🔧 IOCTL Handlers</button>
                 </div>
                 
                 <div id="functions" class="tab-content active">
@@ -402,7 +452,17 @@ HTML_TEMPLATE = """
                                     <div class="function-name">{{ func.function_name }}</div>
                                     <div class="function-details">
                                         Line {{ func.line_number }} • <span class="timestamp">{{ "%.6f"|format(func.first_seen_timestamp) }}s</span>
+                                        <span class="call-count">Called {{ func.call_count }} times</span>
                                     </div>
+                                    
+                                    {% if func.function_code %}
+                                    <div class="function-code">
+                                        <details>
+                                            <summary><strong>Function Source Code</strong></summary>
+                                            <pre><code>{{ func.function_code }}</code></pre>
+                                        </details>
+                                    </div>
+                                    {% endif %}
                                 </div>
                                 {% endfor %}
                             </div>
@@ -421,11 +481,21 @@ HTML_TEMPLATE = """
                             <div class="dma-item">
                                 <div class="dma-header">
                                     {{ dma.dma_function }} → {{ dma.caller_function }}
+                                    <span class="call-count">Called {{ dma.call_count }} times</span>
                                 </div>
                                 <div class="dma-details">
                                     <strong>File:</strong> {{ dma.file_path }}:{{ dma.line_number }}<br>
                                     <strong>Timestamp:</strong> <span class="timestamp">{{ "%.6f"|format(dma.first_seen_timestamp) }}s</span>
                                 </div>
+                                
+                                {% if dma.function_code %}
+                                <div class="function-code">
+                                    <details>
+                                        <summary><strong>Function Source Code</strong></summary>
+                                        <pre><code>{{ dma.function_code }}</code></pre>
+                                    </details>
+                                </div>
+                                {% endif %}
                                 
                                 {% if dma.stack_trace %}
                                 <button class="toggle-btn" onclick="toggleStackTrace(this)">Show Call Graph</button>
@@ -452,15 +522,56 @@ HTML_TEMPLATE = """
                             <div class="copy-item">
                                 <div class="copy-header">
                                     {{ copy.copy_function }} → {{ copy.caller_function }}
+                                    <span class="call-count">Called {{ copy.call_count }} times</span>
                                 </div>
                                 <div class="copy-details">
                                     <strong>File:</strong> {{ copy.file_path }}:{{ copy.line_number }}<br>
                                     <strong>Timestamp:</strong> <span class="timestamp">{{ "%.6f"|format(copy.first_seen_timestamp) }}s</span>
                                 </div>
                                 
+                                {% if copy.function_code %}
+                                <div class="function-code">
+                                    <details>
+                                        <summary><strong>Function Source Code</strong></summary>
+                                        <pre><code>{{ copy.function_code }}</code></pre>
+                                    </details>
+                                </div>
+                                {% endif %}
+                                
                                 {% if copy.process_info %}
                                 <div class="process-info">
                                     <strong>Process:</strong> {{ copy.process_info.comm }} (PID: {{ copy.process_info.pid }})
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="ioctl" class="tab-content">
+                    <div class="section">
+                        <div class="section-title">IOCTL Handler Operations</div>
+                        <input type="text" class="search-box" id="ioctlSearch" placeholder="🔍 Search IOCTL handlers..." onkeyup="filterIOCTL()">
+                        
+                        <div id="ioctlGrid">
+                            {% for ioctl in data.ioctl_operations %}
+                            <div class="ioctl-item">
+                                <div class="ioctl-header">
+                                    🔧 {{ ioctl.function_name }}
+                                    <span class="call-count">Called {{ ioctl.call_count }} times</span>
+                                </div>
+                                <div class="ioctl-details">
+                                    <strong>File:</strong> {{ ioctl.file_path }}:{{ ioctl.line_number }}<br>
+                                    <strong>Timestamp:</strong> <span class="timestamp">{{ "%.6f"|format(ioctl.first_seen_timestamp) }}s</span>
+                                </div>
+                                
+                                {% if ioctl.function_code %}
+                                <div class="function-code">
+                                    <details>
+                                        <summary><strong>Function Source Code</strong></summary>
+                                        <pre><code>{{ ioctl.function_code }}</code></pre>
+                                    </details>
                                 </div>
                                 {% endif %}
                             </div>
@@ -535,6 +646,17 @@ HTML_TEMPLATE = """
             });
         }
         
+        function filterIOCTL() {
+            const searchTerm = document.getElementById('ioctlSearch').value.toLowerCase();
+            const ioctlItems = document.querySelectorAll('.ioctl-item');
+            
+            ioctlItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const shouldShow = text.includes(searchTerm);
+                item.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+        
         // Auto-refresh functionality
         function checkForUpdates() {
             fetch('/api/status')
@@ -598,6 +720,11 @@ def api_search(category):
     elif category == 'user_copy':
         results = [copy for copy in parsed_data['user_copy_operations'] 
                   if query in copy['copy_function'].lower() or query in copy['caller_function'].lower()]
+        return jsonify(results)
+    
+    elif category == 'ioctl':
+        results = [ioctl for ioctl in parsed_data.get('ioctl_operations', [])
+                  if query in ioctl['function_name'].lower() or query in ioctl['file_path'].lower()]
         return jsonify(results)
     
     return jsonify({"error": "Invalid category"}), 400
@@ -670,6 +797,7 @@ def start_web_ui(json_file=None, port=5000, host='127.0.0.1', auto_open=True):
     print(f"   • Functions: {parsed_data['statistics']['unique_function_entries']}")
     print(f"   • DMA Operations: {parsed_data['statistics']['unique_dma_operations']}")
     print(f"   • User Copy Operations: {parsed_data['statistics']['unique_user_copy_operations']}")
+    print(f"   • IOCTL Operations: {parsed_data['statistics'].get('unique_ioctl_operations', 0)}")
     print(f"   • Total Files Analyzed: {parsed_data['statistics']['total_files_analyzed']}")
     print(f"   • Files Instrumented: {parsed_data['statistics']['files_instrumented_with_function_entries']}")
     print(f"\n💡 Use Ctrl+C to stop the server\n")

@@ -22,6 +22,7 @@ class LogPatterns:
             'dma_stack_end': re.compile(r'DMA_STACK_END: End of stack trace for (\w+)'),
             'user_copy': re.compile(r'USER_COPY: About to call (\w+) from function (\w+) at ([^:]+):(\d+)'),
             'user_copy_context': re.compile(r'USER_COPY_CONTEXT: Process PID=(\d+), COMM=(.+)'),
+            'ioctl_handler': re.compile(r'IOCTL_HANDLER: Function (\w+) called at ([^:]+):(\d+)'),
         }
     
     @property
@@ -62,3 +63,7 @@ class LogPatterns:
     def search_user_copy_context(self, line: str) -> re.Match:
         """Search for user copy context pattern"""
         return self._patterns['user_copy_context'].search(line)
+    
+    def search_ioctl_handler(self, line: str) -> re.Match:
+        """Search for ioctl handler pattern"""
+        return self._patterns['ioctl_handler'].search(line)

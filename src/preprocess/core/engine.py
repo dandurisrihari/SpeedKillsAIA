@@ -12,39 +12,53 @@ from collections import defaultdict
 
 from .models import (
     ParseResults, ParseMetadata, ParseStatistics, 
-    FunctionEntry, DMAOperation, UserCopyOperation, ProcessInfo
+    FunctionEntry, DMAOperation, UserCopyOperation, IOCTLOperation, ProcessInfo
 )
 from .patterns import LogPatterns
 from ..parsers.function_parser import FunctionEntryParser
 from ..parsers.dma_parser import DMAParser
 from ..parsers.user_copy_parser import UserCopyParser
+from ..parsers.ioctl_parser import IOCTLParser
 from ..utils.progress import ProgressUI
 from ..utils.deduplication import KernelLogDeduplicator
 from ..utils.file_tracker import FileTracker
+from ..utils.function_extractor import FunctionCodeExtractor
 
 
 class KernelLogParserEngine:
     """Main parsing engine that coordinates all parsers"""
     
-    def __init__(self, show_ui: bool = True):
+    def __init__(self, show_ui: bool = True, source_root_path: Optional[str] = None):
         self.show_ui = show_ui
         self.ui = ProgressUI(show_ui)
+        self.source_root_path = source_root_path
         
         # Initialize patterns and parsers
         self.patterns = LogPatterns()
         self.function_parser = FunctionEntryParser(self.patterns)
         self.dma_parser = DMAParser(self.patterns)
         self.user_copy_parser = UserCopyParser(self.patterns)
+        self.ioctl_parser = IOCTLParser(self.patterns)
         
         # Initialize tracking utilities
         self.deduplicator = KernelLogDeduplicator()
         self.file_tracker = FileTracker()
         
+        # Initialize function code extractor
+        self.function_extractor = FunctionCodeExtractor(source_root_path)
+        
         # Results storage
         self.functions_by_file = defaultdict(list)
         self.dma_operations = []
         self.user_copy_operations = []
+        self.ioctl_operations = []
         self.pending_user_copy = None  # For attaching process info
+        
+        # Total counters (before deduplication)
+        self.total_function_entries_found = 0
+        self.total_dma_operations_found = 0
+        self.total_user_copy_operations_found = 0
+        self.total_ioctl_operations_found = 0
         
         # Stack trace storage for DMA operations
         self.pending_stack_traces = {}  # dma_function -> stack_trace
@@ -133,6 +147,13 @@ class KernelLogParserEngine:
                 parsed = True
                 self._handle_user_copy_result(result)
         
+        # Try IOCTL parser
+        elif self.ioctl_parser.can_parse(line):
+            success, result = self.ioctl_parser.parse(line, timestamp)
+            if success:
+                parsed = True
+                self._handle_ioctl_result(result)
+        
         if parsed:
             self.metadata.parsed_lines += 1
         
@@ -145,11 +166,29 @@ class KernelLogParserEngine:
         # Track file
         self.file_tracker.add_file(file_path, has_function_entry=True)
         
-        # Check for duplicates
+        # Increment total counter
+        self.total_function_entries_found += 1
+        
+        # Check for duplicates first
         if not self.deduplicator.functions.is_duplicate((function_entry, file_path)):
+            # Extract function code only for unique operations
+            function_data = self.function_extractor.extract_function_at_line(
+                file_path, function_entry.line_number
+            )
+            
+            if function_data:
+                function_name, function_code, start_line, end_line = function_data
+                function_entry.function_code = function_code
+                self.ui.print_operation("📍 Function", 
+                    f"{function_entry.function_name} in {file_path}:{function_entry.line_number}")
+                self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
+                self.ui.print_function_code(function_name, function_code)
+            else:
+                self.ui.print_operation("📍 Function", 
+                    f"{function_entry.function_name} in {file_path}:{function_entry.line_number}")
+                self.ui.print_operation("", "⚠️  Could not extract function code")
+            
             self.functions_by_file[file_path].append(function_entry)
-            self.ui.print_operation("📍 Function", 
-                f"{function_entry.function_name} in {file_path}:{function_entry.line_number}")
     
     def _handle_dma_result(self, result):
         """Handle DMA parser result"""
@@ -157,11 +196,29 @@ class KernelLogParserEngine:
             # Track file
             self.file_tracker.add_file(result.file_path)
             
-            # Check for duplicates
+            # Increment total counter
+            self.total_dma_operations_found += 1
+            
+            # Check for duplicates first
             if not self.deduplicator.dma_operations.is_duplicate(result):
+                # Extract function code only for unique operations
+                function_data = self.function_extractor.extract_function_at_line(
+                    result.file_path, result.line_number
+                )
+                
+                if function_data:
+                    function_name, function_code, start_line, end_line = function_data
+                    result.function_code = function_code
+                    self.ui.print_operation("🔄 DMA", 
+                        f"{result.dma_function} called by {result.caller_function}")
+                    self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
+                    self.ui.print_function_code(function_name, function_code)
+                else:
+                    self.ui.print_operation("🔄 DMA", 
+                        f"{result.dma_function} called by {result.caller_function}")
+                    self.ui.print_operation("", "⚠️  Could not extract function code")
+                
                 self.dma_operations.append(result)
-                self.ui.print_operation("🔄 DMA", 
-                    f"{result.dma_function} called by {result.caller_function}")
         
         elif isinstance(result, tuple):
             result_type = result[0]
@@ -182,12 +239,30 @@ class KernelLogParserEngine:
             # Track file
             self.file_tracker.add_file(result.file_path)
             
-            # Check for duplicates
+            # Increment total counter
+            self.total_user_copy_operations_found += 1
+            
+            # Check for duplicates first
             if not self.deduplicator.user_copy_operations.is_duplicate(result):
+                # Extract function code only for unique operations
+                function_data = self.function_extractor.extract_function_at_line(
+                    result.file_path, result.line_number
+                )
+                
+                if function_data:
+                    function_name, function_code, start_line, end_line = function_data
+                    result.function_code = function_code
+                    self.ui.print_operation("👤 User Copy", 
+                        f"{result.copy_function} called by {result.caller_function}")
+                    self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
+                    self.ui.print_function_code(function_name, function_code)
+                else:
+                    self.ui.print_operation("👤 User Copy", 
+                        f"{result.copy_function} called by {result.caller_function}")
+                    self.ui.print_operation("", "⚠️  Could not extract function code")
+                
                 self.user_copy_operations.append(result)
                 self.pending_user_copy = result
-                self.ui.print_operation("👤 User Copy", 
-                    f"{result.copy_function} called by {result.caller_function}")
         
         elif isinstance(result, ProcessInfo):
             # Attach to most recent user copy operation
@@ -196,8 +271,41 @@ class KernelLogParserEngine:
                 self.pending_user_copy.process_info = result
                 self.ui.print_operation("", f"Process: {result.comm} (PID: {result.pid})")
     
+    def _handle_ioctl_result(self, result):
+        """Handle IOCTL parser result"""
+        if isinstance(result, IOCTLOperation):
+            # Track file
+            self.file_tracker.add_file(result.file_path)
+            
+            # Increment total counter
+            self.total_ioctl_operations_found += 1
+            
+            # Check for duplicates first
+            if not self.deduplicator.ioctl_operations.is_duplicate(result):
+                # Extract function code only for unique operations
+                function_data = self.function_extractor.extract_function_at_line(
+                    result.file_path, result.line_number
+                )
+                
+                if function_data:
+                    function_name, function_code, start_line, end_line = function_data
+                    result.function_code = function_code
+                    self.ui.print_operation("🔧 IOCTL Handler", 
+                        f"{result.function_name} at {result.file_path}:{result.line_number}")
+                    self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
+                    self.ui.print_function_code(function_name, function_code)
+                else:
+                    self.ui.print_operation("🔧 IOCTL Handler", 
+                        f"{result.function_name} at {result.file_path}:{result.line_number}")
+                    self.ui.print_operation("", "⚠️  Could not extract function code")
+                
+                self.ioctl_operations.append(result)
+    
     def _build_results(self) -> ParseResults:
         """Build final ParseResults object"""
+        # Set call counts for all operations
+        self._set_call_counts()
+        
         # Calculate statistics
         file_stats = self.file_tracker.get_statistics(self.functions_by_file)
         
@@ -205,6 +313,11 @@ class KernelLogParserEngine:
             unique_function_entries=sum(len(funcs) for funcs in self.functions_by_file.values()),
             unique_dma_operations=len(self.dma_operations),
             unique_user_copy_operations=len(self.user_copy_operations),
+            unique_ioctl_operations=len(self.ioctl_operations),
+            total_function_entries_found=self.total_function_entries_found,
+            total_dma_operations_found=self.total_dma_operations_found,
+            total_user_copy_operations_found=self.total_user_copy_operations_found,
+            total_ioctl_operations_found=self.total_ioctl_operations_found,
             files_with_functions=file_stats['files_with_functions'],
             total_files_analyzed=file_stats['total_files_analyzed'],
             files_instrumented_with_function_entries=file_stats['files_instrumented_with_function_entries'],
@@ -215,7 +328,8 @@ class KernelLogParserEngine:
         self.metadata.unique_entries = (
             statistics.unique_function_entries +
             statistics.unique_dma_operations +
-            statistics.unique_user_copy_operations
+            statistics.unique_user_copy_operations +
+            statistics.unique_ioctl_operations
         )
         
         return ParseResults(
@@ -223,8 +337,32 @@ class KernelLogParserEngine:
             functions_by_file=dict(self.functions_by_file),
             dma_operations=self.dma_operations,
             user_copy_operations=self.user_copy_operations,
+            ioctl_operations=self.ioctl_operations,
             statistics=statistics
         )
+    
+    def _set_call_counts(self):
+        """Set call counts for all operations based on deduplication tracker data"""
+        # Set call counts for function entries
+        for file_path, functions in self.functions_by_file.items():
+            for func in functions:
+                call_count = self.deduplicator.functions.get_call_count((func, file_path))
+                func.call_count = call_count
+        
+        # Set call counts for DMA operations
+        for dma in self.dma_operations:
+            call_count = self.deduplicator.dma_operations.get_call_count(dma)
+            dma.call_count = call_count
+        
+        # Set call counts for user copy operations
+        for copy_op in self.user_copy_operations:
+            call_count = self.deduplicator.user_copy_operations.get_call_count(copy_op)
+            copy_op.call_count = call_count
+        
+        # Set call counts for IOCTL operations
+        for ioctl in self.ioctl_operations:
+            call_count = self.deduplicator.ioctl_operations.get_call_count(ioctl)
+            ioctl.call_count = call_count
     
     def save_results(self, results: ParseResults, output_file: Path):
         """Save results to JSON file"""

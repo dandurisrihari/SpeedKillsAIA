@@ -17,6 +17,8 @@ class FunctionEntry:
     line_number: int
     first_seen_timestamp: float
     entry_type: str = "function_entry"
+    function_code: Optional[str] = None  # Will contain extracted function source code
+    call_count: int = 1  # Number of times this function was called
 
 
 @dataclass
@@ -35,6 +37,8 @@ class DMAOperation:
     line_number: int
     first_seen_timestamp: float
     stack_trace: List[str] = field(default_factory=list)
+    function_code: Optional[str] = None  # Will contain extracted function source code
+    call_count: int = 1  # Number of times this DMA operation was called
 
 
 @dataclass
@@ -46,6 +50,30 @@ class UserCopyOperation:
     line_number: int
     first_seen_timestamp: float
     process_info: Optional[ProcessInfo] = None
+    function_code: Optional[str] = None  # Will contain extracted function source code
+    call_count: int = 1  # Number of times this user copy operation was called
+
+
+@dataclass
+class IOCTLOperation:
+    """Represents an IOCTL handler operation"""
+    function_name: str
+    file_path: str
+    line_number: int
+    first_seen_timestamp: float
+    function_code: Optional[str] = None  # Will contain extracted function source code
+    call_count: int = 1  # Number of times this IOCTL operation was called
+    
+    def to_dict(self) -> Dict:
+        """Convert to dictionary for JSON serialization"""
+        return {
+            'function_name': self.function_name,
+            'file_path': self.file_path,
+            'line_number': self.line_number,
+            'first_seen_timestamp': self.first_seen_timestamp,
+            'function_code': self.function_code,
+            'call_count': self.call_count
+        }
 
 
 @dataclass
@@ -54,6 +82,11 @@ class ParseStatistics:
     unique_function_entries: int = 0
     unique_dma_operations: int = 0
     unique_user_copy_operations: int = 0
+    unique_ioctl_operations: int = 0
+    total_function_entries_found: int = 0
+    total_dma_operations_found: int = 0
+    total_user_copy_operations_found: int = 0
+    total_ioctl_operations_found: int = 0
     files_with_functions: int = 0
     total_files_analyzed: int = 0
     files_instrumented_with_function_entries: int = 0
@@ -78,6 +111,7 @@ class ParseResults:
     functions_by_file: Dict[str, List[FunctionEntry]]
     dma_operations: List[DMAOperation]
     user_copy_operations: List[UserCopyOperation]
+    ioctl_operations: List[IOCTLOperation]
     statistics: ParseStatistics
 
     def to_dict(self) -> Dict:
@@ -92,7 +126,8 @@ class ParseResults:
                     'line_number': func.line_number,
                     'first_seen_timestamp': func.first_seen_timestamp,
                     'entry_type': func.entry_type,
-                    'call_count': 1  # For backward compatibility
+                    'function_code': func.function_code,
+                    'call_count': func.call_count
                 })
         
         return {
@@ -111,7 +146,9 @@ class ParseResults:
                         'function_name': func.function_name,
                         'line_number': func.line_number,
                         'first_seen_timestamp': func.first_seen_timestamp,
-                        'entry_type': func.entry_type
+                        'entry_type': func.entry_type,
+                        'function_code': func.function_code,
+                        'call_count': func.call_count
                     }
                     for func in functions
                 ]
@@ -125,7 +162,8 @@ class ParseResults:
                     'line_number': dma.line_number,
                     'first_seen_timestamp': dma.first_seen_timestamp,
                     'stack_trace': dma.stack_trace,
-                    'call_count': 1  # For backward compatibility
+                    'function_code': dma.function_code,
+                    'call_count': dma.call_count
                 }
                 for dma in self.dma_operations
             ],
@@ -136,7 +174,8 @@ class ParseResults:
                     'file_path': copy_op.file_path,
                     'line_number': copy_op.line_number,
                     'first_seen_timestamp': copy_op.first_seen_timestamp,
-                    'call_count': 1,  # For backward compatibility
+                    'function_code': copy_op.function_code,
+                    'call_count': copy_op.call_count,
                     'process_info': {
                         'pid': copy_op.process_info.pid,
                         'comm': copy_op.process_info.comm
@@ -144,14 +183,27 @@ class ParseResults:
                 }
                 for copy_op in self.user_copy_operations
             ],
+            'ioctl_operations': [
+                {
+                    'function_name': ioctl_op.function_name,
+                    'file_path': ioctl_op.file_path,
+                    'line_number': ioctl_op.line_number,
+                    'first_seen_timestamp': ioctl_op.first_seen_timestamp,
+                    'function_code': ioctl_op.function_code,
+                    'call_count': ioctl_op.call_count
+                }
+                for ioctl_op in self.ioctl_operations
+            ],
             'statistics': {
                 'total_lines_processed': self.metadata.total_lines,
                 'unique_function_entries': self.statistics.unique_function_entries,
                 'unique_dma_operations': self.statistics.unique_dma_operations,
                 'unique_user_copy_operations': self.statistics.unique_user_copy_operations,
-                'function_entries_found': self.statistics.unique_function_entries,
-                'dma_operations_found': self.statistics.unique_dma_operations,
-                'user_copy_operations_found': self.statistics.unique_user_copy_operations,
+                'unique_ioctl_operations': self.statistics.unique_ioctl_operations,
+                'function_entries_found': self.statistics.total_function_entries_found,
+                'dma_operations_found': self.statistics.total_dma_operations_found,
+                'user_copy_operations_found': self.statistics.total_user_copy_operations_found,
+                'ioctl_operations_found': self.statistics.total_ioctl_operations_found,
                 'files_with_functions': self.statistics.files_with_functions,
                 'total_files_analyzed': self.statistics.total_files_analyzed,
                 'files_instrumented_with_function_entries': self.statistics.files_instrumented_with_function_entries,
