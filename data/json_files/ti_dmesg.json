@@ -1,0 +1,604 @@
+{
+  "metadata": {
+    "parser_version": "2.0.0",
+    "parsed_at": "2025-08-04T13:35:08.557693",
+    "log_file": "data/logs/ti/ti_dmesg_dma_userapi_dmafilefuncs_ioctl.log",
+    "total_lines": 1697,
+    "parsed_lines": 527,
+    "unique_entries": 41
+  },
+  "function_entries": [
+    {
+      "function_name": "virtio_rpmsg_create_ept",
+      "file_path": "drivers/rpmsg/virtio_rpmsg_bus.c",
+      "line_number": 285,
+      "first_seen_timestamp": 1754251901.215509,
+      "first_seen_time_str": "20:11:41,215509",
+      "entry_type": "function_entry",
+      "function_code": "static struct rpmsg_endpoint *virtio_rpmsg_create_ept(struct rpmsg_device *rpdev,\n\t\t\t\t\t\t      rpmsg_rx_cb_t cb,\n\t\t\t\t\t\t      void *priv,\n\t\t\t\t\t\t      struct rpmsg_channel_info chinfo)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function virtio_rpmsg_create_ept at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);\n\n\treturn __rpmsg_create_ept(vch->vrp, rpdev, cb, priv, chinfo.src);\n}",
+      "call_count": 10
+    },
+    {
+      "function_name": "virtio_rpmsg_sendto",
+      "file_path": "drivers/rpmsg/virtio_rpmsg_bus.c",
+      "line_number": 675,
+      "first_seen_timestamp": 1754251905.966134,
+      "first_seen_time_str": "20:11:45,966134",
+      "entry_type": "function_entry",
+      "function_code": "static int virtio_rpmsg_sendto(struct rpmsg_endpoint *ept, void *data, int len,\n\t\t\t       u32 dst)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function virtio_rpmsg_sendto at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_device *rpdev = ept->rpdev;\n\tu32 src = ept->addr;\n\n\treturn rpmsg_send_offchannel_raw(rpdev, src, dst, data, len, true);\n}",
+      "call_count": 3
+    },
+    {
+      "function_name": "rpmsg_send_offchannel_raw",
+      "file_path": "drivers/rpmsg/virtio_rpmsg_bus.c",
+      "line_number": 568,
+      "first_seen_timestamp": 1754251905.975356,
+      "first_seen_time_str": "20:11:45,975356",
+      "entry_type": "function_entry",
+      "function_code": "static int rpmsg_send_offchannel_raw(struct rpmsg_device *rpdev,\n\t\t\t\t     u32 src, u32 dst,\n\t\t\t\t     void *data, int len, bool wait)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function rpmsg_send_offchannel_raw at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);\n\tstruct virtproc_info *vrp = vch->vrp;\n\tstruct device *dev = &rpdev->dev;\n\tstruct scatterlist sg;\n\tstruct rpmsg_hdr *msg;\n\tint err;\n\n\t/* bcasting isn't allowed */\n\tif (src == RPMSG_ADDR_ANY || dst == RPMSG_ADDR_ANY) {\n\t\tdev_err(dev, \"invalid addr (src 0x%x, dst 0x%x)\\n\", src, dst);\n\t\treturn -EINVAL;\n\t}\n\n\t/*\n\t * We currently use fixed-sized buffers, and therefore the payload\n\t * length is limited.\n\t *\n\t * One of the possible improvements here is either to support\n\t * user-provided buffers (and then we can also support zero-copy\n\t * messaging), or to improve the buffer allocator, to support\n\t * variable-length buffer sizes.\n\t */\n\tif (len > vrp->buf_size - sizeof(struct rpmsg_hdr)) {\n\t\tdev_err(dev, \"message is too big (%d)\\n\", len);\n\t\treturn -EMSGSIZE;\n\t}\n\n\t/* grab a buffer */\n\tmsg = get_a_tx_buf(vrp);\n\tif (!msg && !wait)\n\t\treturn -ENOMEM;\n\n\t/* no free buffer ? wait for one (but bail after 15 seconds) */\n\twhile (!msg) {\n\t\t/* enable \"tx-complete\" interrupts, if not already enabled */\n\t\trpmsg_upref_sleepers(vrp);\n\n\t\t/*\n\t\t * sleep until a free buffer is available or 15 secs elapse.\n\t\t * the timeout period is not configurable because there's\n\t\t * little point in asking drivers to specify that.\n\t\t * if later this happens to be required, it'd be easy to add.\n\t\t */\n\t\terr = wait_event_interruptible_timeout(vrp->sendq,\n\t\t\t\t\t(msg = get_a_tx_buf(vrp)),\n\t\t\t\t\tmsecs_to_jiffies(15000));\n\n\t\t/* disable \"tx-complete\" interrupts if we're the last sleeper */\n\t\trpmsg_downref_sleepers(vrp);\n\n\t\t/* timeout ? */\n\t\tif (!err) {\n\t\t\tdev_err(dev, \"timeout waiting for a tx buffer\\n\");\n\t\t\treturn -ERESTARTSYS;\n\t\t}\n\t}\n\n\tmsg->len = cpu_to_rpmsg16(rpdev, len);\n\tmsg->flags = 0;\n\tmsg->src = cpu_to_rpmsg32(rpdev, src);\n\tmsg->dst = cpu_to_rpmsg32(rpdev, dst);\n\tmsg->reserved = 0;\n\tmemcpy(msg->data, data, len);\n\n\tdev_dbg(dev, \"TX From 0x%x, To 0x%x, Len %d, Flags %d, Reserved %d\\n\",\n\t\tsrc, dst, len, msg->flags, msg->reserved);\n#if defined(CONFIG_DYNAMIC_DEBUG)\n\tdynamic_hex_dump(\"rpmsg_virtio TX: \", DUMP_PREFIX_NONE, 16, 1,\n\t\t\t msg, sizeof(*msg) + len, true);\n#endif\n\n\trpmsg_sg_init(&sg, msg, sizeof(*msg) + len);\n\n\tmutex_lock(&vrp->tx_lock);\n\n\t/* add message to the remote processor's virtqueue */\n\terr = virtqueue_add_outbuf(vrp->svq, &sg, 1, msg, GFP_KERNEL);\n\tif (err) {\n\t\t/*\n\t\t * need to reclaim the buffer here, otherwise it's lost\n\t\t * (memory won't leak, but rpmsg won't use it again for TX).\n\t\t * this will wait for a buffer management overhaul.\n\t\t */\n\t\tdev_err(dev, \"virtqueue_add_outbuf failed: %d\\n\", err);\n\t\tgoto out;\n\t}\n\n\t/* tell the remote processor it has a pending message to read */\n\tvirtqueue_kick(vrp->svq);\nout:\n\tmutex_unlock(&vrp->tx_lock);\n\treturn err;\n}",
+      "call_count": 3
+    },
+    {
+      "function_name": "get_a_tx_buf",
+      "file_path": "drivers/rpmsg/virtio_rpmsg_bus.c",
+      "line_number": 450,
+      "first_seen_timestamp": 1754251905.985119,
+      "first_seen_time_str": "20:11:45,985119",
+      "entry_type": "function_entry",
+      "function_code": "static void *get_a_tx_buf(struct virtproc_info *vrp)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function get_a_tx_buf at %s:%d\\n\", __FILE__, __LINE__);\n\tunsigned int len;\n\tvoid *ret;\n\n\t/* support multiple concurrent senders */\n\tmutex_lock(&vrp->tx_lock);\n\n\t/*\n\t * either pick the next unused tx buffer\n\t * (half of our buffers are used for sending messages)\n\t */\n\tif (vrp->last_sbuf < vrp->num_bufs / 2)\n\t\tret = vrp->sbufs + vrp->buf_size * vrp->last_sbuf++;\n\t/* or recycle a used one */\n\telse\n\t\tret = virtqueue_get_buf(vrp->svq, &len);\n\n\tmutex_unlock(&vrp->tx_lock);\n\n\treturn ret;\n}",
+      "call_count": 3
+    },
+    {
+      "function_name": "rpmsg_sg_init",
+      "file_path": "drivers/rpmsg/virtio_rpmsg_bus.c",
+      "line_number": 178,
+      "first_seen_timestamp": 1754251905.99373,
+      "first_seen_time_str": "20:11:45,993730",
+      "entry_type": "function_entry",
+      "function_code": "static void\nrpmsg_sg_init(struct scatterlist *sg, void *cpu_addr, unsigned int len)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function rpmsg_sg_init at %s:%d\\n\", __FILE__, __LINE__);\n\tif (is_vmalloc_addr(cpu_addr)) {\n\t\tsg_init_table(sg, 1);\n\t\tsg_set_page(sg, vmalloc_to_page(cpu_addr), len,\n\t\t\t    offset_in_page(cpu_addr));\n\t} else {\n\t\tWARN_ON(!virt_addr_valid(cpu_addr));\n\t\tsg_init_one(sg, cpu_addr, len);\n\t}\n}",
+      "call_count": 6
+    },
+    {
+      "function_name": "rpmsg_recv_done",
+      "file_path": "drivers/rpmsg/virtio_rpmsg_bus.c",
+      "line_number": 800,
+      "first_seen_timestamp": 1754251906.097117,
+      "first_seen_time_str": "20:11:46,097117",
+      "entry_type": "function_entry",
+      "function_code": "static void rpmsg_recv_done(struct virtqueue *rvq)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function rpmsg_recv_done at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct virtproc_info *vrp = rvq->vdev->priv;\n\tstruct device *dev = &rvq->vdev->dev;\n\tstruct rpmsg_hdr *msg;\n\tunsigned int len, msgs_received = 0;\n\tint err;\n\n\tmsg = virtqueue_get_buf(rvq, &len);\n\tif (!msg) {\n\t\tdev_err(dev, \"uhm, incoming signal, but no used buffer ?\\n\");\n\t\treturn;\n\t}\n\n\twhile (msg) {\n\t\terr = rpmsg_recv_single(vrp, dev, msg, len);\n\t\tif (err)\n\t\t\tbreak;\n\n\t\tmsgs_received++;\n\n\t\tmsg = virtqueue_get_buf(rvq, &len);\n\t}\n\n\tdev_dbg(dev, \"Received %u messages\\n\", msgs_received);\n\n\t/* tell the remote processor we added another available rx buffer */\n\tif (msgs_received)\n\t\tvirtqueue_kick(vrp->rvq);\n}",
+      "call_count": 3
+    },
+    {
+      "function_name": "rpmsg_recv_single",
+      "file_path": "drivers/rpmsg/virtio_rpmsg_bus.c",
+      "line_number": 731,
+      "first_seen_timestamp": 1754251906.105999,
+      "first_seen_time_str": "20:11:46,105999",
+      "entry_type": "function_entry",
+      "function_code": "static int rpmsg_recv_single(struct virtproc_info *vrp, struct device *dev,\n\t\t\t     struct rpmsg_hdr *msg, unsigned int len)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function rpmsg_recv_single at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_endpoint *ept;\n\tstruct scatterlist sg;\n\tbool little_endian = virtio_is_little_endian(vrp->vdev);\n\tunsigned int msg_len = __rpmsg16_to_cpu(little_endian, msg->len);\n\tint err;\n\n\tdev_dbg(dev, \"From: 0x%x, To: 0x%x, Len: %d, Flags: %d, Reserved: %d\\n\",\n\t\t__rpmsg32_to_cpu(little_endian, msg->src),\n\t\t__rpmsg32_to_cpu(little_endian, msg->dst), msg_len,\n\t\t__rpmsg16_to_cpu(little_endian, msg->flags),\n\t\t__rpmsg32_to_cpu(little_endian, msg->reserved));\n#if defined(CONFIG_DYNAMIC_DEBUG)\n\tdynamic_hex_dump(\"rpmsg_virtio RX: \", DUMP_PREFIX_NONE, 16, 1,\n\t\t\t msg, sizeof(*msg) + msg_len, true);\n#endif\n\n\t/*\n\t * We currently use fixed-sized buffers, so trivially sanitize\n\t * the reported payload length.\n\t */\n\tif (len > vrp->buf_size ||\n\t    msg_len > (len - sizeof(struct rpmsg_hdr))) {\n\t\tdev_warn(dev, \"inbound msg too big: (%d, %d)\\n\", len, msg_len);\n\t\treturn -EINVAL;\n\t}\n\n\t/* use the dst addr to fetch the callback of the appropriate user */\n\tmutex_lock(&vrp->endpoints_lock);\n\n\tept = idr_find(&vrp->endpoints, __rpmsg32_to_cpu(little_endian, msg->dst));\n\n\t/* let's make sure no one deallocates ept while we use it */\n\tif (ept)\n\t\tkref_get(&ept->refcount);\n\n\tmutex_unlock(&vrp->endpoints_lock);\n\n\tif (ept) {\n\t\t/* make sure ept->cb doesn't go away while we use it */\n\t\tmutex_lock(&ept->cb_lock);\n\n\t\tif (ept->cb)\n\t\t\tept->cb(ept->rpdev, msg->data, msg_len, ept->priv,\n\t\t\t\t__rpmsg32_to_cpu(little_endian, msg->src));\n\n\t\tmutex_unlock(&ept->cb_lock);\n\n\t\t/* farewell, ept, we don't need you anymore */\n\t\tkref_put(&ept->refcount, __ept_release);\n\t} else\n\t\tdev_warn_ratelimited(dev, \"msg received with no recipient\\n\");\n\n\t/* publish the real size of the buffer */\n\trpmsg_sg_init(&sg, msg, vrp->buf_size);\n\n\t/* add the buffer back to the remote processor's virtqueue */\n\terr = virtqueue_add_inbuf(vrp->rvq, &sg, 1, msg, GFP_KERNEL);\n\tif (err < 0) {\n\t\tdev_err(dev, \"failed to add a virtqueue buffer: %d\\n\", err);\n\t\treturn err;\n\t}\n\n\treturn 0;\n}",
+      "call_count": 3
+    },
+    {
+      "function_name": "virtio_rpmsg_destroy_ept",
+      "file_path": "drivers/rpmsg/virtio_rpmsg_bus.c",
+      "line_number": 319,
+      "first_seen_timestamp": 1754251909.826783,
+      "first_seen_time_str": "20:11:49,826783",
+      "entry_type": "function_entry",
+      "function_code": "static void virtio_rpmsg_destroy_ept(struct rpmsg_endpoint *ept)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function virtio_rpmsg_destroy_ept at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(ept->rpdev);\n\n\t__rpmsg_destroy_ept(vch->vrp, ept);\n}",
+      "call_count": 10
+    },
+    {
+      "function_name": "carveout_dma_heap_allocate",
+      "file_path": "drivers/dma-buf/heaps/carveout-heap.c",
+      "line_number": 289,
+      "first_seen_timestamp": 1754251901.925085,
+      "first_seen_time_str": "20:11:41,925085",
+      "entry_type": "function_entry",
+      "function_code": "static struct dma_buf *carveout_dma_heap_allocate(struct dma_heap *heap,\n\t\t\t\t\t\t  unsigned long len,\n\t\t\t\t\t\t  unsigned long fd_flags,\n\t\t\t\t\t\t  unsigned long heap_flags)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function carveout_dma_heap_allocate at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap *carveout_dma_heap = dma_heap_get_drvdata(heap);\n\tstruct carveout_dma_heap_buffer *buffer;\n\n\tDEFINE_DMA_BUF_EXPORT_INFO(exp_info);\n\tstruct dma_buf *dmabuf;\n\tint ret = 0;\n\n\tbuffer = kzalloc(sizeof(*buffer), GFP_KERNEL);\n\tif (!buffer)\n\t\treturn ERR_PTR(ret);\n\tbuffer->pool = carveout_dma_heap->pool;\n\tbuffer->cached = carveout_dma_heap->cached;\n\tINIT_LIST_HEAD(&buffer->attachments);\n\tmutex_init(&buffer->attachments_lock);\n\tmutex_init(&buffer->vmap_lock);\n\tbuffer->len = len;\n\n\tbuffer->paddr = gen_pool_alloc(buffer->pool, buffer->len);\n\tif (!buffer->paddr) {\n\t\tret = -ENOMEM;\n\t\tgoto free_buffer;\n\t}\n\n\t/* create the dmabuf */\n\texp_info.exp_name = dma_heap_get_name(heap);\n\texp_info.ops = &carveout_dma_heap_buf_ops;\n\texp_info.size = buffer->len;\n\texp_info.flags = fd_flags;\n\texp_info.priv = buffer;\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_export called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_export\\n\");\n\tdmabuf = dma_buf_export(&exp_info);\n\tif (IS_ERR(dmabuf)) {\n\t\tret = PTR_ERR(dmabuf);\n\t\tgoto free_pool;\n\t}\n\n\treturn dmabuf;\n\nfree_pool:\n\tgen_pool_free(buffer->pool, buffer->paddr, buffer->len);\nfree_buffer:\n\tkfree(buffer);\n\n\treturn ERR_PTR(ret);\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_heap_mmap",
+      "file_path": "drivers/dma-buf/heaps/carveout-heap.c",
+      "line_number": 207,
+      "first_seen_timestamp": 1754251902.13113,
+      "first_seen_time_str": "20:11:42,131130",
+      "entry_type": "function_entry",
+      "function_code": "static int dma_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_mmap at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = dmabuf->priv;\n\tint ret;\n\n\tif (!buffer->cached)\n\t\tvma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);\n\n\tret = vm_iomap_memory(vma, buffer->paddr, buffer->len);\n\tif (ret)\n\t\tpr_err(\"Could not map buffer to userspace\\n\");\n\n\treturn ret;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_heap_attach",
+      "file_path": "drivers/dma-buf/heaps/carveout-heap.c",
+      "line_number": 55,
+      "first_seen_timestamp": 1754251902.346956,
+      "first_seen_time_str": "20:11:42,346956",
+      "entry_type": "function_entry",
+      "function_code": "static int dma_heap_attach(struct dma_buf *dmabuf,\n\t\t\t   struct dma_buf_attachment *attachment)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_attach at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = dmabuf->priv;\n\tstruct dma_heap_attachment *a;\n\tstruct sg_table *table;\n\n\ta = kzalloc(sizeof(*a), GFP_KERNEL);\n\tif (!a)\n\t\treturn -ENOMEM;\n\n\ttable = kmalloc(sizeof(*table), GFP_KERNEL);\n\tif (!table) {\n\t\tkfree(a);\n\t\treturn -ENOMEM;\n\t}\n\tif (sg_alloc_table(table, 1, GFP_KERNEL)) {\n\t\tkfree(a);\n\t\treturn -ENOMEM;\n\t}\n\tsg_set_page(table->sgl, pfn_to_page(PFN_DOWN(buffer->paddr)), buffer->len, 0);\n\n\ta->table = table;\n\ta->dev = attachment->dev;\n\tINIT_LIST_HEAD(&a->list);\n\n\tattachment->priv = a;\n\n\tmutex_lock(&buffer->attachments_lock);\n\tlist_add(&a->list, &buffer->attachments);\n\tmutex_unlock(&buffer->attachments_lock);\n\n\treturn 0;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_heap_map_dma_buf",
+      "file_path": "drivers/dma-buf/heaps/carveout-heap.c",
+      "line_number": 107,
+      "first_seen_timestamp": 1754251902.444586,
+      "first_seen_time_str": "20:11:42,444586",
+      "entry_type": "function_entry",
+      "function_code": "static struct sg_table *dma_heap_map_dma_buf(struct dma_buf_attachment *attachment,\n\t\t\t\t\t     enum dma_data_direction direction)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_map_dma_buf at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = attachment->dmabuf->priv;\n\tstruct dma_heap_attachment *a = attachment->priv;\n\tstruct sg_table *table = a->table;\n\n\tunsigned long attrs = buffer->cached ? 0 : DMA_ATTR_SKIP_CPU_SYNC;\n\n\tif (!dma_map_sg_attrs(attachment->dev, table->sgl, table->nents,\n\t\t\t      direction, attrs))\n\t\treturn ERR_PTR(-ENOMEM);\n\n\treturn table;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_heap_unmap_dma_buf",
+      "file_path": "drivers/dma-buf/heaps/carveout-heap.c",
+      "line_number": 125,
+      "first_seen_timestamp": 1754251906.231875,
+      "first_seen_time_str": "20:11:46,231875",
+      "entry_type": "function_entry",
+      "function_code": "static void dma_heap_unmap_dma_buf(struct dma_buf_attachment *attachment,\n\t\t\t\t   struct sg_table *table,\n\t\t\t\t   enum dma_data_direction direction)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_unmap_dma_buf at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = attachment->dmabuf->priv;\n\tunsigned long attrs = buffer->cached ? 0 : DMA_ATTR_SKIP_CPU_SYNC;\n\n\tdma_unmap_sg_attrs(attachment->dev, table->sgl, table->nents,\n\t\t\t   direction, attrs);\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_heap_detatch",
+      "file_path": "drivers/dma-buf/heaps/carveout-heap.c",
+      "line_number": 91,
+      "first_seen_timestamp": 1754251906.338759,
+      "first_seen_time_str": "20:11:46,338759",
+      "entry_type": "function_entry",
+      "function_code": "static void dma_heap_detatch(struct dma_buf *dmabuf,\n\t\t\t     struct dma_buf_attachment *attachment)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_detatch at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = dmabuf->priv;\n\tstruct dma_heap_attachment *a = attachment->priv;\n\n\tmutex_lock(&buffer->attachments_lock);\n\tlist_del(&a->list);\n\tmutex_unlock(&buffer->attachments_lock);\n\n\tsg_free_table(a->table);\n\tkfree(a->table);\n\tkfree(a);\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_heap_dma_buf_release",
+      "file_path": "drivers/dma-buf/heaps/carveout-heap.c",
+      "line_number": 135,
+      "first_seen_timestamp": 1754251906.45237,
+      "first_seen_time_str": "20:11:46,452370",
+      "entry_type": "function_entry",
+      "function_code": "static void dma_heap_dma_buf_release(struct dma_buf *dmabuf)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_dma_buf_release at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = dmabuf->priv;\n\n\tif (buffer->vmap_cnt > 0) {\n\t\tWARN(1, \"%s: buffer still mapped in the kernel\\n\", __func__);\n\t\tmemunmap(buffer->vaddr);\n\t}\n\n\tgen_pool_free(buffer->pool, buffer->paddr, buffer->len);\n\tkfree(buffer);\n}",
+      "call_count": 9
+    }
+  ],
+  "functions_by_file": {
+    "drivers/rpmsg/virtio_rpmsg_bus.c": [
+      {
+        "function_name": "virtio_rpmsg_create_ept",
+        "line_number": 285,
+        "first_seen_timestamp": 1754251901.215509,
+        "first_seen_time_str": "20:11:41,215509",
+        "entry_type": "function_entry",
+        "function_code": "static struct rpmsg_endpoint *virtio_rpmsg_create_ept(struct rpmsg_device *rpdev,\n\t\t\t\t\t\t      rpmsg_rx_cb_t cb,\n\t\t\t\t\t\t      void *priv,\n\t\t\t\t\t\t      struct rpmsg_channel_info chinfo)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function virtio_rpmsg_create_ept at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);\n\n\treturn __rpmsg_create_ept(vch->vrp, rpdev, cb, priv, chinfo.src);\n}",
+        "call_count": 10
+      },
+      {
+        "function_name": "virtio_rpmsg_sendto",
+        "line_number": 675,
+        "first_seen_timestamp": 1754251905.966134,
+        "first_seen_time_str": "20:11:45,966134",
+        "entry_type": "function_entry",
+        "function_code": "static int virtio_rpmsg_sendto(struct rpmsg_endpoint *ept, void *data, int len,\n\t\t\t       u32 dst)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function virtio_rpmsg_sendto at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_device *rpdev = ept->rpdev;\n\tu32 src = ept->addr;\n\n\treturn rpmsg_send_offchannel_raw(rpdev, src, dst, data, len, true);\n}",
+        "call_count": 3
+      },
+      {
+        "function_name": "rpmsg_send_offchannel_raw",
+        "line_number": 568,
+        "first_seen_timestamp": 1754251905.975356,
+        "first_seen_time_str": "20:11:45,975356",
+        "entry_type": "function_entry",
+        "function_code": "static int rpmsg_send_offchannel_raw(struct rpmsg_device *rpdev,\n\t\t\t\t     u32 src, u32 dst,\n\t\t\t\t     void *data, int len, bool wait)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function rpmsg_send_offchannel_raw at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);\n\tstruct virtproc_info *vrp = vch->vrp;\n\tstruct device *dev = &rpdev->dev;\n\tstruct scatterlist sg;\n\tstruct rpmsg_hdr *msg;\n\tint err;\n\n\t/* bcasting isn't allowed */\n\tif (src == RPMSG_ADDR_ANY || dst == RPMSG_ADDR_ANY) {\n\t\tdev_err(dev, \"invalid addr (src 0x%x, dst 0x%x)\\n\", src, dst);\n\t\treturn -EINVAL;\n\t}\n\n\t/*\n\t * We currently use fixed-sized buffers, and therefore the payload\n\t * length is limited.\n\t *\n\t * One of the possible improvements here is either to support\n\t * user-provided buffers (and then we can also support zero-copy\n\t * messaging), or to improve the buffer allocator, to support\n\t * variable-length buffer sizes.\n\t */\n\tif (len > vrp->buf_size - sizeof(struct rpmsg_hdr)) {\n\t\tdev_err(dev, \"message is too big (%d)\\n\", len);\n\t\treturn -EMSGSIZE;\n\t}\n\n\t/* grab a buffer */\n\tmsg = get_a_tx_buf(vrp);\n\tif (!msg && !wait)\n\t\treturn -ENOMEM;\n\n\t/* no free buffer ? wait for one (but bail after 15 seconds) */\n\twhile (!msg) {\n\t\t/* enable \"tx-complete\" interrupts, if not already enabled */\n\t\trpmsg_upref_sleepers(vrp);\n\n\t\t/*\n\t\t * sleep until a free buffer is available or 15 secs elapse.\n\t\t * the timeout period is not configurable because there's\n\t\t * little point in asking drivers to specify that.\n\t\t * if later this happens to be required, it'd be easy to add.\n\t\t */\n\t\terr = wait_event_interruptible_timeout(vrp->sendq,\n\t\t\t\t\t(msg = get_a_tx_buf(vrp)),\n\t\t\t\t\tmsecs_to_jiffies(15000));\n\n\t\t/* disable \"tx-complete\" interrupts if we're the last sleeper */\n\t\trpmsg_downref_sleepers(vrp);\n\n\t\t/* timeout ? */\n\t\tif (!err) {\n\t\t\tdev_err(dev, \"timeout waiting for a tx buffer\\n\");\n\t\t\treturn -ERESTARTSYS;\n\t\t}\n\t}\n\n\tmsg->len = cpu_to_rpmsg16(rpdev, len);\n\tmsg->flags = 0;\n\tmsg->src = cpu_to_rpmsg32(rpdev, src);\n\tmsg->dst = cpu_to_rpmsg32(rpdev, dst);\n\tmsg->reserved = 0;\n\tmemcpy(msg->data, data, len);\n\n\tdev_dbg(dev, \"TX From 0x%x, To 0x%x, Len %d, Flags %d, Reserved %d\\n\",\n\t\tsrc, dst, len, msg->flags, msg->reserved);\n#if defined(CONFIG_DYNAMIC_DEBUG)\n\tdynamic_hex_dump(\"rpmsg_virtio TX: \", DUMP_PREFIX_NONE, 16, 1,\n\t\t\t msg, sizeof(*msg) + len, true);\n#endif\n\n\trpmsg_sg_init(&sg, msg, sizeof(*msg) + len);\n\n\tmutex_lock(&vrp->tx_lock);\n\n\t/* add message to the remote processor's virtqueue */\n\terr = virtqueue_add_outbuf(vrp->svq, &sg, 1, msg, GFP_KERNEL);\n\tif (err) {\n\t\t/*\n\t\t * need to reclaim the buffer here, otherwise it's lost\n\t\t * (memory won't leak, but rpmsg won't use it again for TX).\n\t\t * this will wait for a buffer management overhaul.\n\t\t */\n\t\tdev_err(dev, \"virtqueue_add_outbuf failed: %d\\n\", err);\n\t\tgoto out;\n\t}\n\n\t/* tell the remote processor it has a pending message to read */\n\tvirtqueue_kick(vrp->svq);\nout:\n\tmutex_unlock(&vrp->tx_lock);\n\treturn err;\n}",
+        "call_count": 3
+      },
+      {
+        "function_name": "get_a_tx_buf",
+        "line_number": 450,
+        "first_seen_timestamp": 1754251905.985119,
+        "first_seen_time_str": "20:11:45,985119",
+        "entry_type": "function_entry",
+        "function_code": "static void *get_a_tx_buf(struct virtproc_info *vrp)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function get_a_tx_buf at %s:%d\\n\", __FILE__, __LINE__);\n\tunsigned int len;\n\tvoid *ret;\n\n\t/* support multiple concurrent senders */\n\tmutex_lock(&vrp->tx_lock);\n\n\t/*\n\t * either pick the next unused tx buffer\n\t * (half of our buffers are used for sending messages)\n\t */\n\tif (vrp->last_sbuf < vrp->num_bufs / 2)\n\t\tret = vrp->sbufs + vrp->buf_size * vrp->last_sbuf++;\n\t/* or recycle a used one */\n\telse\n\t\tret = virtqueue_get_buf(vrp->svq, &len);\n\n\tmutex_unlock(&vrp->tx_lock);\n\n\treturn ret;\n}",
+        "call_count": 3
+      },
+      {
+        "function_name": "rpmsg_sg_init",
+        "line_number": 178,
+        "first_seen_timestamp": 1754251905.99373,
+        "first_seen_time_str": "20:11:45,993730",
+        "entry_type": "function_entry",
+        "function_code": "static void\nrpmsg_sg_init(struct scatterlist *sg, void *cpu_addr, unsigned int len)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function rpmsg_sg_init at %s:%d\\n\", __FILE__, __LINE__);\n\tif (is_vmalloc_addr(cpu_addr)) {\n\t\tsg_init_table(sg, 1);\n\t\tsg_set_page(sg, vmalloc_to_page(cpu_addr), len,\n\t\t\t    offset_in_page(cpu_addr));\n\t} else {\n\t\tWARN_ON(!virt_addr_valid(cpu_addr));\n\t\tsg_init_one(sg, cpu_addr, len);\n\t}\n}",
+        "call_count": 6
+      },
+      {
+        "function_name": "rpmsg_recv_done",
+        "line_number": 800,
+        "first_seen_timestamp": 1754251906.097117,
+        "first_seen_time_str": "20:11:46,097117",
+        "entry_type": "function_entry",
+        "function_code": "static void rpmsg_recv_done(struct virtqueue *rvq)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function rpmsg_recv_done at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct virtproc_info *vrp = rvq->vdev->priv;\n\tstruct device *dev = &rvq->vdev->dev;\n\tstruct rpmsg_hdr *msg;\n\tunsigned int len, msgs_received = 0;\n\tint err;\n\n\tmsg = virtqueue_get_buf(rvq, &len);\n\tif (!msg) {\n\t\tdev_err(dev, \"uhm, incoming signal, but no used buffer ?\\n\");\n\t\treturn;\n\t}\n\n\twhile (msg) {\n\t\terr = rpmsg_recv_single(vrp, dev, msg, len);\n\t\tif (err)\n\t\t\tbreak;\n\n\t\tmsgs_received++;\n\n\t\tmsg = virtqueue_get_buf(rvq, &len);\n\t}\n\n\tdev_dbg(dev, \"Received %u messages\\n\", msgs_received);\n\n\t/* tell the remote processor we added another available rx buffer */\n\tif (msgs_received)\n\t\tvirtqueue_kick(vrp->rvq);\n}",
+        "call_count": 3
+      },
+      {
+        "function_name": "rpmsg_recv_single",
+        "line_number": 731,
+        "first_seen_timestamp": 1754251906.105999,
+        "first_seen_time_str": "20:11:46,105999",
+        "entry_type": "function_entry",
+        "function_code": "static int rpmsg_recv_single(struct virtproc_info *vrp, struct device *dev,\n\t\t\t     struct rpmsg_hdr *msg, unsigned int len)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function rpmsg_recv_single at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_endpoint *ept;\n\tstruct scatterlist sg;\n\tbool little_endian = virtio_is_little_endian(vrp->vdev);\n\tunsigned int msg_len = __rpmsg16_to_cpu(little_endian, msg->len);\n\tint err;\n\n\tdev_dbg(dev, \"From: 0x%x, To: 0x%x, Len: %d, Flags: %d, Reserved: %d\\n\",\n\t\t__rpmsg32_to_cpu(little_endian, msg->src),\n\t\t__rpmsg32_to_cpu(little_endian, msg->dst), msg_len,\n\t\t__rpmsg16_to_cpu(little_endian, msg->flags),\n\t\t__rpmsg32_to_cpu(little_endian, msg->reserved));\n#if defined(CONFIG_DYNAMIC_DEBUG)\n\tdynamic_hex_dump(\"rpmsg_virtio RX: \", DUMP_PREFIX_NONE, 16, 1,\n\t\t\t msg, sizeof(*msg) + msg_len, true);\n#endif\n\n\t/*\n\t * We currently use fixed-sized buffers, so trivially sanitize\n\t * the reported payload length.\n\t */\n\tif (len > vrp->buf_size ||\n\t    msg_len > (len - sizeof(struct rpmsg_hdr))) {\n\t\tdev_warn(dev, \"inbound msg too big: (%d, %d)\\n\", len, msg_len);\n\t\treturn -EINVAL;\n\t}\n\n\t/* use the dst addr to fetch the callback of the appropriate user */\n\tmutex_lock(&vrp->endpoints_lock);\n\n\tept = idr_find(&vrp->endpoints, __rpmsg32_to_cpu(little_endian, msg->dst));\n\n\t/* let's make sure no one deallocates ept while we use it */\n\tif (ept)\n\t\tkref_get(&ept->refcount);\n\n\tmutex_unlock(&vrp->endpoints_lock);\n\n\tif (ept) {\n\t\t/* make sure ept->cb doesn't go away while we use it */\n\t\tmutex_lock(&ept->cb_lock);\n\n\t\tif (ept->cb)\n\t\t\tept->cb(ept->rpdev, msg->data, msg_len, ept->priv,\n\t\t\t\t__rpmsg32_to_cpu(little_endian, msg->src));\n\n\t\tmutex_unlock(&ept->cb_lock);\n\n\t\t/* farewell, ept, we don't need you anymore */\n\t\tkref_put(&ept->refcount, __ept_release);\n\t} else\n\t\tdev_warn_ratelimited(dev, \"msg received with no recipient\\n\");\n\n\t/* publish the real size of the buffer */\n\trpmsg_sg_init(&sg, msg, vrp->buf_size);\n\n\t/* add the buffer back to the remote processor's virtqueue */\n\terr = virtqueue_add_inbuf(vrp->rvq, &sg, 1, msg, GFP_KERNEL);\n\tif (err < 0) {\n\t\tdev_err(dev, \"failed to add a virtqueue buffer: %d\\n\", err);\n\t\treturn err;\n\t}\n\n\treturn 0;\n}",
+        "call_count": 3
+      },
+      {
+        "function_name": "virtio_rpmsg_destroy_ept",
+        "line_number": 319,
+        "first_seen_timestamp": 1754251909.826783,
+        "first_seen_time_str": "20:11:49,826783",
+        "entry_type": "function_entry",
+        "function_code": "static void virtio_rpmsg_destroy_ept(struct rpmsg_endpoint *ept)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function virtio_rpmsg_destroy_ept at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(ept->rpdev);\n\n\t__rpmsg_destroy_ept(vch->vrp, ept);\n}",
+        "call_count": 10
+      }
+    ],
+    "drivers/dma-buf/heaps/carveout-heap.c": [
+      {
+        "function_name": "carveout_dma_heap_allocate",
+        "line_number": 289,
+        "first_seen_timestamp": 1754251901.925085,
+        "first_seen_time_str": "20:11:41,925085",
+        "entry_type": "function_entry",
+        "function_code": "static struct dma_buf *carveout_dma_heap_allocate(struct dma_heap *heap,\n\t\t\t\t\t\t  unsigned long len,\n\t\t\t\t\t\t  unsigned long fd_flags,\n\t\t\t\t\t\t  unsigned long heap_flags)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function carveout_dma_heap_allocate at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap *carveout_dma_heap = dma_heap_get_drvdata(heap);\n\tstruct carveout_dma_heap_buffer *buffer;\n\n\tDEFINE_DMA_BUF_EXPORT_INFO(exp_info);\n\tstruct dma_buf *dmabuf;\n\tint ret = 0;\n\n\tbuffer = kzalloc(sizeof(*buffer), GFP_KERNEL);\n\tif (!buffer)\n\t\treturn ERR_PTR(ret);\n\tbuffer->pool = carveout_dma_heap->pool;\n\tbuffer->cached = carveout_dma_heap->cached;\n\tINIT_LIST_HEAD(&buffer->attachments);\n\tmutex_init(&buffer->attachments_lock);\n\tmutex_init(&buffer->vmap_lock);\n\tbuffer->len = len;\n\n\tbuffer->paddr = gen_pool_alloc(buffer->pool, buffer->len);\n\tif (!buffer->paddr) {\n\t\tret = -ENOMEM;\n\t\tgoto free_buffer;\n\t}\n\n\t/* create the dmabuf */\n\texp_info.exp_name = dma_heap_get_name(heap);\n\texp_info.ops = &carveout_dma_heap_buf_ops;\n\texp_info.size = buffer->len;\n\texp_info.flags = fd_flags;\n\texp_info.priv = buffer;\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_export called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_export\\n\");\n\tdmabuf = dma_buf_export(&exp_info);\n\tif (IS_ERR(dmabuf)) {\n\t\tret = PTR_ERR(dmabuf);\n\t\tgoto free_pool;\n\t}\n\n\treturn dmabuf;\n\nfree_pool:\n\tgen_pool_free(buffer->pool, buffer->paddr, buffer->len);\nfree_buffer:\n\tkfree(buffer);\n\n\treturn ERR_PTR(ret);\n}",
+        "call_count": 9
+      },
+      {
+        "function_name": "dma_heap_mmap",
+        "line_number": 207,
+        "first_seen_timestamp": 1754251902.13113,
+        "first_seen_time_str": "20:11:42,131130",
+        "entry_type": "function_entry",
+        "function_code": "static int dma_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_mmap at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = dmabuf->priv;\n\tint ret;\n\n\tif (!buffer->cached)\n\t\tvma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);\n\n\tret = vm_iomap_memory(vma, buffer->paddr, buffer->len);\n\tif (ret)\n\t\tpr_err(\"Could not map buffer to userspace\\n\");\n\n\treturn ret;\n}",
+        "call_count": 9
+      },
+      {
+        "function_name": "dma_heap_attach",
+        "line_number": 55,
+        "first_seen_timestamp": 1754251902.346956,
+        "first_seen_time_str": "20:11:42,346956",
+        "entry_type": "function_entry",
+        "function_code": "static int dma_heap_attach(struct dma_buf *dmabuf,\n\t\t\t   struct dma_buf_attachment *attachment)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_attach at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = dmabuf->priv;\n\tstruct dma_heap_attachment *a;\n\tstruct sg_table *table;\n\n\ta = kzalloc(sizeof(*a), GFP_KERNEL);\n\tif (!a)\n\t\treturn -ENOMEM;\n\n\ttable = kmalloc(sizeof(*table), GFP_KERNEL);\n\tif (!table) {\n\t\tkfree(a);\n\t\treturn -ENOMEM;\n\t}\n\tif (sg_alloc_table(table, 1, GFP_KERNEL)) {\n\t\tkfree(a);\n\t\treturn -ENOMEM;\n\t}\n\tsg_set_page(table->sgl, pfn_to_page(PFN_DOWN(buffer->paddr)), buffer->len, 0);\n\n\ta->table = table;\n\ta->dev = attachment->dev;\n\tINIT_LIST_HEAD(&a->list);\n\n\tattachment->priv = a;\n\n\tmutex_lock(&buffer->attachments_lock);\n\tlist_add(&a->list, &buffer->attachments);\n\tmutex_unlock(&buffer->attachments_lock);\n\n\treturn 0;\n}",
+        "call_count": 9
+      },
+      {
+        "function_name": "dma_heap_map_dma_buf",
+        "line_number": 107,
+        "first_seen_timestamp": 1754251902.444586,
+        "first_seen_time_str": "20:11:42,444586",
+        "entry_type": "function_entry",
+        "function_code": "static struct sg_table *dma_heap_map_dma_buf(struct dma_buf_attachment *attachment,\n\t\t\t\t\t     enum dma_data_direction direction)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_map_dma_buf at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = attachment->dmabuf->priv;\n\tstruct dma_heap_attachment *a = attachment->priv;\n\tstruct sg_table *table = a->table;\n\n\tunsigned long attrs = buffer->cached ? 0 : DMA_ATTR_SKIP_CPU_SYNC;\n\n\tif (!dma_map_sg_attrs(attachment->dev, table->sgl, table->nents,\n\t\t\t      direction, attrs))\n\t\treturn ERR_PTR(-ENOMEM);\n\n\treturn table;\n}",
+        "call_count": 9
+      },
+      {
+        "function_name": "dma_heap_unmap_dma_buf",
+        "line_number": 125,
+        "first_seen_timestamp": 1754251906.231875,
+        "first_seen_time_str": "20:11:46,231875",
+        "entry_type": "function_entry",
+        "function_code": "static void dma_heap_unmap_dma_buf(struct dma_buf_attachment *attachment,\n\t\t\t\t   struct sg_table *table,\n\t\t\t\t   enum dma_data_direction direction)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_unmap_dma_buf at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = attachment->dmabuf->priv;\n\tunsigned long attrs = buffer->cached ? 0 : DMA_ATTR_SKIP_CPU_SYNC;\n\n\tdma_unmap_sg_attrs(attachment->dev, table->sgl, table->nents,\n\t\t\t   direction, attrs);\n}",
+        "call_count": 9
+      },
+      {
+        "function_name": "dma_heap_detatch",
+        "line_number": 91,
+        "first_seen_timestamp": 1754251906.338759,
+        "first_seen_time_str": "20:11:46,338759",
+        "entry_type": "function_entry",
+        "function_code": "static void dma_heap_detatch(struct dma_buf *dmabuf,\n\t\t\t     struct dma_buf_attachment *attachment)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_detatch at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = dmabuf->priv;\n\tstruct dma_heap_attachment *a = attachment->priv;\n\n\tmutex_lock(&buffer->attachments_lock);\n\tlist_del(&a->list);\n\tmutex_unlock(&buffer->attachments_lock);\n\n\tsg_free_table(a->table);\n\tkfree(a->table);\n\tkfree(a);\n}",
+        "call_count": 9
+      },
+      {
+        "function_name": "dma_heap_dma_buf_release",
+        "line_number": 135,
+        "first_seen_timestamp": 1754251906.45237,
+        "first_seen_time_str": "20:11:46,452370",
+        "entry_type": "function_entry",
+        "function_code": "static void dma_heap_dma_buf_release(struct dma_buf *dmabuf)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function dma_heap_dma_buf_release at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap_buffer *buffer = dmabuf->priv;\n\n\tif (buffer->vmap_cnt > 0) {\n\t\tWARN(1, \"%s: buffer still mapped in the kernel\\n\", __func__);\n\t\tmemunmap(buffer->vaddr);\n\t}\n\n\tgen_pool_free(buffer->pool, buffer->paddr, buffer->len);\n\tkfree(buffer);\n}",
+        "call_count": 9
+      }
+    ]
+  },
+  "dma_operations": [
+    {
+      "dma_function": "dma_buf_export",
+      "caller_function": "carveout_dma_heap_allocate",
+      "file_path": "drivers/dma-buf/heaps/carveout-heap.c",
+      "line_number": 319,
+      "first_seen_timestamp": 1754251901.935449,
+      "first_seen_time_str": "20:11:41,935449",
+      "stack_trace": [],
+      "function_code": "static struct dma_buf *carveout_dma_heap_allocate(struct dma_heap *heap,\n\t\t\t\t\t\t  unsigned long len,\n\t\t\t\t\t\t  unsigned long fd_flags,\n\t\t\t\t\t\t  unsigned long heap_flags)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function carveout_dma_heap_allocate at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap *carveout_dma_heap = dma_heap_get_drvdata(heap);\n\tstruct carveout_dma_heap_buffer *buffer;\n\n\tDEFINE_DMA_BUF_EXPORT_INFO(exp_info);\n\tstruct dma_buf *dmabuf;\n\tint ret = 0;\n\n\tbuffer = kzalloc(sizeof(*buffer), GFP_KERNEL);\n\tif (!buffer)\n\t\treturn ERR_PTR(ret);\n\tbuffer->pool = carveout_dma_heap->pool;\n\tbuffer->cached = carveout_dma_heap->cached;\n\tINIT_LIST_HEAD(&buffer->attachments);\n\tmutex_init(&buffer->attachments_lock);\n\tmutex_init(&buffer->vmap_lock);\n\tbuffer->len = len;\n\n\tbuffer->paddr = gen_pool_alloc(buffer->pool, buffer->len);\n\tif (!buffer->paddr) {\n\t\tret = -ENOMEM;\n\t\tgoto free_buffer;\n\t}\n\n\t/* create the dmabuf */\n\texp_info.exp_name = dma_heap_get_name(heap);\n\texp_info.ops = &carveout_dma_heap_buf_ops;\n\texp_info.size = buffer->len;\n\texp_info.flags = fd_flags;\n\texp_info.priv = buffer;\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_export called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_export\\n\");\n\tdmabuf = dma_buf_export(&exp_info);\n\tif (IS_ERR(dmabuf)) {\n\t\tret = PTR_ERR(dmabuf);\n\t\tgoto free_pool;\n\t}\n\n\treturn dmabuf;\n\nfree_pool:\n\tgen_pool_free(buffer->pool, buffer->paddr, buffer->len);\nfree_buffer:\n\tkfree(buffer);\n\n\treturn ERR_PTR(ret);\n}",
+      "call_count": 9
+    },
+    {
+      "dma_function": "dma_buf_put",
+      "caller_function": "dma_heap_buffer_alloc",
+      "file_path": "drivers/dma-buf/dma-heap.c",
+      "line_number": 80,
+      "first_seen_timestamp": 1754251902.029144,
+      "first_seen_time_str": "20:11:42,029144",
+      "stack_trace": [],
+      "function_code": "static int dma_heap_buffer_alloc(struct dma_heap *heap, size_t len,\n\t\t\t\t unsigned int fd_flags,\n\t\t\t\t unsigned int heap_flags)\n{\n\tstruct dma_buf *dmabuf;\n\tint fd;\n\n\t/*\n\t * Allocations from all heaps have to begin\n\t * and end on page boundaries.\n\t */\n\tlen = PAGE_ALIGN(len);\n\tif (!len)\n\t\treturn -EINVAL;\n\n\tdmabuf = heap->ops->allocate(heap, len, fd_flags, heap_flags);\n\tif (IS_ERR(dmabuf))\n\t\treturn PTR_ERR(dmabuf);\n\n\tfd = dma_buf_fd(dmabuf, fd_flags);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (fd < 0) {\n\t\tdma_buf_put(dmabuf);\n\t\t/* just return, as put will call release and that will free */\n\t}\n\treturn fd;\n}",
+      "call_count": 9
+    },
+    {
+      "dma_function": "dma_buf_get",
+      "caller_function": "dma_buf_phys_convert",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 89,
+      "first_seen_timestamp": 1754251902.175235,
+      "first_seen_time_str": "20:11:42,175235",
+      "stack_trace": [],
+      "function_code": "static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phys)\n{\n\tstruct device *dev = priv->dev;\n\tstruct dma_buf *dma_buf;\n\tstruct dma_buf_attachment *attachment;\n\tstruct sg_table *sgt;\n\tdma_addr_t dma_addr;\n\tint ret;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_get from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_get called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_get\\n\");\n\tdma_buf = dma_buf_get(fd);\n\tif (IS_ERR(dma_buf))\n\t\treturn PTR_ERR(dma_buf);\n\n\t/* Attach as the parent device as it will have the correct DMA ops set */\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_attach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_attach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_attach\\n\");\n\tattachment = dma_buf_attach(dma_buf, dev->parent);\n\tif (IS_ERR(attachment)) {\n\t\tret = PTR_ERR(attachment);\n\t\tgoto fail_put;\n\t}\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_map_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_map_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_map_attachment\\n\");\n\tsgt = dma_buf_map_attachment(attachment, DMA_BIDIRECTIONAL);\n\tif (IS_ERR(sgt)) {\n\t\tret = PTR_ERR(sgt);\n\t\tgoto fail_detach;\n\t}\n\n\t/* Without PAT only physically contiguous buffers can be supported */\n\tif (sgt->orig_nents != 1) {\n\t\tdev_err(dev, \"DMA-BUF not contiguous\\n\");\n\t\tret = -EINVAL;\n\t\tgoto fail_unmap;\n\t}\n\n\tdma_addr = sg_dma_address(sgt->sgl);\n\n\t*phys = dma_addr;\n\n\tpriv->dma_buf = dma_buf;\n\tpriv->attachment = attachment;\n\tpriv->sgt = sgt;\n\n\treturn 0;\n\nfail_unmap:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tdma_buf_unmap_attachment(attachment, sgt, DMA_BIDIRECTIONAL);\nfail_detach:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tdma_buf_detach(dma_buf, attachment);\nfail_put:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tdma_buf_put(dma_buf);\n\n\treturn ret;\n}",
+      "call_count": 9
+    },
+    {
+      "dma_function": "dma_buf_attach",
+      "caller_function": "dma_buf_phys_convert",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 98,
+      "first_seen_timestamp": 1754251902.260737,
+      "first_seen_time_str": "20:11:42,260737",
+      "stack_trace": [],
+      "function_code": "static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phys)\n{\n\tstruct device *dev = priv->dev;\n\tstruct dma_buf *dma_buf;\n\tstruct dma_buf_attachment *attachment;\n\tstruct sg_table *sgt;\n\tdma_addr_t dma_addr;\n\tint ret;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_get from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_get called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_get\\n\");\n\tdma_buf = dma_buf_get(fd);\n\tif (IS_ERR(dma_buf))\n\t\treturn PTR_ERR(dma_buf);\n\n\t/* Attach as the parent device as it will have the correct DMA ops set */\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_attach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_attach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_attach\\n\");\n\tattachment = dma_buf_attach(dma_buf, dev->parent);\n\tif (IS_ERR(attachment)) {\n\t\tret = PTR_ERR(attachment);\n\t\tgoto fail_put;\n\t}\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_map_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_map_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_map_attachment\\n\");\n\tsgt = dma_buf_map_attachment(attachment, DMA_BIDIRECTIONAL);\n\tif (IS_ERR(sgt)) {\n\t\tret = PTR_ERR(sgt);\n\t\tgoto fail_detach;\n\t}\n\n\t/* Without PAT only physically contiguous buffers can be supported */\n\tif (sgt->orig_nents != 1) {\n\t\tdev_err(dev, \"DMA-BUF not contiguous\\n\");\n\t\tret = -EINVAL;\n\t\tgoto fail_unmap;\n\t}\n\n\tdma_addr = sg_dma_address(sgt->sgl);\n\n\t*phys = dma_addr;\n\n\tpriv->dma_buf = dma_buf;\n\tpriv->attachment = attachment;\n\tpriv->sgt = sgt;\n\n\treturn 0;\n\nfail_unmap:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tdma_buf_unmap_attachment(attachment, sgt, DMA_BIDIRECTIONAL);\nfail_detach:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tdma_buf_detach(dma_buf, attachment);\nfail_put:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tdma_buf_put(dma_buf);\n\n\treturn ret;\n}",
+      "call_count": 9
+    },
+    {
+      "dma_function": "dma_buf_map_attachment",
+      "caller_function": "dma_buf_phys_convert",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 108,
+      "first_seen_timestamp": 1754251902.356163,
+      "first_seen_time_str": "20:11:42,356163",
+      "stack_trace": [],
+      "function_code": "static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phys)\n{\n\tstruct device *dev = priv->dev;\n\tstruct dma_buf *dma_buf;\n\tstruct dma_buf_attachment *attachment;\n\tstruct sg_table *sgt;\n\tdma_addr_t dma_addr;\n\tint ret;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_get from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_get called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_get\\n\");\n\tdma_buf = dma_buf_get(fd);\n\tif (IS_ERR(dma_buf))\n\t\treturn PTR_ERR(dma_buf);\n\n\t/* Attach as the parent device as it will have the correct DMA ops set */\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_attach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_attach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_attach\\n\");\n\tattachment = dma_buf_attach(dma_buf, dev->parent);\n\tif (IS_ERR(attachment)) {\n\t\tret = PTR_ERR(attachment);\n\t\tgoto fail_put;\n\t}\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_map_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_map_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_map_attachment\\n\");\n\tsgt = dma_buf_map_attachment(attachment, DMA_BIDIRECTIONAL);\n\tif (IS_ERR(sgt)) {\n\t\tret = PTR_ERR(sgt);\n\t\tgoto fail_detach;\n\t}\n\n\t/* Without PAT only physically contiguous buffers can be supported */\n\tif (sgt->orig_nents != 1) {\n\t\tdev_err(dev, \"DMA-BUF not contiguous\\n\");\n\t\tret = -EINVAL;\n\t\tgoto fail_unmap;\n\t}\n\n\tdma_addr = sg_dma_address(sgt->sgl);\n\n\t*phys = dma_addr;\n\n\tpriv->dma_buf = dma_buf;\n\tpriv->attachment = attachment;\n\tpriv->sgt = sgt;\n\n\treturn 0;\n\nfail_unmap:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tdma_buf_unmap_attachment(attachment, sgt, DMA_BIDIRECTIONAL);\nfail_detach:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tdma_buf_detach(dma_buf, attachment);\nfail_put:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tdma_buf_put(dma_buf);\n\n\treturn ret;\n}",
+      "call_count": 9
+    },
+    {
+      "dma_function": "dma_buf_unmap_attachment",
+      "caller_function": "dma_buf_phys_release",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 56,
+      "first_seen_timestamp": 1754251906.133183,
+      "first_seen_time_str": "20:11:46,133183",
+      "stack_trace": [],
+      "function_code": "static int dma_buf_phys_release(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tif (priv->attachment && priv->sgt)\n\t\tdma_buf_unmap_attachment(priv->attachment, priv->sgt, DMA_BIDIRECTIONAL);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tif (priv->dma_buf && priv->attachment)\n\t\tdma_buf_detach(priv->dma_buf, priv->attachment);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (priv->dma_buf)\n\t\tdma_buf_put(priv->dma_buf);\n\n\tkfree(priv);\n\n\treturn 0;\n}",
+      "call_count": 9
+    },
+    {
+      "dma_function": "dma_buf_detach",
+      "caller_function": "dma_buf_phys_release",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 62,
+      "first_seen_timestamp": 1754251906.242713,
+      "first_seen_time_str": "20:11:46,242713",
+      "stack_trace": [],
+      "function_code": "static int dma_buf_phys_release(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tif (priv->attachment && priv->sgt)\n\t\tdma_buf_unmap_attachment(priv->attachment, priv->sgt, DMA_BIDIRECTIONAL);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tif (priv->dma_buf && priv->attachment)\n\t\tdma_buf_detach(priv->dma_buf, priv->attachment);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (priv->dma_buf)\n\t\tdma_buf_put(priv->dma_buf);\n\n\tkfree(priv);\n\n\treturn 0;\n}",
+      "call_count": 9
+    },
+    {
+      "dma_function": "dma_buf_put",
+      "caller_function": "dma_buf_phys_release",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 68,
+      "first_seen_timestamp": 1754251906.348056,
+      "first_seen_time_str": "20:11:46,348056",
+      "stack_trace": [],
+      "function_code": "static int dma_buf_phys_release(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tif (priv->attachment && priv->sgt)\n\t\tdma_buf_unmap_attachment(priv->attachment, priv->sgt, DMA_BIDIRECTIONAL);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tif (priv->dma_buf && priv->attachment)\n\t\tdma_buf_detach(priv->dma_buf, priv->attachment);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (priv->dma_buf)\n\t\tdma_buf_put(priv->dma_buf);\n\n\tkfree(priv);\n\n\treturn 0;\n}",
+      "call_count": 9
+    }
+  ],
+  "user_copy_operations": [
+    {
+      "copy_function": "copy_from_user",
+      "caller_function": "rpmsg_ctrldev_ioctl",
+      "file_path": "drivers/rpmsg/rpmsg_ctrl.c",
+      "line_number": 87,
+      "first_seen_timestamp": 1754251901.178132,
+      "first_seen_time_str": "20:11:41,178132",
+      "function_code": "static long rpmsg_ctrldev_ioctl(struct file *fp, unsigned int cmd,\n\t\t\t\tunsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function rpmsg_ctrldev_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_ctrldev *ctrldev = fp->private_data;\n\tvoid __user *argp = (void __user *)arg;\n\tstruct rpmsg_endpoint_info eptinfo;\n\tstruct rpmsg_channel_info chinfo;\n\tstruct rpmsg_device *rpdev;\n\tint ret = 0;\n\n printk(KERN_INFO \"USER_COPY: About to call copy_from_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\tif (copy_from_user(&eptinfo, argp, sizeof(eptinfo)))\n\t\treturn -EFAULT;\n\n\tmemcpy(chinfo.name, eptinfo.name, RPMSG_NAME_SIZE);\n\tchinfo.name[RPMSG_NAME_SIZE - 1] = '\\0';\n\tchinfo.src = eptinfo.src;\n\tchinfo.dst = eptinfo.dst;\n\n\tmutex_lock(&ctrldev->ctrl_lock);\n\tswitch (cmd) {\n\tcase RPMSG_CREATE_EPT_IOCTL:\n\t\tret = rpmsg_chrdev_eptdev_create(ctrldev->rpdev, &ctrldev->dev, chinfo);\n\t\tbreak;\n\n\tcase RPMSG_CREATE_DEV_IOCTL:\n\t\trpdev = rpmsg_create_channel(ctrldev->rpdev, &chinfo);\n\t\tif (!rpdev) {\n\t\t\tdev_err(&ctrldev->dev, \"failed to create %s channel\\n\", chinfo.name);\n\t\t\tret = -ENXIO;\n\t\t}\n\t\tbreak;\n\n\tcase RPMSG_RELEASE_DEV_IOCTL:\n\t\tret = rpmsg_release_channel(ctrldev->rpdev, &chinfo);\n\t\tif (ret)\n\t\t\tdev_err(&ctrldev->dev, \"failed to release %s channel (%d)\\n\",\n\t\t\t\tchinfo.name, ret);\n\t\tbreak;\n\n\tdefault:\n\t\tret = -EINVAL;\n\t}\n\tmutex_unlock(&ctrldev->ctrl_lock);\n\n\treturn ret;\n}",
+      "call_count": 10,
+      "process_info": {
+        "pid": 1711,
+        "comm": "tidlrt_clasific"
+      }
+    },
+    {
+      "copy_function": "copy_from_user",
+      "caller_function": "dma_heap_ioctl",
+      "file_path": "drivers/dma-buf/dma-heap.c",
+      "line_number": 175,
+      "first_seen_timestamp": 1754251901.898607,
+      "first_seen_time_str": "20:11:41,898607",
+      "function_code": "static long dma_heap_ioctl(struct file *file, unsigned int ucmd,\n\t\t\t   unsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_heap_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tchar stack_kdata[128];\n\tchar *kdata = stack_kdata;\n\tunsigned int kcmd;\n\tunsigned int in_size, out_size, drv_size, ksize;\n\tint nr = _IOC_NR(ucmd);\n\tint ret = 0;\n\n\tif (nr >= ARRAY_SIZE(dma_heap_ioctl_cmds))\n\t\treturn -EINVAL;\n\n\tnr = array_index_nospec(nr, ARRAY_SIZE(dma_heap_ioctl_cmds));\n\t/* Get the kernel ioctl cmd that matches */\n\tkcmd = dma_heap_ioctl_cmds[nr];\n\n\t/* Figure out the delta between user cmd size and kernel cmd size */\n\tdrv_size = _IOC_SIZE(kcmd);\n\tout_size = _IOC_SIZE(ucmd);\n\tin_size = out_size;\n\tif ((ucmd & kcmd & IOC_IN) == 0)\n\t\tin_size = 0;\n\tif ((ucmd & kcmd & IOC_OUT) == 0)\n\t\tout_size = 0;\n\tksize = max(max(in_size, out_size), drv_size);\n\n\t/* If necessary, allocate buffer for ioctl argument */\n\tif (ksize > sizeof(stack_kdata)) {\n\t\tkdata = kmalloc(ksize, GFP_KERNEL);\n\t\tif (!kdata)\n\t\t\treturn -ENOMEM;\n\t}\n\n printk(KERN_INFO \"USER_COPY: About to call copy_from_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\tif (copy_from_user(kdata, (void __user *)arg, in_size) != 0) {\n\t\tret = -EFAULT;\n\t\tgoto err;\n\t}\n\n\t/* zero out any difference between the kernel/user structure size */\n\tif (ksize > in_size)\n\t\tmemset(kdata + in_size, 0, ksize - in_size);\n\n\tswitch (kcmd) {\n\tcase DMA_HEAP_IOCTL_ALLOC:\n\t\tret = dma_heap_ioctl_allocate(file, kdata);\n\t\tbreak;\n\tdefault:\n\t\tret = -ENOTTY;\n\t\tgoto err;\n\t}\n\n printk(KERN_INFO \"USER_COPY: About to call copy_to_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\tif (copy_to_user((void __user *)arg, kdata, out_size) != 0)\n\t\tret = -EFAULT;\nerr:\n\tif (kdata != stack_kdata)\n\t\tkfree(kdata);\n\treturn ret;\n}",
+      "call_count": 9,
+      "process_info": {
+        "pid": 1711,
+        "comm": "tidlrt_clasific"
+      }
+    },
+    {
+      "copy_function": "copy_to_user",
+      "caller_function": "dma_heap_ioctl",
+      "file_path": "drivers/dma-buf/dma-heap.c",
+      "line_number": 195,
+      "first_seen_timestamp": 1754251902.114366,
+      "first_seen_time_str": "20:11:42,114366",
+      "function_code": "static long dma_heap_ioctl(struct file *file, unsigned int ucmd,\n\t\t\t   unsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_heap_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tchar stack_kdata[128];\n\tchar *kdata = stack_kdata;\n\tunsigned int kcmd;\n\tunsigned int in_size, out_size, drv_size, ksize;\n\tint nr = _IOC_NR(ucmd);\n\tint ret = 0;\n\n\tif (nr >= ARRAY_SIZE(dma_heap_ioctl_cmds))\n\t\treturn -EINVAL;\n\n\tnr = array_index_nospec(nr, ARRAY_SIZE(dma_heap_ioctl_cmds));\n\t/* Get the kernel ioctl cmd that matches */\n\tkcmd = dma_heap_ioctl_cmds[nr];\n\n\t/* Figure out the delta between user cmd size and kernel cmd size */\n\tdrv_size = _IOC_SIZE(kcmd);\n\tout_size = _IOC_SIZE(ucmd);\n\tin_size = out_size;\n\tif ((ucmd & kcmd & IOC_IN) == 0)\n\t\tin_size = 0;\n\tif ((ucmd & kcmd & IOC_OUT) == 0)\n\t\tout_size = 0;\n\tksize = max(max(in_size, out_size), drv_size);\n\n\t/* If necessary, allocate buffer for ioctl argument */\n\tif (ksize > sizeof(stack_kdata)) {\n\t\tkdata = kmalloc(ksize, GFP_KERNEL);\n\t\tif (!kdata)\n\t\t\treturn -ENOMEM;\n\t}\n\n printk(KERN_INFO \"USER_COPY: About to call copy_from_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\tif (copy_from_user(kdata, (void __user *)arg, in_size) != 0) {\n\t\tret = -EFAULT;\n\t\tgoto err;\n\t}\n\n\t/* zero out any difference between the kernel/user structure size */\n\tif (ksize > in_size)\n\t\tmemset(kdata + in_size, 0, ksize - in_size);\n\n\tswitch (kcmd) {\n\tcase DMA_HEAP_IOCTL_ALLOC:\n\t\tret = dma_heap_ioctl_allocate(file, kdata);\n\t\tbreak;\n\tdefault:\n\t\tret = -ENOTTY;\n\t\tgoto err;\n\t}\n\n printk(KERN_INFO \"USER_COPY: About to call copy_to_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\tif (copy_to_user((void __user *)arg, kdata, out_size) != 0)\n\t\tret = -EFAULT;\nerr:\n\tif (kdata != stack_kdata)\n\t\tkfree(kdata);\n\treturn ret;\n}",
+      "call_count": 9,
+      "process_info": {
+        "pid": 1711,
+        "comm": "tidlrt_clasific"
+      }
+    },
+    {
+      "copy_function": "copy_from_user",
+      "caller_function": "dma_buf_phys_ioctl",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 176,
+      "first_seen_timestamp": 1754251902.158001,
+      "first_seen_time_str": "20:11:42,158001",
+      "function_code": "static long dma_buf_phys_ioctl(struct file *file, unsigned int cmd, unsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n\tswitch (cmd) {\n\tcase DMA_BUF_PHYS_IOC_CONVERT:\n\t{\n\t\tstruct dma_buf_phys_data data;\n\t\tint ret;\n\n\t\t/*\n\t\t * TODO: this should likely be properly serialized, but I\n\t\t * see no reason this file would ever need to be shared.\n\t\t */\n\t\t/* one attachment per file */\n\t\tif (priv->dma_buf)\n\t\t\treturn -EFAULT;\n\n  printk(KERN_INFO \"USER_COPY: About to call copy_from_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\t\tif (copy_from_user(&data, (void __user *)arg, _IOC_SIZE(cmd)))\n\t\t\treturn -EFAULT;\n\n\t\tret = dma_buf_phys_convert(priv, data.fd, &data.phys);\n\t\tif (ret)\n\t\t\treturn ret;\n\n  printk(KERN_INFO \"USER_COPY: About to call copy_to_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\t\tif (copy_to_user((void __user *)arg, &data, _IOC_SIZE(cmd)))\n\t\t\treturn -EFAULT;\n\n\t\tbreak;\n\t}\n\tdefault:\n\t\treturn -ENOTTY;\n\t}\n\n\treturn 0;\n}",
+      "call_count": 9,
+      "process_info": {
+        "pid": 1711,
+        "comm": "tidlrt_clasific"
+      }
+    },
+    {
+      "copy_function": "copy_to_user",
+      "caller_function": "dma_buf_phys_ioctl",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 185,
+      "first_seen_timestamp": 1754251902.454325,
+      "first_seen_time_str": "20:11:42,454325",
+      "function_code": "static long dma_buf_phys_ioctl(struct file *file, unsigned int cmd, unsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n\tswitch (cmd) {\n\tcase DMA_BUF_PHYS_IOC_CONVERT:\n\t{\n\t\tstruct dma_buf_phys_data data;\n\t\tint ret;\n\n\t\t/*\n\t\t * TODO: this should likely be properly serialized, but I\n\t\t * see no reason this file would ever need to be shared.\n\t\t */\n\t\t/* one attachment per file */\n\t\tif (priv->dma_buf)\n\t\t\treturn -EFAULT;\n\n  printk(KERN_INFO \"USER_COPY: About to call copy_from_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\t\tif (copy_from_user(&data, (void __user *)arg, _IOC_SIZE(cmd)))\n\t\t\treturn -EFAULT;\n\n\t\tret = dma_buf_phys_convert(priv, data.fd, &data.phys);\n\t\tif (ret)\n\t\t\treturn ret;\n\n  printk(KERN_INFO \"USER_COPY: About to call copy_to_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\t\tif (copy_to_user((void __user *)arg, &data, _IOC_SIZE(cmd)))\n\t\t\treturn -EFAULT;\n\n\t\tbreak;\n\t}\n\tdefault:\n\t\treturn -ENOTTY;\n\t}\n\n\treturn 0;\n}",
+      "call_count": 9,
+      "process_info": {
+        "pid": 1711,
+        "comm": "tidlrt_clasific"
+      }
+    }
+  ],
+  "ioctl_operations": [
+    {
+      "function_name": "dma_heap_open",
+      "file_path": "drivers/dma-buf/dma-heap.c",
+      "line_number": 93,
+      "first_seen_timestamp": 1754251901.069961,
+      "first_seen_time_str": "20:11:41,069961",
+      "function_code": "static int dma_heap_open(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_heap_open called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_heap *heap;\n\n\theap = xa_load(&dma_heap_minors, iminor(inode));\n\tif (!heap) {\n\t\tpr_err(\"dma_heap: minor %d unknown.\\n\", iminor(inode));\n\t\treturn -ENODEV;\n\t}\n\n\t/* instance data as context */\n\tfile->private_data = heap;\n\tnonseekable_open(inode, file);\n\n\treturn 0;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "rpmsg_ctrldev_open",
+      "file_path": "drivers/rpmsg/rpmsg_ctrl.c",
+      "line_number": 57,
+      "first_seen_timestamp": 1754251901.160535,
+      "first_seen_time_str": "20:11:41,160535",
+      "function_code": "static int rpmsg_ctrldev_open(struct inode *inode, struct file *filp)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function rpmsg_ctrldev_open called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_ctrldev *ctrldev = cdev_to_ctrldev(inode->i_cdev);\n\n\tget_device(&ctrldev->dev);\n\tfilp->private_data = ctrldev;\n\n\treturn 0;\n}",
+      "call_count": 10
+    },
+    {
+      "function_name": "rpmsg_ctrldev_ioctl",
+      "file_path": "drivers/rpmsg/rpmsg_ctrl.c",
+      "line_number": 79,
+      "first_seen_timestamp": 1754251901.169218,
+      "first_seen_time_str": "20:11:41,169218",
+      "function_code": "static long rpmsg_ctrldev_ioctl(struct file *fp, unsigned int cmd,\n\t\t\t\tunsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function rpmsg_ctrldev_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_ctrldev *ctrldev = fp->private_data;\n\tvoid __user *argp = (void __user *)arg;\n\tstruct rpmsg_endpoint_info eptinfo;\n\tstruct rpmsg_channel_info chinfo;\n\tstruct rpmsg_device *rpdev;\n\tint ret = 0;\n\n printk(KERN_INFO \"USER_COPY: About to call copy_from_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\tif (copy_from_user(&eptinfo, argp, sizeof(eptinfo)))\n\t\treturn -EFAULT;\n\n\tmemcpy(chinfo.name, eptinfo.name, RPMSG_NAME_SIZE);\n\tchinfo.name[RPMSG_NAME_SIZE - 1] = '\\0';\n\tchinfo.src = eptinfo.src;\n\tchinfo.dst = eptinfo.dst;\n\n\tmutex_lock(&ctrldev->ctrl_lock);\n\tswitch (cmd) {\n\tcase RPMSG_CREATE_EPT_IOCTL:\n\t\tret = rpmsg_chrdev_eptdev_create(ctrldev->rpdev, &ctrldev->dev, chinfo);\n\t\tbreak;\n\n\tcase RPMSG_CREATE_DEV_IOCTL:\n\t\trpdev = rpmsg_create_channel(ctrldev->rpdev, &chinfo);\n\t\tif (!rpdev) {\n\t\t\tdev_err(&ctrldev->dev, \"failed to create %s channel\\n\", chinfo.name);\n\t\t\tret = -ENXIO;\n\t\t}\n\t\tbreak;\n\n\tcase RPMSG_RELEASE_DEV_IOCTL:\n\t\tret = rpmsg_release_channel(ctrldev->rpdev, &chinfo);\n\t\tif (ret)\n\t\t\tdev_err(&ctrldev->dev, \"failed to release %s channel (%d)\\n\",\n\t\t\t\tchinfo.name, ret);\n\t\tbreak;\n\n\tdefault:\n\t\tret = -EINVAL;\n\t}\n\tmutex_unlock(&ctrldev->ctrl_lock);\n\n\treturn ret;\n}",
+      "call_count": 10
+    },
+    {
+      "function_name": "rpmsg_ctrldev_release",
+      "file_path": "drivers/rpmsg/rpmsg_ctrl.c",
+      "line_number": 68,
+      "first_seen_timestamp": 1754251901.195885,
+      "first_seen_time_str": "20:11:41,195885",
+      "function_code": "static int rpmsg_ctrldev_release(struct inode *inode, struct file *filp)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function rpmsg_ctrldev_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_ctrldev *ctrldev = cdev_to_ctrldev(inode->i_cdev);\n\n\tput_device(&ctrldev->dev);\n\n\treturn 0;\n}",
+      "call_count": 10
+    },
+    {
+      "function_name": "rpmsg_eptdev_open",
+      "file_path": "drivers/rpmsg/rpmsg_char.c",
+      "line_number": 120,
+      "first_seen_timestamp": 1754251901.206897,
+      "first_seen_time_str": "20:11:41,206897",
+      "function_code": "static int rpmsg_eptdev_open(struct inode *inode, struct file *filp)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function rpmsg_eptdev_open called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_eptdev *eptdev = cdev_to_eptdev(inode->i_cdev);\n\tstruct rpmsg_endpoint *ept;\n\tstruct rpmsg_device *rpdev = eptdev->rpdev;\n\tstruct device *dev = &eptdev->dev;\n\n\tmutex_lock(&eptdev->ept_lock);\n\tif (eptdev->ept) {\n\t\tmutex_unlock(&eptdev->ept_lock);\n\t\treturn -EBUSY;\n\t}\n\n\tget_device(dev);\n\n\t/*\n\t * If the default_ept is set, the rpmsg device default endpoint is used.\n\t * Else a new endpoint is created on open that will be destroyed on release.\n\t */\n\tif (eptdev->default_ept)\n\t\tept = eptdev->default_ept;\n\telse\n\t\tept = rpmsg_create_ept(rpdev, rpmsg_ept_cb, eptdev, eptdev->chinfo);\n\n\tif (!ept) {\n\t\tdev_err(dev, \"failed to open %s\\n\", eptdev->chinfo.name);\n\t\tput_device(dev);\n\t\tmutex_unlock(&eptdev->ept_lock);\n\t\treturn -EINVAL;\n\t}\n\n\teptdev->ept = ept;\n\tif (eptdev->chinfo.src == RPMSG_ADDR_ANY)\n\t\teptdev->chinfo.src = ept->addr;\n\n\tfilp->private_data = eptdev;\n\tmutex_unlock(&eptdev->ept_lock);\n\n\treturn 0;\n}",
+      "call_count": 10
+    },
+    {
+      "function_name": "dma_heap_ioctl",
+      "file_path": "drivers/dma-buf/dma-heap.c",
+      "line_number": 143,
+      "first_seen_timestamp": 1754251901.890249,
+      "first_seen_time_str": "20:11:41,890249",
+      "function_code": "static long dma_heap_ioctl(struct file *file, unsigned int ucmd,\n\t\t\t   unsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_heap_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tchar stack_kdata[128];\n\tchar *kdata = stack_kdata;\n\tunsigned int kcmd;\n\tunsigned int in_size, out_size, drv_size, ksize;\n\tint nr = _IOC_NR(ucmd);\n\tint ret = 0;\n\n\tif (nr >= ARRAY_SIZE(dma_heap_ioctl_cmds))\n\t\treturn -EINVAL;\n\n\tnr = array_index_nospec(nr, ARRAY_SIZE(dma_heap_ioctl_cmds));\n\t/* Get the kernel ioctl cmd that matches */\n\tkcmd = dma_heap_ioctl_cmds[nr];\n\n\t/* Figure out the delta between user cmd size and kernel cmd size */\n\tdrv_size = _IOC_SIZE(kcmd);\n\tout_size = _IOC_SIZE(ucmd);\n\tin_size = out_size;\n\tif ((ucmd & kcmd & IOC_IN) == 0)\n\t\tin_size = 0;\n\tif ((ucmd & kcmd & IOC_OUT) == 0)\n\t\tout_size = 0;\n\tksize = max(max(in_size, out_size), drv_size);\n\n\t/* If necessary, allocate buffer for ioctl argument */\n\tif (ksize > sizeof(stack_kdata)) {\n\t\tkdata = kmalloc(ksize, GFP_KERNEL);\n\t\tif (!kdata)\n\t\t\treturn -ENOMEM;\n\t}\n\n printk(KERN_INFO \"USER_COPY: About to call copy_from_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\tif (copy_from_user(kdata, (void __user *)arg, in_size) != 0) {\n\t\tret = -EFAULT;\n\t\tgoto err;\n\t}\n\n\t/* zero out any difference between the kernel/user structure size */\n\tif (ksize > in_size)\n\t\tmemset(kdata + in_size, 0, ksize - in_size);\n\n\tswitch (kcmd) {\n\tcase DMA_HEAP_IOCTL_ALLOC:\n\t\tret = dma_heap_ioctl_allocate(file, kdata);\n\t\tbreak;\n\tdefault:\n\t\tret = -ENOTTY;\n\t\tgoto err;\n\t}\n\n printk(KERN_INFO \"USER_COPY: About to call copy_to_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\tif (copy_to_user((void __user *)arg, kdata, out_size) != 0)\n\t\tret = -EFAULT;\nerr:\n\tif (kdata != stack_kdata)\n\t\tkfree(kdata);\n\treturn ret;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_heap_ioctl_allocate",
+      "file_path": "drivers/dma-buf/dma-heap.c",
+      "line_number": 111,
+      "first_seen_timestamp": 1754251901.915866,
+      "first_seen_time_str": "20:11:41,915866",
+      "function_code": "static long dma_heap_ioctl_allocate(struct file *file, void *data)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_heap_ioctl_allocate called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_heap_allocation_data *heap_allocation = data;\n\tstruct dma_heap *heap = file->private_data;\n\tint fd;\n\n\tif (heap_allocation->fd)\n\t\treturn -EINVAL;\n\n\tif (heap_allocation->fd_flags & ~DMA_HEAP_VALID_FD_FLAGS)\n\t\treturn -EINVAL;\n\n\tif (heap_allocation->heap_flags & ~DMA_HEAP_VALID_HEAP_FLAGS)\n\t\treturn -EINVAL;\n\n\tfd = dma_heap_buffer_alloc(heap, heap_allocation->len,\n\t\t\t\t   heap_allocation->fd_flags,\n\t\t\t\t   heap_allocation->heap_flags);\n\tif (fd < 0)\n\t\treturn fd;\n\n\theap_allocation->fd = fd;\n\n\treturn 0;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_buf_phys_open",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 37,
+      "first_seen_timestamp": 1754251902.140419,
+      "first_seen_time_str": "20:11:42,140419",
+      "function_code": "static int dma_buf_phys_open(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_open called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct miscdevice *miscdev = file->private_data;\n\tstruct device *dev = miscdev->this_device;\n\tstruct dma_buf_phys_file *priv;\n\n\tpriv = kzalloc(sizeof(*priv), GFP_KERNEL);\n\tif (!priv)\n\t\treturn -ENOMEM;\n\tpriv->dev = dev;\n\tfile->private_data = (void *)priv;\n\n\treturn 0;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_buf_phys_ioctl",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 159,
+      "first_seen_timestamp": 1754251902.149194,
+      "first_seen_time_str": "20:11:42,149194",
+      "function_code": "static long dma_buf_phys_ioctl(struct file *file, unsigned int cmd, unsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n\tswitch (cmd) {\n\tcase DMA_BUF_PHYS_IOC_CONVERT:\n\t{\n\t\tstruct dma_buf_phys_data data;\n\t\tint ret;\n\n\t\t/*\n\t\t * TODO: this should likely be properly serialized, but I\n\t\t * see no reason this file would ever need to be shared.\n\t\t */\n\t\t/* one attachment per file */\n\t\tif (priv->dma_buf)\n\t\t\treturn -EFAULT;\n\n  printk(KERN_INFO \"USER_COPY: About to call copy_from_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\t\tif (copy_from_user(&data, (void __user *)arg, _IOC_SIZE(cmd)))\n\t\t\treturn -EFAULT;\n\n\t\tret = dma_buf_phys_convert(priv, data.fd, &data.phys);\n\t\tif (ret)\n\t\t\treturn ret;\n\n  printk(KERN_INFO \"USER_COPY: About to call copy_to_user from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"USER_COPY_CONTEXT: Process PID=%d, COMM=%s\\n\", current->pid, current->comm);\n\t\tif (copy_to_user((void __user *)arg, &data, _IOC_SIZE(cmd)))\n\t\t\treturn -EFAULT;\n\n\t\tbreak;\n\t}\n\tdefault:\n\t\treturn -ENOTTY;\n\t}\n\n\treturn 0;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_buf_phys_release",
+      "file_path": "drivers/misc/dma-buf-phys.c",
+      "line_number": 53,
+      "first_seen_timestamp": 1754251906.116291,
+      "first_seen_time_str": "20:11:46,116291",
+      "function_code": "static int dma_buf_phys_release(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tif (priv->attachment && priv->sgt)\n\t\tdma_buf_unmap_attachment(priv->attachment, priv->sgt, DMA_BIDIRECTIONAL);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tif (priv->dma_buf && priv->attachment)\n\t\tdma_buf_detach(priv->dma_buf, priv->attachment);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (priv->dma_buf)\n\t\tdma_buf_put(priv->dma_buf);\n\n\tkfree(priv);\n\n\treturn 0;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "dma_buf_file_release",
+      "file_path": "drivers/dma-buf/dma-buf.c",
+      "line_number": 100,
+      "first_seen_timestamp": 1754251906.44358,
+      "first_seen_time_str": "20:11:46,443580",
+      "function_code": "static int dma_buf_file_release(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_file_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf *dmabuf;\n\n\tif (!is_dma_buf_file(file))\n\t\treturn -EINVAL;\n\n\tdmabuf = file->private_data;\n\tif (dmabuf) {\n\t\tmutex_lock(&db_list.lock);\n\t\tlist_del(&dmabuf->list_node);\n\t\tmutex_unlock(&db_list.lock);\n\t}\n\n\treturn 0;\n}",
+      "call_count": 9
+    },
+    {
+      "function_name": "rpmsg_eptdev_ioctl",
+      "file_path": "drivers/rpmsg/rpmsg_char.c",
+      "line_number": 295,
+      "first_seen_timestamp": 1754251909.818083,
+      "first_seen_time_str": "20:11:49,818083",
+      "function_code": "static long rpmsg_eptdev_ioctl(struct file *fp, unsigned int cmd,\n\t\t\t       unsigned long arg)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function rpmsg_eptdev_ioctl called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_eptdev *eptdev = fp->private_data;\n\n\tif (cmd != RPMSG_DESTROY_EPT_IOCTL)\n\t\treturn -EINVAL;\n\n\t/* Don't allow to destroy a default endpoint. */\n\tif (eptdev->default_ept)\n\t\treturn -EINVAL;\n\n\treturn rpmsg_chrdev_eptdev_destroy(&eptdev->dev, NULL);\n}",
+      "call_count": 10
+    },
+    {
+      "function_name": "rpmsg_eptdev_release",
+      "file_path": "drivers/rpmsg/rpmsg_char.c",
+      "line_number": 162,
+      "first_seen_timestamp": 1754251909.836825,
+      "first_seen_time_str": "20:11:49,836825",
+      "function_code": "static int rpmsg_eptdev_release(struct inode *inode, struct file *filp)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function rpmsg_eptdev_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct rpmsg_eptdev *eptdev = cdev_to_eptdev(inode->i_cdev);\n\tstruct device *dev = &eptdev->dev;\n\n\t/* Close the endpoint, if it's not already destroyed by the parent */\n\tmutex_lock(&eptdev->ept_lock);\n\tif (eptdev->ept) {\n\t\tif (!eptdev->default_ept)\n\t\t\trpmsg_destroy_ept(eptdev->ept);\n\t\teptdev->ept = NULL;\n\t}\n\tmutex_unlock(&eptdev->ept_lock);\n\n\t/* Discard all SKBs */\n\tskb_queue_purge(&eptdev->queue);\n\n\tput_device(dev);\n\n\treturn 0;\n}",
+      "call_count": 10
+    }
+  ],
+  "statistics": {
+    "total_lines_processed": 1697,
+    "unique_function_entries": 15,
+    "unique_dma_operations": 8,
+    "unique_user_copy_operations": 5,
+    "unique_ioctl_operations": 13,
+    "total_function_entries_found": 104,
+    "total_dma_operations_found": 72,
+    "total_user_copy_operations_found": 46,
+    "total_ioctl_operations_found": 115,
+    "function_entries_found": 104,
+    "dma_operations_found": 72,
+    "user_copy_operations_found": 46,
+    "ioctl_operations_found": 115,
+    "files_with_functions_entrypoint_instrumented": 2,
+    "total_files": 16,
+    "files_need_analysis": 7,
+    "files_instrumented_with_function_entries": 2,
+    "total_duplicates_skipped": 296
+  }
+}
