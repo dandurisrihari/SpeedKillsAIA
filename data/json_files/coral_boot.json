@@ -1,0 +1,573 @@
+{
+  "metadata": {
+    "parser_version": "2.0.0",
+    "parsed_at": "2025-08-04T19:10:21.388868",
+    "log_file": "data/logs/coral/coral_uart_boot_dma_userapi_dmafilefuncs_ioctl.log",
+    "total_lines": 663,
+    "parsed_lines": 39,
+    "unique_entries": 28
+  },
+  "function_entries": [
+    {
+      "function_name": "gasket_init",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 1966,
+      "first_seen_timestamp": 6.097034,
+      "first_seen_time_str": "6.097034",
+      "entry_type": "function_entry",
+      "function_code": "static int __init gasket_init(void)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_init at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\n\tmutex_lock(&g_mutex);\n\tfor (i = 0; i < GASKET_FRAMEWORK_DESC_MAX; i++) {\n\t\tg_descs[i].driver_desc = NULL;\n\t\tmutex_init(&g_descs[i].mutex);\n\t}\n\n\tgasket_sysfs_init();\n\n\tmutex_unlock(&g_mutex);\n\treturn 0;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_register_device",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 1850,
+      "first_seen_timestamp": 6.125343,
+      "first_seen_time_str": "6.125343",
+      "entry_type": "function_entry",
+      "function_code": "int gasket_register_device(const struct gasket_driver_desc *driver_desc)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_register_device at %s:%d\\n\", __FILE__, __LINE__);\n\tint i, ret;\n\tint desc_idx = -1;\n\tstruct gasket_internal_desc *internal;\n\n\tpr_debug(\"Loading %s driver version %s\\n\", driver_desc->name,\n\t\t driver_desc->driver_version);\n\t/* Check for duplicates and find a free slot. */\n\tmutex_lock(&g_mutex);\n\n\tfor (i = 0; i < GASKET_FRAMEWORK_DESC_MAX; i++) {\n\t\tif (g_descs[i].driver_desc == driver_desc) {\n\t\t\tpr_err(\"%s driver already loaded/registered\\n\",\n\t\t\t       driver_desc->name);\n\t\t\tmutex_unlock(&g_mutex);\n\t\t\treturn -EBUSY;\n\t\t}\n\t}\n\n\t/* This and the above loop could be combined, but this reads easier. */\n\tfor (i = 0; i < GASKET_FRAMEWORK_DESC_MAX; i++) {\n\t\tif (!g_descs[i].driver_desc) {\n\t\t\tg_descs[i].driver_desc = driver_desc;\n\t\t\tdesc_idx = i;\n\t\t\tbreak;\n\t\t}\n\t}\n\tmutex_unlock(&g_mutex);\n\n\tif (desc_idx == -1) {\n\t\tpr_err(\"too many drivers loaded, max %d\\n\",\n\t\t       GASKET_FRAMEWORK_DESC_MAX);\n\t\treturn -EBUSY;\n\t}\n\n\tinternal = &g_descs[desc_idx];\n\tmutex_init(&internal->mutex);\n\tmemset(internal->devs, 0, sizeof(struct gasket_dev *) * GASKET_DEV_MAX);\n\n    /* Function signature for `class_create()` is changed in kernel >= 6.4.x\n     * to only accept a single argument.\n     * */\n#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 4, 0)\n    internal->class = class_create(driver_desc->module, driver_desc->name);\n#else\n    internal->class = class_create(driver_desc->name);\n#endif\n\n\tif (IS_ERR(internal->class)) {\n\t\tpr_err(\"Cannot register %s class [ret=%ld]\\n\",\n\t\t       driver_desc->name, PTR_ERR(internal->class));\n\t\tret = PTR_ERR(internal->class);\n\t\tgoto unregister_gasket_driver;\n\t}\n\n\tret = register_chrdev_region(MKDEV(driver_desc->major,\n\t\t\t\t\t   driver_desc->minor), GASKET_DEV_MAX,\n\t\t\t\t     driver_desc->name);\n\tif (ret) {\n\t\tpr_err(\"cannot register %s char driver [ret=%d]\\n\",\n\t\t       driver_desc->name, ret);\n\t\tgoto destroy_class;\n\t}\n\n\treturn 0;\n\ndestroy_class:\n\tclass_destroy(internal->class);\n\nunregister_gasket_driver:\n\tmutex_lock(&g_mutex);\n\tg_descs[desc_idx].driver_desc = NULL;\n\tmutex_unlock(&g_mutex);\n\treturn ret;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_pci_add_device",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 1543,
+      "first_seen_timestamp": 6.204909,
+      "first_seen_time_str": "6.204909",
+      "entry_type": "function_entry",
+      "function_code": "int gasket_pci_add_device(struct pci_dev *pci_dev,\n\t\t\t  struct gasket_dev **gasket_devp)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_pci_add_device at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret;\n\tstruct gasket_internal_desc *internal_desc;\n\tstruct gasket_dev *gasket_dev;\n\tstruct device *parent;\n\n\tdev_dbg(&pci_dev->dev, \"add PCI gasket device\\n\");\n\n\tmutex_lock(&g_mutex);\n\tinternal_desc = lookup_pci_internal_desc(pci_dev);\n\tmutex_unlock(&g_mutex);\n\tif (!internal_desc) {\n\t\tdev_err(&pci_dev->dev,\n\t\t\t\"PCI add device called for unknown driver type\\n\");\n\t\treturn -ENODEV;\n\t}\n\n\tparent = &pci_dev->dev;\n\tret = __gasket_add_device(parent, internal_desc, &gasket_dev);\n\tif (ret)\n\t\treturn ret;\n\n\tgasket_dev->pci_dev = pci_dev;\n\tret = gasket_setup_pci(pci_dev, gasket_dev);\n\tif (ret)\n\t\tgoto cleanup_pci;\n\n\t/*\n\t * Once we've created the mapping structures successfully, attempt to\n\t * create a symlink to the pci directory of this object.\n\t */\n\tret = sysfs_create_link(&gasket_dev->dev_info.device->kobj,\n\t\t\t\t&pci_dev->dev.kobj, dev_name(&pci_dev->dev));\n\tif (ret) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Cannot create sysfs pci link: %d\\n\", ret);\n\t\tgoto cleanup_pci;\n\t}\n\n\t*gasket_devp = gasket_dev;\n\treturn 0;\n\ncleanup_pci:\n\tgasket_cleanup_pci(gasket_dev);\n\t__gasket_remove_device(internal_desc, gasket_dev);\n\treturn ret;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "lookup_pci_internal_desc",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 688,
+      "first_seen_timestamp": 6.229736,
+      "first_seen_time_str": "6.229736",
+      "entry_type": "function_entry",
+      "function_code": "static struct gasket_internal_desc *\nlookup_pci_internal_desc(struct pci_dev *pci_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function lookup_pci_internal_desc at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\n\t__must_hold(&g_mutex);\n\tfor (i = 0; i < GASKET_FRAMEWORK_DESC_MAX; i++) {\n\t\tif (g_descs[i].driver_desc &&\n\t\t    g_descs[i].driver_desc->pci_id_table &&\n\t\t    pci_match_id(g_descs[i].driver_desc->pci_id_table, pci_dev))\n\t\t\treturn &g_descs[i];\n\t}\n\n\treturn NULL;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_alloc_dev",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 205,
+      "first_seen_timestamp": 6.241969,
+      "first_seen_time_str": "6.241969",
+      "entry_type": "function_entry",
+      "function_code": "static int gasket_alloc_dev(struct gasket_internal_desc *internal_desc,\n\t\t\t    struct device *parent, struct gasket_dev **pdev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_alloc_dev at %s:%d\\n\", __FILE__, __LINE__);\n\tint dev_idx;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tinternal_desc->driver_desc;\n\tstruct gasket_dev *gasket_dev;\n\tstruct gasket_cdev_info *dev_info;\n\tconst char *parent_name = dev_name(parent);\n\n\tpr_debug(\"Allocating a Gasket device, parent %s.\\n\", parent_name);\n\n\t*pdev = NULL;\n\n\tdev_idx = gasket_find_dev_slot(internal_desc, parent_name);\n\tif (dev_idx < 0)\n\t\treturn dev_idx;\n\n\tgasket_dev = *pdev = kzalloc(sizeof(*gasket_dev), GFP_KERNEL);\n\tif (!gasket_dev) {\n\t\tpr_err(\"no memory for device, parent %s\\n\", parent_name);\n\t\treturn -ENOMEM;\n\t}\n\tinternal_desc->devs[dev_idx] = gasket_dev;\n\n\tmutex_init(&gasket_dev->mutex);\n\n\tgasket_dev->internal_desc = internal_desc;\n\tgasket_dev->dev_idx = dev_idx;\n\tsnprintf(gasket_dev->kobj_name, GASKET_NAME_MAX, \"%s\", parent_name);\n\tgasket_dev->dev = get_device(parent);\n\tgasket_dev->dma_dev = get_device(parent);\n\t/* gasket_bar_data is uninitialized. */\n\tgasket_dev->num_page_tables = driver_desc->num_page_tables;\n\t/* max_page_table_size and *page table are uninit'ed */\n\t/* interrupt_data is not initialized. */\n\t/* status is 0, or GASKET_STATUS_DEAD */\n\n\tdev_info = &gasket_dev->dev_info;\n\tsnprintf(dev_info->name, GASKET_NAME_MAX, \"%s_%u\", driver_desc->name,\n\t\t gasket_dev->dev_idx);\n\tdev_info->devt =\n\t\tMKDEV(driver_desc->major, driver_desc->minor +\n\t\t      gasket_dev->dev_idx);\n\tdev_info->device =\n\t\tdevice_create(internal_desc->class, parent, dev_info->devt,\n\t\t\t      gasket_dev, dev_info->name);\n\n\t/* cdev has not yet been added; cdev_added is 0 */\n\tdev_info->gasket_dev_ptr = gasket_dev;\n\t/* ownership is all 0, indicating no owner or opens. */\n\n\treturn 0;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_find_dev_slot",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 165,
+      "first_seen_timestamp": 6.255614,
+      "first_seen_time_str": "6.255614",
+      "entry_type": "function_entry",
+      "function_code": "static int gasket_find_dev_slot(struct gasket_internal_desc *internal_desc,\n\t\t\t\tconst char *kobj_name)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_find_dev_slot at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\n\tmutex_lock(&internal_desc->mutex);\n\n\t/* Search for a previous instance of this device. */\n\tfor (i = 0; i < GASKET_DEV_MAX; i++) {\n\t\tif (internal_desc->devs[i] &&\n\t\t    strcmp(internal_desc->devs[i]->kobj_name, kobj_name) == 0) {\n\t\t\tpr_err(\"Duplicate device %s\\n\", kobj_name);\n\t\t\tmutex_unlock(&internal_desc->mutex);\n\t\t\treturn -EBUSY;\n\t\t}\n\t}\n\n\t/* Find a free device slot. */\n\tfor (i = 0; i < GASKET_DEV_MAX; i++) {\n\t\tif (!internal_desc->devs[i])\n\t\t\tbreak;\n\t}\n\n\tif (i == GASKET_DEV_MAX) {\n\t\tpr_err(\"Too many registered devices; max %d\\n\", GASKET_DEV_MAX);\n\t\tmutex_unlock(&internal_desc->mutex);\n\t\treturn -EBUSY;\n\t}\n\n\tmutex_unlock(&internal_desc->mutex);\n\treturn i;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_setup_pci",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 395,
+      "first_seen_timestamp": 6.266733,
+      "first_seen_time_str": "6.266733",
+      "entry_type": "function_entry",
+      "function_code": "static int gasket_setup_pci(struct pci_dev *pci_dev,\n\t\t\t    struct gasket_dev *gasket_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_setup_pci at %s:%d\\n\", __FILE__, __LINE__);\n\tint i, mapped_bars, ret;\n\n\tfor (i = 0; i < GASKET_NUM_BARS; i++) {\n\t\tret = gasket_map_pci_bar(gasket_dev, i);\n\t\tif (ret) {\n\t\t\tmapped_bars = i;\n\t\t\tgoto fail;\n\t\t}\n\t}\n\n\treturn 0;\n\nfail:\n\tfor (i = 0; i < mapped_bars; i++)\n\t\tgasket_unmap_pci_bar(gasket_dev, i);\n\n\treturn -ENOMEM;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_map_pci_bar",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 280,
+      "first_seen_timestamp": 6.285271,
+      "first_seen_time_str": "6.285271",
+      "entry_type": "function_entry",
+      "function_code": "static int gasket_map_pci_bar(struct gasket_dev *gasket_dev, int bar_num)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_map_pci_bar at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct gasket_internal_desc *internal_desc = gasket_dev->internal_desc;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tinternal_desc->driver_desc;\n\tulong desc_bytes = driver_desc->bar_descriptions[bar_num].size;\n\tint ret;\n\n\tif (desc_bytes == 0)\n\t\treturn 0;\n\n\tif (driver_desc->bar_descriptions[bar_num].type != PCI_BAR) {\n\t\t/* not PCI: skip this entry */\n\t\treturn 0;\n\t}\n\t/*\n\t * pci_resource_start and pci_resource_len return a \"resource_size_t\",\n\t * which is safely castable to ulong (which itself is the arg to\n\t * request_mem_region).\n\t */\n\tgasket_dev->bar_data[bar_num].phys_base =\n\t\t(ulong)pci_resource_start(gasket_dev->pci_dev, bar_num);\n\tif (!gasket_dev->bar_data[bar_num].phys_base) {\n\t\tdev_err(gasket_dev->dev, \"Cannot get BAR%u base address\\n\",\n\t\t\tbar_num);\n\t\treturn -EINVAL;\n\t}\n\n\tgasket_dev->bar_data[bar_num].length_bytes =\n\t\t(ulong)pci_resource_len(gasket_dev->pci_dev, bar_num);\n\tif (gasket_dev->bar_data[bar_num].length_bytes < desc_bytes) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"PCI BAR %u space is too small: %lu; expected >= %lu\\n\",\n\t\t\tbar_num, gasket_dev->bar_data[bar_num].length_bytes,\n\t\t\tdesc_bytes);\n\t\treturn -ENOMEM;\n\t}\n\n\tif (!request_mem_region(gasket_dev->bar_data[bar_num].phys_base,\n\t\t\t\tgasket_dev->bar_data[bar_num].length_bytes,\n\t\t\t\tgasket_dev->dev_info.name)) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Cannot get BAR %d memory region %p\\n\",\n\t\t\tbar_num, &gasket_dev->pci_dev->resource[bar_num]);\n\t\treturn -EINVAL;\n\t}\n\n\tgasket_dev->bar_data[bar_num].virt_base =\n\t\tioremap(gasket_dev->bar_data[bar_num].phys_base,\n\t\t\tgasket_dev->bar_data[bar_num].length_bytes);\n\tif (!gasket_dev->bar_data[bar_num].virt_base) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Cannot remap BAR %d memory region %p\\n\",\n\t\t\tbar_num, &gasket_dev->pci_dev->resource[bar_num]);\n\t\tret = -ENOMEM;\n\t\tgoto fail;\n\t}\n\n\tdma_set_mask(&gasket_dev->pci_dev->dev, DMA_BIT_MASK(dma_bit_mask));\n\tdma_set_coherent_mask(&gasket_dev->pci_dev->dev,\n\t\t\t      DMA_BIT_MASK(dma_bit_mask));\n\n\treturn 0;\n\nfail:\n\tiounmap(gasket_dev->bar_data[bar_num].virt_base);\n\trelease_mem_region(gasket_dev->bar_data[bar_num].phys_base,\n\t\t\t   gasket_dev->bar_data[bar_num].length_bytes);\n\treturn ret;\n}",
+      "call_count": 6
+    },
+    {
+      "function_name": "gasket_wait_with_reschedule",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 1830,
+      "first_seen_timestamp": 6.307928,
+      "first_seen_time_str": "6.307928",
+      "entry_type": "function_entry",
+      "function_code": "int gasket_wait_with_reschedule(struct gasket_dev *gasket_dev, int bar,\n\t\t\t\tu64 offset, u64 mask, u64 val,\n\t\t\t\tuint max_retries, u64 delay_ms)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_wait_with_reschedule at %s:%d\\n\", __FILE__, __LINE__);\n\tuint retries = 0;\n\tu64 tmp;\n\n\twhile (retries < max_retries) {\n\t\ttmp = gasket_dev_read_64(gasket_dev, bar, offset);\n\t\tif ((tmp & mask) == val)\n\t\t\treturn 0;\n\t\tmsleep(delay_ms);\n\t\tretries++;\n\t}\n\tdev_dbg(gasket_dev->dev, \"%s timeout: reg %llx timeout (%llu ms)\\n\",\n\t\t__func__, offset, max_retries * delay_ms);\n\treturn -ETIMEDOUT;\n}",
+      "call_count": 6
+    },
+    {
+      "function_name": "gasket_enable_device",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 1419,
+      "first_seen_timestamp": 6.308055,
+      "first_seen_time_str": "6.308055",
+      "entry_type": "function_entry",
+      "function_code": "int gasket_enable_device(struct gasket_dev *gasket_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_enable_device at %s:%d\\n\", __FILE__, __LINE__);\n\tint tbl_idx;\n\tint ret;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tgasket_dev->internal_desc->driver_desc;\n\n\tdev_dbg(gasket_dev->dev, \"enabling device\\n\");\n\tret = gasket_interrupt_init(gasket_dev);\n\tif (ret) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Critical failure to allocate interrupts: %d\\n\", ret);\n\t\tgasket_interrupt_cleanup(gasket_dev);\n\t\treturn ret;\n\t}\n\n\tfor (tbl_idx = 0; tbl_idx < driver_desc->num_page_tables; tbl_idx++) {\n\t\tdev_dbg(gasket_dev->dev, \"Initializing page table %d.\\n\",\n\t\t\ttbl_idx);\n\t\tret = gasket_page_table_init(&gasket_dev->page_table[tbl_idx],\n\t\t\t\t\t     &gasket_dev->bar_data[driver_desc->page_table_bar_index],\n\t\t\t\t\t     &driver_desc->page_table_configs[tbl_idx],\n\t\t\t\t\t     gasket_dev->dev,\n\t\t\t\t\t     gasket_dev->pci_dev);\n\t\tif (ret) {\n\t\t\tdev_err(gasket_dev->dev,\n\t\t\t\t\"Couldn't init page table %d: %d\\n\",\n\t\t\t\ttbl_idx, ret);\n\t\t\treturn ret;\n\t\t}\n\t\t/*\n\t\t * Make sure that the page table is clear and set to simple\n\t\t * addresses.\n\t\t */\n\t\tgasket_page_table_reset(gasket_dev->page_table[tbl_idx]);\n\t}\n\n\t/*\n\t * hardware_revision_cb returns a positive integer (the rev) if\n\t * successful.)\n\t */\n\tret = check_and_invoke_callback(gasket_dev,\n\t\t\t\t\tdriver_desc->hardware_revision_cb);\n\tif (ret < 0) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Error getting hardware revision: %d\\n\", ret);\n\t\treturn ret;\n\t}\n\tgasket_dev->hardware_revision = ret;\n\n\t/* device_status_cb returns a device status, not an error code. */\n\tgasket_dev->status = gasket_get_hw_status(gasket_dev);\n\tif (gasket_dev->status == GASKET_STATUS_DEAD)\n\t\tdev_err(gasket_dev->dev, \"Device reported as unhealthy.\\n\");\n\n\tret = gasket_add_cdev(&gasket_dev->dev_info, &gasket_file_ops,\n\t\t\t      driver_desc->module);\n\tif (ret)\n\t\treturn ret;\n\n\treturn 0;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_get_driver_desc",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 1800,
+      "first_seen_timestamp": 6.308058,
+      "first_seen_time_str": "6.308058",
+      "entry_type": "function_entry",
+      "function_code": "const struct gasket_driver_desc *gasket_get_driver_desc(struct gasket_dev *dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_get_driver_desc at %s:%d\\n\", __FILE__, __LINE__);\n\treturn dev->internal_desc->driver_desc;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "check_and_invoke_callback",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 122,
+      "first_seen_timestamp": 6.56008,
+      "first_seen_time_str": "6.560080",
+      "entry_type": "function_entry",
+      "function_code": "static inline int\ncheck_and_invoke_callback(struct gasket_dev *gasket_dev,\n\t\t\t  int (*cb_function)(struct gasket_dev *))\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function check_and_invoke_callback at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret = 0;\n\n\tif (cb_function) {\n\t\tmutex_lock(&gasket_dev->mutex);\n\t\tret = cb_function(gasket_dev);\n\t\tmutex_unlock(&gasket_dev->mutex);\n\t}\n\treturn ret;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_get_hw_status",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 428,
+      "first_seen_timestamp": 6.583351,
+      "first_seen_time_str": "6.583351",
+      "entry_type": "function_entry",
+      "function_code": "static int gasket_get_hw_status(struct gasket_dev *gasket_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_get_hw_status at %s:%d\\n\", __FILE__, __LINE__);\n\tint status;\n\tint i;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tgasket_dev->internal_desc->driver_desc;\n\n\tstatus = gasket_check_and_invoke_callback_nolock(gasket_dev,\n\t\t\t\t\t\t\t driver_desc->device_status_cb);\n\tif (status != GASKET_STATUS_ALIVE) {\n\t\tdev_dbg(gasket_dev->dev, \"Hardware reported status %d.\\n\",\n\t\t\tstatus);\n\t\treturn status;\n\t}\n\n\tstatus = gasket_interrupt_system_status(gasket_dev);\n\tif (status != GASKET_STATUS_ALIVE) {\n\t\tdev_dbg(gasket_dev->dev,\n\t\t\t\"Interrupt system reported status %d.\\n\", status);\n\t\treturn status;\n\t}\n\n\tfor (i = 0; i < driver_desc->num_page_tables; ++i) {\n\t\tstatus = gasket_page_table_system_status(gasket_dev->page_table[i]);\n\t\tif (status != GASKET_STATUS_ALIVE) {\n\t\t\tdev_dbg(gasket_dev->dev,\n\t\t\t\t\"Page table %d reported status %d.\\n\",\n\t\t\t\ti, status);\n\t\t\treturn status;\n\t\t}\n\t}\n\n\treturn GASKET_STATUS_ALIVE;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_check_and_invoke_callback_nolock",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 138,
+      "first_seen_timestamp": 6.594073,
+      "first_seen_time_str": "6.594073",
+      "entry_type": "function_entry",
+      "function_code": "static inline int\ngasket_check_and_invoke_callback_nolock(struct gasket_dev *gasket_dev,\n\t\t\t\t\tint (*cb_function)(struct gasket_dev *))\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_check_and_invoke_callback_nolock at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret = 0;\n\n\tif (cb_function)\n\t\tret = cb_function(gasket_dev);\n\treturn ret;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_add_cdev",
+      "file_path": "gasket-driver/src/gasket_core.c",
+      "line_number": 637,
+      "first_seen_timestamp": 6.618157,
+      "first_seen_time_str": "6.618157",
+      "entry_type": "function_entry",
+      "function_code": "static int gasket_add_cdev(struct gasket_cdev_info *dev_info,\n\t\t\t   const struct file_operations *file_ops,\n\t\t\t   struct module *owner)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_add_cdev at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret;\n\n\tcdev_init(&dev_info->cdev, file_ops);\n\tdev_info->cdev.owner = owner;\n\tret = cdev_add(&dev_info->cdev, dev_info->devt, 1);\n\tif (ret) {\n\t\tdev_err(dev_info->gasket_dev_ptr->dev,\n\t\t\t\"cannot add char device [ret=%d]\\n\", ret);\n\t\treturn ret;\n\t}\n\tdev_info->cdev_added = 1;\n\n\treturn 0;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_page_table_init",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 267,
+      "first_seen_timestamp": 6.308881,
+      "first_seen_time_str": "6.308881",
+      "entry_type": "function_entry",
+      "function_code": "int gasket_page_table_init(struct gasket_page_table **ppg_tbl,\n\t\t\t   const struct gasket_bar_data *bar_data,\n\t\t\t   const struct gasket_page_table_config *page_table_config,\n\t\t\t   struct device *device, struct pci_dev *pci_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_init at %s:%d\\n\", __FILE__, __LINE__);\n\tulong bytes;\n\tstruct gasket_page_table *pg_tbl;\n\tulong total_entries = page_table_config->total_entries;\n\n\t/*\n\t * TODO: Verify config->total_entries against value read from the\n\t * hardware register that contains the page table size.\n\t */\n\tif (total_entries == ULONG_MAX) {\n\t\tdev_dbg(device, \"Error reading page table size. \"\n\t\t\t\"Initializing page table with size 0\\n\");\n\t\ttotal_entries = 0;\n\t}\n\n\tdev_dbg(device,\n\t\t\"Attempting to initialize page table of size 0x%lx\\n\",\n\t\ttotal_entries);\n\n\tdev_dbg(device,\n\t\t\"Table has base reg 0x%x, extended offset reg 0x%x\\n\",\n\t\tpage_table_config->base_reg,\n\t\tpage_table_config->extended_reg);\n\n\t*ppg_tbl = kzalloc(sizeof(**ppg_tbl), GFP_KERNEL);\n\tif (!*ppg_tbl) {\n\t\tdev_dbg(device, \"No memory for page table\\n\");\n\t\treturn -ENOMEM;\n\t}\n\n\tpg_tbl = *ppg_tbl;\n\tbytes = total_entries * sizeof(struct gasket_page_table_entry);\n\tif (bytes != 0) {\n\t\tpg_tbl->entries = vzalloc(bytes);\n\t\tif (!pg_tbl->entries) {\n\t\t\tdev_dbg(device,\n\t\t\t\t\"No memory for address translation metadata\\n\");\n\t\t\tkfree(pg_tbl);\n\t\t\t*ppg_tbl = NULL;\n\t\t\treturn -ENOMEM;\n\t\t}\n\t}\n\n\tmutex_init(&pg_tbl->mutex);\n\tmemcpy(&pg_tbl->config, page_table_config, sizeof(*page_table_config));\n\tif (pg_tbl->config.mode == GASKET_PAGE_TABLE_MODE_NORMAL ||\n\t    pg_tbl->config.mode == GASKET_PAGE_TABLE_MODE_SIMPLE) {\n\t\tpg_tbl->num_simple_entries = total_entries;\n\t\tpg_tbl->num_extended_entries = 0;\n\t\tpg_tbl->extended_flag = 1ull << page_table_config->extended_bit;\n\t} else {\n\t\tpg_tbl->num_simple_entries = 0;\n\t\tpg_tbl->num_extended_entries = total_entries;\n\t\tpg_tbl->extended_flag = 0;\n\t}\n\tpg_tbl->num_active_pages = 0;\n\tpg_tbl->base_slot =\n\t\t(u64 __iomem *)&bar_data->virt_base[page_table_config->base_reg];\n\tpg_tbl->extended_offset_reg =\n\t\t(u64 __iomem *)&bar_data->virt_base[page_table_config->extended_reg];\n\tpg_tbl->device = get_device(device);\n\tpg_tbl->pci_dev = pci_dev;\n\tINIT_LIST_HEAD(&pg_tbl->dmabufs);\n\n\tdev_dbg(device, \"Page table initialized successfully\\n\");\n\n\treturn 0;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_page_table_reset",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 1431,
+      "first_seen_timestamp": 6.3097,
+      "first_seen_time_str": "6.309700",
+      "entry_type": "function_entry",
+      "function_code": "void gasket_page_table_reset(struct gasket_page_table *pg_tbl)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_reset at %s:%d\\n\", __FILE__, __LINE__);\n\tmutex_lock(&pg_tbl->mutex);\n\tgasket_page_table_unmap_all_nolock(pg_tbl);\n\twriteq(pg_tbl->config.total_entries, pg_tbl->extended_offset_reg);\n\tmutex_unlock(&pg_tbl->mutex);\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_page_table_unmap_all_nolock",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 1404,
+      "first_seen_timestamp": 6.309705,
+      "first_seen_time_str": "6.309705",
+      "entry_type": "function_entry",
+      "function_code": "static void gasket_page_table_unmap_all_nolock(struct gasket_page_table *pg_tbl)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_unmap_all_nolock at %s:%d\\n\", __FILE__, __LINE__);\n\tgasket_page_table_detach_dmabuf_nolock(pg_tbl, NULL);\n\n\tgasket_unmap_simple_pages(pg_tbl,\n\t\t\t\t  gasket_components_to_dev_address(pg_tbl, 1, 0,\n\t\t\t\t\t\t\t\t   0),\n\t\t\t\t  pg_tbl->num_simple_entries);\n\tgasket_unmap_extended_pages(pg_tbl,\n\t\t\t\t    gasket_components_to_dev_address(pg_tbl, 0,\n\t\t\t\t\t\t\t\t     0, 0),\n\t\t\t\t    pg_tbl->num_extended_entries *\n\t\t\t\t    GASKET_PAGES_PER_SUBTABLE);\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_page_table_detach_dmabuf_nolock",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 1334,
+      "first_seen_timestamp": 6.309708,
+      "first_seen_time_str": "6.309708",
+      "entry_type": "function_entry",
+      "function_code": "static void gasket_page_table_detach_dmabuf_nolock(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t\t   struct dma_buf *dmabuf)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_detach_dmabuf_nolock at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct gasket_dmabuf_mapping *mapping, *tmp;\n\n\tlist_for_each_entry_safe(mapping, tmp, &pg_tbl->dmabufs, list) {\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\t\tif (!dmabuf || mapping->dmabuf == dmabuf) {\n\t\t\tdma_buf_unmap_attachment(mapping->attachment,\n\t\t\t\t\t\t mapping->sgt,\n\t\t\t\t\t\t mapping->direction);\n\t\t\tdma_buf_detach(mapping->dmabuf, mapping->attachment);\n\t\t\tdma_buf_put(mapping->dmabuf);\n\t\t\tlist_del(&mapping->list);\n\t\t\tkfree(mapping);\n\t\t}\n\t}\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_components_to_dev_address",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 810,
+      "first_seen_timestamp": 6.309711,
+      "first_seen_time_str": "6.309711",
+      "entry_type": "function_entry",
+      "function_code": "static u64 gasket_components_to_dev_address(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t      int is_simple, uint page_index,\n\t\t\t\t\t      uint offset)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_components_to_dev_address at %s:%d\\n\", __FILE__, __LINE__);\n\tu64 dev_addr = (page_index << GASKET_SIMPLE_PAGE_SHIFT) | offset;\n\n\treturn is_simple ? dev_addr : (pg_tbl->extended_flag | dev_addr);\n}",
+      "call_count": 2
+    },
+    {
+      "function_name": "gasket_unmap_simple_pages",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 733,
+      "first_seen_timestamp": 6.309714,
+      "first_seen_time_str": "6.309714",
+      "entry_type": "function_entry",
+      "function_code": "static void gasket_unmap_simple_pages(struct gasket_page_table *pg_tbl,\n\t\t\t\t      u64 dev_addr, uint num_pages)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_unmap_simple_pages at %s:%d\\n\", __FILE__, __LINE__);\n\tuint slot = gasket_simple_page_idx(pg_tbl, dev_addr);\n\n\tgasket_perform_unmapping(pg_tbl, pg_tbl->entries + slot,\n\t\t\t\t pg_tbl->base_slot + slot, num_pages, 1);\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_simple_page_idx",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 640,
+      "first_seen_timestamp": 6.309717,
+      "first_seen_time_str": "6.309717",
+      "entry_type": "function_entry",
+      "function_code": "static int gasket_simple_page_idx(struct gasket_page_table *pg_tbl,\n\t\t\t\t  u64 dev_addr)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_simple_page_idx at %s:%d\\n\", __FILE__, __LINE__);\n\treturn (dev_addr >> GASKET_SIMPLE_PAGE_SHIFT) &\n\t\t(pg_tbl->config.total_entries - 1);\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_perform_unmapping",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 694,
+      "first_seen_timestamp": 6.30972,
+      "first_seen_time_str": "6.309720",
+      "entry_type": "function_entry",
+      "function_code": "static void gasket_perform_unmapping(struct gasket_page_table *pg_tbl,\n\t\t\t\t     struct gasket_page_table_entry *ptes,\n\t\t\t\t     u64 __iomem *slots, uint num_pages,\n\t\t\t\t     int is_simple_mapping)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_perform_unmapping at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\t/*\n\t * For each page table entry and corresponding entry in the device's\n\t * address translation table:\n\t */\n\tfor (i = 0; i < num_pages; i++) {\n\t\t/* release the address from the device, */\n\t\tif (is_simple_mapping)\n\t\t\twriteq(0, &slots[i]);\n\t\telse\n\t\t\t((u64 __force *)slots)[i] = 0;\n\n\t\t/* release the address from the driver, */\n\t\tif (GET(FLAGS_STATUS, ptes[i].flags) == PTE_INUSE) {\n   printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_unmap_page called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_unmap_page\\n\");\n\t\t\tif (ptes[i].page && ptes[i].dma_addr) {\n\t\t\t\tdma_unmap_page(pg_tbl->device, ptes[i].dma_addr, PAGE_SIZE,\n\t\t\t\t\t       GET(FLAGS_DMA_DIRECTION, ptes[i].flags));\n\t\t\t}\n\t\t\tif (gasket_release_page(ptes[i].page))\n\t\t\t\t--pg_tbl->num_active_pages;\n\t\t}\n\n\t\t/* and clear the PTE. */\n\t\tmemset(&ptes[i], 0, sizeof(struct gasket_page_table_entry));\n\t}\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_unmap_extended_pages",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 747,
+      "first_seen_timestamp": 6.340461,
+      "first_seen_time_str": "6.340461",
+      "entry_type": "function_entry",
+      "function_code": "static void gasket_unmap_extended_pages(struct gasket_page_table *pg_tbl,\n\t\t\t\t\tu64 dev_addr, uint num_pages)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_unmap_extended_pages at %s:%d\\n\", __FILE__, __LINE__);\n\tuint slot_idx, remain, len;\n\tstruct gasket_page_table_entry *pte;\n\tu64 __iomem *slot_base;\n\n\tremain = num_pages;\n\tslot_idx = gasket_extended_lvl1_page_idx(pg_tbl, dev_addr);\n\tpte = pg_tbl->entries + pg_tbl->num_simple_entries +\n\t      gasket_extended_lvl0_page_idx(pg_tbl, dev_addr);\n\n\twhile (remain > 0) {\n\t\t/* TODO: Add check to ensure pte remains valid? */\n\t\tlen = min(remain, GASKET_PAGES_PER_SUBTABLE - slot_idx);\n\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_single_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_single_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_single_for_device\\n\");\n\t\tif (GET(FLAGS_STATUS, pte->flags) == PTE_INUSE) {\n\t\t\tslot_base = (u64 __iomem *)(page_address(pte->page) +\n\t\t\t\t\t\t    pte->offset);\n\t\t\tgasket_perform_unmapping(pg_tbl,\n\t\t\t\t\t\t pte->sublevel + slot_idx,\n\t\t\t\t\t\t slot_base + slot_idx, len, 0);\n\t\t\t/*\n\t\t\t * Extended page tables are in DRAM so they need to be\n\t\t\t * synced each time they are updated.\n\t\t\t */\n\t\t\tdma_sync_single_for_device(pg_tbl->device,\n\t\t\t\t\t\t   pte->dma_addr + slot_idx * sizeof(u64),\n\t\t\t\t\t\t   len * sizeof(u64), DMA_TO_DEVICE);\n\t\t}\n\n\t\tremain -= len;\n\t\tslot_idx = 0;\n\t\tpte++;\n\t}\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_extended_lvl1_page_idx",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 664,
+      "first_seen_timestamp": 6.548318,
+      "first_seen_time_str": "6.548318",
+      "entry_type": "function_entry",
+      "function_code": "static ulong gasket_extended_lvl1_page_idx(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t   u64 dev_addr)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_extended_lvl1_page_idx at %s:%d\\n\", __FILE__, __LINE__);\n\treturn (dev_addr >> GASKET_EXTENDED_LVL1_SHIFT) &\n\t       (GASKET_PAGES_PER_SUBTABLE - 1);\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_extended_lvl0_page_idx",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 652,
+      "first_seen_timestamp": 6.560074,
+      "first_seen_time_str": "6.560074",
+      "entry_type": "function_entry",
+      "function_code": "static ulong gasket_extended_lvl0_page_idx(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t   u64 dev_addr)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_extended_lvl0_page_idx at %s:%d\\n\", __FILE__, __LINE__);\n\treturn (dev_addr >> GASKET_EXTENDED_LVL0_SHIFT) &\n\t       (pg_tbl->config.total_entries - 1);\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_page_table_system_status",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 1572,
+      "first_seen_timestamp": 6.59408,
+      "first_seen_time_str": "6.594080",
+      "entry_type": "function_entry",
+      "function_code": "int gasket_page_table_system_status(struct gasket_page_table *page_table)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_system_status at %s:%d\\n\", __FILE__, __LINE__);\n\tif (!page_table)\n\t\treturn GASKET_STATUS_LAMED;\n\n\tif (gasket_page_table_num_entries(page_table) == 0) {\n\t\tdev_dbg(page_table->device, \"Page table size is 0\\n\");\n\t\treturn GASKET_STATUS_LAMED;\n\t}\n\n\treturn GASKET_STATUS_ALIVE;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "gasket_page_table_num_entries",
+      "file_path": "gasket-driver/src/gasket_page_table.c",
+      "line_number": 1542,
+      "first_seen_timestamp": 6.618153,
+      "first_seen_time_str": "6.618153",
+      "entry_type": "function_entry",
+      "function_code": "uint gasket_page_table_num_entries(struct gasket_page_table *pg_tbl)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_num_entries at %s:%d\\n\", __FILE__, __LINE__);\n\tif (!pg_tbl)\n\t\treturn 0;\n\treturn pg_tbl->num_simple_entries + pg_tbl->num_extended_entries;\n}",
+      "call_count": 1
+    }
+  ],
+  "functions_by_file": {
+    "gasket-driver/src/gasket_core.c": [
+      {
+        "function_name": "gasket_init",
+        "line_number": 1966,
+        "first_seen_timestamp": 6.097034,
+        "first_seen_time_str": "6.097034",
+        "entry_type": "function_entry",
+        "function_code": "static int __init gasket_init(void)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_init at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\n\tmutex_lock(&g_mutex);\n\tfor (i = 0; i < GASKET_FRAMEWORK_DESC_MAX; i++) {\n\t\tg_descs[i].driver_desc = NULL;\n\t\tmutex_init(&g_descs[i].mutex);\n\t}\n\n\tgasket_sysfs_init();\n\n\tmutex_unlock(&g_mutex);\n\treturn 0;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_register_device",
+        "line_number": 1850,
+        "first_seen_timestamp": 6.125343,
+        "first_seen_time_str": "6.125343",
+        "entry_type": "function_entry",
+        "function_code": "int gasket_register_device(const struct gasket_driver_desc *driver_desc)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_register_device at %s:%d\\n\", __FILE__, __LINE__);\n\tint i, ret;\n\tint desc_idx = -1;\n\tstruct gasket_internal_desc *internal;\n\n\tpr_debug(\"Loading %s driver version %s\\n\", driver_desc->name,\n\t\t driver_desc->driver_version);\n\t/* Check for duplicates and find a free slot. */\n\tmutex_lock(&g_mutex);\n\n\tfor (i = 0; i < GASKET_FRAMEWORK_DESC_MAX; i++) {\n\t\tif (g_descs[i].driver_desc == driver_desc) {\n\t\t\tpr_err(\"%s driver already loaded/registered\\n\",\n\t\t\t       driver_desc->name);\n\t\t\tmutex_unlock(&g_mutex);\n\t\t\treturn -EBUSY;\n\t\t}\n\t}\n\n\t/* This and the above loop could be combined, but this reads easier. */\n\tfor (i = 0; i < GASKET_FRAMEWORK_DESC_MAX; i++) {\n\t\tif (!g_descs[i].driver_desc) {\n\t\t\tg_descs[i].driver_desc = driver_desc;\n\t\t\tdesc_idx = i;\n\t\t\tbreak;\n\t\t}\n\t}\n\tmutex_unlock(&g_mutex);\n\n\tif (desc_idx == -1) {\n\t\tpr_err(\"too many drivers loaded, max %d\\n\",\n\t\t       GASKET_FRAMEWORK_DESC_MAX);\n\t\treturn -EBUSY;\n\t}\n\n\tinternal = &g_descs[desc_idx];\n\tmutex_init(&internal->mutex);\n\tmemset(internal->devs, 0, sizeof(struct gasket_dev *) * GASKET_DEV_MAX);\n\n    /* Function signature for `class_create()` is changed in kernel >= 6.4.x\n     * to only accept a single argument.\n     * */\n#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 4, 0)\n    internal->class = class_create(driver_desc->module, driver_desc->name);\n#else\n    internal->class = class_create(driver_desc->name);\n#endif\n\n\tif (IS_ERR(internal->class)) {\n\t\tpr_err(\"Cannot register %s class [ret=%ld]\\n\",\n\t\t       driver_desc->name, PTR_ERR(internal->class));\n\t\tret = PTR_ERR(internal->class);\n\t\tgoto unregister_gasket_driver;\n\t}\n\n\tret = register_chrdev_region(MKDEV(driver_desc->major,\n\t\t\t\t\t   driver_desc->minor), GASKET_DEV_MAX,\n\t\t\t\t     driver_desc->name);\n\tif (ret) {\n\t\tpr_err(\"cannot register %s char driver [ret=%d]\\n\",\n\t\t       driver_desc->name, ret);\n\t\tgoto destroy_class;\n\t}\n\n\treturn 0;\n\ndestroy_class:\n\tclass_destroy(internal->class);\n\nunregister_gasket_driver:\n\tmutex_lock(&g_mutex);\n\tg_descs[desc_idx].driver_desc = NULL;\n\tmutex_unlock(&g_mutex);\n\treturn ret;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_pci_add_device",
+        "line_number": 1543,
+        "first_seen_timestamp": 6.204909,
+        "first_seen_time_str": "6.204909",
+        "entry_type": "function_entry",
+        "function_code": "int gasket_pci_add_device(struct pci_dev *pci_dev,\n\t\t\t  struct gasket_dev **gasket_devp)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_pci_add_device at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret;\n\tstruct gasket_internal_desc *internal_desc;\n\tstruct gasket_dev *gasket_dev;\n\tstruct device *parent;\n\n\tdev_dbg(&pci_dev->dev, \"add PCI gasket device\\n\");\n\n\tmutex_lock(&g_mutex);\n\tinternal_desc = lookup_pci_internal_desc(pci_dev);\n\tmutex_unlock(&g_mutex);\n\tif (!internal_desc) {\n\t\tdev_err(&pci_dev->dev,\n\t\t\t\"PCI add device called for unknown driver type\\n\");\n\t\treturn -ENODEV;\n\t}\n\n\tparent = &pci_dev->dev;\n\tret = __gasket_add_device(parent, internal_desc, &gasket_dev);\n\tif (ret)\n\t\treturn ret;\n\n\tgasket_dev->pci_dev = pci_dev;\n\tret = gasket_setup_pci(pci_dev, gasket_dev);\n\tif (ret)\n\t\tgoto cleanup_pci;\n\n\t/*\n\t * Once we've created the mapping structures successfully, attempt to\n\t * create a symlink to the pci directory of this object.\n\t */\n\tret = sysfs_create_link(&gasket_dev->dev_info.device->kobj,\n\t\t\t\t&pci_dev->dev.kobj, dev_name(&pci_dev->dev));\n\tif (ret) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Cannot create sysfs pci link: %d\\n\", ret);\n\t\tgoto cleanup_pci;\n\t}\n\n\t*gasket_devp = gasket_dev;\n\treturn 0;\n\ncleanup_pci:\n\tgasket_cleanup_pci(gasket_dev);\n\t__gasket_remove_device(internal_desc, gasket_dev);\n\treturn ret;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "lookup_pci_internal_desc",
+        "line_number": 688,
+        "first_seen_timestamp": 6.229736,
+        "first_seen_time_str": "6.229736",
+        "entry_type": "function_entry",
+        "function_code": "static struct gasket_internal_desc *\nlookup_pci_internal_desc(struct pci_dev *pci_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function lookup_pci_internal_desc at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\n\t__must_hold(&g_mutex);\n\tfor (i = 0; i < GASKET_FRAMEWORK_DESC_MAX; i++) {\n\t\tif (g_descs[i].driver_desc &&\n\t\t    g_descs[i].driver_desc->pci_id_table &&\n\t\t    pci_match_id(g_descs[i].driver_desc->pci_id_table, pci_dev))\n\t\t\treturn &g_descs[i];\n\t}\n\n\treturn NULL;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_alloc_dev",
+        "line_number": 205,
+        "first_seen_timestamp": 6.241969,
+        "first_seen_time_str": "6.241969",
+        "entry_type": "function_entry",
+        "function_code": "static int gasket_alloc_dev(struct gasket_internal_desc *internal_desc,\n\t\t\t    struct device *parent, struct gasket_dev **pdev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_alloc_dev at %s:%d\\n\", __FILE__, __LINE__);\n\tint dev_idx;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tinternal_desc->driver_desc;\n\tstruct gasket_dev *gasket_dev;\n\tstruct gasket_cdev_info *dev_info;\n\tconst char *parent_name = dev_name(parent);\n\n\tpr_debug(\"Allocating a Gasket device, parent %s.\\n\", parent_name);\n\n\t*pdev = NULL;\n\n\tdev_idx = gasket_find_dev_slot(internal_desc, parent_name);\n\tif (dev_idx < 0)\n\t\treturn dev_idx;\n\n\tgasket_dev = *pdev = kzalloc(sizeof(*gasket_dev), GFP_KERNEL);\n\tif (!gasket_dev) {\n\t\tpr_err(\"no memory for device, parent %s\\n\", parent_name);\n\t\treturn -ENOMEM;\n\t}\n\tinternal_desc->devs[dev_idx] = gasket_dev;\n\n\tmutex_init(&gasket_dev->mutex);\n\n\tgasket_dev->internal_desc = internal_desc;\n\tgasket_dev->dev_idx = dev_idx;\n\tsnprintf(gasket_dev->kobj_name, GASKET_NAME_MAX, \"%s\", parent_name);\n\tgasket_dev->dev = get_device(parent);\n\tgasket_dev->dma_dev = get_device(parent);\n\t/* gasket_bar_data is uninitialized. */\n\tgasket_dev->num_page_tables = driver_desc->num_page_tables;\n\t/* max_page_table_size and *page table are uninit'ed */\n\t/* interrupt_data is not initialized. */\n\t/* status is 0, or GASKET_STATUS_DEAD */\n\n\tdev_info = &gasket_dev->dev_info;\n\tsnprintf(dev_info->name, GASKET_NAME_MAX, \"%s_%u\", driver_desc->name,\n\t\t gasket_dev->dev_idx);\n\tdev_info->devt =\n\t\tMKDEV(driver_desc->major, driver_desc->minor +\n\t\t      gasket_dev->dev_idx);\n\tdev_info->device =\n\t\tdevice_create(internal_desc->class, parent, dev_info->devt,\n\t\t\t      gasket_dev, dev_info->name);\n\n\t/* cdev has not yet been added; cdev_added is 0 */\n\tdev_info->gasket_dev_ptr = gasket_dev;\n\t/* ownership is all 0, indicating no owner or opens. */\n\n\treturn 0;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_find_dev_slot",
+        "line_number": 165,
+        "first_seen_timestamp": 6.255614,
+        "first_seen_time_str": "6.255614",
+        "entry_type": "function_entry",
+        "function_code": "static int gasket_find_dev_slot(struct gasket_internal_desc *internal_desc,\n\t\t\t\tconst char *kobj_name)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_find_dev_slot at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\n\tmutex_lock(&internal_desc->mutex);\n\n\t/* Search for a previous instance of this device. */\n\tfor (i = 0; i < GASKET_DEV_MAX; i++) {\n\t\tif (internal_desc->devs[i] &&\n\t\t    strcmp(internal_desc->devs[i]->kobj_name, kobj_name) == 0) {\n\t\t\tpr_err(\"Duplicate device %s\\n\", kobj_name);\n\t\t\tmutex_unlock(&internal_desc->mutex);\n\t\t\treturn -EBUSY;\n\t\t}\n\t}\n\n\t/* Find a free device slot. */\n\tfor (i = 0; i < GASKET_DEV_MAX; i++) {\n\t\tif (!internal_desc->devs[i])\n\t\t\tbreak;\n\t}\n\n\tif (i == GASKET_DEV_MAX) {\n\t\tpr_err(\"Too many registered devices; max %d\\n\", GASKET_DEV_MAX);\n\t\tmutex_unlock(&internal_desc->mutex);\n\t\treturn -EBUSY;\n\t}\n\n\tmutex_unlock(&internal_desc->mutex);\n\treturn i;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_setup_pci",
+        "line_number": 395,
+        "first_seen_timestamp": 6.266733,
+        "first_seen_time_str": "6.266733",
+        "entry_type": "function_entry",
+        "function_code": "static int gasket_setup_pci(struct pci_dev *pci_dev,\n\t\t\t    struct gasket_dev *gasket_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_setup_pci at %s:%d\\n\", __FILE__, __LINE__);\n\tint i, mapped_bars, ret;\n\n\tfor (i = 0; i < GASKET_NUM_BARS; i++) {\n\t\tret = gasket_map_pci_bar(gasket_dev, i);\n\t\tif (ret) {\n\t\t\tmapped_bars = i;\n\t\t\tgoto fail;\n\t\t}\n\t}\n\n\treturn 0;\n\nfail:\n\tfor (i = 0; i < mapped_bars; i++)\n\t\tgasket_unmap_pci_bar(gasket_dev, i);\n\n\treturn -ENOMEM;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_map_pci_bar",
+        "line_number": 280,
+        "first_seen_timestamp": 6.285271,
+        "first_seen_time_str": "6.285271",
+        "entry_type": "function_entry",
+        "function_code": "static int gasket_map_pci_bar(struct gasket_dev *gasket_dev, int bar_num)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_map_pci_bar at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct gasket_internal_desc *internal_desc = gasket_dev->internal_desc;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tinternal_desc->driver_desc;\n\tulong desc_bytes = driver_desc->bar_descriptions[bar_num].size;\n\tint ret;\n\n\tif (desc_bytes == 0)\n\t\treturn 0;\n\n\tif (driver_desc->bar_descriptions[bar_num].type != PCI_BAR) {\n\t\t/* not PCI: skip this entry */\n\t\treturn 0;\n\t}\n\t/*\n\t * pci_resource_start and pci_resource_len return a \"resource_size_t\",\n\t * which is safely castable to ulong (which itself is the arg to\n\t * request_mem_region).\n\t */\n\tgasket_dev->bar_data[bar_num].phys_base =\n\t\t(ulong)pci_resource_start(gasket_dev->pci_dev, bar_num);\n\tif (!gasket_dev->bar_data[bar_num].phys_base) {\n\t\tdev_err(gasket_dev->dev, \"Cannot get BAR%u base address\\n\",\n\t\t\tbar_num);\n\t\treturn -EINVAL;\n\t}\n\n\tgasket_dev->bar_data[bar_num].length_bytes =\n\t\t(ulong)pci_resource_len(gasket_dev->pci_dev, bar_num);\n\tif (gasket_dev->bar_data[bar_num].length_bytes < desc_bytes) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"PCI BAR %u space is too small: %lu; expected >= %lu\\n\",\n\t\t\tbar_num, gasket_dev->bar_data[bar_num].length_bytes,\n\t\t\tdesc_bytes);\n\t\treturn -ENOMEM;\n\t}\n\n\tif (!request_mem_region(gasket_dev->bar_data[bar_num].phys_base,\n\t\t\t\tgasket_dev->bar_data[bar_num].length_bytes,\n\t\t\t\tgasket_dev->dev_info.name)) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Cannot get BAR %d memory region %p\\n\",\n\t\t\tbar_num, &gasket_dev->pci_dev->resource[bar_num]);\n\t\treturn -EINVAL;\n\t}\n\n\tgasket_dev->bar_data[bar_num].virt_base =\n\t\tioremap(gasket_dev->bar_data[bar_num].phys_base,\n\t\t\tgasket_dev->bar_data[bar_num].length_bytes);\n\tif (!gasket_dev->bar_data[bar_num].virt_base) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Cannot remap BAR %d memory region %p\\n\",\n\t\t\tbar_num, &gasket_dev->pci_dev->resource[bar_num]);\n\t\tret = -ENOMEM;\n\t\tgoto fail;\n\t}\n\n\tdma_set_mask(&gasket_dev->pci_dev->dev, DMA_BIT_MASK(dma_bit_mask));\n\tdma_set_coherent_mask(&gasket_dev->pci_dev->dev,\n\t\t\t      DMA_BIT_MASK(dma_bit_mask));\n\n\treturn 0;\n\nfail:\n\tiounmap(gasket_dev->bar_data[bar_num].virt_base);\n\trelease_mem_region(gasket_dev->bar_data[bar_num].phys_base,\n\t\t\t   gasket_dev->bar_data[bar_num].length_bytes);\n\treturn ret;\n}",
+        "call_count": 6
+      },
+      {
+        "function_name": "gasket_wait_with_reschedule",
+        "line_number": 1830,
+        "first_seen_timestamp": 6.307928,
+        "first_seen_time_str": "6.307928",
+        "entry_type": "function_entry",
+        "function_code": "int gasket_wait_with_reschedule(struct gasket_dev *gasket_dev, int bar,\n\t\t\t\tu64 offset, u64 mask, u64 val,\n\t\t\t\tuint max_retries, u64 delay_ms)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_wait_with_reschedule at %s:%d\\n\", __FILE__, __LINE__);\n\tuint retries = 0;\n\tu64 tmp;\n\n\twhile (retries < max_retries) {\n\t\ttmp = gasket_dev_read_64(gasket_dev, bar, offset);\n\t\tif ((tmp & mask) == val)\n\t\t\treturn 0;\n\t\tmsleep(delay_ms);\n\t\tretries++;\n\t}\n\tdev_dbg(gasket_dev->dev, \"%s timeout: reg %llx timeout (%llu ms)\\n\",\n\t\t__func__, offset, max_retries * delay_ms);\n\treturn -ETIMEDOUT;\n}",
+        "call_count": 6
+      },
+      {
+        "function_name": "gasket_enable_device",
+        "line_number": 1419,
+        "first_seen_timestamp": 6.308055,
+        "first_seen_time_str": "6.308055",
+        "entry_type": "function_entry",
+        "function_code": "int gasket_enable_device(struct gasket_dev *gasket_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_enable_device at %s:%d\\n\", __FILE__, __LINE__);\n\tint tbl_idx;\n\tint ret;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tgasket_dev->internal_desc->driver_desc;\n\n\tdev_dbg(gasket_dev->dev, \"enabling device\\n\");\n\tret = gasket_interrupt_init(gasket_dev);\n\tif (ret) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Critical failure to allocate interrupts: %d\\n\", ret);\n\t\tgasket_interrupt_cleanup(gasket_dev);\n\t\treturn ret;\n\t}\n\n\tfor (tbl_idx = 0; tbl_idx < driver_desc->num_page_tables; tbl_idx++) {\n\t\tdev_dbg(gasket_dev->dev, \"Initializing page table %d.\\n\",\n\t\t\ttbl_idx);\n\t\tret = gasket_page_table_init(&gasket_dev->page_table[tbl_idx],\n\t\t\t\t\t     &gasket_dev->bar_data[driver_desc->page_table_bar_index],\n\t\t\t\t\t     &driver_desc->page_table_configs[tbl_idx],\n\t\t\t\t\t     gasket_dev->dev,\n\t\t\t\t\t     gasket_dev->pci_dev);\n\t\tif (ret) {\n\t\t\tdev_err(gasket_dev->dev,\n\t\t\t\t\"Couldn't init page table %d: %d\\n\",\n\t\t\t\ttbl_idx, ret);\n\t\t\treturn ret;\n\t\t}\n\t\t/*\n\t\t * Make sure that the page table is clear and set to simple\n\t\t * addresses.\n\t\t */\n\t\tgasket_page_table_reset(gasket_dev->page_table[tbl_idx]);\n\t}\n\n\t/*\n\t * hardware_revision_cb returns a positive integer (the rev) if\n\t * successful.)\n\t */\n\tret = check_and_invoke_callback(gasket_dev,\n\t\t\t\t\tdriver_desc->hardware_revision_cb);\n\tif (ret < 0) {\n\t\tdev_err(gasket_dev->dev,\n\t\t\t\"Error getting hardware revision: %d\\n\", ret);\n\t\treturn ret;\n\t}\n\tgasket_dev->hardware_revision = ret;\n\n\t/* device_status_cb returns a device status, not an error code. */\n\tgasket_dev->status = gasket_get_hw_status(gasket_dev);\n\tif (gasket_dev->status == GASKET_STATUS_DEAD)\n\t\tdev_err(gasket_dev->dev, \"Device reported as unhealthy.\\n\");\n\n\tret = gasket_add_cdev(&gasket_dev->dev_info, &gasket_file_ops,\n\t\t\t      driver_desc->module);\n\tif (ret)\n\t\treturn ret;\n\n\treturn 0;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_get_driver_desc",
+        "line_number": 1800,
+        "first_seen_timestamp": 6.308058,
+        "first_seen_time_str": "6.308058",
+        "entry_type": "function_entry",
+        "function_code": "const struct gasket_driver_desc *gasket_get_driver_desc(struct gasket_dev *dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_get_driver_desc at %s:%d\\n\", __FILE__, __LINE__);\n\treturn dev->internal_desc->driver_desc;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "check_and_invoke_callback",
+        "line_number": 122,
+        "first_seen_timestamp": 6.56008,
+        "first_seen_time_str": "6.560080",
+        "entry_type": "function_entry",
+        "function_code": "static inline int\ncheck_and_invoke_callback(struct gasket_dev *gasket_dev,\n\t\t\t  int (*cb_function)(struct gasket_dev *))\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function check_and_invoke_callback at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret = 0;\n\n\tif (cb_function) {\n\t\tmutex_lock(&gasket_dev->mutex);\n\t\tret = cb_function(gasket_dev);\n\t\tmutex_unlock(&gasket_dev->mutex);\n\t}\n\treturn ret;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_get_hw_status",
+        "line_number": 428,
+        "first_seen_timestamp": 6.583351,
+        "first_seen_time_str": "6.583351",
+        "entry_type": "function_entry",
+        "function_code": "static int gasket_get_hw_status(struct gasket_dev *gasket_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_get_hw_status at %s:%d\\n\", __FILE__, __LINE__);\n\tint status;\n\tint i;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tgasket_dev->internal_desc->driver_desc;\n\n\tstatus = gasket_check_and_invoke_callback_nolock(gasket_dev,\n\t\t\t\t\t\t\t driver_desc->device_status_cb);\n\tif (status != GASKET_STATUS_ALIVE) {\n\t\tdev_dbg(gasket_dev->dev, \"Hardware reported status %d.\\n\",\n\t\t\tstatus);\n\t\treturn status;\n\t}\n\n\tstatus = gasket_interrupt_system_status(gasket_dev);\n\tif (status != GASKET_STATUS_ALIVE) {\n\t\tdev_dbg(gasket_dev->dev,\n\t\t\t\"Interrupt system reported status %d.\\n\", status);\n\t\treturn status;\n\t}\n\n\tfor (i = 0; i < driver_desc->num_page_tables; ++i) {\n\t\tstatus = gasket_page_table_system_status(gasket_dev->page_table[i]);\n\t\tif (status != GASKET_STATUS_ALIVE) {\n\t\t\tdev_dbg(gasket_dev->dev,\n\t\t\t\t\"Page table %d reported status %d.\\n\",\n\t\t\t\ti, status);\n\t\t\treturn status;\n\t\t}\n\t}\n\n\treturn GASKET_STATUS_ALIVE;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_check_and_invoke_callback_nolock",
+        "line_number": 138,
+        "first_seen_timestamp": 6.594073,
+        "first_seen_time_str": "6.594073",
+        "entry_type": "function_entry",
+        "function_code": "static inline int\ngasket_check_and_invoke_callback_nolock(struct gasket_dev *gasket_dev,\n\t\t\t\t\tint (*cb_function)(struct gasket_dev *))\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_check_and_invoke_callback_nolock at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret = 0;\n\n\tif (cb_function)\n\t\tret = cb_function(gasket_dev);\n\treturn ret;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_add_cdev",
+        "line_number": 637,
+        "first_seen_timestamp": 6.618157,
+        "first_seen_time_str": "6.618157",
+        "entry_type": "function_entry",
+        "function_code": "static int gasket_add_cdev(struct gasket_cdev_info *dev_info,\n\t\t\t   const struct file_operations *file_ops,\n\t\t\t   struct module *owner)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_add_cdev at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret;\n\n\tcdev_init(&dev_info->cdev, file_ops);\n\tdev_info->cdev.owner = owner;\n\tret = cdev_add(&dev_info->cdev, dev_info->devt, 1);\n\tif (ret) {\n\t\tdev_err(dev_info->gasket_dev_ptr->dev,\n\t\t\t\"cannot add char device [ret=%d]\\n\", ret);\n\t\treturn ret;\n\t}\n\tdev_info->cdev_added = 1;\n\n\treturn 0;\n}",
+        "call_count": 1
+      }
+    ],
+    "gasket-driver/src/gasket_page_table.c": [
+      {
+        "function_name": "gasket_page_table_init",
+        "line_number": 267,
+        "first_seen_timestamp": 6.308881,
+        "first_seen_time_str": "6.308881",
+        "entry_type": "function_entry",
+        "function_code": "int gasket_page_table_init(struct gasket_page_table **ppg_tbl,\n\t\t\t   const struct gasket_bar_data *bar_data,\n\t\t\t   const struct gasket_page_table_config *page_table_config,\n\t\t\t   struct device *device, struct pci_dev *pci_dev)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_init at %s:%d\\n\", __FILE__, __LINE__);\n\tulong bytes;\n\tstruct gasket_page_table *pg_tbl;\n\tulong total_entries = page_table_config->total_entries;\n\n\t/*\n\t * TODO: Verify config->total_entries against value read from the\n\t * hardware register that contains the page table size.\n\t */\n\tif (total_entries == ULONG_MAX) {\n\t\tdev_dbg(device, \"Error reading page table size. \"\n\t\t\t\"Initializing page table with size 0\\n\");\n\t\ttotal_entries = 0;\n\t}\n\n\tdev_dbg(device,\n\t\t\"Attempting to initialize page table of size 0x%lx\\n\",\n\t\ttotal_entries);\n\n\tdev_dbg(device,\n\t\t\"Table has base reg 0x%x, extended offset reg 0x%x\\n\",\n\t\tpage_table_config->base_reg,\n\t\tpage_table_config->extended_reg);\n\n\t*ppg_tbl = kzalloc(sizeof(**ppg_tbl), GFP_KERNEL);\n\tif (!*ppg_tbl) {\n\t\tdev_dbg(device, \"No memory for page table\\n\");\n\t\treturn -ENOMEM;\n\t}\n\n\tpg_tbl = *ppg_tbl;\n\tbytes = total_entries * sizeof(struct gasket_page_table_entry);\n\tif (bytes != 0) {\n\t\tpg_tbl->entries = vzalloc(bytes);\n\t\tif (!pg_tbl->entries) {\n\t\t\tdev_dbg(device,\n\t\t\t\t\"No memory for address translation metadata\\n\");\n\t\t\tkfree(pg_tbl);\n\t\t\t*ppg_tbl = NULL;\n\t\t\treturn -ENOMEM;\n\t\t}\n\t}\n\n\tmutex_init(&pg_tbl->mutex);\n\tmemcpy(&pg_tbl->config, page_table_config, sizeof(*page_table_config));\n\tif (pg_tbl->config.mode == GASKET_PAGE_TABLE_MODE_NORMAL ||\n\t    pg_tbl->config.mode == GASKET_PAGE_TABLE_MODE_SIMPLE) {\n\t\tpg_tbl->num_simple_entries = total_entries;\n\t\tpg_tbl->num_extended_entries = 0;\n\t\tpg_tbl->extended_flag = 1ull << page_table_config->extended_bit;\n\t} else {\n\t\tpg_tbl->num_simple_entries = 0;\n\t\tpg_tbl->num_extended_entries = total_entries;\n\t\tpg_tbl->extended_flag = 0;\n\t}\n\tpg_tbl->num_active_pages = 0;\n\tpg_tbl->base_slot =\n\t\t(u64 __iomem *)&bar_data->virt_base[page_table_config->base_reg];\n\tpg_tbl->extended_offset_reg =\n\t\t(u64 __iomem *)&bar_data->virt_base[page_table_config->extended_reg];\n\tpg_tbl->device = get_device(device);\n\tpg_tbl->pci_dev = pci_dev;\n\tINIT_LIST_HEAD(&pg_tbl->dmabufs);\n\n\tdev_dbg(device, \"Page table initialized successfully\\n\");\n\n\treturn 0;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_page_table_reset",
+        "line_number": 1431,
+        "first_seen_timestamp": 6.3097,
+        "first_seen_time_str": "6.309700",
+        "entry_type": "function_entry",
+        "function_code": "void gasket_page_table_reset(struct gasket_page_table *pg_tbl)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_reset at %s:%d\\n\", __FILE__, __LINE__);\n\tmutex_lock(&pg_tbl->mutex);\n\tgasket_page_table_unmap_all_nolock(pg_tbl);\n\twriteq(pg_tbl->config.total_entries, pg_tbl->extended_offset_reg);\n\tmutex_unlock(&pg_tbl->mutex);\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_page_table_unmap_all_nolock",
+        "line_number": 1404,
+        "first_seen_timestamp": 6.309705,
+        "first_seen_time_str": "6.309705",
+        "entry_type": "function_entry",
+        "function_code": "static void gasket_page_table_unmap_all_nolock(struct gasket_page_table *pg_tbl)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_unmap_all_nolock at %s:%d\\n\", __FILE__, __LINE__);\n\tgasket_page_table_detach_dmabuf_nolock(pg_tbl, NULL);\n\n\tgasket_unmap_simple_pages(pg_tbl,\n\t\t\t\t  gasket_components_to_dev_address(pg_tbl, 1, 0,\n\t\t\t\t\t\t\t\t   0),\n\t\t\t\t  pg_tbl->num_simple_entries);\n\tgasket_unmap_extended_pages(pg_tbl,\n\t\t\t\t    gasket_components_to_dev_address(pg_tbl, 0,\n\t\t\t\t\t\t\t\t     0, 0),\n\t\t\t\t    pg_tbl->num_extended_entries *\n\t\t\t\t    GASKET_PAGES_PER_SUBTABLE);\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_page_table_detach_dmabuf_nolock",
+        "line_number": 1334,
+        "first_seen_timestamp": 6.309708,
+        "first_seen_time_str": "6.309708",
+        "entry_type": "function_entry",
+        "function_code": "static void gasket_page_table_detach_dmabuf_nolock(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t\t   struct dma_buf *dmabuf)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_detach_dmabuf_nolock at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct gasket_dmabuf_mapping *mapping, *tmp;\n\n\tlist_for_each_entry_safe(mapping, tmp, &pg_tbl->dmabufs, list) {\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\t\tif (!dmabuf || mapping->dmabuf == dmabuf) {\n\t\t\tdma_buf_unmap_attachment(mapping->attachment,\n\t\t\t\t\t\t mapping->sgt,\n\t\t\t\t\t\t mapping->direction);\n\t\t\tdma_buf_detach(mapping->dmabuf, mapping->attachment);\n\t\t\tdma_buf_put(mapping->dmabuf);\n\t\t\tlist_del(&mapping->list);\n\t\t\tkfree(mapping);\n\t\t}\n\t}\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_components_to_dev_address",
+        "line_number": 810,
+        "first_seen_timestamp": 6.309711,
+        "first_seen_time_str": "6.309711",
+        "entry_type": "function_entry",
+        "function_code": "static u64 gasket_components_to_dev_address(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t      int is_simple, uint page_index,\n\t\t\t\t\t      uint offset)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_components_to_dev_address at %s:%d\\n\", __FILE__, __LINE__);\n\tu64 dev_addr = (page_index << GASKET_SIMPLE_PAGE_SHIFT) | offset;\n\n\treturn is_simple ? dev_addr : (pg_tbl->extended_flag | dev_addr);\n}",
+        "call_count": 2
+      },
+      {
+        "function_name": "gasket_unmap_simple_pages",
+        "line_number": 733,
+        "first_seen_timestamp": 6.309714,
+        "first_seen_time_str": "6.309714",
+        "entry_type": "function_entry",
+        "function_code": "static void gasket_unmap_simple_pages(struct gasket_page_table *pg_tbl,\n\t\t\t\t      u64 dev_addr, uint num_pages)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_unmap_simple_pages at %s:%d\\n\", __FILE__, __LINE__);\n\tuint slot = gasket_simple_page_idx(pg_tbl, dev_addr);\n\n\tgasket_perform_unmapping(pg_tbl, pg_tbl->entries + slot,\n\t\t\t\t pg_tbl->base_slot + slot, num_pages, 1);\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_simple_page_idx",
+        "line_number": 640,
+        "first_seen_timestamp": 6.309717,
+        "first_seen_time_str": "6.309717",
+        "entry_type": "function_entry",
+        "function_code": "static int gasket_simple_page_idx(struct gasket_page_table *pg_tbl,\n\t\t\t\t  u64 dev_addr)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_simple_page_idx at %s:%d\\n\", __FILE__, __LINE__);\n\treturn (dev_addr >> GASKET_SIMPLE_PAGE_SHIFT) &\n\t\t(pg_tbl->config.total_entries - 1);\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_perform_unmapping",
+        "line_number": 694,
+        "first_seen_timestamp": 6.30972,
+        "first_seen_time_str": "6.309720",
+        "entry_type": "function_entry",
+        "function_code": "static void gasket_perform_unmapping(struct gasket_page_table *pg_tbl,\n\t\t\t\t     struct gasket_page_table_entry *ptes,\n\t\t\t\t     u64 __iomem *slots, uint num_pages,\n\t\t\t\t     int is_simple_mapping)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_perform_unmapping at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\t/*\n\t * For each page table entry and corresponding entry in the device's\n\t * address translation table:\n\t */\n\tfor (i = 0; i < num_pages; i++) {\n\t\t/* release the address from the device, */\n\t\tif (is_simple_mapping)\n\t\t\twriteq(0, &slots[i]);\n\t\telse\n\t\t\t((u64 __force *)slots)[i] = 0;\n\n\t\t/* release the address from the driver, */\n\t\tif (GET(FLAGS_STATUS, ptes[i].flags) == PTE_INUSE) {\n   printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_unmap_page called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_unmap_page\\n\");\n\t\t\tif (ptes[i].page && ptes[i].dma_addr) {\n\t\t\t\tdma_unmap_page(pg_tbl->device, ptes[i].dma_addr, PAGE_SIZE,\n\t\t\t\t\t       GET(FLAGS_DMA_DIRECTION, ptes[i].flags));\n\t\t\t}\n\t\t\tif (gasket_release_page(ptes[i].page))\n\t\t\t\t--pg_tbl->num_active_pages;\n\t\t}\n\n\t\t/* and clear the PTE. */\n\t\tmemset(&ptes[i], 0, sizeof(struct gasket_page_table_entry));\n\t}\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_unmap_extended_pages",
+        "line_number": 747,
+        "first_seen_timestamp": 6.340461,
+        "first_seen_time_str": "6.340461",
+        "entry_type": "function_entry",
+        "function_code": "static void gasket_unmap_extended_pages(struct gasket_page_table *pg_tbl,\n\t\t\t\t\tu64 dev_addr, uint num_pages)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_unmap_extended_pages at %s:%d\\n\", __FILE__, __LINE__);\n\tuint slot_idx, remain, len;\n\tstruct gasket_page_table_entry *pte;\n\tu64 __iomem *slot_base;\n\n\tremain = num_pages;\n\tslot_idx = gasket_extended_lvl1_page_idx(pg_tbl, dev_addr);\n\tpte = pg_tbl->entries + pg_tbl->num_simple_entries +\n\t      gasket_extended_lvl0_page_idx(pg_tbl, dev_addr);\n\n\twhile (remain > 0) {\n\t\t/* TODO: Add check to ensure pte remains valid? */\n\t\tlen = min(remain, GASKET_PAGES_PER_SUBTABLE - slot_idx);\n\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_single_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_single_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_single_for_device\\n\");\n\t\tif (GET(FLAGS_STATUS, pte->flags) == PTE_INUSE) {\n\t\t\tslot_base = (u64 __iomem *)(page_address(pte->page) +\n\t\t\t\t\t\t    pte->offset);\n\t\t\tgasket_perform_unmapping(pg_tbl,\n\t\t\t\t\t\t pte->sublevel + slot_idx,\n\t\t\t\t\t\t slot_base + slot_idx, len, 0);\n\t\t\t/*\n\t\t\t * Extended page tables are in DRAM so they need to be\n\t\t\t * synced each time they are updated.\n\t\t\t */\n\t\t\tdma_sync_single_for_device(pg_tbl->device,\n\t\t\t\t\t\t   pte->dma_addr + slot_idx * sizeof(u64),\n\t\t\t\t\t\t   len * sizeof(u64), DMA_TO_DEVICE);\n\t\t}\n\n\t\tremain -= len;\n\t\tslot_idx = 0;\n\t\tpte++;\n\t}\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_extended_lvl1_page_idx",
+        "line_number": 664,
+        "first_seen_timestamp": 6.548318,
+        "first_seen_time_str": "6.548318",
+        "entry_type": "function_entry",
+        "function_code": "static ulong gasket_extended_lvl1_page_idx(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t   u64 dev_addr)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_extended_lvl1_page_idx at %s:%d\\n\", __FILE__, __LINE__);\n\treturn (dev_addr >> GASKET_EXTENDED_LVL1_SHIFT) &\n\t       (GASKET_PAGES_PER_SUBTABLE - 1);\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_extended_lvl0_page_idx",
+        "line_number": 652,
+        "first_seen_timestamp": 6.560074,
+        "first_seen_time_str": "6.560074",
+        "entry_type": "function_entry",
+        "function_code": "static ulong gasket_extended_lvl0_page_idx(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t   u64 dev_addr)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_extended_lvl0_page_idx at %s:%d\\n\", __FILE__, __LINE__);\n\treturn (dev_addr >> GASKET_EXTENDED_LVL0_SHIFT) &\n\t       (pg_tbl->config.total_entries - 1);\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_page_table_system_status",
+        "line_number": 1572,
+        "first_seen_timestamp": 6.59408,
+        "first_seen_time_str": "6.594080",
+        "entry_type": "function_entry",
+        "function_code": "int gasket_page_table_system_status(struct gasket_page_table *page_table)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_system_status at %s:%d\\n\", __FILE__, __LINE__);\n\tif (!page_table)\n\t\treturn GASKET_STATUS_LAMED;\n\n\tif (gasket_page_table_num_entries(page_table) == 0) {\n\t\tdev_dbg(page_table->device, \"Page table size is 0\\n\");\n\t\treturn GASKET_STATUS_LAMED;\n\t}\n\n\treturn GASKET_STATUS_ALIVE;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "gasket_page_table_num_entries",
+        "line_number": 1542,
+        "first_seen_timestamp": 6.618153,
+        "first_seen_time_str": "6.618153",
+        "entry_type": "function_entry",
+        "function_code": "uint gasket_page_table_num_entries(struct gasket_page_table *pg_tbl)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_page_table_num_entries at %s:%d\\n\", __FILE__, __LINE__);\n\tif (!pg_tbl)\n\t\treturn 0;\n\treturn pg_tbl->num_simple_entries + pg_tbl->num_extended_entries;\n}",
+        "call_count": 1
+      }
+    ]
+  },
+  "dma_operations": [],
+  "user_copy_operations": [],
+  "ioctl_operations": [],
+  "statistics": {
+    "total_lines_processed": 663,
+    "unique_function_entries": 28,
+    "unique_dma_operations": 0,
+    "unique_user_copy_operations": 0,
+    "unique_ioctl_operations": 0,
+    "total_function_entries_found": 39,
+    "total_dma_operations_found": 0,
+    "total_user_copy_operations_found": 0,
+    "total_ioctl_operations_found": 0,
+    "function_entries_found": 39,
+    "dma_operations_found": 0,
+    "user_copy_operations_found": 0,
+    "ioctl_operations_found": 0,
+    "files_with_functions_entrypoint_instrumented": 2,
+    "total_files": 6,
+    "files_need_analysis": 2,
+    "files_instrumented_with_function_entries": 2,
+    "total_duplicates_skipped": 11
+  }
+}
