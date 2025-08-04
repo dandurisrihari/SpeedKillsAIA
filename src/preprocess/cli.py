@@ -10,17 +10,27 @@ import sys
 import argparse
 from pathlib import Path
 from .tool import KernelLogParserTool
+from .core.engine import KernelLogParserEngine
 
 
-def main():
-    """Simple CLI entry point"""
+def create_parser():
+    """Create and return the argument parser"""
     parser = argparse.ArgumentParser(
         description="Kernel Log Parser - Parse AI accelerator instrumentation logs"
     )
-    parser.add_argument(
+    
+    # Use a mutually exclusive group for input methods
+    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group.add_argument(
         "log_file", 
+        nargs='?',
         help="Path to the kernel log file to parse"
     )
+    input_group.add_argument(
+        "--input",
+        help="Path to the kernel log file to parse (alternative to positional argument)"
+    )
+    
     parser.add_argument(
         "-o", "--output", 
         help="Output JSON file path (optional)"
@@ -40,27 +50,66 @@ def main():
         help="Root path to prepend to relative file paths in logs (for function code extraction)"
     )
     parser.add_argument(
+        "--quiet", 
+        action="store_true",
+        help="Suppress output and run quietly"
+    )
+    parser.add_argument(
+        "--verbose", 
+        action="store_true",
+        help="Enable verbose output"
+    )
+    parser.add_argument(
         "--version", 
         action="version", 
         version="Kernel Log Parser 2.0.0"
     )
-    
-    args = parser.parse_args()
+    return parser
+
+
+def validate_arguments(args):
+    """Validate command line arguments"""
+    # Determine which log file to use
+    log_file_path = args.input or args.log_file
+    if not log_file_path:
+        print("Error: Log file is required (use positional argument or --input)", file=sys.stderr)
+        sys.exit(1)
     
     # Validate input file
-    log_file = Path(args.log_file)
+    log_file = Path(log_file_path)
     if not log_file.exists():
         print(f"Error: Log file not found: {log_file}", file=sys.stderr)
         sys.exit(1)
     
-    # Create tool and process file
-    tool = KernelLogParserTool()
+    # Update args to use the determined log file
+    if not args.log_file:
+        args.log_file = log_file_path
+    
+    # Validate output directory if specified
+    if args.output:
+        output_path = Path(args.output)
+        output_dir = output_path.parent
+        if not output_dir.exists():
+            print(f"Error: Output directory does not exist: {output_dir}", file=sys.stderr)
+            sys.exit(1)
+
+
+def main():
+    """Simple CLI entry point"""
+    parser = create_parser()
+    args = parser.parse_args()
+    
+    validate_arguments(args)
+    
+    # Get the validated log file path
+    log_file = Path(args.log_file)
+    
+    # Create engine and process file
+    engine = KernelLogParserEngine(source_root_path=args.source_root)
     
     try:
         # Process the log file
-        results = tool.process_log(str(log_file), args.output, 
-                                 show_ui=not args.no_ui, 
-                                 source_root_path=args.source_root)
+        results = engine.parse_log_file(str(log_file), args.output)
         
         if results:
             # Print summary
@@ -83,11 +132,16 @@ def main():
             # Start web UI if requested
             if args.web_ui:
                 print("\nStarting web UI...")
+                # Create tool for web UI functionality
+                tool = KernelLogParserTool()
                 tool.start_web_ui(args.output)
         else:
             print("Failed to process log file", file=sys.stderr)
             sys.exit(1)
-        
+            
+    except PermissionError as e:
+        print(f"Permission error: {e}", file=sys.stderr)
+        sys.exit(1)
     except Exception as e:
         print(f"Error parsing log file: {e}", file=sys.stderr)
         sys.exit(1)

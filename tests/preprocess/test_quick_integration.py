@@ -59,10 +59,9 @@ def test_basic_functionality():
     try:
         cmd = [
             sys.executable, "-m", "src.preprocess",
+            "--log", str(test_log),
             "--source-root", ".",  # Use current directory as source root
-            "-o", "test_output.json",
-            "--no-ui",  # Disable UI for testing
-            str(test_log)
+            "-o", "test_output.json"
         ]
         
         print("🔍 Testing basic functionality...")

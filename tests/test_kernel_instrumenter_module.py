@@ -235,9 +235,10 @@ class TestErrorHandling:
             verbose=False
         )
         
-        # Test with non-existent directory
-        with pytest.raises((FileNotFoundError, OSError, ValueError)):
-            instrumenter.instrument_directory("/non/existent/directory")
+        # Test with non-existent directory - should return error result, not raise exception
+        result = instrumenter.instrument_directory("/non/existent/directory")
+        assert not result['success']
+        assert 'error' in result
     
     def test_invalid_instrumentation_type(self):
         """Test handling of invalid instrumentation type"""

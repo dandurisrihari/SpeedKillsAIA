@@ -101,16 +101,16 @@ static int test_driver_function(void __user *user_ptr, size_t size) {
         
         # 4. Test log parser with sample data
         sample_log = """
-[12345.678901] Function: test_driver_function in drivers/test/test_driver.c:15
-[12345.678902] copy_from_user called by test_driver_function
-[12345.678903] dma_alloc_coherent called by test_driver_function
-[12345.678904] DMA_STACK_START
+[12345.678901] FUNC_ENTRY: Entering function test_driver_function at drivers/test/test_driver.c:15
+[12345.678902] USER_COPY: About to call copy_from_user from function test_driver_function at drivers/test/test_driver.c:25
+[12345.678903] DMA_INSTRUMENT: About to call dma_alloc_coherent from function test_driver_function at drivers/test/test_driver.c:30
+[12345.678904] DMA_STACK_START: Stack trace for dma_alloc_coherent called from test_driver_function
 [12345.678905] CPU: 0 PID: 1234 Comm: test_process
 [12345.678906] Call trace:
 [12345.678907] test_driver_function+0x10/0x20
-[12345.678908] DMA_STACK_END
-[12345.678909] copy_to_user called by test_driver_function
-[12345.678910] dma_free_coherent called by test_driver_function
+[12345.678908] DMA_STACK_END: End of stack trace for dma_alloc_coherent
+[12345.678909] USER_COPY: About to call copy_to_user from function test_driver_function at drivers/test/test_driver.c:45
+[12345.678910] DMA_INSTRUMENT: About to call dma_free_coherent from function test_driver_function at drivers/test/test_driver.c:50
 """
         
         with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
@@ -271,10 +271,12 @@ class TestErrorHandlingIntegration:
         engine = pp.KernelLogParserEngine(show_ui=False)
         
         # Should handle non-existent files gracefully
-        result = engine.parse_log_file("/definitely/does/not/exist.log")
-        
-        # Should return None or valid empty structure
-        assert result is None or isinstance(result, dict)
+        try:
+            result = engine.parse_log_file("/definitely/does/not/exist.log")
+            assert False, "Should have raised FileNotFoundError"
+        except FileNotFoundError:
+            # Expected behavior
+            pass
 
 
 class TestPerformanceBaseline:

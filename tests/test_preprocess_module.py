@@ -108,14 +108,14 @@ class TestLogParsing:
         
         # Sample log content with various entries
         sample_log = """
-[12345.678901] Function: test_function in drivers/test/test.c:123
-[12345.678902] copy_from_user called by test_driver
-[12345.678903] dma_alloc_coherent called by test_dma_function
-[12345.678904] DMA_STACK_START
+[12345.678901] FUNC_ENTRY: Entering function test_function at drivers/test/test.c:123
+[12345.678902] USER_COPY: About to call copy_from_user from function test_driver at drivers/test/test.c:456
+[12345.678903] DMA_INSTRUMENT: About to call dma_alloc_coherent from function test_dma_function at drivers/test/test.c:789
+[12345.678904] DMA_STACK_START: Stack trace for dma_alloc_coherent called from test_dma_function
 [12345.678905] CPU: 0 PID: 1234 Comm: test_process
 [12345.678906] Call trace:
 [12345.678907] test_function+0x10/0x20
-[12345.678908] DMA_STACK_END
+[12345.678908] DMA_STACK_END: End of stack trace for dma_alloc_coherent
 """
         
         with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
@@ -130,8 +130,11 @@ class TestLogParsing:
             assert isinstance(result, dict)
             
             # Should have parsed some entries
+            functions_by_file = result.get('functions_by_file', {})
+            total_function_entries = sum(len(funcs) for funcs in functions_by_file.values())
+            
             total_entries = (
-                len(result.get('function_entries', [])) +
+                total_function_entries +
                 len(result.get('dma_operations', [])) +
                 len(result.get('user_copy_operations', []))
             )
@@ -176,14 +179,14 @@ class TestStackTraceCapture:
         
         # Log with DMA stack trace
         dma_log = """
-[12345.678901] dma_sync_sg_for_cpu called by import_page_map
-[12345.678902] DMA_STACK_START
+[12345.678901] DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function import_page_map at drivers/dma/test.c:123
+[12345.678902] DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from import_page_map
 [12345.678903] CPU: 0 PID: 3448 Comm: label_image Tainted: G         C         6.6.23-gb586a521770e-dirty #112
 [12345.678904] Hardware name: NXP i.MX8MPlus EVK board (DT)
 [12345.678905] Call trace:
 [12345.678906] dump_backtrace+0x90/0xe8
 [12345.678907] show_stack+0x18/0x24
-[12345.678908] DMA_STACK_END
+[12345.678908] DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu
 """
         
         with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
@@ -313,9 +316,12 @@ class TestErrorHandling:
         engine = KernelLogParserEngine(show_ui=False)
         
         # Test with non-existent file
-        result = engine.parse_log_file("/non/existent/file.log")
-        # Should handle gracefully (return None or raise expected exception)
-        assert result is None or isinstance(result, dict)
+        try:
+            result = engine.parse_log_file("/non/existent/file.log")
+            assert False, "Should have raised FileNotFoundError"
+        except FileNotFoundError:
+            # Expected behavior - engine should raise FileNotFoundError
+            pass
     
     def test_tool_with_invalid_file(self):
         """Test tool with invalid file"""

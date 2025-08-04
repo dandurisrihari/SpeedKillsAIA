@@ -106,7 +106,7 @@ import sys
 import argparse
 import shutil
 from pathlib import Path
-from typing import Set, List, Dict, Any
+from typing import Set, List, Dict, Any, Union
 import sys
 import os
 #import pdb; pdb.set_trace()
@@ -156,6 +156,15 @@ class KernelInstrumenter:
             dry_run: If True, preview changes without modifying files
             verbose: Enable verbose output
         """
+        # Valid instrumentation types
+        valid_types = {'dma', 'user_copy', 'functions', 'dma_present_files_functions', 'ioctl'}
+        
+        # Validate enabled_types
+        invalid_types = enabled_types - valid_types
+        if invalid_types:
+            raise ValueError(f"Invalid instrumentation type(s): {invalid_types}. "
+                           f"Valid types are: {valid_types}")
+        
         self.enabled_types = enabled_types
         self.dry_run = dry_run
         self.verbose = verbose
@@ -294,27 +303,41 @@ class KernelInstrumenter:
                 'message': f'Error processing file: {e}'
             }
     
-    def instrument_directory(self, directory: Path, file_limit: int = None) -> Dict[str, Any]:
+    def instrument_directory(self, directory: Union[str, Path], file_limit: int = None) -> Dict[str, Any]:
         """
         Instrument all C files in a directory
         
         Args:
-            directory: Path to directory containing C files
+            directory: Path to directory containing C files (string or Path object)
             file_limit: Optional limit on number of files to process (for testing)
             
         Returns:
             Dictionary with overall instrumentation results
         """
+        # Convert to Path object if string
+        if isinstance(directory, str):
+            directory = Path(directory)
+            
         if not directory.exists():
             return {
                 'success': False,
-                'error': f'Directory does not exist: {directory}'
+                'error': f'Directory does not exist: {directory}',
+                'files_processed': 0,
+                'files_modified': 0,
+                'total_instrumentations': 0,
+                'instrumentations_by_type': {},
+                'errors': [f'Directory does not exist: {directory}']
             }
         
         if not directory.is_dir():
             return {
                 'success': False,
-                'error': f'Path is not a directory: {directory}'
+                'error': f'Path is not a directory: {directory}',
+                'files_processed': 0,
+                'files_modified': 0,
+                'total_instrumentations': 0,
+                'instrumentations_by_type': {},
+                'errors': [f'Path is not a directory: {directory}']
             }
         
         # Find all C files
@@ -515,7 +538,7 @@ def main():
         print("\n\n⚠️  Operation cancelled by user")
         return 130
     except Exception as e:
-        print(f"\n❌ Fatal error: {e}", file=sys.stderr)
+        print(f"\n❌ Fatal error: {e}")
         if args.verbose:
             import traceback
             traceback.print_exc()
