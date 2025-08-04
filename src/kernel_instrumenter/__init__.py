@@ -86,7 +86,7 @@ import logging
 from typing import Dict, Any, Optional
 
 # Version information
-__version__ = "1.0.0"
+__version__ = "2.0.0"
 __author__ = "anonymous"
 __license__ = "MIT"
 __status__ = "Production"
@@ -227,6 +227,10 @@ def configure_logging(level: int = logging.INFO,
         format=format_string,
         datefmt="%Y-%m-%d %H:%M:%S"
     )
+    
+    # Also set the level for the module logger specifically
+    module_logger = logging.getLogger(__name__)
+    module_logger.setLevel(level)
     
     logger.info(f"Kernel Instrumenter v{__version__} - Logging configured")
 

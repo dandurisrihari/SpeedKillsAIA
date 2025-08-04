@@ -41,9 +41,7 @@ class TestCLIWithIOCTL(unittest.TestCase):
         try:
             # Create tool and process log
             tool = KernelLogParserTool()
-            result = tool.process_log(log_file, output_file, 
-                                    show_ui=False, 
-                                    source_root_path="/test/kernel/sources")
+            result = tool.process_log(log_file, output_file, source_root_path="/test/kernel/sources")
             
             # Verify output file was created
             self.assertTrue(os.path.exists(output_file))
@@ -82,8 +80,7 @@ class TestCLIWithIOCTL(unittest.TestCase):
                 'preprocess_cli.py',
                 log_file,
                 '--output', output_file,
-                '--source-root', '/kernel/sources',
-                '--no-ui'
+                '--source-root', '/kernel/sources'
             ]
             
             # Run main function
@@ -131,12 +128,10 @@ class TestCLIWithIOCTL(unittest.TestCase):
             # Create tool and process log with source_root_path
             tool = KernelLogParserTool()
             source_root = "/test/source/root"
-            tool.process_log(log_file, output_file, 
-                           show_ui=False,
-                           source_root_path=source_root)
+            tool.process_log(log_file, output_file, source_root_path=source_root)
             
             # Verify that the engine was created with source_root_path
-            mock_engine_class.assert_called_once_with(show_ui=False, source_root_path=source_root)
+            mock_engine_class.assert_called_once_with(source_root_path=source_root)
             # Verify that parse_log_file was called correctly
             mock_engine.parse_log_file.assert_called_once_with(log_file, output_file)
             
@@ -159,7 +154,7 @@ class TestCLIErrorHandling(unittest.TestCase):
             tool = KernelLogParserTool()
             
             # This should handle the error gracefully
-            result = tool.process_log("/nonexistent/file.log", output_file, show_ui=False)
+            result = tool.process_log("/nonexistent/file.log", output_file)
             
             # Should return None or handle error appropriately
             # (Actual behavior depends on implementation)
@@ -181,9 +176,7 @@ class TestCLIErrorHandling(unittest.TestCase):
         try:
             # Process with invalid source root - should not crash
             tool = KernelLogParserTool()
-            result = tool.process_log(log_file, output_file, 
-                                    show_ui=False,
-                                    source_root_path="/nonexistent/path")
+            result = tool.process_log(log_file, output_file, source_root_path="/nonexistent/path")
             
             # Should still create output file
             self.assertTrue(os.path.exists(output_file))

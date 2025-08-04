@@ -7,9 +7,16 @@ Extracts complete function source code from C files given a file path and line n
 
 import os
 from pathlib import Path
-from typing import Optional, Tuple
-import tree_sitter_c as tsc
-import tree_sitter as ts
+from typing import Optional, Tuple, Any
+
+try:
+    import tree_sitter_c as tsc
+    import tree_sitter as ts
+    TREE_SITTER_AVAILABLE = True
+except ImportError:
+    TREE_SITTER_AVAILABLE = False
+    tsc = None
+    ts = None
 
 
 class FunctionCodeExtractor:
@@ -24,9 +31,13 @@ class FunctionCodeExtractor:
         """
         self.source_root_path = Path(source_root_path) if source_root_path else None
         
-        # Initialize tree-sitter C parser
-        self.language = ts.Language(tsc.language())
-        self.parser = ts.Parser(self.language)
+        if TREE_SITTER_AVAILABLE:
+            # Initialize tree-sitter C parser
+            self.language = ts.Language(tsc.language())
+            self.parser = ts.Parser(self.language)
+        else:
+            self.language = None
+            self.parser = None
     
     def extract_function_at_line(self, file_path: str, line_number: int) -> Optional[Tuple[str, str, int, int]]:
         """
@@ -39,6 +50,9 @@ class FunctionCodeExtractor:
         Returns:
             Tuple of (function_name, function_code, start_line, end_line) or None if not found
         """
+        if not TREE_SITTER_AVAILABLE:
+            return None
+            
         # Resolve the full file path
         full_path = self._resolve_file_path(file_path)
         if not full_path or not full_path.exists():
@@ -96,7 +110,7 @@ class FunctionCodeExtractor:
         
         return None
     
-    def _find_function_at_line(self, node: ts.Node, target_line: int, source_bytes: bytes) -> Optional[ts.Node]:
+    def _find_function_at_line(self, node: Any, target_line: int, source_bytes: bytes) -> Optional[Any]:
         """Find the function definition node that contains the target line"""
         # Check if this node is a function definition and contains the target line
         if node.type == 'function_definition':
@@ -114,7 +128,7 @@ class FunctionCodeExtractor:
         
         return None
     
-    def _get_function_name(self, function_node: ts.Node, source_bytes: bytes) -> str:
+    def _get_function_name(self, function_node: Any, source_bytes: bytes) -> str:
         """Extract function name from function definition node"""
         # Look for the function declarator
         for child in function_node.children:
@@ -133,7 +147,7 @@ class FunctionCodeExtractor:
         
         return "unknown_function"
     
-    def _find_identifier_in_declarator(self, node: ts.Node, source_bytes: bytes) -> Optional[str]:
+    def _find_identifier_in_declarator(self, node: Any, source_bytes: bytes) -> Optional[str]:
         """Find identifier in a declarator node"""
         if node.type == 'identifier':
             return source_bytes[node.start_byte:node.end_byte].decode('utf-8', errors='ignore')
@@ -143,4 +157,24 @@ class FunctionCodeExtractor:
             if result:
                 return result
         
+        return None
+    
+    def extract_function_code(self, file_path: str, function_name: str, line_number: int) -> Optional[str]:
+        """
+        Extract function source code by function name and line number
+        
+        Args:
+            file_path: Path to the C file
+            function_name: Name of the function to extract
+            line_number: Line number within the function
+            
+        Returns:
+            Function source code as string, or None if not found
+        """
+        result = self.extract_function_at_line(file_path, line_number)
+        if result:
+            extracted_name, code, start_line, end_line = result
+            # Verify the function name matches (case-insensitive)
+            if extracted_name.lower() == function_name.lower():
+                return code
         return None

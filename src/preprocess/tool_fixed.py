@@ -17,32 +17,16 @@ from typing import Optional
 
 from .core.engine import KernelLogParserEngine
 
-# Web UI availability flag
-try:
-    from ..webviewer import start_web_ui
-    WEB_UI_AVAILABLE = True
-except ImportError:
-    WEB_UI_AVAILABLE = False
-
 
 class KernelLogParserTool:
-    """
-    Simple wrapper around the KernelLogParserEngine for ease of use
-    """
+    """Simplified tool wrapper for kernel log parsing"""
     
-    def __init__(self, source_root_path: Optional[str] = None):
-        """Initialize the tool with an optional source root path"""
-        self.source_root_path = source_root_path
-        self.engine = None
+    def __init__(self):
+        self.parser = None
         self.results = None
-        
-    def interactive_mode(self):
-        """Interactive mode (reserved for future use)"""
-        print("Interactive mode not yet implemented")
-        return False
-        
-    def process_log(self, log_file_path: str, output_file_path: Optional[str] = None, 
-                   source_root_path: Optional[str] = None, show_ui: bool = True) -> Optional[dict]:
+    
+    def process_log(self, log_file: str, output_file: Optional[str] = None, 
+                   source_root_path: Optional[str] = None, show_ui: bool = True) -> dict:
         """
         Process a single log file
         
@@ -55,15 +39,11 @@ class KernelLogParserTool:
         Returns:
             Dictionary with parsing results
         """
-        # Use provided source_root_path or fall back to the one from constructor
-        effective_source_root = source_root_path if source_root_path is not None else self.source_root_path
-        
-        # Create parser with the effective source root
-        self.parser = KernelLogParserEngine(source_root_path=effective_source_root)
+        self.parser = KernelLogParserEngine(source_root_path=source_root_path)
         
         try:
             # Parse the log file and convert to dict if needed
-            results = self.parser.parse_log_file(log_file_path, output_file_path)
+            results = self.parser.parse_log_file(log_file, output_file)
             if hasattr(results, 'to_dict'):
                 self.results = results.to_dict()
             else:
@@ -95,20 +75,17 @@ class KernelLogParserTool:
                 continue
         return results
     
-    def start_web_ui(self, results_file: Optional[str] = None, port: int = 5000, 
-                     host: str = "127.0.0.1", auto_open: bool = True):
+    def start_web_ui(self, json_file: Optional[str] = None, port: int = 5000):
         """
         Start web UI for viewing results
         
         Args:
-            results_file: Path to JSON results file
+            json_file: Path to JSON results file
             port: Port to run web server on
-            host: Host to bind to
-            auto_open: Whether to automatically open browser
         """
         try:
             from ..webviewer import start_web_ui
-            return start_web_ui(json_file=results_file, port=port, host=host, auto_open=auto_open)
+            return start_web_ui(json_file=json_file, port=port)
         except ImportError:
             print("Web UI not available. Install webviewer dependencies.", file=sys.stderr)
             return False
@@ -146,12 +123,7 @@ Examples:
     )
     parser.add_argument(
         "--source-root",
-        help="Root directory path for resolving relative file paths"
-    )
-    parser.add_argument(
-        "--interactive",
-        action="store_true",
-        help="Start interactive mode (reserved for future use)"
+        help="Root path for source code extraction"
     )
     parser.add_argument(
         "--version", 

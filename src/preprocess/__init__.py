@@ -53,7 +53,7 @@ except ImportError:
     WebUISettings = None
     OutputSettings = None
 
-__version__ = "2.1.0"
+__version__ = "2.0.0"
 __author__ = "SpeedKillsAIA Research Team"
 __license__ = "MIT"
 __status__ = "Production"

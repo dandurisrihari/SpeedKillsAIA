@@ -23,6 +23,7 @@ Key Components:
 """
 
 import json
+import sys
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Union
 from collections import defaultdict
@@ -80,6 +81,7 @@ class KernelLogParserEngine:
         # Initialize patterns and parsers
         # Each parser handles a specific type of log entry
         self.patterns = LogPatterns()
+        self.pattern_matcher = self.patterns  # Alias for backward compatibility
         self.function_parser = FunctionEntryParser(self.patterns)
         self.dma_parser = DMAParser(self.patterns)
         self.user_copy_parser = UserCopyParser(self.patterns)
@@ -93,6 +95,9 @@ class KernelLogParserEngine:
         
         # Function code extractor gets source code for function references
         self.function_extractor = FunctionCodeExtractor(source_root_path)
+        
+        # Progress callback for testing
+        self._progress_callback = None
         
         # Results storage - organized by type for efficient processing
         self.functions_by_file = defaultdict(list)  # Grouped by file for organization
@@ -257,7 +262,7 @@ class KernelLogParserEngine:
         
         # Check for duplicates first
         if not self.deduplicator.functions.is_duplicate((function_entry, file_path)):
-            # Extract function code only for unique operations
+            # Extract function code for function entries
             function_data = self.function_extractor.extract_function_at_line(
                 file_path, function_entry.line_number
             )

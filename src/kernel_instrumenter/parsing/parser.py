@@ -15,10 +15,9 @@ try:
     import tree_sitter_c as tsc
     TREE_SITTER_AVAILABLE = True
 except ImportError as e:
-    print(f"❌ Tree-sitter not available: {e}")
-    print("This tool requires tree-sitter and tree-sitter-c to be installed.")
-    print("Please install them with: pip install tree_sitter tree_sitter-c")
-    sys.exit(1)
+    TREE_SITTER_AVAILABLE = False
+    tree_sitter = None
+    tsc = None
 
 
 class TreeSitterParser:

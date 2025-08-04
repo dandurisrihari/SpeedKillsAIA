@@ -17,6 +17,7 @@ class FunctionEntry:
     line_number: int
     first_seen_timestamp: float
     first_seen_time_str: str  # Human-readable timestamp format
+    file_path: str = ""  # File path where the function is located
     entry_type: str = "function_entry"
     function_code: Optional[str] = None  # Will contain extracted function source code
     call_count: int = 1  # Number of times this function was called
@@ -211,6 +212,10 @@ class ParseResults:
                 'unique_dma_operations': self.statistics.unique_dma_operations,
                 'unique_user_copy_operations': self.statistics.unique_user_copy_operations,
                 'unique_ioctl_operations': self.statistics.unique_ioctl_operations,
+                'total_function_entries_found': self.statistics.total_function_entries_found,
+                'total_dma_operations_found': self.statistics.total_dma_operations_found,
+                'total_user_copy_operations_found': self.statistics.total_user_copy_operations_found,
+                'total_ioctl_operations_found': self.statistics.total_ioctl_operations_found,
                 'function_entries_found': self.statistics.total_function_entries_found,
                 'dma_operations_found': self.statistics.total_dma_operations_found,
                 'user_copy_operations_found': self.statistics.total_user_copy_operations_found,

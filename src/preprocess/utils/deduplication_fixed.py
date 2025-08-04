@@ -108,9 +108,6 @@ class KernelLogDeduplicator:
         self.ioctl_operations = DeduplicationTracker(
             lambda item: (item.function_name, item.file_path, item.line_number)
         )
-        
-        # Store first data for each key
-        self._first_data: Dict[tuple, dict] = {}
     
     @property
     def total_duplicates(self) -> int:
@@ -146,15 +143,6 @@ class KernelLogDeduplicator:
                 key = (entry['file_path'], entry['function_name'], entry['line_number'])
             else:
                 key = (entry.file_path, entry.function_name, entry.line_number)
-            
-            # Store first occurrence data
-            if key not in self._first_data:
-                self._first_data[key] = entry if isinstance(entry, dict) else {
-                    'function_name': entry.get('function_name', ''),
-                    'file_path': entry.get('file_path', ''),
-                    'line_number': entry.get('line_number', 0)
-                }
-            
             self.functions.add_key(key)
             return key
         elif entry_type == "dma":
@@ -163,16 +151,6 @@ class KernelLogDeduplicator:
                       entry.get('file_path', ''), entry.get('line_number', 0))
             else:
                 key = (entry.dma_function, entry.caller_function, entry.file_path, entry.line_number)
-            
-            # Store first occurrence data
-            if key not in self._first_data:
-                self._first_data[key] = entry if isinstance(entry, dict) else {
-                    'dma_function': getattr(entry, 'dma_function', ''),
-                    'caller_function': getattr(entry, 'caller_function', ''),
-                    'file_path': getattr(entry, 'file_path', ''),
-                    'line_number': getattr(entry, 'line_number', 0)
-                }
-            
             self.dma_operations.add_key(key)
             return key
         elif entry_type == "user_copy":
@@ -181,16 +159,6 @@ class KernelLogDeduplicator:
                       entry.get('file_path', ''), entry.get('line_number', 0))
             else:
                 key = (entry.copy_function, entry.caller_function, entry.file_path, entry.line_number)
-            
-            # Store first occurrence data
-            if key not in self._first_data:
-                self._first_data[key] = entry if isinstance(entry, dict) else {
-                    'copy_function': getattr(entry, 'copy_function', ''),
-                    'caller_function': getattr(entry, 'caller_function', ''),
-                    'file_path': getattr(entry, 'file_path', ''),
-                    'line_number': getattr(entry, 'line_number', 0)
-                }
-            
             self.user_copy_operations.add_key(key)
             return key
         elif entry_type == "ioctl":
@@ -199,33 +167,19 @@ class KernelLogDeduplicator:
                       entry.get('line_number', 0))
             else:
                 key = (entry.function_name, entry.file_path, entry.line_number)
-            
-            # Store first occurrence data
-            if key not in self._first_data:
-                self._first_data[key] = entry if isinstance(entry, dict) else {
-                    'function_name': getattr(entry, 'function_name', ''),
-                    'file_path': getattr(entry, 'file_path', ''),
-                    'line_number': getattr(entry, 'line_number', 0)
-                }
-            
             self.ioctl_operations.add_key(key)
             return key
         else:
             raise ValueError(f"Unknown entry type: {entry_type}")
     
     def get_all_entries(self) -> list:
-        """Get all unique entries as DeduplicatedEntry objects"""
-        all_entries = []
-        
-        # Get all unique keys from all trackers
-        for tracker in [self.functions, self.dma_operations, self.user_copy_operations, self.ioctl_operations]:
-            for key in tracker._seen_keys:
-                count = tracker._call_counts.get(key, 1)
-                first_data = self._first_data.get(key, {})
-                entry = DeduplicatedEntry(key, count, first_data)
-                all_entries.append(entry)
-        
-        return all_entries
+        """Get all unique entries as a list"""
+        all_keys = []
+        all_keys.extend(self.functions._seen_keys)
+        all_keys.extend(self.dma_operations._seen_keys)
+        all_keys.extend(self.user_copy_operations._seen_keys)
+        all_keys.extend(self.ioctl_operations._seen_keys)
+        return all_keys
     
     def get_entry(self, key: tuple) -> Optional[DeduplicatedEntry]:
         """Get a deduplicated entry by its key"""
@@ -233,18 +187,12 @@ class KernelLogDeduplicator:
         for tracker in [self.functions, self.dma_operations, self.user_copy_operations, self.ioctl_operations]:
             if key in tracker._seen_keys:
                 count = tracker._call_counts.get(key, 0)
-                first_data = self._first_data.get(key, {})
-                return DeduplicatedEntry(key, count, first_data)
+                return DeduplicatedEntry(key, count)
         return None
     
     def clear_entries(self):
         """Clear all entries (alias for reset_all)"""
-        self._first_data.clear()
         self.reset_all()
-    
-    def clear(self):
-        """Clear all entries (alias for clear_entries)"""
-        self.clear_entries()
 
 
 class DeduplicationManager:

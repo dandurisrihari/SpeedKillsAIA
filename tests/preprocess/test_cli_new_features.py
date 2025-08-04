@@ -94,7 +94,6 @@ class TestCLIWithNewFeatures(unittest.TestCase):
         results = tool.process_log(
             str(self.test_log), 
             str(self.output_file),
-            show_ui=False,
             source_root_path=str(self.temp_path)
         )
         
@@ -113,7 +112,6 @@ class TestCLIWithNewFeatures(unittest.TestCase):
         results = tool.process_log(
             str(self.test_log), 
             str(self.output_file),
-            show_ui=False,
             source_root_path=None
         )
         

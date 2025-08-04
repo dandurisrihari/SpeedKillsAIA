@@ -100,3 +100,78 @@ class ProgressUI:
             self.print_message(f"    ... ({total_lines - max_lines} more lines)")
         
         self.print_message("")  # Empty line for spacing
+
+
+class ProgressTracker:
+    """Simple progress tracking utility"""
+    
+    def __init__(self, total: int = 0, description: str = "Processing", total_items: int = None, callback=None):
+        """Initialize progress tracker"""
+        # Support both 'total' and 'total_items' for backward compatibility
+        self.total = total_items if total_items is not None else total
+        self.total_items = self.total  # Alias for backward compatibility
+        self.current = 0
+        self.current_item = 0  # Alias for backward compatibility
+        self.description = description
+        self._ui = ProgressUI()
+        self._callback = callback
+    
+    def update(self, increment: int = 1):
+        """Update progress by increment"""
+        self.current += increment
+        self.current_item = self.current  # Keep in sync
+        self._ui.print_progress(self.current, self.total, self.description)
+        if self._callback:
+            percentage = self.get_progress_percentage()
+            self._callback(self.current, self.total, percentage)
+    
+    def update_progress(self, new_value: int):
+        """Update progress to a new absolute value"""
+        self.current = new_value
+        self.current_item = self.current  # Keep in sync
+        self._ui.print_progress(self.current, self.total, self.description)
+        if self._callback:
+            percentage = self.get_progress_percentage()
+            self._callback(self.current, self.total, percentage)
+    
+    def increment(self, amount: int = 1):
+        """Increment progress (alias for update)"""
+        self.update(amount)
+    
+    def set_total(self, total: int):
+        """Set the total number of items to process"""
+        self.total = total
+        self.total_items = total
+    
+    def set_description(self, description: str):
+        """Set the progress description"""
+        self.description = description
+    
+    def finish(self):
+        """Mark progress as complete"""
+        self.current = self.total
+        self._ui.print_progress(self.current, self.total, self.description)
+    
+    def increment_progress(self, amount: int = 1):
+        """Increment progress (alias for update)"""
+        self.update(amount)
+    
+    def is_complete(self) -> bool:
+        """Check if progress is complete"""
+        return self.current >= self.total
+    
+    def get_eta(self) -> float:
+        """Get estimated time to completion (dummy implementation)"""
+        if self.current == 0:
+            return float('inf')
+        rate = self.current / 1.0  # Assume 1 second has passed
+        remaining = self.total - self.current
+        return remaining / rate if rate > 0 else 0.0
+    
+    def get_progress_percentage(self) -> float:
+        """Get progress as percentage"""
+        if self.total == 0:
+            return 0.0
+        percentage = (self.current / self.total) * 100.0
+        # Clamp between 0 and 100
+        return max(0.0, min(100.0, percentage))

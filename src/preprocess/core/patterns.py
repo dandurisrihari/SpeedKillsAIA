@@ -67,3 +67,54 @@ class LogPatterns:
     def search_ioctl_handler(self, line: str) -> re.Match:
         """Search for ioctl handler pattern"""
         return self._patterns['ioctl_handler'].search(line)
+    
+    # Additional match methods for comprehensive tests
+    def match_function_entry(self, line: str) -> dict:
+        """Match function entry pattern and return structured data"""
+        match = self.search_func_entry(line)
+        if match:
+            return {
+                'function_name': match.group(1),
+                'file_path': match.group(2),
+                'line_number': int(match.group(3))
+            }
+        return None
+    
+    def match_dma_operation(self, line: str) -> dict:
+        """Match DMA operation pattern and return structured data"""
+        match = self.search_dma_instrument(line)
+        if match:
+            return {
+                'dma_function': match.group(1),
+                'caller_function': match.group(2),
+                'file_path': match.group(3),
+                'line_number': int(match.group(4))
+            }
+        return None
+    
+    def match_user_copy_operation(self, line: str) -> dict:
+        """Match user copy operation pattern and return structured data"""
+        match = self.search_user_copy(line)
+        if match:
+            return {
+                'copy_function': match.group(1),
+                'caller_function': match.group(2),
+                'file_path': match.group(3),
+                'line_number': int(match.group(4))
+            }
+        return None
+    
+    def match_ioctl_operation(self, line: str) -> dict:
+        """Match IOCTL operation pattern and return structured data"""
+        match = self.search_ioctl_handler(line)
+        if match:
+            return {
+                'function_name': match.group(1),
+                'file_path': match.group(2),
+                'line_number': int(match.group(3))
+            }
+        return None
+
+
+# Alias for backward compatibility
+PatternMatcher = LogPatterns

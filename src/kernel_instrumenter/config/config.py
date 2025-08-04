@@ -167,6 +167,11 @@ class Configuration:
     instrumentation: InstrumentationConfig = field(default_factory=InstrumentationConfig)
     parsing: ParsingConfig = field(default_factory=ParsingConfig)
     custom_settings: Dict[str, Any] = field(default_factory=dict)
+    enabled_types: Set[str] = field(default_factory=set)
+    
+    def get_enabled_types(self) -> Set[str]:
+        """Get the set of enabled instrumentation types"""
+        return self.enabled_types.copy()
     
     def __post_init__(self):
         """Post-initialization validation"""
