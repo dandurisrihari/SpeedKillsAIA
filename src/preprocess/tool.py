@@ -42,7 +42,8 @@ class KernelLogParserTool:
         return False
         
     def process_log(self, log_file_path: str, output_file_path: Optional[str] = None, 
-                   source_root_path: Optional[str] = None, show_ui: bool = True) -> Optional[dict]:
+                   source_root_path: Optional[str] = None, strace_log_path: Optional[str] = None,
+                   show_ui: bool = True) -> Optional[dict]:
         """
         Process a single log file
         
@@ -50,6 +51,7 @@ class KernelLogParserTool:
             log_file: Path to log file
             output_file: Optional output JSON file
             source_root_path: Optional root path for resolving relative file paths
+            strace_log_path: Optional path to strace log file for device access analysis
             show_ui: Whether to show UI progress (for backward compatibility)
             
         Returns:
@@ -68,6 +70,28 @@ class KernelLogParserTool:
                 self.results = results.to_dict()
             else:
                 self.results = results
+            
+            # Process strace log if provided
+            if strace_log_path:
+                if Path(strace_log_path).exists():
+                    print(f"\nProcessing strace log: {strace_log_path}")
+                    strace_results = self.parser.parse_strace_log(strace_log_path)
+                    if strace_results and self.results:
+                        # Add device info to results
+                        self.results['device_info'] = strace_results
+                        
+                        # Update metadata to include strace processing
+                        if 'metadata' in self.results:
+                            self.results['metadata']['strace_log'] = strace_log_path
+                        
+                        # Save updated results if output file specified
+                        if output_file_path:
+                            import json
+                            with open(output_file_path, 'w') as f:
+                                json.dump(self.results, f, indent=2)
+                else:
+                    print(f"Warning: Strace log file not found: {strace_log_path}", file=sys.stderr)
+            
             return self.results
         except Exception as e:
             print(f"Error processing log file: {e}", file=sys.stderr)
@@ -127,8 +151,14 @@ Examples:
   # Parse log and save JSON
   python -m src.preprocess --log kernel.log -o results.json
   
+  # With strace log for device access analysis
+  python -m src.preprocess --log kernel.log --strace-log strace.log -o results.json
+  
   # With source root for function code extraction
   python -m src.preprocess --log kernel.log --source-root /path/to/kernel -o results.json
+  
+  # Complete analysis with all options
+  python -m src.preprocess --log kernel.log --strace-log strace.log --source-root /path/to/kernel -o results.json
   
   # To view results in web UI (separate module):
   python -m src.webviewer results.json
@@ -147,6 +177,10 @@ Examples:
     parser.add_argument(
         "--source-root",
         help="Root directory path for resolving relative file paths"
+    )
+    parser.add_argument(
+        "--strace-log",
+        help="Path to strace log file for device access analysis"
     )
     parser.add_argument(
         "--interactive",
@@ -173,16 +207,44 @@ Examples:
             sys.exit(1)
         
         # Process the file
-        results = tool.process_log(log_file, args.output, source_root_path=args.source_root)
+        results = tool.process_log(log_file, args.output, source_root_path=args.source_root, 
+                                 strace_log_path=args.strace_log)
         
         if results:
             print(f"\n✅ Successfully processed: {log_file}")
             
-            # Print summary
+            # Print summary - handle potential type issues
             print("\n📊 Summary:")
-            print(f"  Function Entries: {len(results.get('function_entries', []))}")
-            print(f"  DMA Operations: {len(results.get('dma_operations', []))}")
-            print(f"  User Copy Operations: {len(results.get('user_copy_operations', []))}")
+            try:
+                if isinstance(results, dict):
+                    function_entries = results.get('function_entries', [])
+                    dma_operations = results.get('dma_operations', [])
+                    user_copy_operations = results.get('user_copy_operations', [])
+                    
+                    print(f"  Function Entries: {len(function_entries)}")
+                    print(f"  DMA Operations: {len(dma_operations)}")
+                    print(f"  User Copy Operations: {len(user_copy_operations)}")
+                    
+                    # Print device access info if available
+                    if 'device_info' in results:
+                        device_info = results['device_info']
+                        if device_info:  # Check if device_info is not None
+                            print(f"  Device Accesses: {device_info.get('total_accesses', 0)}")
+                            print(f"  Unique Devices: {device_info.get('unique_device_count', 0)}")
+                            if device_info.get('unique_devices'):
+                                print(f"  Devices: {', '.join(device_info['unique_devices'])}")
+                else:
+                    print(f"  Results type: {type(results)}")
+                    print("  Unable to display detailed summary - unexpected result type")
+            except Exception as e:
+                print(f"  Error displaying summary: {e}")
+                print(f"  Results type: {type(results)}")
+                if isinstance(results, dict):
+                    print(f"  Results keys: {list(results.keys())}")
+                    print(f"  Device info present: {'device_info' in results}")
+                    if 'device_info' in results:
+                        print(f"  Device info type: {type(results['device_info'])}")
+                        print(f"  Device info value: {results['device_info']}")
             
             if args.output:
                 print(f"\n💾 JSON output saved to: {args.output}")
