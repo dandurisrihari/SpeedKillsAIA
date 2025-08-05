@@ -101,6 +101,81 @@ class ParseStatistics:
 
 
 @dataclass
+class ReservedMemoryEntry:
+    """Represents a reserved memory entry from kernel boot logs"""
+    start_address: str
+    end_address: str
+    size_kb: int
+    size_readable: str  # Human readable size (e.g., "960 MiB", "32 KiB")
+    name: str
+    memory_type: str  # "CMA", "DMA", "non-reusable", "reusable", etc.
+    compatible_id: Optional[str] = None
+    mapping_type: str = "unknown"  # "map", "nomap"
+    timestamp: float = 0.0
+    timestamp_str: str = ""
+    components: List['ReservedMemoryEntry'] = field(default_factory=list)  # OF reserved mem entries that are part of this pool
+    is_main_pool: bool = False  # True for main CMA/DMA pools, False for OF components
+
+
+@dataclass
+class MemoryZone:
+    """Represents a memory zone from kernel boot logs"""
+    zone_name: str  # "DMA", "DMA32", "Normal", "Movable"
+    start_address: Optional[str] = None
+    end_address: Optional[str] = None
+    status: str = "unknown"  # "empty", "active", "unavailable"
+    unavailable_pages: Optional[int] = None
+    timestamp: float = 0.0
+    timestamp_str: str = ""
+
+
+@dataclass
+class MemoryNode:
+    """Represents a memory node range from kernel boot logs"""
+    node_id: int
+    start_address: str
+    end_address: str
+    timestamp: float = 0.0
+    timestamp_str: str = ""
+
+
+@dataclass
+class MemoryInfo:
+    """Container for all memory-related information parsed from logs"""
+    reserved_memory: List[ReservedMemoryEntry] = field(default_factory=list)
+    memory_zones: List[MemoryZone] = field(default_factory=list)
+    memory_nodes: List[MemoryNode] = field(default_factory=list)
+    total_reserved_memory_kb: int = 0
+    cma_pools: List[ReservedMemoryEntry] = field(default_factory=list)
+    dma_pools: List[ReservedMemoryEntry] = field(default_factory=list)
+    
+    def to_dict(self) -> Dict:
+        """Convert to dictionary for JSON serialization"""
+        return {
+            'reserved_memory': [self._entry_to_dict(entry) for entry in self.reserved_memory],
+            'memory_zones': [zone.__dict__ for zone in self.memory_zones],
+            'memory_nodes': [node.__dict__ for node in self.memory_nodes],
+            'total_reserved_memory_kb': self.total_reserved_memory_kb,
+            'cma_pools': [self._entry_to_dict(pool) for pool in self.cma_pools],
+            'dma_pools': [self._entry_to_dict(pool) for pool in self.dma_pools],
+            'summary': {
+                'total_reserved_entries': len(self.reserved_memory),
+                'total_zones': len(self.memory_zones),
+                'total_nodes': len(self.memory_nodes),
+                'total_cma_pools': len(self.cma_pools),
+                'total_dma_pools': len(self.dma_pools)
+            }
+        }
+    
+    def _entry_to_dict(self, entry: ReservedMemoryEntry) -> Dict:
+        """Convert a ReservedMemoryEntry to dictionary with nested components"""
+        entry_dict = entry.__dict__.copy()
+        # Convert components list to dictionaries
+        entry_dict['components'] = [self._entry_to_dict(component) for component in entry.components]
+        return entry_dict
+
+
+@dataclass
 class ParseMetadata:
     """Metadata about the parsing operation"""
     parser_version: str = "2.0.0"
@@ -120,6 +195,7 @@ class ParseResults:
     user_copy_operations: List[UserCopyOperation]
     ioctl_operations: List[IOCTLOperation]
     statistics: ParseStatistics
+    memory_info: Optional[MemoryInfo] = None
 
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization"""
@@ -225,5 +301,6 @@ class ParseResults:
                 'files_need_analysis': self.statistics.files_need_analysis,
                 'files_instrumented_with_function_entries': self.statistics.files_instrumented_with_function_entries,
                 'total_duplicates_skipped': self.statistics.total_duplicates_skipped
-            }
+            },
+            'memory_info': self.memory_info.to_dict() if self.memory_info else None
         }

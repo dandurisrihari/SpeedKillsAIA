@@ -249,6 +249,19 @@ def register_routes(app):
         
         return jsonify({"error": "User Copy function not found"}), 404
 
+    @app.route('/api/memory-info')
+    def api_memory_info():
+        """API endpoint to get memory information"""
+        data = session.get('results', parsed_data)
+        if data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        
+        memory_info = data.get('memory_info')
+        if memory_info is None:
+            return jsonify({"error": "No memory information available"}), 404
+        
+        return jsonify(memory_info)
+
 app = create_app()
 
 # Global variable to store the parsed data (for backward compatibility)
@@ -743,6 +756,214 @@ HTML_TEMPLATE = """
             display: block;
         }
         
+        /* Memory Information Styles */
+        .memory-summary {
+            margin-bottom: 30px;
+        }
+        
+        .memory-summary h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        
+        .memory-tabs {
+            display: flex;
+            background: #f1f1f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .memory-tab {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            color: #4a5568;
+        }
+        
+        .memory-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .memory-tab:hover:not(.active) {
+            background: #e2e8f0;
+        }
+        
+        .memory-tab-content {
+            display: none;
+        }
+        
+        .memory-tab-content.active {
+            display: block;
+        }
+        
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .memory-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .memory-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .memory-header {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .memory-details {
+            color: #718096;
+            line-height: 1.6;
+        }
+        
+        .memory-type-badge, .zone-badge, .node-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .memory-type-badge.cma {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+        
+        .memory-type-badge.dma {
+            background: #fbb6ce;
+            color: #b83280;
+        }
+        
+        .memory-type-badge.reusable {
+            background: #c6f6d5;
+            color: #276749;
+        }
+        
+        .memory-type-badge.non-reusable {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        
+        .zone-badge.dma {
+            background: #fbb6ce;
+            color: #b83280;
+        }
+        
+        .zone-badge.dma32 {
+            background: #d6f5d6;
+            color: #38a169;
+        }
+        
+        .zone-badge.normal {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+        
+        .zone-badge.movable {
+            background: #faf089;
+            color: #975a16;
+        }
+        
+        .node-badge {
+            background: #e9d8fd;
+            color: #553c9a;
+        }
+        
+        /* Hierarchical Memory Styles */
+        .memory-item.main-pool {
+            border-left: 4px solid #667eea;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .pool-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: bold;
+            margin-left: auto;
+        }
+        
+        .components-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .components-section h5 {
+            color: #4a5568;
+            margin-bottom: 12px;
+            font-size: 1em;
+            font-weight: 600;
+        }
+        
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+        
+        .component-item {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            border-left: 3px solid #a0aec0;
+        }
+        
+        .component-header {
+            font-size: 1em;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .component-details {
+            color: #718096;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+            background: #f7fafc;
+            border-radius: 12px;
+            border: 2px dashed #e2e8f0;
+        }
+        
         @media (max-width: 768px) {
             .function-grid {
                 grid-template-columns: 1fr;
@@ -754,6 +975,14 @@ HTML_TEMPLATE = """
             
             .header h1 {
                 font-size: 2em;
+            }
+            
+            .memory-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .memory-tabs {
+                flex-direction: column;
             }
         }
     </style>
@@ -799,6 +1028,24 @@ HTML_TEMPLATE = """
                 <div class="stat-number">{{ data.statistics.total_duplicates_skipped }}</div>
                 <div class="stat-label">Duplicates Skipped</div>
             </div>
+            {% if data.memory_info %}
+            <div class="stat-card">
+                <div class="stat-number">{{ data.memory_info.summary.total_reserved_entries or 0 }}</div>
+                <div class="stat-label">Reserved Memory</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.memory_info.summary.total_cma_pools or 0 }}</div>
+                <div class="stat-label">CMA Pools</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.memory_info.summary.total_zones or 0 }}</div>
+                <div class="stat-label">Memory Zones</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ data.memory_info.summary.total_nodes or 0 }}</div>
+                <div class="stat-label">Memory Nodes</div>
+            </div>
+            {% endif %}
         </div>
         
         <div class="content">
@@ -808,6 +1055,7 @@ HTML_TEMPLATE = """
                     <button class="tab" onclick="showTab('dma')">🔄 DMA Operations</button>
                     <button class="tab" onclick="showTab('userCopy')">👤 User Copy</button>
                     <button class="tab" onclick="showTab('ioctl')">🔧 IOCTL Handlers</button>
+                    <button class="tab" onclick="showTab('memory')">🧠 Memory Info</button>
                 </div>
                 
                 <div id="functions" class="tab-content active">
@@ -991,6 +1239,163 @@ HTML_TEMPLATE = """
                             </div>
                             {% endfor %}
                         </div>
+                    </div>
+                </div>
+                
+                <div id="memory" class="tab-content">
+                    <div class="section">
+                        <div class="section-title">Memory Information</div>
+                        {% if data.memory_info %}
+                        
+                        <!-- Memory Summary -->
+                        <div class="memory-summary">
+                            <h3>Memory Summary</h3>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-number">{{ (data.memory_info.total_reserved_memory_kb / 1024) | round(1) }} MB</div>
+                                    <div class="stat-label">Total Reserved Memory</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">{{ data.memory_info.summary.total_reserved_entries }}</div>
+                                    <div class="stat-label">Reserved Entries</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">{{ data.memory_info.summary.total_cma_pools }}</div>
+                                    <div class="stat-label">CMA Pools</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">{{ data.memory_info.summary.total_dma_pools }}</div>
+                                    <div class="stat-label">DMA Pools</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Memory Tabs -->
+                        <div class="memory-tabs">
+                            <button class="memory-tab active" onclick="showMemoryTab('reserved')">Reserved Memory</button>
+                            <button class="memory-tab" onclick="showMemoryTab('zones')">Memory Zones</button>
+                            <button class="memory-tab" onclick="showMemoryTab('nodes')">Memory Nodes</button>
+                        </div>
+                        
+                        <!-- Reserved Memory Tab -->
+                        <div id="reserved" class="memory-tab-content active">
+                            <h4>Reserved Memory Entries</h4>
+                            {% if data.memory_info.reserved_memory %}
+                            <div class="memory-grid">
+                                {% for entry in data.memory_info.reserved_memory %}
+                                <div class="memory-item {% if entry.is_main_pool %}main-pool{% endif %}">
+                                    <div class="memory-header">
+                                        <span class="memory-type-badge {{ entry.memory_type.lower() }}">{{ entry.memory_type }}</span>
+                                        {{ entry.name }}
+                                        {% if entry.is_main_pool %}
+                                        <span class="pool-badge">Main Pool</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="memory-details">
+                                        <strong>Size:</strong> {{ entry.size_readable }}<br>
+                                        {% if entry.start_address and entry.end_address %}
+                                        <strong>Address Range:</strong> {{ entry.start_address }} - {{ entry.end_address }}<br>
+                                        {% elif entry.start_address %}
+                                        <strong>Start Address:</strong> {{ entry.start_address }}<br>
+                                        {% endif %}
+                                        <strong>Mapping:</strong> {{ entry.mapping_type }}<br>
+                                        {% if entry.compatible_id %}
+                                        <strong>Compatible:</strong> {{ entry.compatible_id }}<br>
+                                        {% endif %}
+                                        <strong>Timestamp:</strong> <span class="timestamp">{{ entry.timestamp_str }}</span>
+                                        
+                                        {% if entry.is_main_pool and entry.components %}
+                                        <div class="components-section">
+                                            <h5>Components ({{ entry.components|length }})</h5>
+                                            <div class="components-grid">
+                                                {% for component in entry.components %}
+                                                <div class="component-item">
+                                                    <div class="component-header">
+                                                        <span class="memory-type-badge {{ component.memory_type.lower() }}">{{ component.memory_type }}</span>
+                                                        {{ component.name }}
+                                                    </div>
+                                                    <div class="component-details">
+                                                        <strong>Size:</strong> {{ component.size_readable }}<br>
+                                                        <strong>Address Range:</strong> {{ component.start_address }} - {{ component.end_address }}<br>
+                                                        <strong>Mapping:</strong> {{ component.mapping_type }}
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="empty-state">
+                                <p>No reserved memory entries found in the log data.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Memory Zones Tab -->
+                        <div id="zones" class="memory-tab-content">
+                            <h4>Memory Zones</h4>
+                            {% if data.memory_info.memory_zones %}
+                            <div class="memory-grid">
+                                {% for zone in data.memory_info.memory_zones %}
+                                <div class="memory-item">
+                                    <div class="memory-header">
+                                        <span class="zone-badge {{ zone.zone_name.lower() }}">{{ zone.zone_name }}</span>
+                                        Zone {{ zone.zone_name }}
+                                    </div>
+                                    <div class="memory-details">
+                                        {% if zone.start_address and zone.end_address %}
+                                        <strong>Address Range:</strong> {{ zone.start_address }} - {{ zone.end_address }}<br>
+                                        {% endif %}
+                                        <strong>Status:</strong> {{ zone.status }}<br>
+                                        {% if zone.unavailable_pages %}
+                                        <strong>Unavailable Pages:</strong> {{ zone.unavailable_pages }}<br>
+                                        {% endif %}
+                                        <strong>Timestamp:</strong> <span class="timestamp">{{ zone.timestamp_str }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="empty-state">
+                                <p>No memory zones found in the log data.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Memory Nodes Tab -->
+                        <div id="nodes" class="memory-tab-content">
+                            <h4>Memory Nodes</h4>
+                            {% if data.memory_info.memory_nodes %}
+                            <div class="memory-grid">
+                                {% for node in data.memory_info.memory_nodes %}
+                                <div class="memory-item">
+                                    <div class="memory-header">
+                                        <span class="node-badge">Node {{ node.node_id }}</span>
+                                        Memory Node {{ node.node_id }}
+                                    </div>
+                                    <div class="memory-details">
+                                        <strong>Address Range:</strong> {{ node.start_address }} - {{ node.end_address }}<br>
+                                        <strong>Timestamp:</strong> <span class="timestamp">{{ node.timestamp_str }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="empty-state">
+                                <p>No memory nodes found in the log data.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        {% else %}
+                        <div class="empty-state">
+                            <p>No memory information available in the parsed data.</p>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -1196,6 +1601,23 @@ HTML_TEMPLATE = """
             } finally {
                 loadingIndicator.style.display = 'none';
             }
+        }
+        
+        // Memory tab navigation
+        function showMemoryTab(tabName) {
+            // Hide all memory tab contents
+            const contents = document.querySelectorAll('.memory-tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all memory tabs
+            const tabs = document.querySelectorAll('.memory-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected memory tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
         }
         
         // Auto-refresh functionality
