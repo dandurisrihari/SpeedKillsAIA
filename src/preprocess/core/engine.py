@@ -30,13 +30,15 @@ from collections import defaultdict
 
 from .models import (
     ParseResults, ParseMetadata, ParseStatistics, 
-    FunctionEntry, DMAOperation, UserCopyOperation, IOCTLOperation, ProcessInfo
+    FunctionEntry, DMAOperation, UserCopyOperation, IOCTLOperation, ProcessInfo,
+    MemoryInfo
 )
 from .patterns import LogPatterns
 from ..parsers.function_parser import FunctionEntryParser
 from ..parsers.dma_parser import DMAParser
 from ..parsers.user_copy_parser import UserCopyParser
 from ..parsers.ioctl_parser import IOCTLParser
+from ..parsers.memory_parser import MemoryParser
 from ..utils.progress import ProgressUI
 from ..utils.deduplication import KernelLogDeduplicator
 from ..utils.file_tracker import FileTracker
@@ -86,6 +88,7 @@ class KernelLogParserEngine:
         self.dma_parser = DMAParser(self.patterns)
         self.user_copy_parser = UserCopyParser(self.patterns)
         self.ioctl_parser = IOCTLParser(self.patterns)
+        self.memory_parser = MemoryParser(self.patterns)
         
         # Initialize tracking utilities
         # Deduplicator removes duplicate entries to save memory and processing
@@ -245,6 +248,13 @@ class KernelLogParserEngine:
                 parsed = True
                 self._handle_ioctl_result(result)
         
+        # Try memory parser
+        elif self.memory_parser.can_parse(line):
+            success, result = self.memory_parser.parse(line, timestamp_data)
+            if success:
+                parsed = True
+                self._handle_memory_result(result)
+        
         if parsed:
             self.metadata.parsed_lines += 1
         
@@ -392,6 +402,11 @@ class KernelLogParserEngine:
                 
                 self.ioctl_operations.append(result)
     
+    def _handle_memory_result(self, result):
+        """Handle memory parser result"""
+        if result:
+            self.ui.print_operation("🧠 Memory Info", f"Parsed memory entry: {type(result).__name__}")
+    
     def _build_results(self) -> ParseResults:
         """Build final ParseResults object"""
         # Set call counts for all operations
@@ -435,7 +450,8 @@ class KernelLogParserEngine:
             dma_operations=self.dma_operations,
             user_copy_operations=self.user_copy_operations,
             ioctl_operations=self.ioctl_operations,
-            statistics=statistics
+            statistics=statistics,
+            memory_info=self.memory_parser.get_memory_info()
         )
     
     def _set_call_counts(self):

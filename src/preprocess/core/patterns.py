@@ -23,6 +23,14 @@ class LogPatterns:
             'user_copy': re.compile(r'USER_COPY: About to call (\w+) from function (\w+) at ([^:]+):(\d+)'),
             'user_copy_context': re.compile(r'USER_COPY_CONTEXT: Process PID=(\d+), COMM=(.+)'),
             'ioctl_handler': re.compile(r'IOCTL_HANDLER: Function (\w+) called at ([^:]+):(\d+)'),
+            # Memory parsing patterns
+            'reserved_memory_cma': re.compile(r'Reserved memory: created CMA memory pool at (0x[0-9a-fA-F]+), size (\d+)\s*(\w+)'),
+            'reserved_memory_dma': re.compile(r'Reserved memory: created DMA memory pool at (0x[0-9a-fA-F]+), size (\d+)\s*(\w+)'),
+            'of_reserved_mem_init': re.compile(r'OF: reserved mem: initialized node ([^,]+), compatible id (.+)'),
+            'of_reserved_mem_range': re.compile(r'OF: reserved mem: (0x[0-9a-fA-F]+)\.\.(0x[0-9a-fA-F]+) \((\d+) KiB\) (map|nomap) (reusable|non-reusable) (.+)'),
+            'memory_zone': re.compile(r'\s+(\w+)\s+(?:\[mem (0x[0-9a-fA-F]+)-(0x[0-9a-fA-F]+)\]|empty)'),
+            'memory_zone_unavailable': re.compile(r'On node \d+, zone (\w+): (\d+) pages in unavailable ranges'),
+            'memory_node': re.compile(r'\s+node\s+(\d+):\s+\[mem (0x[0-9a-fA-F]+)-(0x[0-9a-fA-F]+)\]'),
         }
     
     @property
@@ -68,7 +76,36 @@ class LogPatterns:
         """Search for ioctl handler pattern"""
         return self._patterns['ioctl_handler'].search(line)
     
-    # Additional match methods for comprehensive tests
+    # Memory parsing search methods
+    def search_reserved_memory_cma(self, line: str) -> re.Match:
+        """Search for CMA memory pool pattern"""
+        return self._patterns['reserved_memory_cma'].search(line)
+    
+    def search_reserved_memory_dma(self, line: str) -> re.Match:
+        """Search for DMA memory pool pattern"""
+        return self._patterns['reserved_memory_dma'].search(line)
+    
+    def search_of_reserved_mem_init(self, line: str) -> re.Match:
+        """Search for OF reserved memory initialization pattern"""
+        return self._patterns['of_reserved_mem_init'].search(line)
+    
+    def search_of_reserved_mem_range(self, line: str) -> re.Match:
+        """Search for OF reserved memory range pattern"""
+        return self._patterns['of_reserved_mem_range'].search(line)
+    
+    def search_memory_zone(self, line: str) -> re.Match:
+        """Search for memory zone pattern"""
+        return self._patterns['memory_zone'].search(line)
+    
+    def search_memory_zone_unavailable(self, line: str) -> re.Match:
+        """Search for memory zone unavailable pages pattern"""
+        return self._patterns['memory_zone_unavailable'].search(line)
+    
+    def search_memory_node(self, line: str) -> re.Match:
+        """Search for memory node pattern"""
+        return self._patterns['memory_node'].search(line)
+    
+    # Additional match methods for comprehensive tests (for backward compatibility)
     def match_function_entry(self, line: str) -> dict:
         """Match function entry pattern and return structured data"""
         match = self.search_func_entry(line)

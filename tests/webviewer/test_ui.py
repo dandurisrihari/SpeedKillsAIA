@@ -26,6 +26,11 @@ class TestWebviewerUI(unittest.TestCase):
     
     def setUp(self):
         """Set up test fixtures"""
+        # Reset global parsed_data before each test
+        if FLASK_AVAILABLE:
+            import src.webviewer.ui
+            src.webviewer.ui.parsed_data = None
+            
         self.test_json_data = {
             "metadata": {
                 "parser_version": "2.0.0",
@@ -88,8 +93,120 @@ class TestWebviewerUI(unittest.TestCase):
                 "unique_dma_operations": 1,
                 "unique_user_copy_operations": 1,
                 "unique_ioctl_operations": 1
+            },
+            "memory_info": {
+                "reserved_memory": [
+                    {
+                        "start_address": "0x00000000c4000000",
+                        "end_address": "0x00000000ffffffff",
+                        "size_kb": 983040,
+                        "size_readable": "960 MiB",
+                        "name": "linux,cma",
+                        "memory_type": "CMA",
+                        "compatible_id": "linux,cma",
+                        "mapping_type": "reusable",
+                        "timestamp": 0.0,
+                        "timestamp_str": "0.000000"
+                    },
+                    {
+                        "start_address": "0x0000000094300000",
+                        "end_address": "0x00000000943fffff",
+                        "size_kb": 1024,
+                        "size_readable": "1 MiB",
+                        "name": "dma_pool",
+                        "memory_type": "DMA",
+                        "compatible_id": None,
+                        "mapping_type": "nomap",
+                        "timestamp": 0.0,
+                        "timestamp_str": "0.000000"
+                    }
+                ],
+                "memory_zones": [
+                    {
+                        "zone_name": "DMA",
+                        "start_address": "0x0000000040000000",
+                        "end_address": "0x00000000ffffffff",
+                        "status": "active",
+                        "unavailable_pages": None,
+                        "timestamp": 0.0,
+                        "timestamp_str": "0.000000"
+                    },
+                    {
+                        "zone_name": "Normal",
+                        "start_address": None,
+                        "end_address": None,
+                        "status": "empty",
+                        "unavailable_pages": 128,
+                        "timestamp": 0.0,
+                        "timestamp_str": "0.000000"
+                    }
+                ],
+                "memory_nodes": [
+                    {
+                        "node_id": 0,
+                        "start_address": "0x0000000040000000",
+                        "end_address": "0x0000000055ffffff",
+                        "timestamp": 0.0,
+                        "timestamp_str": "0.000000"
+                    }
+                ],
+                "total_reserved_memory_kb": 984064,
+                "cma_pools": [
+                    {
+                        "start_address": "0x00000000c4000000",
+                        "end_address": "0x00000000ffffffff",
+                        "size_kb": 983040,
+                        "size_readable": "960 MiB",
+                        "name": "linux,cma",
+                        "memory_type": "CMA",
+                        "compatible_id": "linux,cma",
+                        "mapping_type": "reusable",
+                        "timestamp": 0.0,
+                        "timestamp_str": "0.000000"
+                    }
+                ],
+                "dma_pools": [
+                    {
+                        "start_address": "0x0000000094300000",
+                        "end_address": "0x00000000943fffff",
+                        "size_kb": 1024,
+                        "size_readable": "1 MiB",
+                        "name": "dma_pool",
+                        "memory_type": "DMA",
+                        "compatible_id": None,
+                        "mapping_type": "nomap",
+                        "timestamp": 0.0,
+                        "timestamp_str": "0.000000"
+                    }
+                ],
+                "summary": {
+                    "total_reserved_entries": 2,
+                    "total_zones": 2,
+                    "total_nodes": 1,
+                    "total_cma_pools": 1,
+                    "total_dma_pools": 1
+                }
             }
         }
+        
+        # Create a complete test data structure with functions_by_file for tests that need it
+        self.complete_test_data = self.test_json_data.copy()
+        self.complete_test_data['functions_by_file'] = {
+            'test.c': self.complete_test_data['function_entries']
+        }
+
+    def tearDown(self):
+        """Clean up after each test"""
+        # Reset global parsed_data after each test
+        if FLASK_AVAILABLE:
+            import src.webviewer.ui
+            src.webviewer.ui.parsed_data = None
+
+    def _set_global_test_data(self, data=None):
+        """Helper method to set global parsed_data correctly"""
+        if FLASK_AVAILABLE:
+            import src.webviewer.ui
+            src.webviewer.ui.parsed_data = data or self.complete_test_data
 
     @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
     def test_create_app(self):
@@ -272,6 +389,183 @@ class TestWebviewerUI(unittest.TestCase):
         """Test auto-detect when no JSON files found"""
         result = start_web_ui(json_file=None)
         self.assertFalse(result)
+
+    # Memory Information Tests
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
+    def test_memory_tab_in_ui(self):
+        """Test memory tab is present in the UI"""
+        app = create_app()
+        # Set test data
+        self._set_global_test_data()
+        
+        with app.test_client() as client:
+            response = client.get('/')
+            self.assertEqual(response.status_code, 200)
+            
+            content = response.data.decode('utf-8')
+            # Check for memory tab
+            self.assertIn('🧠 Memory Info', content)
+            self.assertIn('onclick="showTab(\'memory\')"', content)
+
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
+    def test_memory_statistics_display(self):
+        """Test memory statistics are displayed in stats grid"""
+        app = create_app()
+        self._set_global_test_data()
+        
+        with app.test_client() as client:
+            response = client.get('/')
+            self.assertEqual(response.status_code, 200)
+            
+            content = response.data.decode('utf-8')
+            # Check for memory statistics
+            self.assertIn('Reserved Memory', content)
+            self.assertIn('CMA Pools', content)
+            self.assertIn('Memory Zones', content)
+            self.assertIn('Memory Nodes', content)
+
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
+    def test_memory_content_display(self):
+        """Test memory content sections are displayed"""
+        app = create_app()
+        self._set_global_test_data()
+        
+        with app.test_client() as client:
+            response = client.get('/')
+            self.assertEqual(response.status_code, 200)
+            
+            content = response.data.decode('utf-8')
+            # Check for memory content sections
+            self.assertIn('id="memory"', content)
+            self.assertIn('Memory Information', content)
+            self.assertIn('Reserved Memory Entries', content)
+            self.assertIn('Memory Zones', content)
+            self.assertIn('Memory Nodes', content)
+            # Check specific memory data
+            self.assertIn('linux,cma', content)
+            self.assertIn('960 MiB', content)
+            self.assertIn('CMA', content)
+            self.assertIn('DMA', content)
+
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
+    def test_memory_api_endpoint(self):
+        """Test memory info API endpoint"""
+        app = create_app()
+        
+        with app.test_client() as client:
+            # Test with session data
+            with client.session_transaction() as sess:
+                sess['results'] = self.test_json_data
+                
+            response = client.get('/api/memory-info')
+            self.assertEqual(response.status_code, 200)
+            
+            data = json.loads(response.data)
+            self.assertIn('reserved_memory', data)
+            self.assertIn('memory_zones', data)
+            self.assertIn('memory_nodes', data)
+            self.assertIn('summary', data)
+            
+            # Verify specific memory data
+            self.assertEqual(len(data['reserved_memory']), 2)
+            self.assertEqual(len(data['memory_zones']), 2)
+            self.assertEqual(len(data['memory_nodes']), 1)
+            self.assertEqual(data['summary']['total_cma_pools'], 1)
+            self.assertEqual(data['summary']['total_dma_pools'], 1)
+
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available") 
+    def test_memory_api_endpoint_no_data(self):
+        """Test memory info API endpoint with no data"""
+        app = create_app()
+        
+        with app.test_client() as client:
+            response = client.get('/api/memory-info')
+            self.assertEqual(response.status_code, 404)
+            
+            data = json.loads(response.data)
+            self.assertIn('error', data)
+            self.assertEqual(data['error'], 'No data loaded')
+
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
+    def test_memory_api_endpoint_no_memory_info(self):
+        """Test memory info API endpoint with data but no memory info"""
+        app = create_app()
+        
+        # Create test data without memory_info
+        test_data_no_memory = self.test_json_data.copy()
+        del test_data_no_memory['memory_info']
+        
+        with app.test_client() as client:
+            with client.session_transaction() as sess:
+                sess['results'] = test_data_no_memory
+                
+            response = client.get('/api/memory-info')
+            self.assertEqual(response.status_code, 404)
+            
+            data = json.loads(response.data)
+            self.assertIn('error', data)
+            self.assertEqual(data['error'], 'No memory information available')
+
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
+    def test_memory_tab_styling(self):
+        """Test memory tab styling classes are present"""
+        app = create_app()
+        self._set_global_test_data()
+        
+        with app.test_client() as client:
+            response = client.get('/')
+            self.assertEqual(response.status_code, 200)
+            
+            content = response.data.decode('utf-8')
+            # Check for memory-specific CSS classes
+            self.assertIn('memory-tab', content)
+            self.assertIn('memory-grid', content)
+            self.assertIn('memory-item', content)
+            self.assertIn('memory-type-badge', content)
+            self.assertIn('zone-badge', content)
+            self.assertIn('node-badge', content)
+
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
+    def test_memory_javascript_functions(self):
+        """Test memory-related JavaScript functions are present"""
+        app = create_app()
+        self._set_global_test_data()
+        
+        with app.test_client() as client:
+            response = client.get('/')
+            self.assertEqual(response.status_code, 200)
+            
+            content = response.data.decode('utf-8')
+            # Check for memory JavaScript function
+            self.assertIn('function showMemoryTab', content)
+            self.assertIn('memory-tab-content', content)
+
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
+    def test_memory_empty_state(self):
+        """Test memory section displays empty state when no memory info"""
+        app = create_app()
+        
+        # Create test data without memory_info
+        test_data_no_memory = self.test_json_data.copy()
+        del test_data_no_memory['memory_info']
+        
+        # Add functions_by_file structure that the template expects
+        test_data_no_memory['functions_by_file'] = {
+            'test.c': test_data_no_memory['function_entries']
+        }
+        
+        # Set the global parsed_data, not app.parsed_data
+        import src.webviewer.ui
+        src.webviewer.ui.parsed_data = test_data_no_memory
+        
+        with app.test_client() as client:
+            response = client.get('/')
+            self.assertEqual(response.status_code, 200)
+            
+            content = response.data.decode('utf-8')
+            # Should still have memory tab but show empty state
+            self.assertIn('🧠 Memory Info', content)
+            self.assertIn('No memory information available in the parsed data', content)
 
 
 class TestWebviewerUINoFlask(unittest.TestCase):
