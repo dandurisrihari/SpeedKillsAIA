@@ -1,11 +1,12 @@
 {
   "metadata": {
     "parser_version": "2.0.0",
-    "parsed_at": "2025-08-04T13:35:38.262354",
+    "parsed_at": "2025-08-05T16:53:44.272400",
     "log_file": "data/logs/coral/coral_dmesg_dma_userapi_dmafilefuncs_ioctl.log",
     "total_lines": 99717,
-    "parsed_lines": 54020,
-    "unique_entries": 82
+    "parsed_lines": 99717,
+    "unique_entries": 82,
+    "strace_log": "data/logs/coral/coral_strace.log"
   },
   "function_entries": [
     {
@@ -1126,15 +1127,15 @@
       "first_seen_timestamp": 1754249396.390564,
       "first_seen_time_str": "19:29:56,390564",
       "stack_trace": [
-        "dump_backtrace+0x0/0x3a8",
-        "show_stack+0x14/0x20",
-        "dump_stack+0x9c/0xbc",
-        "gasket_alloc_coherent_memory+0x8c/0x2f8 [gasket]",
-        "gasket_handle_ioctl+0x954/0xa2c [gasket]",
-        "gasket_ioctl+0x84/0xc0 [gasket]",
-        "do_vfs_ioctl+0xa4/0x818",
-        "SyS_ioctl+0x78/0x98",
-        "__sys_trace_return+0x0/0x4"
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack",
+        "gasket_alloc_coherent_memory",
+        "gasket_handle_ioctl",
+        "gasket_ioctl",
+        "do_vfs_ioctl",
+        "SyS_ioctl",
+        "__sys_trace_return"
       ],
       "function_code": "int gasket_alloc_coherent_memory(struct gasket_dev *gasket_dev, u64 size,\n\t\t\t\t dma_addr_t *dma_address, u64 index)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_alloc_coherent_memory at %s:%d\\n\", __FILE__, __LINE__);\n\tdma_addr_t handle;\n\tvoid *mem;\n\tint j;\n\tunsigned int num_pages = (size + PAGE_SIZE - 1) / PAGE_SIZE;\n\tconst struct gasket_driver_desc *driver_desc =\n\t\tgasket_get_driver_desc(gasket_dev);\n\n\tif (!gasket_dev->page_table[index])\n\t\treturn -EFAULT;\n\n\tif (num_pages == 0)\n\t\treturn -EINVAL;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_alloc_coherent from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_alloc_coherent called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_alloc_coherent\\n\");\n\tmem = dma_alloc_coherent(gasket_get_device(gasket_dev),\n\t\t\t\t num_pages * PAGE_SIZE, &handle, GFP_KERNEL);\n\tif (!mem)\n\t\tgoto nomem;\n\n\tgasket_dev->page_table[index]->num_coherent_pages = num_pages;\n\n\t/* allocate the physical memory block */\n\tgasket_dev->page_table[index]->coherent_pages =\n\t\tkcalloc(num_pages, sizeof(struct gasket_coherent_page_entry),\n\t\t\tGFP_KERNEL);\n\tif (!gasket_dev->page_table[index]->coherent_pages)\n\t\tgoto nomem;\n\n\tgasket_dev->coherent_buffer.length_bytes =\n\t\tPAGE_SIZE * (num_pages);\n\tgasket_dev->coherent_buffer.phys_base = handle;\n\tgasket_dev->coherent_buffer.virt_base = mem;\n\n\t*dma_address = driver_desc->coherent_buffer_description.base;\n\tfor (j = 0; j < num_pages; j++) {\n\t\tgasket_dev->page_table[index]->coherent_pages[j].paddr =\n\t\t\thandle + j * PAGE_SIZE;\n\t\tgasket_dev->page_table[index]->coherent_pages[j].kernel_virt =\n\t\t\t(ulong)mem + j * PAGE_SIZE;\n\t}\n\n\treturn 0;\n\nnomem:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_free_coherent from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_free_coherent called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_free_coherent\\n\");\n\tif (mem) {\n\t\tdma_free_coherent(gasket_get_device(gasket_dev),\n\t\t\t\t  num_pages * PAGE_SIZE, mem, handle);\n\t\tgasket_dev->coherent_buffer.length_bytes = 0;\n\t\tgasket_dev->coherent_buffer.virt_base = NULL;\n\t\tgasket_dev->coherent_buffer.phys_base = 0;\n\t}\n\n\tkfree(gasket_dev->page_table[index]->coherent_pages);\n\tgasket_dev->page_table[index]->coherent_pages = NULL;\n\tgasket_dev->page_table[index]->num_coherent_pages = 0;\n\treturn -ENOMEM;\n}",
       "call_count": 1
@@ -1147,18 +1148,18 @@
       "first_seen_timestamp": 1754249396.942726,
       "first_seen_time_str": "19:29:56,942726",
       "stack_trace": [
-        "dump_backtrace+0x0/0x3a8",
-        "show_stack+0x14/0x20",
-        "dump_stack+0x9c/0xbc",
-        "gasket_perform_mapping+0x1b4/0x348 [gasket]",
-        "gasket_map_simple_pages+0xbc/0x150 [gasket]",
-        "gasket_page_table_map+0x80/0xd0 [gasket]",
-        "gasket_map_buffers_common.isra.3+0x50/0x6c [gasket]",
-        "gasket_handle_ioctl+0x8c0/0xa2c [gasket]",
-        "gasket_ioctl+0x84/0xc0 [gasket]",
-        "do_vfs_ioctl+0xa4/0x818",
-        "SyS_ioctl+0x78/0x98",
-        "__sys_trace_return+0x0/0x4"
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack",
+        "gasket_perform_mapping",
+        "gasket_map_simple_pages",
+        "gasket_page_table_map",
+        "gasket_map_buffers_common.isra.3",
+        "gasket_handle_ioctl",
+        "gasket_ioctl",
+        "do_vfs_ioctl",
+        "SyS_ioctl",
+        "__sys_trace_return"
       ],
       "function_code": "static int gasket_perform_mapping(struct gasket_page_table *pg_tbl,\n\t\t\t\t  struct gasket_page_table_entry *ptes,\n\t\t\t\t  u64 __iomem *slots,\n\t\t\t\t  struct sg_page_iter *sg_iter,\n\t\t\t\t  ulong host_addr,\n\t\t\t\t  uint num_pages, u32 flags,\n\t\t\t\t  int is_simple_mapping)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_perform_mapping at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret;\n\tulong offset;\n\tstruct page *page;\n\tdma_addr_t dma_addr;\n\tulong page_addr;\n\tint i;\n\tenum dma_data_direction direction;\n\n\t/* Must have a virtual host address or a sg iterator, but not both. */\n\tif (!((uintptr_t)host_addr ^ (uintptr_t)sg_iter)) {\n\t\tdev_err(pg_tbl->device, \"need sg_iter or host_addr\\n\");\n\t\treturn -EINVAL;\n\t}\n\n\tdirection = GET(FLAGS_DMA_DIRECTION, flags);\n\tif (direction == DMA_NONE) {\n\t\tdev_err(pg_tbl->device, \"invalid DMA direction flags=0x%lx\\n\",\n\t\t\t(unsigned long)flags);\n\t\treturn -EINVAL;\n\t}\n\n\tfor (i = 0; i < num_pages; i++) {\n\t\tpage_addr = host_addr + i * PAGE_SIZE;\n\t\toffset = page_addr & (PAGE_SIZE - 1);\n\t\tdev_dbg(pg_tbl->device, \"%s i %d\\n\", __func__, i);\n\t\tif (sg_iter) {\n\t\t\tif (!__sg_page_iter_next(sg_iter))\n\t\t\t\treturn -EINVAL;\n\n\t\t\t/* Page already mapped for DMA. */\n#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)\n\t\t\tptes[i].dma_addr = sg_page_iter_dma_address(sg_iter);\n#else\n\t\t\tptes[i].dma_addr = sg_page_iter_dma_address(\n\t\t\t\tcontainer_of(sg_iter, struct sg_dma_page_iter, base));\n#endif\n\t\t\tptes[i].page = NULL;\n\t\t\toffset = 0;\n\t\t} else if (is_coherent(pg_tbl, host_addr)) {\n\t\t\tu64 off =\n\t\t\t\t(u64)host_addr -\n\t\t\t\t(u64)pg_tbl->coherent_pages[0].user_virt;\n\t\t\tptes[i].page = NULL;\n\t\t\tptes[i].offset = offset;\n\t\t\tptes[i].dma_addr = pg_tbl->coherent_pages[0].paddr +\n\t\t\t\t\t   off + i * PAGE_SIZE;\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_map_page from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_map_page called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_map_page\\n\");\n\t\t} else {\n\t\t\tret = get_user_pages_fast(page_addr - offset, 1,\n\t\t\t\t\t\t  direction != DMA_TO_DEVICE,\n\t\t\t\t\t\t  &page);\n\n\t\t\tif (ret <= 0) {\n\t\t\t\tdev_err(pg_tbl->device,\n\t\t\t\t\t\"get user pages failed for addr=0x%lx, \"\n\t\t\t\t\t\"offset=0x%lx [ret=%d]\\n\",\n\t\t\t\t\tpage_addr, offset, ret);\n\t\t\t\treturn ret ? ret : -ENOMEM;\n\t\t\t}\n\t\t\t++pg_tbl->num_active_pages;\n\n\t\t\tptes[i].page = page;\n\t\t\tptes[i].offset = offset;\n\n\t\t\t/* Map the page into DMA space. */\n\t\t\tptes[i].dma_addr = dma_map_page(pg_tbl->device, page, 0, PAGE_SIZE,\n\t\t\t\t\t\t\tGET(FLAGS_DMA_DIRECTION, flags));\n\t\t\tdev_dbg(pg_tbl->device,\n\t\t\t\t\"%s i %d pte %p pfn %p -> mapped %llx\\n\",\n\t\t\t\t__func__, i, &ptes[i],\n\t\t\t\t(void *)page_to_pfn(page),\n\t\t\t\t(unsigned long long)ptes[i].dma_addr);\n\n\t\t\tif (dma_mapping_error(pg_tbl->device,\n\t\t\t\t\t      ptes[i].dma_addr)) {\n\t\t\t\tdev_dbg(pg_tbl->device,\n\t\t\t\t\t\"%s i %d -> fail to map page %llx \"\n\t\t\t\t\t\"[pfn %p phys %p]\\n\",\n\t\t\t\t\t__func__, i,\n\t\t\t\t\t(unsigned long long)ptes[i].dma_addr,\n\t\t\t\t\t(void *)page_to_pfn(page),\n\t\t\t\t\t(void *)page_to_phys(page));\n\n\t\t\t\t/* clean up */\n\t\t\t\tif (gasket_release_page(ptes[i].page))\n\t\t\t\t\t--pg_tbl->num_active_pages;\n\n\t\t\t\tmemset(&ptes[i], 0, sizeof(struct gasket_page_table_entry));\n\t\t\t\treturn -EINVAL;\n\t\t\t}\n\t\t}\n\n\t\t/* Make the DMA-space address available to the device. */\n\t\tdma_addr = (ptes[i].dma_addr + offset) | GASKET_VALID_SLOT_FLAG;\n\n\t\tif (is_simple_mapping)\n\t\t\twriteq(dma_addr, &slots[i]);\n\t\telse\n\t\t\t((u64 __force *)slots)[i] = dma_addr;\n\n\t\t/* Set PTE flags equal to flags param with STATUS=PTE_INUSE. */\n\t\tptes[i].flags = SET(FLAGS_STATUS, flags, PTE_INUSE);\n\t}\n\treturn 0;\n}",
       "call_count": 2
@@ -1171,17 +1172,17 @@
       "first_seen_timestamp": 1754249398.963683,
       "first_seen_time_str": "19:29:58,963683",
       "stack_trace": [
-        "dump_backtrace+0x0/0x3a8",
-        "show_stack+0x14/0x20",
-        "dump_stack+0x9c/0xbc",
-        "gasket_map_extended_pages+0x150/0x470 [gasket]",
-        "gasket_page_table_map+0x8c/0xd0 [gasket]",
-        "gasket_map_buffers_common.isra.3+0x50/0x6c [gasket]",
-        "gasket_handle_ioctl+0x8c0/0xa2c [gasket]",
-        "gasket_ioctl+0x84/0xc0 [gasket]",
-        "do_vfs_ioctl+0xa4/0x818",
-        "SyS_ioctl+0x78/0x98",
-        "__sys_trace_return+0x0/0x4"
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack",
+        "gasket_map_extended_pages",
+        "gasket_page_table_map",
+        "gasket_map_buffers_common.isra.3",
+        "gasket_handle_ioctl",
+        "gasket_ioctl",
+        "do_vfs_ioctl",
+        "SyS_ioctl",
+        "__sys_trace_return"
       ],
       "function_code": "static int gasket_alloc_extended_subtable(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t  struct gasket_page_table_entry *pte,\n\t\t\t\t\t  u64 __iomem *slot)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_alloc_extended_subtable at %s:%d\\n\", __FILE__, __LINE__);\n\tulong page_addr, subtable_bytes;\n\tdma_addr_t dma_addr;\n\n\t/* XXX FIX ME XXX this is inefficient for non-4K page sizes */\n\n\t/* GFP_DMA flag must be passed to architectures for which\n\t * part of the memory range is not considered DMA'able.\n\t * This seems to be the case for Juno board with 4.5.0 Linaro kernel\n\t */\n\tpage_addr = get_zeroed_page(GFP_KERNEL | GFP_DMA);\n\tif (!page_addr)\n\t\treturn -ENOMEM;\n\tpte->page = virt_to_page((void *)page_addr);\n\tpte->offset = 0;\n\n\tsubtable_bytes = sizeof(struct gasket_page_table_entry) *\n\t\tGASKET_PAGES_PER_SUBTABLE;\n\tpte->sublevel = vzalloc(subtable_bytes);\n\tif (!pte->sublevel) {\n\t\tfree_page(page_addr);\n\t\tmemset(pte, 0, sizeof(struct gasket_page_table_entry));\n\t\treturn -ENOMEM;\n\t}\n\n\t/* Map the page into DMA space. */\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_map_page from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_map_page called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_map_page\\n\");\n\tpte->dma_addr = dma_map_page(pg_tbl->device, pte->page, 0, PAGE_SIZE,\n\t\t\t\t     DMA_TO_DEVICE);\n\tif (dma_mapping_error(pg_tbl->device, pte->dma_addr)) {\n\t\tdev_dbg(pg_tbl->device,\n\t\t\t\"%s -> fail to map page %llx \"\n\t\t\t\"[pfn %p phys %p]\\n\",\n\t\t\t__func__,\n\t\t\t(unsigned long long)pte->dma_addr,\n\t\t\t(void *)page_to_pfn(pte->page),\n\t\t\t(void *)page_to_phys(pte->page));\n\n\t\t/* clean up */\n\t\tfree_page(page_addr);\n\t\tvfree(pte->sublevel);\n\t\tmemset(pte, 0, sizeof(struct gasket_page_table_entry));\n\n\t\treturn -ENOMEM;\n\t}\n\n\t/* make the addresses available to the device */\n\tdma_addr = (pte->dma_addr + pte->offset) | GASKET_VALID_SLOT_FLAG;\n\twriteq(dma_addr, slot);\n\n\tpte->flags = SET(FLAGS_STATUS, pte->flags, PTE_INUSE);\n\n\treturn 0;\n}",
       "call_count": 4
@@ -1194,17 +1195,17 @@
       "first_seen_timestamp": 1754249404.917954,
       "first_seen_time_str": "19:30:04,917954",
       "stack_trace": [
-        "dump_backtrace+0x0/0x3a8",
-        "show_stack+0x14/0x20",
-        "dump_stack+0x9c/0xbc",
-        "gasket_map_extended_pages+0x384/0x470 [gasket]",
-        "gasket_page_table_map+0x8c/0xd0 [gasket]",
-        "gasket_map_buffers_common.isra.3+0x50/0x6c [gasket]",
-        "gasket_handle_ioctl+0x8c0/0xa2c [gasket]",
-        "gasket_ioctl+0x84/0xc0 [gasket]",
-        "do_vfs_ioctl+0xa4/0x818",
-        "SyS_ioctl+0x78/0x98",
-        "__sys_trace_return+0x0/0x4"
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack",
+        "gasket_map_extended_pages",
+        "gasket_page_table_map",
+        "gasket_map_buffers_common.isra.3",
+        "gasket_handle_ioctl",
+        "gasket_ioctl",
+        "do_vfs_ioctl",
+        "SyS_ioctl",
+        "__sys_trace_return"
       ],
       "function_code": "static int gasket_map_extended_pages(struct gasket_page_table *pg_tbl,\n\t\t\t\t     struct sg_page_iter *sg_iter,\n\t\t\t\t     ulong host_addr, u64 dev_addr,\n\t\t\t\t     uint num_pages, u32 flags)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_map_extended_pages at %s:%d\\n\", __FILE__, __LINE__);\n\tint ret;\n\tu64 dev_addr_end;\n\tuint slot_idx, remain, len;\n\tstruct gasket_page_table_entry *pte;\n\tu64 __iomem *slot_base;\n\n\tret = gasket_alloc_extended_entries(pg_tbl, dev_addr, num_pages);\n\tif (ret) {\n\t\tdev_addr_end = dev_addr + (num_pages / PAGE_SIZE) - 1;\n\t\tdev_err(pg_tbl->device,\n\t\t\t\"page table slots (%lu,%lu) (@ 0x%llx) to (%lu,%lu) \"\n\t\t\t\"are not available\\n\",\n\t\t\tgasket_extended_lvl0_page_idx(pg_tbl, dev_addr),\n\t\t\tgasket_extended_lvl1_page_idx(pg_tbl, dev_addr),\n\t\t\t(long long unsigned int)dev_addr,\n\t\t\tgasket_extended_lvl0_page_idx(pg_tbl, dev_addr_end),\n\t\t\tgasket_extended_lvl1_page_idx(pg_tbl, dev_addr_end));\n\t\treturn ret;\n\t}\n\n\tremain = num_pages;\n\tslot_idx = gasket_extended_lvl1_page_idx(pg_tbl, dev_addr);\n\tpte = pg_tbl->entries + pg_tbl->num_simple_entries +\n\t      gasket_extended_lvl0_page_idx(pg_tbl, dev_addr);\n\n\twhile (remain > 0) {\n\t\tlen = min(remain, GASKET_PAGES_PER_SUBTABLE - slot_idx);\n\n\t\tslot_base =\n\t\t\t(u64 __iomem *)(page_address(pte->page) + pte->offset);\n\t\tret = gasket_perform_mapping(pg_tbl, pte->sublevel + slot_idx,\n\t\t\t\t\t     slot_base + slot_idx, sg_iter,\n\t\t\t\t\t     host_addr, len, flags, 0);\n\t\tif (ret) {\n\t\t\tgasket_page_table_unmap_nolock(pg_tbl, dev_addr,\n\t\t\t\t\t\t       num_pages);\n\t\t\treturn ret;\n\t\t}\n\n\t\t/*\n\t\t * Extended page tables are in DRAM so they need to be synced\n\t\t * each time they are updated.\n\t\t */\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_single_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_single_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_single_for_device\\n\");\n\t\tdma_sync_single_for_device(pg_tbl->device,\n\t\t\t\t\t   pte->dma_addr + slot_idx * sizeof(u64),\n\t\t\t\t\t   len * sizeof(u64), DMA_TO_DEVICE);\n\n\t\tremain -= len;\n\t\tslot_idx = 0;\n\t\tpte++;\n\t\tif (host_addr)\n\t\t\thost_addr += len * PAGE_SIZE;\n\t}\n\n\treturn 0;\n}",
       "call_count": 7
@@ -1217,19 +1218,17 @@
       "first_seen_timestamp": 1754249413.43103,
       "first_seen_time_str": "19:30:13,431030",
       "stack_trace": [
-        "dump_backtrace+0x0/0x3a8",
-        "show_stack+0x14/0x20",
-        "dump_stack+0x9c/0xbc",
-        "gasket_unmap_extended_pages+0xa8/0x188 [gasket]",
-        "gasket_page_table_unmap_all_nolock+0x70/0x98 [gasket]",
-        "gasket_page_table_unmap_all+0x34/0x58 [gasket]",
-        "gasket_release+0xc4/0x140 [gasket]",
-        "__fput+0x88/0x1c8",
-        "____fput+0xc/0x18",
-        "task_work_run+0x90/0xb0",
-        "ptrace_notify+0x68/0x70",
-        "syscall_trace_exit+0x9c/0xe0",
-        "__sys_trace_return_skipped+0x8/0xc"
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack",
+        "gasket_unmap_extended_pages",
+        "gasket_page_table_unmap_nolock",
+        "gasket_page_table_unmap",
+        "gasket_handle_ioctl",
+        "gasket_ioctl",
+        "do_vfs_ioctl",
+        "SyS_ioctl",
+        "__sys_trace_return"
       ],
       "function_code": "static void gasket_unmap_extended_pages(struct gasket_page_table *pg_tbl,\n\t\t\t\t\tu64 dev_addr, uint num_pages)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_unmap_extended_pages at %s:%d\\n\", __FILE__, __LINE__);\n\tuint slot_idx, remain, len;\n\tstruct gasket_page_table_entry *pte;\n\tu64 __iomem *slot_base;\n\n\tremain = num_pages;\n\tslot_idx = gasket_extended_lvl1_page_idx(pg_tbl, dev_addr);\n\tpte = pg_tbl->entries + pg_tbl->num_simple_entries +\n\t      gasket_extended_lvl0_page_idx(pg_tbl, dev_addr);\n\n\twhile (remain > 0) {\n\t\t/* TODO: Add check to ensure pte remains valid? */\n\t\tlen = min(remain, GASKET_PAGES_PER_SUBTABLE - slot_idx);\n\n  printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_single_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_single_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_single_for_device\\n\");\n\t\tif (GET(FLAGS_STATUS, pte->flags) == PTE_INUSE) {\n\t\t\tslot_base = (u64 __iomem *)(page_address(pte->page) +\n\t\t\t\t\t\t    pte->offset);\n\t\t\tgasket_perform_unmapping(pg_tbl,\n\t\t\t\t\t\t pte->sublevel + slot_idx,\n\t\t\t\t\t\t slot_base + slot_idx, len, 0);\n\t\t\t/*\n\t\t\t * Extended page tables are in DRAM so they need to be\n\t\t\t * synced each time they are updated.\n\t\t\t */\n\t\t\tdma_sync_single_for_device(pg_tbl->device,\n\t\t\t\t\t\t   pte->dma_addr + slot_idx * sizeof(u64),\n\t\t\t\t\t\t   len * sizeof(u64), DMA_TO_DEVICE);\n\t\t}\n\n\t\tremain -= len;\n\t\tslot_idx = 0;\n\t\tpte++;\n\t}\n}",
       "call_count": 2055
@@ -1242,20 +1241,18 @@
       "first_seen_timestamp": 1754249413.642754,
       "first_seen_time_str": "19:30:13,642754",
       "stack_trace": [
-        "dump_backtrace+0x0/0x3a8",
-        "show_stack+0x14/0x20",
-        "dump_stack+0x9c/0xbc",
-        "gasket_perform_unmapping.isra.6+0xac/0x180 [gasket]",
-        "gasket_unmap_simple_pages+0x60/0x80 [gasket]",
-        "gasket_page_table_unmap_all_nolock+0x4c/0x98 [gasket]",
-        "gasket_page_table_unmap_all+0x34/0x58 [gasket]",
-        "gasket_release+0xc4/0x140 [gasket]",
-        "__fput+0x88/0x1c8",
-        "____fput+0xc/0x18",
-        "task_work_run+0x90/0xb0",
-        "ptrace_notify+0x68/0x70",
-        "syscall_trace_exit+0x9c/0xe0",
-        "__sys_trace_return_skipped+0x8/0xc"
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack",
+        "gasket_perform_unmapping.isra.6",
+        "gasket_unmap_extended_pages",
+        "gasket_page_table_unmap_nolock",
+        "gasket_page_table_unmap",
+        "gasket_handle_ioctl",
+        "gasket_ioctl",
+        "do_vfs_ioctl",
+        "SyS_ioctl",
+        "__sys_trace_return"
       ],
       "function_code": "static void gasket_perform_unmapping(struct gasket_page_table *pg_tbl,\n\t\t\t\t     struct gasket_page_table_entry *ptes,\n\t\t\t\t     u64 __iomem *slots, uint num_pages,\n\t\t\t\t     int is_simple_mapping)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_perform_unmapping at %s:%d\\n\", __FILE__, __LINE__);\n\tint i;\n\t/*\n\t * For each page table entry and corresponding entry in the device's\n\t * address translation table:\n\t */\n\tfor (i = 0; i < num_pages; i++) {\n\t\t/* release the address from the device, */\n\t\tif (is_simple_mapping)\n\t\t\twriteq(0, &slots[i]);\n\t\telse\n\t\t\t((u64 __force *)slots)[i] = 0;\n\n\t\t/* release the address from the driver, */\n\t\tif (GET(FLAGS_STATUS, ptes[i].flags) == PTE_INUSE) {\n   printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_unmap_page called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_unmap_page\\n\");\n\t\t\tif (ptes[i].page && ptes[i].dma_addr) {\n\t\t\t\tdma_unmap_page(pg_tbl->device, ptes[i].dma_addr, PAGE_SIZE,\n\t\t\t\t\t       GET(FLAGS_DMA_DIRECTION, ptes[i].flags));\n\t\t\t}\n\t\t\tif (gasket_release_page(ptes[i].page))\n\t\t\t\t--pg_tbl->num_active_pages;\n\t\t}\n\n\t\t/* and clear the PTE. */\n\t\tmemset(&ptes[i], 0, sizeof(struct gasket_page_table_entry));\n\t}\n}",
       "call_count": 1189
@@ -1268,17 +1265,16 @@
       "first_seen_timestamp": 1754249674.113263,
       "first_seen_time_str": "19:34:34,113263",
       "stack_trace": [
-        "dump_backtrace+0x0/0x3a8",
-        "show_stack+0x14/0x20",
-        "dump_stack+0x9c/0xbc",
-        "gasket_free_coherent_memory_all+0x68/0x178 [gasket]",
-        "gasket_release+0xdc/0x140 [gasket]",
-        "__fput+0x88/0x1c8",
-        "____fput+0xc/0x18",
-        "task_work_run+0x90/0xb0",
-        "ptrace_notify+0x68/0x70",
-        "syscall_trace_exit+0x9c/0xe0",
-        "__sys_trace_return_skipped+0x8/0xc"
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack",
+        "gasket_free_coherent_memory_all",
+        "gasket_free_coherent_memory",
+        "gasket_handle_ioctl",
+        "gasket_ioctl",
+        "do_vfs_ioctl",
+        "SyS_ioctl",
+        "__sys_trace_return"
       ],
       "function_code": "void gasket_free_coherent_memory_all(\n\tstruct gasket_dev *gasket_dev, u64 index)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_free_coherent_memory_all at %s:%d\\n\", __FILE__, __LINE__);\n\tif (!gasket_dev->page_table[index])\n\t\treturn;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_free_coherent from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_free_coherent called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_free_coherent\\n\");\n\tif (gasket_dev->coherent_buffer.length_bytes) {\n\t\tdma_free_coherent(gasket_get_device(gasket_dev),\n\t\t\t\t  gasket_dev->coherent_buffer.length_bytes,\n\t\t\t\t  gasket_dev->coherent_buffer.virt_base,\n\t\t\t\t  gasket_dev->coherent_buffer.phys_base);\n\t\tgasket_dev->coherent_buffer.length_bytes = 0;\n\t\tgasket_dev->coherent_buffer.virt_base = NULL;\n\t\tgasket_dev->coherent_buffer.phys_base = 0;\n\t}\n\n\tkfree(gasket_dev->page_table[index]->coherent_pages);\n\tgasket_dev->page_table[index]->coherent_pages = NULL;\n\tgasket_dev->page_table[index]->num_coherent_pages = 0;\n}",
       "call_count": 2
@@ -1291,18 +1287,18 @@
       "first_seen_timestamp": 1754250106.195041,
       "first_seen_time_str": "19:41:46,195041",
       "stack_trace": [
-        "dump_backtrace+0x0/0x3a8",
-        "show_stack+0x14/0x20",
-        "dump_stack+0x9c/0xbc",
-        "gasket_page_table_garbage_collect_nolock+0xc4/0x190 [gasket]",
-        "gasket_page_table_garbage_collect+0x34/0x58 [gasket]",
-        "gasket_release+0xcc/0x140 [gasket]",
-        "__fput+0x88/0x1c8",
-        "____fput+0xc/0x18",
-        "task_work_run+0x90/0xb0",
-        "ptrace_notify+0x68/0x70",
-        "syscall_trace_exit+0x9c/0xe0",
-        "__sys_trace_return_skipped+0x8/0xc"
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack",
+        "gasket_page_table_garbage_collect_nolock",
+        "gasket_page_table_garbage_collect",
+        "gasket_release",
+        "__fput",
+        "____fput",
+        "task_work_run",
+        "ptrace_notify",
+        "syscall_trace_exit",
+        "__sys_trace_return_skipped"
       ],
       "function_code": "static void gasket_free_extended_subtable(struct gasket_page_table *pg_tbl,\n\t\t\t\t\t  struct gasket_page_table_entry *pte,\n\t\t\t\t\t  u64 __iomem *slot)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function gasket_free_extended_subtable at %s:%d\\n\", __FILE__, __LINE__);\n\t/* Release the page table from the driver */\n\tpte->flags = SET(FLAGS_STATUS, pte->flags, PTE_FREE);\n\n\t/* Release the page table from the device */\n\twriteq(0, slot);\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_unmap_page from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_unmap_page called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_unmap_page\\n\");\n\tif (pte->dma_addr)\n\t\tdma_unmap_page(pg_tbl->device, pte->dma_addr, PAGE_SIZE,\n\t\t\t       DMA_TO_DEVICE);\n\n\tvfree(pte->sublevel);\n\n\tif (pte->page)\n\t\tfree_page((ulong)page_address(pte->page));\n\n\tmemset(pte, 0, sizeof(struct gasket_page_table_entry));\n}",
       "call_count": 4
@@ -1510,5 +1506,102 @@
     "files_need_analysis": 4,
     "files_instrumented_with_function_entries": 2,
     "total_duplicates_skipped": 6185
+  },
+  "memory_info": {
+    "reserved_memory": [],
+    "memory_zones": [],
+    "memory_nodes": [],
+    "total_reserved_memory_kb": 0,
+    "cma_pools": [],
+    "dma_pools": [],
+    "summary": {
+      "total_reserved_entries": 0,
+      "total_zones": 0,
+      "total_nodes": 0,
+      "total_cma_pools": 0,
+      "total_dma_pools": 0
+    }
+  },
+  "device_info": {
+    "device_accesses": [
+      {
+        "device_path": "/dev/apex_0",
+        "access_type": "newfstatat",
+        "timestamp": 70195.11103,
+        "timestamp_str": "19:29:55.111030",
+        "pid": 22533,
+        "flags": null,
+        "result": "0"
+      },
+      {
+        "device_path": "/dev/bus/usb",
+        "access_type": "openat",
+        "timestamp": 70195.112081,
+        "timestamp_str": "19:29:55.112081",
+        "pid": 22533,
+        "flags": "O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY",
+        "result": "4"
+      },
+      {
+        "device_path": "/dev/bus/usb",
+        "access_type": "openat",
+        "timestamp": 70195.237892,
+        "timestamp_str": "19:29:55.237892",
+        "pid": 22533,
+        "flags": "O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY",
+        "result": "4"
+      },
+      {
+        "device_path": "/dev/apex_0",
+        "access_type": "openat",
+        "timestamp": 70195.362041,
+        "timestamp_str": "19:29:55.362041",
+        "pid": 22533,
+        "flags": "O_RDWR",
+        "result": null
+      },
+      {
+        "device_path": "/dev/apex_0",
+        "access_type": "openat",
+        "timestamp": 70196.257606,
+        "timestamp_str": "19:29:56.257606",
+        "pid": 22533,
+        "flags": "O_RDWR",
+        "result": "5"
+      },
+      {
+        "device_path": "/dev/apex_0",
+        "access_type": "openat",
+        "timestamp": 70196.406254,
+        "timestamp_str": "19:29:56.406254",
+        "pid": 22533,
+        "flags": "O_RDWR",
+        "result": "6"
+      },
+      {
+        "device_path": "/dev/apex_0",
+        "access_type": "openat",
+        "timestamp": 70196.560863,
+        "timestamp_str": "19:29:56.560863",
+        "pid": 22533,
+        "flags": "O_RDWR",
+        "result": "7"
+      },
+      {
+        "device_path": "/dev/apex_0",
+        "access_type": "openat",
+        "timestamp": 70196.585378,
+        "timestamp_str": "19:29:56.585378",
+        "pid": 22533,
+        "flags": "O_RDWR",
+        "result": "21"
+      }
+    ],
+    "unique_devices": [
+      "/dev/bus/usb",
+      "/dev/apex_0"
+    ],
+    "total_accesses": 8,
+    "unique_device_count": 2
   }
 }

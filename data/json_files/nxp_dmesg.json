@@ -1,11 +1,12 @@
 {
   "metadata": {
     "parser_version": "2.0.0",
-    "parsed_at": "2025-08-04T19:09:01.914032",
+    "parsed_at": "2025-08-05T16:53:42.105280",
     "log_file": "data/logs/nxp/nxp_dmesg_dma_userapi_dmafilefuncs_ioctl.log",
     "total_lines": 51128,
-    "parsed_lines": 49550,
-    "unique_entries": 52
+    "parsed_lines": 51121,
+    "unique_entries": 52,
+    "strace_log": "data/logs/nxp/nxp_strace.log"
   },
   "function_entries": [
     {
@@ -707,7 +708,25 @@
       "line_number": 281,
       "first_seen_timestamp": 1754247869.201991,
       "first_seen_time_str": "19:04:29,201991",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryAttach",
+        "gckOS_WrapMemory",
+        "gckVIDMEM_NODE_WrapUserMemory",
+        "gckKERNEL_Dispatch",
+        "gckDEVICE_Dispatch",
+        "drv_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int\nimport_page_map(gckOS           Os,\n                struct device  *dev,\n                struct um_desc *um,\n                unsigned long   addr,\n                size_t          page_count,\n                size_t          size,\n                unsigned long   flags)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function import_page_map at %s:%d\\n\", __FILE__, __LINE__);\n    int           i;\n    int           result;\n    struct page **pages;\n\n    if ((addr & (cache_line_size() - 1)) || (size & (cache_line_size() - 1)))\n        /* Not cpu cacheline size aligned, can not support. */\n        return -EINVAL;\n\n    pages = kcalloc(page_count, sizeof(void *), GFP_KERNEL | gcdNOWARN);\n    if (!pages)\n        return -ENOMEM;\n\n    down_read(&current_mm_mmap_sem);\n\n#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 6, 0)\n    result = pin_user_pages(addr & PAGE_MASK, page_count,\n#elif LINUX_VERSION_CODE < KERNEL_VERSION(4, 6, 0)\n    result = get_user_pages(current, current->mm, addr & PAGE_MASK, page_count,\n#else\n    result = get_user_pages(addr & PAGE_MASK, page_count,\n#endif\n#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0) || defined(CONFIG_PPC)\n                            (flags & VM_WRITE) ? FOLL_WRITE : 0,\n#else\n                            (flags & VM_WRITE) ? 1 : 0, 0,\n#endif\n#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0)\n                            pages);\n#else\n                            pages, NULL);\n#endif\n\n    up_read(&current_mm_mmap_sem);\n\n    if (result < page_count) {\n        for (i = 0; i < result; i++) {\n            if (pages[i])\n#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 6, 0)\n                unpin_user_page(pages[i]);\n#else\n                put_page(pages[i]);\n#endif\n        }\n\n        kfree(pages);\n        return -ENODEV;\n    }\n\n    um->chunk_count = 1;\n    for (i = 1; i < page_count; i++) {\n        if (page_to_pfn(pages[i]) != page_to_pfn(pages[i - 1]) + 1)\n            ++um->chunk_count;\n    }\n\n    if (gcmIS_SUCCESS(phy_is_from_reserved(Os, (gctPHYS_ADDR_T)page_to_pfn(pages[0]) << PAGE_SHIFT)))\n        um->alloc_from_res = 1;\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_map_sg from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_map_sg called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_map_sg\\n\");\n    if (!um->alloc_from_res) {\n#if gcdUSE_LINUX_SG_TABLE_API\n        result = sg_alloc_table_from_pages(&um->sgt, pages, page_count,\n                                           addr & ~PAGE_MASK, size,\n                                           GFP_KERNEL | gcdNOWARN);\n\n#else\n        result = alloc_sg_list_from_pages(&um->sgt.sgl, pages, page_count,\n                                      addr & ~PAGE_MASK, size, &um->sgt.nents);\n\n        um->sgt.orig_nents = um->sgt.nents;\n#endif\n        if (unlikely(result < 0)) {\n            pr_warn(\"[galcore]: %s: sg_alloc_table_from_pages failed\\n\", __func__);\n            goto error;\n        }\n\n        result = dma_map_sg(dev, um->sgt.sgl, um->sgt.nents, DMA_TO_DEVICE);\n        if (unlikely(result != um->sgt.nents)) {\n            pr_warn(\"[galcore]: %s: dma_map_sg failed\\n\", __func__);\n            goto error;\n        }\n\n        if (Os->iommu)\n            um->dmaHandle = sg_dma_address(um->sgt.sgl);\n\n        dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, DMA_FROM_DEVICE);\n    }\n\n    um->type  = UM_PAGE_MAP;\n    um->pages = pages;\n\n    return 0;\n\nerror:\n#if gcdUSE_LINUX_SG_TABLE_API\n    sg_free_table(&um->sgt);\n#else\n    kfree(um->sgt.sgl);\n#endif\n\n    kfree(pages);\n\n    return result;\n}",
       "call_count": 4
     },
@@ -718,7 +737,25 @@
       "line_number": 285,
       "first_seen_timestamp": 1754247869.202235,
       "first_seen_time_str": "19:04:29,202235",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryAttach",
+        "gckOS_WrapMemory",
+        "gckVIDMEM_NODE_WrapUserMemory",
+        "gckKERNEL_Dispatch",
+        "gckDEVICE_Dispatch",
+        "drv_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int\nimport_page_map(gckOS           Os,\n                struct device  *dev,\n                struct um_desc *um,\n                unsigned long   addr,\n                size_t          page_count,\n                size_t          size,\n                unsigned long   flags)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function import_page_map at %s:%d\\n\", __FILE__, __LINE__);\n    int           i;\n    int           result;\n    struct page **pages;\n\n    if ((addr & (cache_line_size() - 1)) || (size & (cache_line_size() - 1)))\n        /* Not cpu cacheline size aligned, can not support. */\n        return -EINVAL;\n\n    pages = kcalloc(page_count, sizeof(void *), GFP_KERNEL | gcdNOWARN);\n    if (!pages)\n        return -ENOMEM;\n\n    down_read(&current_mm_mmap_sem);\n\n#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 6, 0)\n    result = pin_user_pages(addr & PAGE_MASK, page_count,\n#elif LINUX_VERSION_CODE < KERNEL_VERSION(4, 6, 0)\n    result = get_user_pages(current, current->mm, addr & PAGE_MASK, page_count,\n#else\n    result = get_user_pages(addr & PAGE_MASK, page_count,\n#endif\n#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0) || defined(CONFIG_PPC)\n                            (flags & VM_WRITE) ? FOLL_WRITE : 0,\n#else\n                            (flags & VM_WRITE) ? 1 : 0, 0,\n#endif\n#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0)\n                            pages);\n#else\n                            pages, NULL);\n#endif\n\n    up_read(&current_mm_mmap_sem);\n\n    if (result < page_count) {\n        for (i = 0; i < result; i++) {\n            if (pages[i])\n#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 6, 0)\n                unpin_user_page(pages[i]);\n#else\n                put_page(pages[i]);\n#endif\n        }\n\n        kfree(pages);\n        return -ENODEV;\n    }\n\n    um->chunk_count = 1;\n    for (i = 1; i < page_count; i++) {\n        if (page_to_pfn(pages[i]) != page_to_pfn(pages[i - 1]) + 1)\n            ++um->chunk_count;\n    }\n\n    if (gcmIS_SUCCESS(phy_is_from_reserved(Os, (gctPHYS_ADDR_T)page_to_pfn(pages[0]) << PAGE_SHIFT)))\n        um->alloc_from_res = 1;\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_map_sg from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_map_sg called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_map_sg\\n\");\n    if (!um->alloc_from_res) {\n#if gcdUSE_LINUX_SG_TABLE_API\n        result = sg_alloc_table_from_pages(&um->sgt, pages, page_count,\n                                           addr & ~PAGE_MASK, size,\n                                           GFP_KERNEL | gcdNOWARN);\n\n#else\n        result = alloc_sg_list_from_pages(&um->sgt.sgl, pages, page_count,\n                                      addr & ~PAGE_MASK, size, &um->sgt.nents);\n\n        um->sgt.orig_nents = um->sgt.nents;\n#endif\n        if (unlikely(result < 0)) {\n            pr_warn(\"[galcore]: %s: sg_alloc_table_from_pages failed\\n\", __func__);\n            goto error;\n        }\n\n        result = dma_map_sg(dev, um->sgt.sgl, um->sgt.nents, DMA_TO_DEVICE);\n        if (unlikely(result != um->sgt.nents)) {\n            pr_warn(\"[galcore]: %s: dma_map_sg failed\\n\", __func__);\n            goto error;\n        }\n\n        if (Os->iommu)\n            um->dmaHandle = sg_dma_address(um->sgt.sgl);\n\n        dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, DMA_FROM_DEVICE);\n    }\n\n    um->type  = UM_PAGE_MAP;\n    um->pages = pages;\n\n    return 0;\n\nerror:\n#if gcdUSE_LINUX_SG_TABLE_API\n    sg_free_table(&um->sgt);\n#else\n    kfree(um->sgt.sgl);\n#endif\n\n    kfree(pages);\n\n    return result;\n}",
       "call_count": 4
     },
@@ -729,7 +766,25 @@
       "line_number": 953,
       "first_seen_timestamp": 1754247869.203939,
       "first_seen_time_str": "19:04:29,203939",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryCache",
+        "_CacheOperation",
+        "gckOS_CacheFlush",
+        "gckKERNEL_Dispatch",
+        "gckDEVICE_Dispatch",
+        "drv_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static gceSTATUS\n_UserMemoryCache(IN gckALLOCATOR      Allocator,\n                 IN PLINUX_MDL        Mdl,\n                 IN gctSIZE_T         Offset,\n                 IN gctPOINTER        Logical,\n                 IN gctSIZE_T         Bytes,\n                 IN gceCACHEOPERATION Operation)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function _UserMemoryCache at %s:%d\\n\", __FILE__, __LINE__);\n    struct um_desc         *um  = Mdl->priv;\n    enum dma_data_direction dir;\n    struct device          *dev = (struct device *)Mdl->device;\n\n    if (um->type == UM_PHYSICAL_MAP || um->alloc_from_res) {\n        _MemoryBarrier();\n        return gcvSTATUS_OK;\n    }\n\n    if (um->type == UM_PFN_MAP && um->pfns_valid == 0) {\n        _MemoryBarrier();\n        return gcvSTATUS_OK;\n    }\n\n#ifdef CONFIG_ARM\n    /* coherent cache in case vivt or vipt-aliasing cache. */\n    __cpuc_flush_user_range(um->user_vaddr,\n                            um->user_vaddr + um->size,\n                            um->vm_flags);\n#endif\n\n    switch (Operation) {\n    case gcvCACHE_CLEAN:\n        dir = DMA_TO_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n        dma_sync_sg_for_device(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    case gcvCACHE_FLUSH:\n        dir = DMA_TO_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n        dma_sync_sg_for_device(dev, um->sgt.sgl, um->sgt.nents, dir);\n        dir = DMA_FROM_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n        dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    case gcvCACHE_INVALIDATE:\n        dir = DMA_FROM_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n        dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    default:\n        return gcvSTATUS_INVALID_ARGUMENT;\n    }\n\n    return gcvSTATUS_OK;\n}",
       "call_count": 15
     },
@@ -740,7 +795,25 @@
       "line_number": 959,
       "first_seen_timestamp": 1754247869.204153,
       "first_seen_time_str": "19:04:29,204153",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryCache",
+        "_CacheOperation",
+        "gckOS_CacheFlush",
+        "gckKERNEL_Dispatch",
+        "gckDEVICE_Dispatch",
+        "drv_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static gceSTATUS\n_UserMemoryCache(IN gckALLOCATOR      Allocator,\n                 IN PLINUX_MDL        Mdl,\n                 IN gctSIZE_T         Offset,\n                 IN gctPOINTER        Logical,\n                 IN gctSIZE_T         Bytes,\n                 IN gceCACHEOPERATION Operation)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function _UserMemoryCache at %s:%d\\n\", __FILE__, __LINE__);\n    struct um_desc         *um  = Mdl->priv;\n    enum dma_data_direction dir;\n    struct device          *dev = (struct device *)Mdl->device;\n\n    if (um->type == UM_PHYSICAL_MAP || um->alloc_from_res) {\n        _MemoryBarrier();\n        return gcvSTATUS_OK;\n    }\n\n    if (um->type == UM_PFN_MAP && um->pfns_valid == 0) {\n        _MemoryBarrier();\n        return gcvSTATUS_OK;\n    }\n\n#ifdef CONFIG_ARM\n    /* coherent cache in case vivt or vipt-aliasing cache. */\n    __cpuc_flush_user_range(um->user_vaddr,\n                            um->user_vaddr + um->size,\n                            um->vm_flags);\n#endif\n\n    switch (Operation) {\n    case gcvCACHE_CLEAN:\n        dir = DMA_TO_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n        dma_sync_sg_for_device(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    case gcvCACHE_FLUSH:\n        dir = DMA_TO_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n        dma_sync_sg_for_device(dev, um->sgt.sgl, um->sgt.nents, dir);\n        dir = DMA_FROM_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n        dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    case gcvCACHE_INVALIDATE:\n        dir = DMA_FROM_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n        dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    default:\n        return gcvSTATUS_INVALID_ARGUMENT;\n    }\n\n    return gcvSTATUS_OK;\n}",
       "call_count": 15
     },
@@ -751,7 +824,25 @@
       "line_number": 967,
       "first_seen_timestamp": 1754247869.204544,
       "first_seen_time_str": "19:04:29,204544",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryCache",
+        "_CacheOperation",
+        "gckOS_CacheInvalidate",
+        "gckKERNEL_Dispatch",
+        "gckDEVICE_Dispatch",
+        "drv_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static gceSTATUS\n_UserMemoryCache(IN gckALLOCATOR      Allocator,\n                 IN PLINUX_MDL        Mdl,\n                 IN gctSIZE_T         Offset,\n                 IN gctPOINTER        Logical,\n                 IN gctSIZE_T         Bytes,\n                 IN gceCACHEOPERATION Operation)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function _UserMemoryCache at %s:%d\\n\", __FILE__, __LINE__);\n    struct um_desc         *um  = Mdl->priv;\n    enum dma_data_direction dir;\n    struct device          *dev = (struct device *)Mdl->device;\n\n    if (um->type == UM_PHYSICAL_MAP || um->alloc_from_res) {\n        _MemoryBarrier();\n        return gcvSTATUS_OK;\n    }\n\n    if (um->type == UM_PFN_MAP && um->pfns_valid == 0) {\n        _MemoryBarrier();\n        return gcvSTATUS_OK;\n    }\n\n#ifdef CONFIG_ARM\n    /* coherent cache in case vivt or vipt-aliasing cache. */\n    __cpuc_flush_user_range(um->user_vaddr,\n                            um->user_vaddr + um->size,\n                            um->vm_flags);\n#endif\n\n    switch (Operation) {\n    case gcvCACHE_CLEAN:\n        dir = DMA_TO_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n        dma_sync_sg_for_device(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    case gcvCACHE_FLUSH:\n        dir = DMA_TO_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n        dma_sync_sg_for_device(dev, um->sgt.sgl, um->sgt.nents, dir);\n        dir = DMA_FROM_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n        dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    case gcvCACHE_INVALIDATE:\n        dir = DMA_FROM_DEVICE;\n        printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n        dma_sync_sg_for_cpu(dev, um->sgt.sgl, um->sgt.nents, dir);\n        break;\n    default:\n        return gcvSTATUS_INVALID_ARGUMENT;\n    }\n\n    return gcvSTATUS_OK;\n}",
       "call_count": 27
     },
@@ -762,9 +853,25 @@
       "line_number": 755,
       "first_seen_timestamp": 1754247876.055511,
       "first_seen_time_str": "19:04:36,055511",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryFree",
+        "_DestroyMdl.isra.0",
+        "gckOS_FreePagedMemory",
+        "gckVIDMEM_Free.isra.0",
+        "gckVIDMEM_NODE_DereferenceEx",
+        "gckEVENT_Notify",
+        "gckHARDWARE_Notify",
+        "gckKERNEL_Notify",
+        "threadRoutine",
+        "kthread",
+        "ret_from_fork"
+      ],
       "function_code": "static void\nrelease_page_map(gckOS Os, struct device *dev, struct um_desc *um)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function release_page_map at %s:%d\\n\", __FILE__, __LINE__);\n    int i;\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n    dma_sync_sg_for_device(dev, um->sgt.sgl,\n                           um->sgt.nents, DMA_TO_DEVICE);\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n    dma_sync_sg_for_cpu(dev, um->sgt.sgl,\n                        um->sgt.nents, DMA_FROM_DEVICE);\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_unmap_sg from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_unmap_sg called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_unmap_sg\\n\");\n    dma_unmap_sg(dev, um->sgt.sgl,\n                 um->sgt.nents, DMA_FROM_DEVICE);\n\n    um->dmaHandle = 0;\n\n#if gcdUSE_LINUX_SG_TABLE_API\n    sg_free_table(&um->sgt);\n#else\n    kfree(um->sgt.sgl);\n#endif\n\n    for (i = 0; i < um->pageCount; i++) {\n        if (!PageReserved(um->pages[i]))\n            SetPageDirty(um->pages[i]);\n\n#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 6, 0)\n        unpin_user_page(um->pages[i]);\n#else\n        put_page(um->pages[i]);\n#endif\n    }\n\n    kfree(um->pages);\n}",
-      "call_count": 3
+      "call_count": 2
     },
     {
       "dma_function": "dma_sync_sg_for_cpu",
@@ -773,7 +880,34 @@
       "line_number": 762,
       "first_seen_timestamp": 1754247876.055671,
       "first_seen_time_str": "19:04:36,055671",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryFree",
+        "_DestroyMdl.isra.0",
+        "gckOS_FreePagedMemory",
+        "gckVIDMEM_Free.isra.0",
+        "gckVIDMEM_NODE_DereferenceEx",
+        "gckEVENT_Notify",
+        "gckHARDWARE_Notify",
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryFree",
+        "_DestroyMdl.isra.0",
+        "gckOS_FreePagedMemory",
+        "gckVIDMEM_Free.isra.0",
+        "gckVIDMEM_NODE_DereferenceEx",
+        "gckEVENT_Notify",
+        "gckHARDWARE_Notify",
+        "gckKERNEL_Notify",
+        "threadRoutine",
+        "kthread",
+        "ret_from_fork"
+      ],
       "function_code": "static void\nrelease_page_map(gckOS Os, struct device *dev, struct um_desc *um)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function release_page_map at %s:%d\\n\", __FILE__, __LINE__);\n    int i;\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n    dma_sync_sg_for_device(dev, um->sgt.sgl,\n                           um->sgt.nents, DMA_TO_DEVICE);\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n    dma_sync_sg_for_cpu(dev, um->sgt.sgl,\n                        um->sgt.nents, DMA_FROM_DEVICE);\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_unmap_sg from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_unmap_sg called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_unmap_sg\\n\");\n    dma_unmap_sg(dev, um->sgt.sgl,\n                 um->sgt.nents, DMA_FROM_DEVICE);\n\n    um->dmaHandle = 0;\n\n#if gcdUSE_LINUX_SG_TABLE_API\n    sg_free_table(&um->sgt);\n#else\n    kfree(um->sgt.sgl);\n#endif\n\n    for (i = 0; i < um->pageCount; i++) {\n        if (!PageReserved(um->pages[i]))\n            SetPageDirty(um->pages[i]);\n\n#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 6, 0)\n        unpin_user_page(um->pages[i]);\n#else\n        put_page(um->pages[i]);\n#endif\n    }\n\n    kfree(um->pages);\n}",
       "call_count": 4
     },
@@ -784,7 +918,23 @@
       "line_number": 769,
       "first_seen_timestamp": 1754247876.05818,
       "first_seen_time_str": "19:04:36,058180",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "_UserMemoryFree",
+        "_DestroyMdl.isra.0",
+        "gckOS_FreePagedMemory",
+        "gckVIDMEM_Free.isra.0",
+        "gckVIDMEM_NODE_DereferenceEx",
+        "gckEVENT_Notify",
+        "gckHARDWARE_Notify",
+        "gckKERNEL_Notify",
+        "threadRoutine",
+        "kthread",
+        "ret_from_fork"
+      ],
       "function_code": "static void\nrelease_page_map(gckOS Os, struct device *dev, struct um_desc *um)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function release_page_map at %s:%d\\n\", __FILE__, __LINE__);\n    int i;\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_device from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_device called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_device\\n\");\n    dma_sync_sg_for_device(dev, um->sgt.sgl,\n                           um->sgt.nents, DMA_TO_DEVICE);\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_sync_sg_for_cpu from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_sync_sg_for_cpu called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_sync_sg_for_cpu\\n\");\n    dma_sync_sg_for_cpu(dev, um->sgt.sgl,\n                        um->sgt.nents, DMA_FROM_DEVICE);\n\n    printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_unmap_sg from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_unmap_sg called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_unmap_sg\\n\");\n    dma_unmap_sg(dev, um->sgt.sgl,\n                 um->sgt.nents, DMA_FROM_DEVICE);\n\n    um->dmaHandle = 0;\n\n#if gcdUSE_LINUX_SG_TABLE_API\n    sg_free_table(&um->sgt);\n#else\n    kfree(um->sgt.sgl);\n#endif\n\n    for (i = 0; i < um->pageCount; i++) {\n        if (!PageReserved(um->pages[i]))\n            SetPageDirty(um->pages[i]);\n\n#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 6, 0)\n        unpin_user_page(um->pages[i]);\n#else\n        put_page(um->pages[i]);\n#endif\n    }\n\n    kfree(um->pages);\n}",
       "call_count": 2
     }
@@ -897,17 +1047,50 @@
     "unique_user_copy_operations": 5,
     "unique_ioctl_operations": 3,
     "total_function_entries_found": 25094,
-    "total_dma_operations_found": 74,
+    "total_dma_operations_found": 73,
     "total_user_copy_operations_found": 10473,
     "total_ioctl_operations_found": 3418,
     "function_entries_found": 25094,
-    "dma_operations_found": 74,
+    "dma_operations_found": 73,
     "user_copy_operations_found": 10473,
     "ioctl_operations_found": 3418,
     "files_with_functions_entrypoint_instrumented": 2,
     "total_files": 51,
     "files_need_analysis": 4,
     "files_instrumented_with_function_entries": 2,
-    "total_duplicates_skipped": 39007
+    "total_duplicates_skipped": 39006
+  },
+  "memory_info": {
+    "reserved_memory": [],
+    "memory_zones": [],
+    "memory_nodes": [],
+    "total_reserved_memory_kb": 0,
+    "cma_pools": [],
+    "dma_pools": [],
+    "summary": {
+      "total_reserved_entries": 0,
+      "total_zones": 0,
+      "total_nodes": 0,
+      "total_cma_pools": 0,
+      "total_dma_pools": 0
+    }
+  },
+  "device_info": {
+    "device_accesses": [
+      {
+        "device_path": "/dev/galcore",
+        "access_type": "openat",
+        "timestamp": 68669.256421,
+        "timestamp_str": "19:04:29.256421",
+        "pid": 19795,
+        "flags": "O_RDWR",
+        "result": "4"
+      }
+    ],
+    "unique_devices": [
+      "/dev/galcore"
+    ],
+    "total_accesses": 1,
+    "unique_device_count": 1
   }
 }

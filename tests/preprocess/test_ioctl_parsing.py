@@ -6,7 +6,7 @@ import os
 # Add the src directory to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from preprocess.core.engine import KernelLogParserEngine
+from src.preprocess.core.engine import KernelLogParserEngine
 
 def test_ioctl_parsing():
     """Test IOCTL log parsing with sample data."""

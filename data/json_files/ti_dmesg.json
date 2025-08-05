@@ -1,11 +1,12 @@
 {
   "metadata": {
     "parser_version": "2.0.0",
-    "parsed_at": "2025-08-04T13:35:08.557693",
+    "parsed_at": "2025-08-05T16:53:43.666750",
     "log_file": "data/logs/ti/ti_dmesg_dma_userapi_dmafilefuncs_ioctl.log",
     "total_lines": 1697,
-    "parsed_lines": 527,
-    "unique_entries": 41
+    "parsed_lines": 1697,
+    "unique_entries": 41,
+    "strace_log": "data/logs/ti/ti_strace.log"
   },
   "function_entries": [
     {
@@ -308,7 +309,21 @@
       "line_number": 319,
       "first_seen_timestamp": 1754251901.935449,
       "first_seen_time_str": "20:11:41,935449",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "carveout_dma_heap_allocate",
+        "dma_heap_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static struct dma_buf *carveout_dma_heap_allocate(struct dma_heap *heap,\n\t\t\t\t\t\t  unsigned long len,\n\t\t\t\t\t\t  unsigned long fd_flags,\n\t\t\t\t\t\t  unsigned long heap_flags)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function carveout_dma_heap_allocate at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct carveout_dma_heap *carveout_dma_heap = dma_heap_get_drvdata(heap);\n\tstruct carveout_dma_heap_buffer *buffer;\n\n\tDEFINE_DMA_BUF_EXPORT_INFO(exp_info);\n\tstruct dma_buf *dmabuf;\n\tint ret = 0;\n\n\tbuffer = kzalloc(sizeof(*buffer), GFP_KERNEL);\n\tif (!buffer)\n\t\treturn ERR_PTR(ret);\n\tbuffer->pool = carveout_dma_heap->pool;\n\tbuffer->cached = carveout_dma_heap->cached;\n\tINIT_LIST_HEAD(&buffer->attachments);\n\tmutex_init(&buffer->attachments_lock);\n\tmutex_init(&buffer->vmap_lock);\n\tbuffer->len = len;\n\n\tbuffer->paddr = gen_pool_alloc(buffer->pool, buffer->len);\n\tif (!buffer->paddr) {\n\t\tret = -ENOMEM;\n\t\tgoto free_buffer;\n\t}\n\n\t/* create the dmabuf */\n\texp_info.exp_name = dma_heap_get_name(heap);\n\texp_info.ops = &carveout_dma_heap_buf_ops;\n\texp_info.size = buffer->len;\n\texp_info.flags = fd_flags;\n\texp_info.priv = buffer;\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_export called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_export\\n\");\n\tdmabuf = dma_buf_export(&exp_info);\n\tif (IS_ERR(dmabuf)) {\n\t\tret = PTR_ERR(dmabuf);\n\t\tgoto free_pool;\n\t}\n\n\treturn dmabuf;\n\nfree_pool:\n\tgen_pool_free(buffer->pool, buffer->paddr, buffer->len);\nfree_buffer:\n\tkfree(buffer);\n\n\treturn ERR_PTR(ret);\n}",
       "call_count": 9
     },
@@ -319,7 +334,20 @@
       "line_number": 80,
       "first_seen_timestamp": 1754251902.029144,
       "first_seen_time_str": "20:11:42,029144",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "dma_heap_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int dma_heap_buffer_alloc(struct dma_heap *heap, size_t len,\n\t\t\t\t unsigned int fd_flags,\n\t\t\t\t unsigned int heap_flags)\n{\n\tstruct dma_buf *dmabuf;\n\tint fd;\n\n\t/*\n\t * Allocations from all heaps have to begin\n\t * and end on page boundaries.\n\t */\n\tlen = PAGE_ALIGN(len);\n\tif (!len)\n\t\treturn -EINVAL;\n\n\tdmabuf = heap->ops->allocate(heap, len, fd_flags, heap_flags);\n\tif (IS_ERR(dmabuf))\n\t\treturn PTR_ERR(dmabuf);\n\n\tfd = dma_buf_fd(dmabuf, fd_flags);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (fd < 0) {\n\t\tdma_buf_put(dmabuf);\n\t\t/* just return, as put will call release and that will free */\n\t}\n\treturn fd;\n}",
       "call_count": 9
     },
@@ -330,7 +358,20 @@
       "line_number": 89,
       "first_seen_timestamp": 1754251902.175235,
       "first_seen_time_str": "20:11:42,175235",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "dma_buf_phys_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phys)\n{\n\tstruct device *dev = priv->dev;\n\tstruct dma_buf *dma_buf;\n\tstruct dma_buf_attachment *attachment;\n\tstruct sg_table *sgt;\n\tdma_addr_t dma_addr;\n\tint ret;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_get from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_get called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_get\\n\");\n\tdma_buf = dma_buf_get(fd);\n\tif (IS_ERR(dma_buf))\n\t\treturn PTR_ERR(dma_buf);\n\n\t/* Attach as the parent device as it will have the correct DMA ops set */\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_attach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_attach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_attach\\n\");\n\tattachment = dma_buf_attach(dma_buf, dev->parent);\n\tif (IS_ERR(attachment)) {\n\t\tret = PTR_ERR(attachment);\n\t\tgoto fail_put;\n\t}\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_map_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_map_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_map_attachment\\n\");\n\tsgt = dma_buf_map_attachment(attachment, DMA_BIDIRECTIONAL);\n\tif (IS_ERR(sgt)) {\n\t\tret = PTR_ERR(sgt);\n\t\tgoto fail_detach;\n\t}\n\n\t/* Without PAT only physically contiguous buffers can be supported */\n\tif (sgt->orig_nents != 1) {\n\t\tdev_err(dev, \"DMA-BUF not contiguous\\n\");\n\t\tret = -EINVAL;\n\t\tgoto fail_unmap;\n\t}\n\n\tdma_addr = sg_dma_address(sgt->sgl);\n\n\t*phys = dma_addr;\n\n\tpriv->dma_buf = dma_buf;\n\tpriv->attachment = attachment;\n\tpriv->sgt = sgt;\n\n\treturn 0;\n\nfail_unmap:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tdma_buf_unmap_attachment(attachment, sgt, DMA_BIDIRECTIONAL);\nfail_detach:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tdma_buf_detach(dma_buf, attachment);\nfail_put:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tdma_buf_put(dma_buf);\n\n\treturn ret;\n}",
       "call_count": 9
     },
@@ -341,7 +382,20 @@
       "line_number": 98,
       "first_seen_timestamp": 1754251902.260737,
       "first_seen_time_str": "20:11:42,260737",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "dma_buf_phys_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phys)\n{\n\tstruct device *dev = priv->dev;\n\tstruct dma_buf *dma_buf;\n\tstruct dma_buf_attachment *attachment;\n\tstruct sg_table *sgt;\n\tdma_addr_t dma_addr;\n\tint ret;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_get from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_get called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_get\\n\");\n\tdma_buf = dma_buf_get(fd);\n\tif (IS_ERR(dma_buf))\n\t\treturn PTR_ERR(dma_buf);\n\n\t/* Attach as the parent device as it will have the correct DMA ops set */\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_attach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_attach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_attach\\n\");\n\tattachment = dma_buf_attach(dma_buf, dev->parent);\n\tif (IS_ERR(attachment)) {\n\t\tret = PTR_ERR(attachment);\n\t\tgoto fail_put;\n\t}\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_map_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_map_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_map_attachment\\n\");\n\tsgt = dma_buf_map_attachment(attachment, DMA_BIDIRECTIONAL);\n\tif (IS_ERR(sgt)) {\n\t\tret = PTR_ERR(sgt);\n\t\tgoto fail_detach;\n\t}\n\n\t/* Without PAT only physically contiguous buffers can be supported */\n\tif (sgt->orig_nents != 1) {\n\t\tdev_err(dev, \"DMA-BUF not contiguous\\n\");\n\t\tret = -EINVAL;\n\t\tgoto fail_unmap;\n\t}\n\n\tdma_addr = sg_dma_address(sgt->sgl);\n\n\t*phys = dma_addr;\n\n\tpriv->dma_buf = dma_buf;\n\tpriv->attachment = attachment;\n\tpriv->sgt = sgt;\n\n\treturn 0;\n\nfail_unmap:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tdma_buf_unmap_attachment(attachment, sgt, DMA_BIDIRECTIONAL);\nfail_detach:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tdma_buf_detach(dma_buf, attachment);\nfail_put:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tdma_buf_put(dma_buf);\n\n\treturn ret;\n}",
       "call_count": 9
     },
@@ -352,7 +406,20 @@
       "line_number": 108,
       "first_seen_timestamp": 1754251902.356163,
       "first_seen_time_str": "20:11:42,356163",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "dma_buf_phys_ioctl",
+        "__arm64_sys_ioctl",
+        "invoke_syscall",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int dma_buf_phys_convert(struct dma_buf_phys_file *priv, int fd, u64 *phys)\n{\n\tstruct device *dev = priv->dev;\n\tstruct dma_buf *dma_buf;\n\tstruct dma_buf_attachment *attachment;\n\tstruct sg_table *sgt;\n\tdma_addr_t dma_addr;\n\tint ret;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_get from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_get called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_get\\n\");\n\tdma_buf = dma_buf_get(fd);\n\tif (IS_ERR(dma_buf))\n\t\treturn PTR_ERR(dma_buf);\n\n\t/* Attach as the parent device as it will have the correct DMA ops set */\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_attach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_attach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_attach\\n\");\n\tattachment = dma_buf_attach(dma_buf, dev->parent);\n\tif (IS_ERR(attachment)) {\n\t\tret = PTR_ERR(attachment);\n\t\tgoto fail_put;\n\t}\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_map_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_map_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_map_attachment\\n\");\n\tsgt = dma_buf_map_attachment(attachment, DMA_BIDIRECTIONAL);\n\tif (IS_ERR(sgt)) {\n\t\tret = PTR_ERR(sgt);\n\t\tgoto fail_detach;\n\t}\n\n\t/* Without PAT only physically contiguous buffers can be supported */\n\tif (sgt->orig_nents != 1) {\n\t\tdev_err(dev, \"DMA-BUF not contiguous\\n\");\n\t\tret = -EINVAL;\n\t\tgoto fail_unmap;\n\t}\n\n\tdma_addr = sg_dma_address(sgt->sgl);\n\n\t*phys = dma_addr;\n\n\tpriv->dma_buf = dma_buf;\n\tpriv->attachment = attachment;\n\tpriv->sgt = sgt;\n\n\treturn 0;\n\nfail_unmap:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tdma_buf_unmap_attachment(attachment, sgt, DMA_BIDIRECTIONAL);\nfail_detach:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tdma_buf_detach(dma_buf, attachment);\nfail_put:\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tdma_buf_put(dma_buf);\n\n\treturn ret;\n}",
       "call_count": 9
     },
@@ -363,7 +430,23 @@
       "line_number": 56,
       "first_seen_timestamp": 1754251906.133183,
       "first_seen_time_str": "20:11:46,133183",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "dma_buf_phys_release",
+        "__fput",
+        "____fput",
+        "task_work_run",
+        "ptrace_notify",
+        "syscall_trace_exit",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int dma_buf_phys_release(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tif (priv->attachment && priv->sgt)\n\t\tdma_buf_unmap_attachment(priv->attachment, priv->sgt, DMA_BIDIRECTIONAL);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tif (priv->dma_buf && priv->attachment)\n\t\tdma_buf_detach(priv->dma_buf, priv->attachment);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (priv->dma_buf)\n\t\tdma_buf_put(priv->dma_buf);\n\n\tkfree(priv);\n\n\treturn 0;\n}",
       "call_count": 9
     },
@@ -374,7 +457,23 @@
       "line_number": 62,
       "first_seen_timestamp": 1754251906.242713,
       "first_seen_time_str": "20:11:46,242713",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "dma_buf_phys_release",
+        "__fput",
+        "____fput",
+        "task_work_run",
+        "ptrace_notify",
+        "syscall_trace_exit",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int dma_buf_phys_release(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tif (priv->attachment && priv->sgt)\n\t\tdma_buf_unmap_attachment(priv->attachment, priv->sgt, DMA_BIDIRECTIONAL);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tif (priv->dma_buf && priv->attachment)\n\t\tdma_buf_detach(priv->dma_buf, priv->attachment);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (priv->dma_buf)\n\t\tdma_buf_put(priv->dma_buf);\n\n\tkfree(priv);\n\n\treturn 0;\n}",
       "call_count": 9
     },
@@ -385,7 +484,23 @@
       "line_number": 68,
       "first_seen_timestamp": 1754251906.348056,
       "first_seen_time_str": "20:11:46,348056",
-      "stack_trace": [],
+      "stack_trace": [
+        "dump_backtrace",
+        "show_stack",
+        "dump_stack_lvl",
+        "dump_stack",
+        "dma_buf_phys_release",
+        "__fput",
+        "____fput",
+        "task_work_run",
+        "ptrace_notify",
+        "syscall_trace_exit",
+        "el0_svc_common.constprop.0",
+        "do_el0_svc",
+        "el0_svc",
+        "el0t_64_sync_handler",
+        "el0t_64_sync"
+      ],
       "function_code": "static int dma_buf_phys_release(struct inode *inode, struct file *file)\n{\n printk(KERN_INFO \"IOCTL_HANDLER: Function dma_buf_phys_release called at %s:%d\\n\", __FILE__, __LINE__);\n\tstruct dma_buf_phys_file *priv = file->private_data;\n\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_unmap_attachment from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_unmap_attachment called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_unmap_attachment\\n\");\n\tif (priv->attachment && priv->sgt)\n\t\tdma_buf_unmap_attachment(priv->attachment, priv->sgt, DMA_BIDIRECTIONAL);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_detach from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_detach called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_detach\\n\");\n\tif (priv->dma_buf && priv->attachment)\n\t\tdma_buf_detach(priv->dma_buf, priv->attachment);\n printk(KERN_INFO \"DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\\n\", __func__, __FILE__, __LINE__);\nprintk(KERN_INFO \"DMA_STACK_START: Stack trace for dma_buf_put called from %s\\n\", __func__);\ndump_stack();\nprintk(KERN_INFO \"DMA_STACK_END: End of stack trace for dma_buf_put\\n\");\n\tif (priv->dma_buf)\n\t\tdma_buf_put(priv->dma_buf);\n\n\tkfree(priv);\n\n\treturn 0;\n}",
       "call_count": 9
     }
@@ -600,5 +715,494 @@
     "files_need_analysis": 7,
     "files_instrumented_with_function_entries": 2,
     "total_duplicates_skipped": 296
+  },
+  "memory_info": {
+    "reserved_memory": [],
+    "memory_zones": [],
+    "memory_nodes": [],
+    "total_reserved_memory_kb": 0,
+    "cma_pools": [],
+    "dma_pools": [],
+    "summary": {
+      "total_reserved_entries": 0,
+      "total_zones": 0,
+      "total_nodes": 0,
+      "total_cma_pools": 0,
+      "total_dma_pools": 0
+    }
+  },
+  "device_info": {
+    "device_accesses": [
+      {
+        "device_path": "/dev/tty",
+        "access_type": "openat",
+        "timestamp": 72701.055236,
+        "timestamp_str": "20:11:41.055236",
+        "pid": 1712,
+        "flags": "O_RDWR|O_NONBLOCK",
+        "result": "3"
+      },
+      {
+        "device_path": "/dev/tty",
+        "access_type": "openat",
+        "timestamp": 72701.09803,
+        "timestamp_str": "20:11:41.098030",
+        "pid": 1715,
+        "flags": "O_RDWR|O_NONBLOCK",
+        "result": "3"
+      },
+      {
+        "device_path": "/dev/mem",
+        "access_type": "openat",
+        "timestamp": 72701.259736,
+        "timestamp_str": "20:11:41.259736",
+        "pid": 1711,
+        "flags": "O_RDWR|O_SYNC",
+        "result": "3"
+      },
+      {
+        "device_path": "/dev/mem",
+        "access_type": "openat",
+        "timestamp": 72701.263527,
+        "timestamp_str": "20:11:41.263527",
+        "pid": 1711,
+        "flags": "O_RDWR|O_SYNC",
+        "result": "4"
+      },
+      {
+        "device_path": "/dev/dma_heap/carveout_vision_apps_shared-memories",
+        "access_type": "openat",
+        "timestamp": 72701.266504,
+        "timestamp_str": "20:11:41.266504",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "5"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl2",
+        "access_type": "openat",
+        "timestamp": 72701.357131,
+        "timestamp_str": "20:11:41.357131",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "7"
+      },
+      {
+        "device_path": "/dev/rpmsg11",
+        "access_type": "openat",
+        "timestamp": 72701.403502,
+        "timestamp_str": "20:11:41.403502",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "7"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl4",
+        "access_type": "openat",
+        "timestamp": 72701.427319,
+        "timestamp_str": "20:11:41.427319",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "9"
+      },
+      {
+        "device_path": "/dev/rpmsg12",
+        "access_type": "openat",
+        "timestamp": 72701.473349,
+        "timestamp_str": "20:11:41.473349",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "9"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl1",
+        "access_type": "openat",
+        "timestamp": 72701.496947,
+        "timestamp_str": "20:11:41.496947",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "11"
+      },
+      {
+        "device_path": "/dev/rpmsg13",
+        "access_type": "openat",
+        "timestamp": 72701.542638,
+        "timestamp_str": "20:11:41.542638",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "11"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl3",
+        "access_type": "openat",
+        "timestamp": 72701.565992,
+        "timestamp_str": "20:11:41.565992",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "13"
+      },
+      {
+        "device_path": "/dev/rpmsg14",
+        "access_type": "openat",
+        "timestamp": 72701.612087,
+        "timestamp_str": "20:11:41.612087",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "13"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl5",
+        "access_type": "openat",
+        "timestamp": 72701.635345,
+        "timestamp_str": "20:11:41.635345",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "15"
+      },
+      {
+        "device_path": "/dev/rpmsg15",
+        "access_type": "openat",
+        "timestamp": 72701.680914,
+        "timestamp_str": "20:11:41.680914",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "15"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl2",
+        "access_type": "openat",
+        "timestamp": 72701.709801,
+        "timestamp_str": "20:11:41.709801",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "18"
+      },
+      {
+        "device_path": "/dev/rpmsg16",
+        "access_type": "openat",
+        "timestamp": 72701.756183,
+        "timestamp_str": "20:11:41.756183",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "18"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl4",
+        "access_type": "openat",
+        "timestamp": 72701.779694,
+        "timestamp_str": "20:11:41.779694",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "20"
+      },
+      {
+        "device_path": "/dev/rpmsg17",
+        "access_type": "openat",
+        "timestamp": 72701.825615,
+        "timestamp_str": "20:11:41.825615",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "20"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl1",
+        "access_type": "openat",
+        "timestamp": 72701.848782,
+        "timestamp_str": "20:11:41.848782",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "22"
+      },
+      {
+        "device_path": "/dev/rpmsg18",
+        "access_type": "openat",
+        "timestamp": 72701.894445,
+        "timestamp_str": "20:11:41.894445",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "22"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl3",
+        "access_type": "openat",
+        "timestamp": 72701.917967,
+        "timestamp_str": "20:11:41.917967",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "24"
+      },
+      {
+        "device_path": "/dev/rpmsg19",
+        "access_type": "openat",
+        "timestamp": 72701.963778,
+        "timestamp_str": "20:11:41.963778",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "24"
+      },
+      {
+        "device_path": "/dev/rpmsg_ctrl5",
+        "access_type": "openat",
+        "timestamp": 72701.986996,
+        "timestamp_str": "20:11:41.986996",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "26"
+      },
+      {
+        "device_path": "/dev/rpmsg20",
+        "access_type": "openat",
+        "timestamp": 72702.032946,
+        "timestamp_str": "20:11:42.032946",
+        "pid": 1711,
+        "flags": "O_RDWR",
+        "result": "26"
+      },
+      {
+        "device_path": "/dev/shm/sem.tiovxsem",
+        "access_type": "openat",
+        "timestamp": 72702.063688,
+        "timestamp_str": "20:11:42.063688",
+        "pid": 1711,
+        "flags": null,
+        "result": "-1"
+      },
+      {
+        "device_path": "/dev/shm/sem.FK1VkN",
+        "access_type": "newfstatat",
+        "timestamp": 72702.063865,
+        "timestamp_str": "20:11:42.063865",
+        "pid": 1711,
+        "flags": null,
+        "result": "-1"
+      },
+      {
+        "device_path": "/dev/shm/sem.FK1VkN",
+        "access_type": "openat",
+        "timestamp": 72702.063936,
+        "timestamp_str": "20:11:42.063936",
+        "pid": 1711,
+        "flags": "O_RDWR|O_CREAT|O_EXCL, 0777",
+        "result": "27"
+      },
+      {
+        "device_path": "/dev/shm/sem.tiovxsem",
+        "access_type": "linkat",
+        "timestamp": 72702.064177,
+        "timestamp_str": "20:11:42.064177",
+        "pid": 1711,
+        "flags": null,
+        "result": "0"
+      },
+      {
+        "device_path": "/dev/shm/sem.FK1VkN",
+        "access_type": "unlinkat",
+        "timestamp": 72702.06432,
+        "timestamp_str": "20:11:42.064320",
+        "pid": 1711,
+        "flags": null,
+        "result": "0"
+      },
+      {
+        "device_path": "/dev/shm/sem.tiovxsem_data_ref",
+        "access_type": "openat",
+        "timestamp": 72702.064456,
+        "timestamp_str": "20:11:42.064456",
+        "pid": 1711,
+        "flags": null,
+        "result": "-1"
+      },
+      {
+        "device_path": "/dev/shm/sem.GrXthN",
+        "access_type": "newfstatat",
+        "timestamp": 72702.064696,
+        "timestamp_str": "20:11:42.064696",
+        "pid": 1711,
+        "flags": null,
+        "result": "-1"
+      },
+      {
+        "device_path": "/dev/shm/sem.GrXthN",
+        "access_type": "openat",
+        "timestamp": 72702.064761,
+        "timestamp_str": "20:11:42.064761",
+        "pid": 1711,
+        "flags": "O_RDWR|O_CREAT|O_EXCL, 0777",
+        "result": "27"
+      },
+      {
+        "device_path": "/dev/shm/sem.tiovxsem_data_ref",
+        "access_type": "linkat",
+        "timestamp": 72702.064968,
+        "timestamp_str": "20:11:42.064968",
+        "pid": 1711,
+        "flags": null,
+        "result": "0"
+      },
+      {
+        "device_path": "/dev/shm/sem.GrXthN",
+        "access_type": "unlinkat",
+        "timestamp": 72702.065103,
+        "timestamp_str": "20:11:42.065103",
+        "pid": 1711,
+        "flags": null,
+        "result": "0"
+      },
+      {
+        "device_path": "/dev/shm/sem.tiovxsem_log_mem",
+        "access_type": "openat",
+        "timestamp": 72702.065214,
+        "timestamp_str": "20:11:42.065214",
+        "pid": 1711,
+        "flags": null,
+        "result": "-1"
+      },
+      {
+        "device_path": "/dev/shm/sem.2L82SB",
+        "access_type": "newfstatat",
+        "timestamp": 72702.065392,
+        "timestamp_str": "20:11:42.065392",
+        "pid": 1711,
+        "flags": null,
+        "result": "-1"
+      },
+      {
+        "device_path": "/dev/shm/sem.2L82SB",
+        "access_type": "openat",
+        "timestamp": 72702.065457,
+        "timestamp_str": "20:11:42.065457",
+        "pid": 1711,
+        "flags": "O_RDWR|O_CREAT|O_EXCL, 0777",
+        "result": "27"
+      },
+      {
+        "device_path": "/dev/shm/sem.tiovxsem_log_mem",
+        "access_type": "linkat",
+        "timestamp": 72702.06566,
+        "timestamp_str": "20:11:42.065660",
+        "pid": 1711,
+        "flags": null,
+        "result": "0"
+      },
+      {
+        "device_path": "/dev/shm/sem.2L82SB",
+        "access_type": "unlinkat",
+        "timestamp": 72702.065793,
+        "timestamp_str": "20:11:42.065793",
+        "pid": 1711,
+        "flags": null,
+        "result": "0"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72702.337085,
+        "timestamp_str": "20:11:42.337085",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "28"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72702.917364,
+        "timestamp_str": "20:11:42.917364",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "30"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72703.50355,
+        "timestamp_str": "20:11:43.503550",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "32"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72704.084427,
+        "timestamp_str": "20:11:44.084427",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "34"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72704.664275,
+        "timestamp_str": "20:11:44.664275",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "36"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72705.244921,
+        "timestamp_str": "20:11:45.244921",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "38"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72705.83125,
+        "timestamp_str": "20:11:45.831250",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "40"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72706.908627,
+        "timestamp_str": "20:11:46.908627",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "30"
+      },
+      {
+        "device_path": "/dev/dma-buf-phys",
+        "access_type": "openat",
+        "timestamp": 72707.488485,
+        "timestamp_str": "20:11:47.488485",
+        "pid": 1711,
+        "flags": "O_RDONLY|O_CLOEXEC",
+        "result": "42"
+      }
+    ],
+    "unique_devices": [
+      "/dev/dma_heap/carveout_vision_apps_shared-memories",
+      "/dev/shm/sem.tiovxsem",
+      "/dev/rpmsg19",
+      "/dev/shm/sem.tiovxsem_log_mem",
+      "/dev/mem",
+      "/dev/rpmsg13",
+      "/dev/rpmsg11",
+      "/dev/rpmsg16",
+      "/dev/rpmsg_ctrl2",
+      "/dev/rpmsg12",
+      "/dev/shm/sem.FK1VkN",
+      "/dev/rpmsg17",
+      "/dev/shm/sem.GrXthN",
+      "/dev/rpmsg15",
+      "/dev/shm/sem.2L82SB",
+      "/dev/rpmsg_ctrl1",
+      "/dev/shm/sem.tiovxsem_data_ref",
+      "/dev/rpmsg14",
+      "/dev/tty",
+      "/dev/dma-buf-phys",
+      "/dev/rpmsg20",
+      "/dev/rpmsg_ctrl4",
+      "/dev/rpmsg18",
+      "/dev/rpmsg_ctrl3",
+      "/dev/rpmsg_ctrl5"
+    ],
+    "total_accesses": 49,
+    "unique_device_count": 25
   }
 }

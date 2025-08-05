@@ -13,8 +13,8 @@ from io import StringIO
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from preprocess.cli import main
-from preprocess.tool import KernelLogParserTool
+from src.preprocess.cli import main
+from src.preprocess.tool import KernelLogParserTool
 
 
 class TestCLIWithIOCTL(unittest.TestCase):
@@ -106,7 +106,7 @@ class TestCLIWithIOCTL(unittest.TestCase):
             if os.path.exists(output_file):
                 os.unlink(output_file)
     
-    @patch('preprocess.tool.KernelLogParserEngine')
+    @patch('src.preprocess.tool.KernelLogParserEngine')
     def test_source_root_passed_to_engine(self, mock_engine_class):
         """Test that source_root parameter is passed to the parsing engine constructor"""
         # Mock the engine class and instance
