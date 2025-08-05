@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from preprocess.core.engine import KernelLogParserEngine
+from src.preprocess.core.engine import KernelLogParserEngine
 
 def test_function_code_extraction_with_ui():
     """Test function code extraction for all types with UI enabled"""

@@ -8,7 +8,7 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from preprocess.core.patterns import LogPatterns
+from src.preprocess.core.patterns import LogPatterns
 
 
 class TestLogPatterns(unittest.TestCase):

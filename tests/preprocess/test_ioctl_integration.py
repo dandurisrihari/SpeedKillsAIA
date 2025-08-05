@@ -12,11 +12,11 @@ from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from preprocess.core.engine import KernelLogParserEngine
-from preprocess.core.models import IOCTLOperation, ParseResults
-from preprocess.parsers.ioctl_parser import IOCTLParser
-from preprocess.utils.function_extractor import FunctionCodeExtractor
-from preprocess.core.patterns import LogPatterns
+from src.preprocess.core.engine import KernelLogParserEngine
+from src.preprocess.core.models import IOCTLOperation, ParseResults
+from src.preprocess.parsers.ioctl_parser import IOCTLParser
+from src.preprocess.utils.function_extractor import FunctionCodeExtractor
+from src.preprocess.core.patterns import LogPatterns
 
 
 class TestIOCTLIntegration(unittest.TestCase):

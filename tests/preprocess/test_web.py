@@ -11,8 +11,8 @@ import json
 from unittest.mock import patch, MagicMock
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from preprocess.web.ui import create_app
-from preprocess.web import ui
+from src.preprocess.web.ui import create_app
+from src.preprocess.web import ui
 
 
 class TestWebUI(unittest.TestCase):

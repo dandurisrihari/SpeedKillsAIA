@@ -17,7 +17,7 @@ from src.preprocess.core.engine import KernelLogParserEngine
 from src.preprocess.core.models import ParseStatistics
 
 # Import the working timestamp parsing tests
-from test_parsers_fixed import TestTimestampParsing
+from tests.preprocess.test_parsers_fixed import TestTimestampParsing
 
 
 class TestNewFeatures(unittest.TestCase):

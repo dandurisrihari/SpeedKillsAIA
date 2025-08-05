@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 import unittest
 from pathlib import Path
-from preprocess.core.engine import KernelLogParserEngine
+from src.preprocess.core.engine import KernelLogParserEngine
 
 
 class TestFunctionCodeExtraction(unittest.TestCase):

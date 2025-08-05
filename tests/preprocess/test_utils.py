@@ -10,11 +10,11 @@ import tempfile
 from unittest.mock import patch, MagicMock
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from preprocess.utils.progress import ProgressUI
-from preprocess.utils.deduplication import KernelLogDeduplicator
-from preprocess.utils.file_tracker import FileTracker
-from preprocess.utils.function_extractor import FunctionCodeExtractor
-from preprocess.core.models import FunctionEntry, DMAOperation, UserCopyOperation, IOCTLOperation, ProcessInfo, ParseResults, ParseMetadata, ParseStatistics
+from src.preprocess.utils.progress import ProgressUI
+from src.preprocess.utils.deduplication import KernelLogDeduplicator
+from src.preprocess.utils.file_tracker import FileTracker
+from src.preprocess.utils.function_extractor import FunctionCodeExtractor
+from src.preprocess.core.models import FunctionEntry, DMAOperation, UserCopyOperation, IOCTLOperation, ProcessInfo, ParseResults, ParseMetadata, ParseStatistics
 
 
 class TestProgressUI(unittest.TestCase):

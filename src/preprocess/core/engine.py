@@ -109,6 +109,7 @@ class KernelLogParserEngine:
         self.user_copy_operations = [] # User-space copy operations
         self.ioctl_operations = []     # IOCTL handler operations
         self.pending_user_copy = None  # For attaching process info to user copy ops
+        self.pending_dma_operation = None  # For attaching stack traces to DMA ops
         
         # Total counters track all entries found before deduplication
         # This helps users understand the total activity vs unique operations
@@ -321,19 +322,29 @@ class KernelLogParserEngine:
                     self.ui.print_operation("", "⚠️  Could not extract function code")
                 
                 self.dma_operations.append(result)
+                # Store for potential stack trace attachment
+                self.pending_dma_operation = result
+            else:
+                # For duplicate operations, find the existing operation to attach stack trace to
+                for existing_op in self.dma_operations:
+                    if (existing_op.dma_function == result.dma_function and 
+                        existing_op.caller_function == result.caller_function and
+                        existing_op.file_path == result.file_path and
+                        existing_op.line_number == result.line_number):
+                        self.pending_dma_operation = existing_op
+                        break
         
         elif isinstance(result, tuple):
             result_type = result[0]
             if result_type == 'stack_end':
-                # Attach stack trace to the most recent matching DMA operation
+                # Attach stack trace to the pending DMA operation
                 _, dma_function, stack_trace = result
-                if self.dma_operations and dma_function and stack_trace:
-                    # Find the most recent DMA operation with matching function name
-                    for i in range(len(self.dma_operations) - 1, -1, -1):
-                        dma_op = self.dma_operations[i]
-                        if dma_op.dma_function == dma_function:
-                            dma_op.stack_trace = stack_trace
-                            break
+                if hasattr(self, 'pending_dma_operation') and self.pending_dma_operation and dma_function and stack_trace:
+                    if self.pending_dma_operation.dma_function == dma_function:
+                        # Only add stack trace if it's not empty and not already present
+                        if stack_trace and not self.pending_dma_operation.stack_trace:
+                            self.pending_dma_operation.stack_trace = stack_trace
+                        self.pending_dma_operation = None  # Clear for next operation
     
     def _handle_user_copy_result(self, result):
         """Handle user copy parser result"""

@@ -38,9 +38,12 @@ class TestFunctionEntryParser(unittest.TestCase):
         success, result = self.parser.parse(line, 156.800000)
         
         self.assertTrue(success)
-        # Parser returns a tuple (FunctionEntry, file_path) 
         self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], FunctionEntry)
+        function_entry, file_path = result
+        self.assertIsInstance(function_entry, FunctionEntry)
+        self.assertEqual(function_entry.function_name, 'some_function')
+        self.assertEqual(file_path, 'drivers/test.c')
+        self.assertEqual(function_entry.line_number, 123)
     
     def test_parse_invalid_line(self):
         """Test parsing invalid line"""
@@ -142,7 +145,7 @@ class TestUserCopyParser(unittest.TestCase):
     
     def test_can_parse(self):
         """Test can_parse method"""
-        valid_line = "[  156.800000] USER_COPY: copy_to_user"
+        valid_line = "[  156.800000] USER_COPY: About to call copy_to_user from function test_func at drivers/test.c:123"
         invalid_line = "This is not a user copy line"
         
         self.assertTrue(self.parser.can_parse(valid_line))
@@ -158,7 +161,7 @@ class TestUserCopyParser(unittest.TestCase):
     
     def test_parse_user_copy(self):
         """Test parsing user copy operation"""
-        line = "[  156.800000] USER_COPY: About to call copy_to_user from function test_function at drivers/test.c:123"
+        line = "[  156.800000] USER_COPY: About to call copy_to_user from function some_function at drivers/test.c:123"
         success, result = self.parser.parse(line, 156.800000)
         
         self.assertTrue(success)
@@ -166,11 +169,10 @@ class TestUserCopyParser(unittest.TestCase):
     
     def test_parse_user_copy_context(self):
         """Test parsing user copy context"""
-        line = "[  156.800000] USER_COPY_CONTEXT: Process PID=1234, COMM=test_process"
+        line = "[  156.800000] USER_COPY_CONTEXT: Process PID=1234, COMM=some_context"
         success, result = self.parser.parse(line, 156.800000)
         
         self.assertTrue(success)
-        # Parser returns ProcessInfo object, not string
         self.assertIsInstance(result, ProcessInfo)
 
 
@@ -184,7 +186,7 @@ class TestIOCTLParser(unittest.TestCase):
     
     def test_can_parse(self):
         """Test can_parse method"""
-        valid_line = "[  156.800000] IOCTL_HANDLER: some_ioctl"
+        valid_line = "[  156.800000] IOCTL_HANDLER: Function some_ioctl called at drivers/test.c:123"
         invalid_line = "This is not an IOCTL line"
         
         self.assertTrue(self.parser.can_parse(valid_line))
@@ -200,16 +202,16 @@ class TestIOCTLParser(unittest.TestCase):
     
     def test_parse_malformed_ioctl_line(self):
         """Test parsing malformed IOCTL line"""
-        line = "[  156.800000] IOCTL_HANDLER: Function test_ioctl called at drivers/test.c:123"
+        line = "[  156.800000] IOCTL_HANDLER: malformed"
         success, result = self.parser.parse(line, 156.800000)
         
-        # Should succeed with proper format
-        self.assertTrue(success)
-        self.assertIsInstance(result, IOCTLOperation)
+        # Should fail for malformed pattern
+        self.assertFalse(success)
+        self.assertIsNone(result)
     
     def test_parse_valid_line(self):
         """Test parsing valid IOCTL line"""
-        line = "[  156.800000] IOCTL_HANDLER: Function gasket_ioctl_handler called at drivers/gasket.c:456"
+        line = "[  156.800000] IOCTL_HANDLER: Function gasket_ioctl_handler called at drivers/test.c:123"
         success, result = self.parser.parse(line, 156.800000)
         
         self.assertTrue(success)
@@ -217,7 +219,7 @@ class TestIOCTLParser(unittest.TestCase):
     
     def test_parse_valid_line_with_different_function(self):
         """Test parsing valid IOCTL line with different function"""
-        line = "[  156.800000] IOCTL_HANDLER: Function different_ioctl_handler called at drivers/other.c:789"
+        line = "[  156.800000] IOCTL_HANDLER: Function different_ioctl_handler called at drivers/different.c:456"
         success, result = self.parser.parse(line, 156.800000)
         
         self.assertTrue(success)
