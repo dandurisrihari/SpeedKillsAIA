@@ -146,6 +146,15 @@ def register_routes(app):
                       if query in ioctl['function_name'].lower() or query in ioctl['file_path'].lower()]
             return jsonify(results)
         
+        elif category == 'devices':
+            device_info = data.get('device_info')
+            if device_info:
+                results = [access for access in device_info.get('device_accesses', [])
+                          if query in access.get('device_path', '').lower() or 
+                          query in access.get('access_type', '').lower()]
+                return jsonify(results)
+            return jsonify([])
+        
         return jsonify({"error": "Invalid category"}), 400
 
     @app.route('/test')
@@ -502,7 +511,7 @@ HTML_TEMPLATE = """
             gap: 15px;
         }
         
-        .dma-item, .copy-item, .ioctl-item {
+        .dma-item, .copy-item, .ioctl-item, .device-item {
             background: white;
             border-radius: 15px;
             padding: 25px;
@@ -514,7 +523,11 @@ HTML_TEMPLATE = """
             overflow: hidden;
         }
         
-        .dma-item::before, .copy-item::before, .ioctl-item::before {
+        .device-item {
+            border-left-color: #9c27b0;
+        }
+        
+        .dma-item::before, .copy-item::before, .ioctl-item::before, .device-item::before {
             content: '';
             position: absolute;
             top: 0;
@@ -525,12 +538,16 @@ HTML_TEMPLATE = """
             border-radius: 0 0 0 100px;
         }
         
-        .dma-item:hover, .copy-item:hover, .ioctl-item:hover {
+        .device-item::before {
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(156, 39, 176, 0.05));
+        }
+        
+        .dma-item:hover, .copy-item:hover, .ioctl-item:hover, .device-item:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         }
         
-        .dma-header, .copy-header, .ioctl-header {
+        .dma-header, .copy-header, .ioctl-header, .device-header {
             font-size: 1.3em;
             font-weight: 600;
             color: #2d3748;
@@ -579,6 +596,143 @@ HTML_TEMPLATE = """
             border-radius: 5px;
             margin-top: 10px;
             border-left: 3px solid #4caf50;
+        }
+        
+        /* Device Access Styles */
+        .device-summary {
+            margin-bottom: 25px;
+        }
+        
+        .access-count {
+            background: linear-gradient(135deg, #9c27b0, #e91e63);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        
+        .device-timeline {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #e9ecef;
+        }
+        
+        .timeline-header {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .timeline-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .timeline-point {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .timeline-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .access-openat .timeline-marker {
+            background: #4caf50;
+        }
+        
+        .access-newfstatat .timeline-marker {
+            background: #2196f3;
+        }
+        
+        .access-generic .timeline-marker {
+            background: #ff9800;
+        }
+        
+        .timeline-tooltip {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .timeline-point:hover .timeline-tooltip {
+            opacity: 1;
+        }
+        
+        .access-details {
+            margin-top: 15px;
+        }
+        
+        .access-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .access-table th {
+            background: #f8f9fa;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .access-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .access-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .access-type {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        
+        .pid {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: #6c757d;
+        }
+        
+        .flags {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: #28a745;
+            font-size: 0.85em;
+        }
+        
+        .result {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: #dc3545;
+            font-size: 0.85em;
         }
         
         .function-code {
@@ -992,40 +1146,40 @@ HTML_TEMPLATE = """
         <div class="header">
             <h1>🔍 Kernel Log Analysis</h1>
             <p>{{ data.metadata.log_file }}</p>
-            <p><strong>Parsed:</strong> {{ data.metadata.parsed_at[:19] }} | <strong>Lines:</strong> {{ data.metadata.total_lines }}</p>
+            <p><strong>Parsed:</strong> {{ data.metadata.get('parsed_at', 'Unknown')[:19] if data.metadata.get('parsed_at') else 'Unknown' }} | <strong>Lines:</strong> {{ data.metadata.get('total_lines', 0) }}</p>
         </div>
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.unique_function_entries }}</div>
+                <div class="stat-number">{{ data.get('statistics', {}).get('unique_function_entries', 0) }}</div>
                 <div class="stat-label">Function Entries</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.unique_dma_operations }}</div>
+                <div class="stat-number">{{ data.get('statistics', {}).get('unique_dma_operations', 0) }}</div>
                 <div class="stat-label">DMA Operations</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.unique_user_copy_operations }}</div>
+                <div class="stat-number">{{ data.get('statistics', {}).get('unique_user_copy_operations', 0) }}</div>
                 <div class="stat-label">User Copy Ops</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.unique_ioctl_operations }}</div>
+                <div class="stat-number">{{ data.get('statistics', {}).get('unique_ioctl_operations', 0) }}</div>
                 <div class="stat-label">IOCTL Handlers</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.total_files or 0 }}</div>
+                <div class="stat-number">{{ data.get('statistics', {}).get('total_files', 0) }}</div>
                 <div class="stat-label">Total Files</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.files_need_analysis or data.statistics.total_files_analyzed or 0 }}</div>
+                <div class="stat-number">{{ data.get('statistics', {}).get('files_need_analysis', data.get('statistics', {}).get('total_files_analyzed', 0)) }}</div>
                 <div class="stat-label">Files need analysis</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.files_with_functions_entrypoint_instrumented or data.statistics.files_instrumented_with_function_entries }}</div>
+                <div class="stat-number">{{ data.get('statistics', {}).get('files_with_functions_entrypoint_instrumented', data.get('statistics', {}).get('files_instrumented_with_function_entries', 0)) }}</div>
                 <div class="stat-label">Files with functions entry Instrumented</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ data.statistics.total_duplicates_skipped }}</div>
+                <div class="stat-number">{{ data.get('statistics', {}).get('total_duplicates_skipped', 0) }}</div>
                 <div class="stat-label">Duplicates Skipped</div>
             </div>
             {% if data.memory_info %}
@@ -1055,6 +1209,7 @@ HTML_TEMPLATE = """
                     <button class="tab" onclick="showTab('dma')">🔄 DMA Operations</button>
                     <button class="tab" onclick="showTab('userCopy')">👤 User Copy</button>
                     <button class="tab" onclick="showTab('ioctl')">🔧 IOCTL Handlers</button>
+                    <button class="tab" onclick="showTab('devices')">📱 Device Access</button>
                     <button class="tab" onclick="showTab('memory')">🧠 Memory Info</button>
                 </div>
                 
@@ -1239,6 +1394,99 @@ HTML_TEMPLATE = """
                             </div>
                             {% endfor %}
                         </div>
+                    </div>
+                </div>
+                
+                <div id="devices" class="tab-content">
+                    <div class="section">
+                        <div class="section-title">Device Access Information</div>
+                        {% if data.device_info %}
+                        
+                        <!-- Device Access Summary -->
+                        <div class="device-summary">
+                            <h3>Device Access Summary</h3>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-number">{{ data.device_info.total_accesses }}</div>
+                                    <div class="stat-label">Total Device Accesses</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">{{ data.device_info.unique_device_count }}</div>
+                                    <div class="stat-label">Unique Devices</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <input type="text" class="search-box" id="deviceSearch" placeholder="🔍 Search devices..." onkeyup="filterDevices()">
+                        
+                        <!-- Device Access List -->
+                        <div id="deviceGrid">
+                            {% set unique_devices = data.device_info.unique_devices %}
+                            {% for device_path in unique_devices %}
+                            {% set device_accesses = data.device_info.device_accesses | selectattr("device_path", "equalto", device_path) | list %}
+                            <div class="device-item">
+                                <div class="device-header">
+                                    📱 {{ device_path }}
+                                    <span class="access-count">{{ device_accesses|length }} accesses</span>
+                                </div>
+                                
+                                <!-- Timeline visualization for this device -->
+                                <div class="device-timeline">
+                                    <div class="timeline-header">Access Timeline</div>
+                                    <div class="timeline-container">
+                                        {% for access in device_accesses %}
+                                        <div class="timeline-point" title="{{ access.timestamp_str }} - {{ access.access_type }} (PID: {{ access.pid }})">
+                                            <div class="timeline-marker access-{{ access.access_type.lower().replace('_', '-') }}"></div>
+                                            <div class="timeline-tooltip">
+                                                <strong>{{ access.timestamp_str }}</strong><br>
+                                                Type: {{ access.access_type }}<br>
+                                                PID: {{ access.pid }}<br>
+                                                {% if access.flags %}Flags: {{ access.flags }}<br>{% endif %}
+                                                {% if access.result %}Result: {{ access.result }}{% endif %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
+                                <!-- Detailed access list -->
+                                <div class="device-details">
+                                    <button class="toggle-btn" onclick="toggleDeviceDetails(this)">Show Access Details</button>
+                                    <div class="access-details hidden">
+                                        <table class="access-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Timestamp</th>
+                                                    <th>Access Type</th>
+                                                    <th>PID</th>
+                                                    <th>Flags</th>
+                                                    <th>Result</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for access in device_accesses %}
+                                                <tr>
+                                                    <td class="timestamp">{{ access.timestamp_str }}</td>
+                                                    <td class="access-type">{{ access.access_type }}</td>
+                                                    <td class="pid">{{ access.pid }}</td>
+                                                    <td class="flags">{{ access.flags or '-' }}</td>
+                                                    <td class="result">{{ access.result or '-' }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        {% else %}
+                        <div class="empty-state">
+                            <p>No device access information found in the log data.</p>
+                            <p>Try running with <code>--strace-log &lt;strace_log_file&gt;</code> to capture device access patterns.</p>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 
@@ -1474,6 +1722,30 @@ HTML_TEMPLATE = """
                 const shouldShow = text.includes(searchTerm);
                 item.style.display = shouldShow ? 'block' : 'none';
             });
+        }
+        
+        function filterDevices() {
+            const searchTerm = document.getElementById('deviceSearch').value.toLowerCase();
+            const deviceItems = document.querySelectorAll('.device-item');
+            
+            deviceItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const shouldShow = text.includes(searchTerm);
+                item.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+        
+        function toggleDeviceDetails(btn) {
+            const details = btn.nextElementSibling;
+            const isHidden = details.classList.contains('hidden');
+            
+            if (isHidden) {
+                details.classList.remove('hidden');
+                btn.textContent = 'Hide Access Details';
+            } else {
+                details.classList.add('hidden');
+                btn.textContent = 'Show Access Details';
+            }
         }
         
         // Lazy loading functions for function code

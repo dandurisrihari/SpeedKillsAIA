@@ -31,7 +31,7 @@ from collections import defaultdict
 from .models import (
     ParseResults, ParseMetadata, ParseStatistics, 
     FunctionEntry, DMAOperation, UserCopyOperation, IOCTLOperation, ProcessInfo,
-    MemoryInfo
+    MemoryInfo, DeviceInfo
 )
 from .patterns import LogPatterns
 from ..parsers.function_parser import FunctionEntryParser
@@ -39,6 +39,7 @@ from ..parsers.dma_parser import DMAParser
 from ..parsers.user_copy_parser import UserCopyParser
 from ..parsers.ioctl_parser import IOCTLParser
 from ..parsers.memory_parser import MemoryParser
+from ..parsers.strace_parser import StraceParser
 from ..utils.progress import ProgressUI
 from ..utils.deduplication import KernelLogDeduplicator
 from ..utils.file_tracker import FileTracker
@@ -476,6 +477,62 @@ class KernelLogParserEngine:
         for ioctl in self.ioctl_operations:
             call_count = self.deduplicator.ioctl_operations.get_call_count(ioctl)
             ioctl.call_count = call_count
+    
+    def parse_strace_log(self, strace_file_path: str) -> Optional[Dict]:
+        """
+        Parse strace log file for device access information
+        
+        Args:
+            strace_file_path: Path to the strace log file
+            
+        Returns:
+            Device info dictionary or None if parsing fails
+        """
+        try:
+            strace_file = Path(strace_file_path)
+            if not strace_file.exists():
+                self.ui.print_message(f"❌ Strace file not found: {strace_file}")
+                return None
+            
+            self.ui.print_message(f"📱 Processing strace log: {strace_file.name}")
+            
+            # Initialize strace parser
+            strace_parser = StraceParser()
+            
+            # First pass: count total lines
+            with open(strace_file, 'r', encoding='utf-8', errors='ignore') as f:
+                total_lines = sum(1 for _ in f)
+            
+            # Process file line by line
+            parsed_lines = 0
+            
+            with open(strace_file, 'r', encoding='utf-8', errors='ignore') as f:
+                for line_num, line in enumerate(f, 1):
+                    # Parse line for device access
+                    success, device_access = strace_parser.parse(line.strip())
+                    if success:
+                        parsed_lines += 1
+                    
+                    # Show progress every 1000 lines or at the end
+                    if line_num % 1000 == 0 or line_num == total_lines:
+                        self.ui.print_progress(line_num, total_lines)
+            
+            device_info = strace_parser.get_device_info()
+            
+            # Print summary
+            self.ui.print_message(f"📱 Strace parsing complete:")
+            self.ui.print_message(f"   • Total lines processed: {total_lines}")
+            self.ui.print_message(f"   • Device accesses found: {len(device_info.device_accesses)}")
+            self.ui.print_message(f"   • Unique devices: {len(device_info.unique_devices)}")
+            
+            if device_info.unique_devices:
+                self.ui.print_message(f"   • Devices: {', '.join(sorted(device_info.unique_devices))}")
+            
+            return device_info.to_dict()
+            
+        except Exception as e:
+            self.ui.print_message(f"❌ Error parsing strace log: {e}")
+            return None
     
     def save_results(self, results: ParseResults, output_file: Path):
         """Save results to JSON file"""

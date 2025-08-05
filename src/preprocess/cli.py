@@ -50,6 +50,10 @@ def create_parser():
         help="Root path to prepend to relative file paths in logs (for function code extraction)"
     )
     parser.add_argument(
+        "--strace-log",
+        help="Path to strace log file for device access analysis (processed after dmesg log)"
+    )
+    parser.add_argument(
         "--quiet", 
         action="store_true",
         help="Suppress output and run quietly"
@@ -85,6 +89,13 @@ def validate_arguments(args):
     if not args.log_file:
         args.log_file = log_file_path
     
+    # Validate strace log if provided
+    if args.strace_log:
+        strace_file = Path(args.strace_log)
+        if not strace_file.exists():
+            print(f"Error: Strace log file not found: {strace_file}", file=sys.stderr)
+            sys.exit(1)
+    
     # Validate output directory if specified
     if args.output:
         output_path = Path(args.output)
@@ -108,8 +119,22 @@ def main():
     engine = KernelLogParserEngine(source_root_path=args.source_root)
     
     try:
-        # Process the log file
+        # Process the main log file
         results = engine.parse_log_file(str(log_file), args.output)
+        
+        # Process strace log if provided
+        if args.strace_log and results:
+            print(f"Processing strace log: {args.strace_log}")
+            strace_results = engine.parse_strace_log(args.strace_log)
+            if strace_results:
+                # Merge strace results into main results
+                results['device_info'] = strace_results
+                # Re-save the combined results if output file was specified
+                if args.output:
+                    import json
+                    output_path = Path(args.output)
+                    with open(output_path, 'w') as f:
+                        json.dump(results, f, indent=2)
         
         if results:
             # Print summary
@@ -120,6 +145,15 @@ def main():
             print(f"DMA Operations: {len(results.get('dma_operations', []))}")
             print(f"User Copy Operations: {len(results.get('user_copy_operations', []))}")
             print(f"IOCTL Operations: {len(results.get('ioctl_operations', []))}")
+            
+            # Device access summary if available
+            device_info = results.get('device_info')
+            if device_info:
+                print(f"Device Accesses: {device_info.get('total_accesses', 0)}")
+                print(f"Unique Devices: {device_info.get('unique_device_count', 0)}")
+                unique_devices = device_info.get('unique_devices', [])
+                if unique_devices:
+                    print(f"Devices: {', '.join(unique_devices)}")
             
             stats = results.get('statistics', {})
             print(f"Total Files: {stats.get('total_files', 0)}")

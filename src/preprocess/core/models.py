@@ -140,6 +140,46 @@ class MemoryNode:
 
 
 @dataclass
+class DeviceAccess:
+    """Represents a device access from strace logs"""
+    device_path: str  # e.g., "/dev/apex_0"
+    access_type: str  # "openat", "newfstatat", etc.
+    timestamp: float
+    timestamp_str: str  # Human-readable timestamp format
+    pid: int
+    flags: Optional[str] = None  # Open flags like "O_RDWR"
+    result: Optional[str] = None  # Return value or error
+    
+    def to_dict(self) -> Dict:
+        """Convert to dictionary for JSON serialization"""
+        return {
+            'device_path': self.device_path,
+            'access_type': self.access_type,
+            'timestamp': self.timestamp,
+            'timestamp_str': self.timestamp_str,
+            'pid': self.pid,
+            'flags': self.flags,
+            'result': self.result
+        }
+
+
+@dataclass
+class DeviceInfo:
+    """Container for device access information"""
+    device_accesses: List[DeviceAccess] = field(default_factory=list)
+    unique_devices: Set[str] = field(default_factory=set)
+    
+    def to_dict(self) -> Dict:
+        """Convert to dictionary for JSON serialization"""
+        return {
+            'device_accesses': [access.to_dict() for access in self.device_accesses],
+            'unique_devices': list(self.unique_devices),
+            'total_accesses': len(self.device_accesses),
+            'unique_device_count': len(self.unique_devices)
+        }
+
+
+@dataclass
 class MemoryInfo:
     """Container for all memory-related information parsed from logs"""
     reserved_memory: List[ReservedMemoryEntry] = field(default_factory=list)
@@ -196,6 +236,7 @@ class ParseResults:
     ioctl_operations: List[IOCTLOperation]
     statistics: ParseStatistics
     memory_info: Optional[MemoryInfo] = None
+    device_info: Optional[DeviceInfo] = None
 
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization"""
@@ -302,5 +343,6 @@ class ParseResults:
                 'files_instrumented_with_function_entries': self.statistics.files_instrumented_with_function_entries,
                 'total_duplicates_skipped': self.statistics.total_duplicates_skipped
             },
-            'memory_info': self.memory_info.to_dict() if self.memory_info else None
+            'memory_info': self.memory_info.to_dict() if self.memory_info else None,
+            'device_info': self.device_info.to_dict() if self.device_info else None
         }
