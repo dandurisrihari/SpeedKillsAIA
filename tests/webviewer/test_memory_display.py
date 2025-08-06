@@ -201,7 +201,7 @@ class TestMemoryDisplay(unittest.TestCase):
             
             # Check memory tab presence
             self.assertIn('🧠 Memory Info', content)
-            self.assertIn('onclick="showTab(\'memory\')"', content)
+            self.assertIn('onclick="showTab(\'memory\', this)"', content)
             
             # Check memory statistics in stats grid
             self.assertIn('Reserved Memory', content)

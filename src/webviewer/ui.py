@@ -4,41 +4,45 @@ Kernel Log Parser Web UI - Interactive web interface for viewing parsed results
 
 This creates a Flask web server that displays the parsed kernel log results
 in an interactive, searchable web interface.
-
-Usage:
-    python web_ui.py [json_file] [--port PORT] [--host HOST]
 """
 
-import os
-import json
-import argparse
-from datetime import datetime
-from pathlib import Path
-import webbrowser
 import threading
 import time
+import json
+import os
+import argparse
+import webbrowser
+from datetime import datetime
+from pathlib import Path
 
 try:
-    from flask import Flask, render_template_string, jsonify, request, send_from_directory, session, redirect, url_for
+    from flask import Flask, render_template_string, render_template, jsonify, request, send_from_directory, session, redirect, url_for
     FLASK_AVAILABLE = True
 except ImportError:
-    FLASK_AVAILABLE = False
     Flask = None
+    FLASK_AVAILABLE = False
+
+try:
+    from ..llm_analysis.llm import LLMAnalyzer
+    LLM_AVAILABLE = True
+except ImportError:
+    LLMAnalyzer = None
+    LLM_AVAILABLE = False
+
+# Global variable to store parsed data (used as fallback)
+parsed_data = None
 
 def create_app():
     """Create and configure Flask application"""
     if not FLASK_AVAILABLE:
         raise ImportError("Flask is not available")
         
-    app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'kernel-log-parser-secret-key'
+    app = Flask(__name__, 
+                template_folder='templates',
+                static_folder='static')
+    app.secret_key = 'kernel-log-parser-secret-key'  # Change this in production
     
-    # Global variable to store the parsed data
-    app.parsed_data = None
-    
-    # Register routes on the app instance
     register_routes(app)
-    
     return app
 
 def get_app():
@@ -53,41 +57,18 @@ def register_routes(app):
     @app.route('/')
     def index():
         """Main page showing the analysis results"""
-        if parsed_data is None and 'results' not in session:
-            return redirect(url_for('upload'))
+        # Check session first, then app instance data, avoid global state
+        data = session.get('results')
+        if data is None:
+            data = getattr(app, 'parsed_data', None)
+        if data is None:
+            data = parsed_data  # Fallback to global
         
-        data = session.get('results', parsed_data)
         if data is None:
             return redirect(url_for('upload'))
         
+        # Render the results template with data
         return render_template_string(HTML_TEMPLATE, data=data)
-
-    @app.route('/upload', methods=['GET', 'POST'])
-    def upload():
-        """Upload page for JSON results"""
-        if request.method == 'POST':
-            if 'file' not in request.files:
-                return render_template_string(UPLOAD_TEMPLATE, error="No file selected")
-            
-            file = request.files['file']
-            if file.filename == '':
-                return render_template_string(UPLOAD_TEMPLATE, error="No file selected")
-            
-            if file and file.filename.endswith('.json'):
-                try:
-                    content = file.read().decode('utf-8')
-                    data = json.loads(content)
-                    session['results'] = data
-                    return redirect(url_for('results'))
-                except json.JSONDecodeError:
-                    return render_template_string(UPLOAD_TEMPLATE, error="Invalid JSON file")
-                except Exception as e:
-                    return render_template_string(UPLOAD_TEMPLATE, error=f"Error processing file: {e}")
-            else:
-                return render_template_string(UPLOAD_TEMPLATE, error="Please select a JSON file")
-        
-        # GET request - show upload form
-        return render_template_string(UPLOAD_TEMPLATE)
 
     @app.route('/results')
     def results():
@@ -98,16 +79,77 @@ def register_routes(app):
         data = session['results']
         return render_template_string(HTML_TEMPLATE, data=data)
 
+    @app.route('/upload', methods=['GET', 'POST'])
+    def upload():
+        """Upload page for JSON files"""
+        if request.method == 'POST':
+            # Handle file upload
+            if 'file' not in request.files:
+                return render_template_string(UPLOAD_TEMPLATE, error="No file selected")
+            
+            file = request.files['file']
+            if file.filename == '':
+                return render_template_string(UPLOAD_TEMPLATE, error="No file selected")
+            
+            if file and file.filename.endswith('.json'):
+                try:
+                    # Read and parse JSON file
+                    file_content = file.read().decode('utf-8')
+                    data = json.loads(file_content)
+                    
+                    # Store in session
+                    session['results'] = data
+                    
+                    # Redirect to results page
+                    return redirect(url_for('results'))
+                except Exception as e:
+                    return render_template_string(UPLOAD_TEMPLATE, error=f"Error processing file: {str(e)}")
+            else:
+                return render_template_string(UPLOAD_TEMPLATE, error="Please select a JSON file")
+        
+        # GET request - show upload form
+        return render_template_string(UPLOAD_TEMPLATE)
+
     @app.route('/api/data')
     def api_data():
         """API endpoint to get raw data"""
-        # Check session first, then app instance data, avoid global state
+        global parsed_data
+        # Check session first, then app instance data, then global state
         data = session.get('results')
         if data is None:
             data = getattr(app, 'parsed_data', None)
         if data is None:
+            data = parsed_data  # Use global fallback
+        if data is None:
             return jsonify({"error": "No data loaded"}), 404
-        return jsonify(data)
+        
+        # Ensure both data structures exist for compatibility
+        enhanced_data = dict(data)  # Make a copy
+        
+        # If we have functions_by_file but no function_entries, create function_entries
+        if 'functions_by_file' in enhanced_data and 'function_entries' not in enhanced_data:
+            function_entries = []
+            for file_path_key, file_functions in enhanced_data['functions_by_file'].items():
+                for func in file_functions:
+                    func_copy = dict(func)
+                    if 'file_path' not in func_copy:
+                        func_copy['file_path'] = file_path_key
+                    function_entries.append(func_copy)
+            enhanced_data['function_entries'] = function_entries
+        
+        # If we have function_entries but no functions_by_file, create functions_by_file
+        elif 'function_entries' in enhanced_data and 'functions_by_file' not in enhanced_data:
+            functions_by_file = {}
+            for func in enhanced_data['function_entries']:
+                file_path = func.get('file_path', 'unknown')
+                if file_path not in functions_by_file:
+                    functions_by_file[file_path] = []
+                # Create a copy without file_path for functions_by_file structure
+                func_copy = {k: v for k, v in func.items() if k != 'file_path'}
+                functions_by_file[file_path].append(func_copy)
+            enhanced_data['functions_by_file'] = functions_by_file
+        
+        return jsonify(enhanced_data)
 
     @app.route('/api/status')
     def api_status():
@@ -169,6 +211,7 @@ def register_routes(app):
     @app.route('/api/function-code')
     def api_function_code():
         """API endpoint to get function code for a specific function by name and file"""
+        global parsed_data
         function_name = request.args.get('name')
         file_path = request.args.get('file')
         line_number = request.args.get('line', type=int)
@@ -176,12 +219,28 @@ def register_routes(app):
         if not function_name:
             return jsonify({"error": "Function name required"}), 400
         
-        data = session.get('results', parsed_data)
+        # Check session first, then app instance data, then global state  
+        data = session.get('results')
+        if data is None:
+            data = getattr(app, 'parsed_data', None)
+        if data is None:
+            data = parsed_data  # Use global fallback
         if data is None:
             return jsonify({"error": "No data loaded"}), 404
         
         # Search in function_entries for the specific function
         function_entries = data.get('function_entries', [])
+        
+        # If no function_entries, try to extract from functions_by_file
+        if not function_entries and 'functions_by_file' in data:
+            function_entries = []
+            for file_path_key, file_functions in data['functions_by_file'].items():
+                for func in file_functions:
+                    # Ensure file_path is set if not present
+                    if 'file_path' not in func:
+                        func['file_path'] = file_path_key
+                    function_entries.append(func)
+        
         for func in function_entries:
             if (func.get('function_name') == function_name and 
                 (not file_path or func.get('file_path') == file_path) and
@@ -197,6 +256,239 @@ def register_routes(app):
                 })
         
         return jsonify({"error": "Function not found"}), 404
+
+    # LLM Analysis Routes
+    @app.route('/api/llm/models')
+    def api_llm_models():
+        """Get available LLM models"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        analyzer = LLMAnalyzer()
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        # Return structured model data
+        models = [
+            {
+                "id": "gpt-3.5-turbo",
+                "name": "GPT-3.5 Turbo",
+                "description": "Fast & Cost-effective"
+            },
+            {
+                "id": "gpt-4",
+                "name": "GPT-4",
+                "description": "Advanced Analysis"
+            },
+            {
+                "id": "gpt-4-turbo-preview",
+                "name": "GPT-4 Turbo",
+                "description": "Latest & Most Capable"
+            }
+        ]
+        
+        return jsonify(models)
+
+    @app.route('/api/llm/analyze/function', methods=['POST'])
+    def api_llm_analyze_function():
+        """Analyze function with LLM"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        function_name = data.get('function_name')
+        source_code = data.get('source_code')
+        file_path = data.get('file_path', '')
+        custom_prompt = data.get('custom_prompt', '')
+        model_id = data.get('model_id', 'gpt-3.5-turbo')
+        
+        if not function_name or not source_code:
+            return jsonify({"error": "Function name and source code required"}), 400
+        
+        analyzer = LLMAnalyzer(model_id=model_id)
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        result = analyzer.analyze_function(function_name, source_code, file_path, custom_prompt, 
+                                         model_id, for_web_ui=True)
+        return jsonify(result)
+
+    @app.route('/api/llm/analyze/dma', methods=['POST'])
+    def api_llm_analyze_dma():
+        """Analyze DMA operation with LLM"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        dma_operation = data.get('dma_operation')
+        function_code = data.get('function_code', '')
+        call_graph = data.get('call_graph', [])
+        custom_prompt = data.get('custom_prompt', '')
+        model_id = data.get('model_id', 'gpt-3.5-turbo')
+        
+        if not dma_operation:
+            return jsonify({"error": "DMA operation data required"}), 400
+        
+        analyzer = LLMAnalyzer(model_id=model_id)
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        result = analyzer.analyze_dma_operation(dma_operation, function_code, call_graph, 
+                                              custom_prompt, model_id, for_web_ui=True)
+        return jsonify(result)
+
+    @app.route('/api/llm/analyze/user-copy', methods=['POST'])
+    def api_llm_analyze_user_copy():
+        """Analyze user copy operation with LLM"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        user_copy_operation = data.get('user_copy_operation')
+        function_code = data.get('function_code', '')
+        custom_prompt = data.get('custom_prompt', '')
+        model_id = data.get('model_id', 'gpt-3.5-turbo')
+        
+        if not user_copy_operation:
+            return jsonify({"error": "User copy operation data required"}), 400
+        
+        analyzer = LLMAnalyzer(model_id=model_id)
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        result = analyzer.analyze_user_copy_operation(user_copy_operation, function_code, 
+                                                    custom_prompt, model_id, for_web_ui=True)
+        return jsonify(result)
+
+    @app.route('/api/llm/analyze/ioctl', methods=['POST'])
+    def api_llm_analyze_ioctl():
+        """Analyze IOCTL handler with LLM"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        ioctl_operation = data.get('ioctl_operation')
+        function_code = data.get('function_code', '')
+        custom_prompt = data.get('custom_prompt', '')
+        model_id = data.get('model_id', 'gpt-3.5-turbo')
+        
+        if not ioctl_operation:
+            return jsonify({"error": "IOCTL operation data required"}), 400
+        
+        analyzer = LLMAnalyzer(model_id=model_id)
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        result = analyzer.analyze_ioctl_handler(ioctl_operation, function_code, 
+                                              custom_prompt, model_id, for_web_ui=True)
+        return jsonify(result)
+
+    @app.route('/api/llm/analyze/logs', methods=['POST'])
+    def api_llm_analyze_logs():
+        """Analyze logs with LLM"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        logs = data.get('logs', [])
+        analysis_type = data.get('analysis_type', 'general')
+        custom_prompt = data.get('custom_prompt', '')
+        model_id = data.get('model_id', 'gpt-3.5-turbo')
+        
+        if not logs:
+            return jsonify({"error": "Logs data required"}), 400
+        
+        analyzer = LLMAnalyzer(model_id=model_id)
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        result = analyzer.analyze_logs(logs, analysis_type, custom_prompt)
+        return jsonify(result)
+
+    @app.route('/api/llm/security-report', methods=['POST'])
+    def api_llm_security_report():
+        """Generate comprehensive security report"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        data = request.get_json()
+        model_id = data.get('model_id', 'gpt-3.5-turbo') if data else 'gpt-3.5-turbo'
+        
+        # Get all data from session
+        all_data = session.get('results')
+        if all_data is None:
+            all_data = getattr(app, 'parsed_data', None)
+        
+        if all_data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        
+        analyzer = LLMAnalyzer(model_id=model_id)
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        result = analyzer.generate_security_report(all_data)
+        return jsonify(result)
+
+    @app.route('/api/llm/status')
+    def api_llm_status():
+        """Check LLM analysis availability"""
+        if not LLM_AVAILABLE:
+            return jsonify({"available": False, "error": "LLM module not available"})
+        
+        analyzer = LLMAnalyzer()
+        return jsonify({
+            "available": analyzer.is_available(),
+            "models": analyzer.get_available_models() if analyzer.is_available() else []
+        })
+
+    @app.route('/api/llm/save-analysis', methods=['POST'])
+    def api_llm_save_analysis():
+        """Save LLM analysis data to file"""
+        data = request.get_json()
+        if not data:
+            return jsonify({"success": False, "error": "No data provided"}), 400
+        
+        filename = data.get('filename')
+        analysis_data = data.get('data')
+        
+        if not filename or not analysis_data:
+            return jsonify({"success": False, "error": "Filename and data required"}), 400
+        
+        try:
+            # Create data directory if it doesn't exist
+            data_dir = Path(__file__).parent / 'data' / 'llm_analyses'
+            data_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Save the analysis data
+            file_path = data_dir / filename
+            with open(file_path, 'w') as f:
+                json.dump(analysis_data, f, indent=2)
+            
+            return jsonify({
+                "success": True, 
+                "filename": filename,
+                "path": str(file_path)
+            })
+        except Exception as e:
+            return jsonify({
+                "success": False, 
+                "error": f"Failed to save analysis: {str(e)}"
+            }), 500
 
     @app.route('/api/ioctl-code/<int:ioctl_index>')
     def api_ioctl_code(ioctl_index):
@@ -1139,6 +1431,246 @@ HTML_TEMPLATE = """
                 flex-direction: column;
             }
         }
+        
+        /* LLM Analysis Styles */
+        .llm-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 10px;
+            border: 1px solid #cbd5e0;
+        }
+        
+        .llm-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fbbf24;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.available {
+            background: #10b981;
+        }
+        
+        .status-indicator.unavailable {
+            background: #ef4444;
+        }
+        
+        .model-selection {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .model-selection label {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .model-selection select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+        }
+        
+        .analysis-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .analysis-tab {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            color: #6b7280;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .analysis-tab:hover {
+            color: #374151;
+            background: #f9fafb;
+        }
+        
+        .analysis-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: #f8faff;
+        }
+        
+        .analysis-content {
+            display: none;
+        }
+        
+        .analysis-content.active {
+            display: block;
+        }
+        
+        .analysis-form {
+            max-width: 800px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            resize: vertical;
+        }
+        
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .analyze-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 200px;
+        }
+        
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-loading {
+            display: none;
+        }
+        
+        .analyze-btn.loading .btn-text {
+            display: none;
+        }
+        
+        .analyze-btn.loading .btn-loading {
+            display: inline;
+        }
+        
+        .analysis-result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: #fafbfc;
+            display: none;
+        }
+        
+        .analysis-result.success {
+            display: block;
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        
+        .analysis-result.error {
+            display: block;
+            border-color: #ef4444;
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .analysis-result h4 {
+            color: #059669;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .analysis-result.error h4 {
+            color: #dc2626;
+        }
+        
+        .analysis-text {
+            white-space: pre-wrap;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        .analysis-metadata {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.9em;
+            color: #6b7280;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* LLM Action Buttons */
+        .llm-action-buttons {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .llm-action-buttons .analyze-btn {
+            font-size: 0.9em;
+            padding: 8px 16px;
+            min-width: auto;
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .llm-action-buttons .analyze-btn:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
@@ -1205,12 +1737,13 @@ HTML_TEMPLATE = """
         <div class="content">
             <div class="tab-container">
                 <div class="tabs">
-                    <button class="tab active" onclick="showTab('functions')">📍 Functions</button>
-                    <button class="tab" onclick="showTab('dma')">🔄 DMA Operations</button>
-                    <button class="tab" onclick="showTab('userCopy')">👤 User Copy</button>
-                    <button class="tab" onclick="showTab('ioctl')">🔧 IOCTL Handlers</button>
-                    <button class="tab" onclick="showTab('devices')">📱 Device Access</button>
-                    <button class="tab" onclick="showTab('memory')">🧠 Memory Info</button>
+                    <button class="tab active" onclick="showTab('functions', this)">📍 Functions</button>
+                    <button class="tab" onclick="showTab('dma', this)">🔄 DMA Operations</button>
+                    <button class="tab" onclick="showTab('userCopy', this)">👤 User Copy</button>
+                    <button class="tab" onclick="showTab('ioctl', this)">🔧 IOCTL Handlers</button>
+                    <button class="tab" onclick="showTab('devices', this)">📱 Device Access</button>
+                    <button class="tab" onclick="showTab('memory', this)">🧠 Memory Info</button>
+                    <button class="tab" onclick="showTab('llmAnalysis', this)">🤖 LLM Analysis</button>
                 </div>
                 
                 <div id="functions" class="tab-content active">
@@ -1248,6 +1781,14 @@ HTML_TEMPLATE = """
                                         </details>
                                     </div>
                                     {% endif %}
+                                    
+                                    <!-- LLM Analysis Button -->
+                                    <div class="llm-action-buttons" style="margin-top: 15px;">
+                                        <button class="analyze-btn" onclick="quickAnalyzeFunction('{{ func.function_name }}', '{{ file_path }}', {{ func.line_number }})" style="font-size: 0.9em; padding: 8px 16px;">
+                                            <span class="btn-text">🤖 Quick LLM Analysis</span>
+                                            <span class="btn-loading" style="display:none;">🔄</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 {% set function_index.value = function_index.value + 1 %}
                                 {% endfor %}
@@ -1263,10 +1804,11 @@ HTML_TEMPLATE = """
                         <input type="text" class="search-box" id="dmaSearch" placeholder="🔍 Search DMA operations..." onkeyup="filterDMA()">
                         
                         <div id="dmaGrid">
+                            {% if data.dma_operations %}
                             {% for dma in data.dma_operations %}
                             <div class="dma-item">
                                 <div class="dma-header">
-                                    {{ dma.dma_function }} → {{ dma.caller_function }}
+                                    🔄 {{ dma.dma_function }} → {{ dma.caller_function }}
                                     <span class="call-count">Called {{ dma.call_count }} times</span>
                                 </div>
                                 <div class="dma-details">
@@ -1301,8 +1843,21 @@ HTML_TEMPLATE = """
                                     {% endfor %}
                                 </div>
                                 {% endif %}
+                                
+                                <!-- LLM Analysis Button -->
+                                <div class="llm-action-buttons" style="margin-top: 15px;">
+                                    <button class="analyze-btn" onclick="quickAnalyzeDMA({{ loop.index0 }})" style="font-size: 0.9em; padding: 8px 16px;">
+                                        <span class="btn-text">🤖 Quick LLM Analysis</span>
+                                        <span class="btn-loading" style="display:none;">🔄</span>
+                                    </button>
+                                </div>
                             </div>
                             {% endfor %}
+                            {% else %}
+                            <div class="empty-state">
+                                <p>No DMA operations found in the log data.</p>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -1313,10 +1868,11 @@ HTML_TEMPLATE = """
                         <input type="text" class="search-box" id="copySearch" placeholder="🔍 Search user copy operations..." onkeyup="filterUserCopy()">
                         
                         <div id="copyGrid">
+                            {% if data.user_copy_operations %}
                             {% for copy in data.user_copy_operations %}
                             <div class="copy-item">
                                 <div class="copy-header">
-                                    {{ copy.copy_function }} → {{ copy.caller_function }}
+                                    👤 {{ copy.copy_function }} → {{ copy.caller_function }}
                                     <span class="call-count">Called {{ copy.call_count }} times</span>
                                 </div>
                                 <div class="copy-details">
@@ -1342,13 +1898,36 @@ HTML_TEMPLATE = """
                                 </div>
                                 {% endif %}
                                 
+                                {% if copy.stack_trace %}
+                                <button class="toggle-btn" onclick="toggleStackTrace(this)">Show Stack Trace</button>
+                                <div class="stack-trace hidden">
+                                    <div class="stack-trace-header">Stack Trace:</div>
+                                    {% for line in copy.stack_trace %}
+                                    <div class="stack-line">{{ line }}</div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                
                                 {% if copy.process_info %}
                                 <div class="process-info">
                                     <strong>Process:</strong> {{ copy.process_info.comm }} (PID: {{ copy.process_info.pid }})
                                 </div>
                                 {% endif %}
+                                
+                                <!-- LLM Analysis Button -->
+                                <div class="llm-action-buttons" style="margin-top: 15px;">
+                                    <button class="analyze-btn" onclick="quickAnalyzeUserCopy({{ loop.index0 }})" style="font-size: 0.9em; padding: 8px 16px;">
+                                        <span class="btn-text">🤖 Quick LLM Analysis</span>
+                                        <span class="btn-loading" style="display:none;">🔄</span>
+                                    </button>
+                                </div>
                             </div>
                             {% endfor %}
+                            {% else %}
+                            <div class="empty-state">
+                                <p>No user copy operations found in the log data.</p>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -1359,6 +1938,7 @@ HTML_TEMPLATE = """
                         <input type="text" class="search-box" id="ioctlSearch" placeholder="🔍 Search IOCTL handlers..." onkeyup="filterIOCTL()">
                         
                         <div id="ioctlGrid">
+                            {% if data.ioctl_operations %}
                             {% for ioctl in data.ioctl_operations %}
                             <div class="ioctl-item">
                                 <div class="ioctl-header">
@@ -1387,12 +1967,31 @@ HTML_TEMPLATE = """
                                     </details>
                                 </div>
                                 {% endif %}
+                                
+                                {% if ioctl.stack_trace %}
+                                <button class="toggle-btn" onclick="toggleStackTrace(this)">Show Stack Trace</button>
+                                <div class="stack-trace hidden">
+                                    <div class="stack-trace-header">Stack Trace:</div>
+                                    {% for line in ioctl.stack_trace %}
+                                    <div class="stack-line">{{ line }}</div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                
+                                <!-- LLM Analysis Button -->
+                                <div class="llm-action-buttons" style="margin-top: 15px;">
+                                    <button class="analyze-btn" onclick="quickAnalyzeIOCTL({{ loop.index0 }})" style="font-size: 0.9em; padding: 8px 16px;">
+                                        <span class="btn-text">🤖 Quick LLM Analysis</span>
+                                        <span class="btn-loading" style="display:none;">🔄</span>
+                                    </button>
+                                </div>
                             </div>
+                            {% endfor %}
                             {% else %}
                             <div class="empty-state">
                                 <p>No IOCTL operations found in the log data.</p>
                             </div>
-                            {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -1500,7 +2099,7 @@ HTML_TEMPLATE = """
                             <h3>Memory Summary</h3>
                             <div class="stats-grid">
                                 <div class="stat-card">
-                                    <div class="stat-number">{{ (data.memory_info.total_reserved_memory_kb / 1024) | round(1) }} MB</div>
+                                    <div class="stat-number">{{ ((data.get('memory_info', {}).get('total_reserved_memory_kb', 0) / 1024) | round(1)) }} MB</div>
                                     <div class="stat-label">Total Reserved Memory</div>
                                 </div>
                                 <div class="stat-card">
@@ -1646,27 +2245,248 @@ HTML_TEMPLATE = """
                         {% endif %}
                     </div>
                 </div>
+                
+                <!-- LLM Analysis Tab -->
+                <div id="llmAnalysis" class="tab-content">
+                    <div class="section">
+                        <div class="section-title">🤖 AI-Powered Security Analysis</div>
+                        
+                        <!-- LLM Status and Model Selection -->
+                        <div class="llm-controls">
+                            <div class="llm-status" id="llmStatus">
+                                <span class="status-indicator"></span>
+                                <span class="status-text">Checking LLM availability...</span>
+                            </div>
+                            
+                            <div class="model-selection">
+                                <label for="modelSelect">AI Model:</label>
+                                <select id="modelSelect">
+                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast & Cost-effective)</option>
+                                    <option value="gpt-4">GPT-4 (Advanced Analysis)</option>
+                                    <option value="gpt-4-turbo-preview">GPT-4 Turbo (Latest & Most Capable)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Analysis Tabs -->
+                        <div class="analysis-tabs">
+                            <button class="analysis-tab active" onclick="showAnalysisTab('functionAnalysis')">Function Analysis</button>
+                            <button class="analysis-tab" onclick="showAnalysisTab('dmaAnalysis')">DMA Analysis</button>
+                            <button class="analysis-tab" onclick="showAnalysisTab('userCopyAnalysis')">User Copy Analysis</button>
+                            <button class="analysis-tab" onclick="showAnalysisTab('ioctlAnalysis')">IOCTL Analysis</button>
+                            <button class="analysis-tab" onclick="showAnalysisTab('logAnalysis')">Log Analysis</button>
+                            <button class="analysis-tab" onclick="showAnalysisTab('securityReport')">Security Report</button>
+                        </div>
+                        
+                        <!-- Function Analysis -->
+                        <div id="functionAnalysis" class="analysis-content active">
+                            <h3>Function Code Analysis</h3>
+                            <div class="analysis-form">
+                                <div class="form-group">
+                                    <label for="functionSelect">Select Function:</label>
+                                    <select id="functionSelect" onchange="loadSelectedFunction()">
+                                        <option value="">-- Select a function --</option>
+                                        {% for file_path, functions in data.functions_by_file.items() %}
+                                            {% for func in functions %}
+                                            <option value="{{ func.function_name }}|{{ file_path }}|{{ func.line_number }}">
+                                                {{ func.function_name }} ({{ file_path }}:{{ func.line_number }})
+                                            </option>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="functionCode">Function Code:</label>
+                                    <textarea id="functionCode" placeholder="Function code will be loaded here..." rows="10"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="customPrompt">Custom Analysis Prompt (Optional):</label>
+                                    <textarea id="customPrompt" placeholder="e.g., 'Focus on potential buffer overflow vulnerabilities', 'Analyze for race conditions', etc." rows="3"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button class="analyze-btn" onclick="analyzeFunctionWithLLM()" id="analyzeFunctionBtn">
+                                        <span class="btn-text">🔍 Analyze Function</span>
+                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                    </button>
+                                </div>
+                                
+                                <div id="functionAnalysisResult" class="analysis-result"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- DMA Analysis -->
+                        <div id="dmaAnalysis" class="analysis-content">
+                            <h3>DMA Operation Analysis</h3>
+                            <div class="analysis-form">
+                                <div class="form-group">
+                                    <label for="dmaSelect">Select DMA Operation:</label>
+                                    <select id="dmaSelect" onchange="loadSelectedDMA()">
+                                        <option value="">-- Select a DMA operation --</option>
+                                        {% for dma in data.dma_operations %}
+                                        <option value="{{ loop.index0 }}">
+                                            {{ dma.dma_function }} in {{ dma.caller_function }} ({{ dma.file_path }}:{{ dma.line_number }})
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="dmaCode">Associated Function Code:</label>
+                                    <textarea id="dmaCode" placeholder="Associated function code will be loaded here..." rows="8"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="callGraph">Call Graph:</label>
+                                    <textarea id="callGraph" placeholder="Call graph/stack trace will be shown here..." rows="5"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="dmaCustomPrompt">Custom Analysis Prompt (Optional):</label>
+                                    <textarea id="dmaCustomPrompt" placeholder="e.g., 'Focus on DMA coherency issues', 'Analyze for race conditions', etc." rows="3"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button class="analyze-btn" onclick="analyzeDMAWithLLM()" id="analyzeDMABtn">
+                                        <span class="btn-text">🔍 Analyze DMA Operation</span>
+                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                    </button>
+                                </div>
+                                
+                                <div id="dmaAnalysisResult" class="analysis-result"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- User Copy Analysis -->
+                        <div id="userCopyAnalysis" class="analysis-content">
+                            <h3>User Copy Operation Analysis</h3>
+                            <div class="analysis-form">
+                                <div class="form-group">
+                                    <label for="userCopySelect">Select User Copy Operation:</label>
+                                    <select id="userCopySelect" onchange="loadSelectedUserCopy()">
+                                        <option value="">-- Select a user copy operation --</option>
+                                        {% for copy in data.user_copy_operations %}
+                                        <option value="{{ loop.index0 }}">
+                                            {{ copy.copy_function }} in {{ copy.caller_function }} ({{ copy.file_path }}:{{ copy.line_number }})
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="userCopyCode">Associated Function Code:</label>
+                                    <textarea id="userCopyCode" placeholder="Associated function code will be loaded here..." rows="8"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="userCopyCustomPrompt">Custom Analysis Prompt (Optional):</label>
+                                    <textarea id="userCopyCustomPrompt" placeholder="e.g., 'Focus on buffer overflow vulnerabilities', 'Analyze for input validation issues', etc." rows="3"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button class="analyze-btn" onclick="analyzeUserCopyWithLLM()" id="analyzeUserCopyBtn">
+                                        <span class="btn-text">🔍 Analyze User Copy Operation</span>
+                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                    </button>
+                                </div>
+                                
+                                <div id="userCopyAnalysisResult" class="analysis-result"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- IOCTL Analysis -->
+                        <div id="ioctlAnalysis" class="analysis-content">
+                            <h3>IOCTL Handler Analysis</h3>
+                            <div class="analysis-form">
+                                <div class="form-group">
+                                    <label for="ioctlSelect">Select IOCTL Handler:</label>
+                                    <select id="ioctlSelect" onchange="loadSelectedIOCTL()">
+                                        <option value="">-- Select an IOCTL handler --</option>
+                                        {% for ioctl in data.ioctl_operations %}
+                                        <option value="{{ loop.index0 }}">
+                                            {{ ioctl.function_name }} ({{ ioctl.file_path }}:{{ ioctl.line_number }})
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ioctlCode">Function Code:</label>
+                                    <textarea id="ioctlCode" placeholder="Function code will be loaded here..." rows="8"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ioctlCustomPrompt">Custom Analysis Prompt (Optional):</label>
+                                    <textarea id="ioctlCustomPrompt" placeholder="e.g., 'Focus on privilege escalation', 'Analyze for input validation', etc." rows="3"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button class="analyze-btn" onclick="analyzeIOCTLWithLLM()" id="analyzeIOCTLBtn">
+                                        <span class="btn-text">🔍 Analyze IOCTL Handler</span>
+                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                    </button>
+                                </div>
+                                
+                                <div id="ioctlAnalysisResult" class="analysis-result"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Log Analysis -->
+                        <div id="logAnalysis" class="analysis-content">
+                            <h3>Comprehensive Log Analysis</h3>
+                            <div class="analysis-form">
+                                <div class="form-group">
+                                    <label for="analysisType">Analysis Type:</label>
+                                    <select id="analysisType">
+                                        <option value="general">General Analysis</option>
+                                        <option value="security">Security-Focused Analysis</option>
+                                        <option value="performance">Performance Analysis</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="logCustomPrompt">Custom Analysis Prompt (Optional):</label>
+                                    <textarea id="logCustomPrompt" placeholder="e.g., 'Focus on user-space interactions', 'Look for privilege escalation patterns', etc." rows="3"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button class="analyze-btn" onclick="analyzeLogsWithLLM()" id="analyzeLogsBtn">
+                                        <span class="btn-text">🔍 Analyze All Logs</span>
+                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                    </button>
+                                </div>
+                                
+                                <div id="logAnalysisResult" class="analysis-result"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Security Report -->
+                        <div id="securityReport" class="analysis-content">
+                            <h3>Comprehensive Security Report</h3>
+                            <div class="analysis-form">
+                                <div class="form-group">
+                                    <p>Generate a comprehensive security analysis report based on all instrumentation data. This will analyze all functions, DMA operations, IOCTL handlers, and other collected data to provide a holistic security assessment.</p>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button class="analyze-btn" onclick="generateSecurityReport()" id="securityReportBtn">
+                                        <span class="btn-text">📋 Generate Security Report</span>
+                                        <span class="btn-loading" style="display:none;">🔄 Generating...</span>
+                                    </button>
+                                </div>
+                                
+                                <div id="securityReportResult" class="analysis-result"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function showTab(tabName) {
-            // Hide all tab contents
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-            
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-        
         function toggleStackTrace(btn) {
             const stackTrace = btn.nextElementSibling;
             const isHidden = stackTrace.classList.contains('hidden');
@@ -1906,7 +2726,518 @@ HTML_TEMPLATE = """
         
         // Check for updates every 30 seconds
         setInterval(checkForUpdates, 30000);
+        
+        // LLM Analysis Functions
+        let llmAvailable = false;
+        let availableModels = [];
+        
+        // Check LLM status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLLMStatus();
+        });
+        
+        function checkLLMStatus() {
+            fetch('/api/llm/status')
+                .then(response => response.json())
+                .then(data => {
+                    llmAvailable = data.available;
+                    availableModels = data.models || [];
+                    
+                    const statusIndicator = document.querySelector('.status-indicator');
+                    const statusText = document.querySelector('.status-text');
+                    const modelSelect = document.getElementById('modelSelect');
+                    
+                    if (llmAvailable) {
+                        statusIndicator.className = 'status-indicator available';
+                        statusText.textContent = 'LLM Analysis Available';
+                        
+                        // Populate model dropdown
+                        modelSelect.innerHTML = '';
+                        availableModels.forEach(model => {
+                            const option = document.createElement('option');
+                            option.value = model.id;
+                            option.textContent = `${model.name} - ${model.description}`;
+                            modelSelect.appendChild(option);
+                        });
+                    } else {
+                        statusIndicator.className = 'status-indicator unavailable';
+                        statusText.textContent = 'LLM Analysis Unavailable - Configure OpenAI API Key';
+                        modelSelect.innerHTML = '<option>OpenAI API Key Required</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking LLM status:', error);
+                    const statusIndicator = document.querySelector('.status-indicator');
+                    const statusText = document.querySelector('.status-text');
+                    statusIndicator.className = 'status-indicator unavailable';
+                    statusText.textContent = 'Error checking LLM status';
+                });
+        }
+        
+        function showAnalysisTab(tabName) {
+            // Hide all analysis content
+            const contents = document.querySelectorAll('.analysis-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all analysis tabs
+            const tabs = document.querySelectorAll('.analysis-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected analysis content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Set active tab
+            event.target.classList.add('active');
+        }
+        
+        function loadSelectedFunction() {
+            const functionSelect = document.getElementById('functionSelect');
+            const functionCode = document.getElementById('functionCode');
+            
+            if (!functionSelect.value) {
+                functionCode.value = '';
+                return;
+            }
+            
+            const [functionName, filePath, lineNumber] = functionSelect.value.split('|');
+            
+            // Try to load function code from API
+            fetch(`/api/function-code?name=${encodeURIComponent(functionName)}&file=${encodeURIComponent(filePath)}&line=${lineNumber}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.function_code) {
+                        functionCode.value = data.function_code;
+                    } else {
+                        functionCode.value = 'No source code available for this function.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading function code:', error);
+                    functionCode.value = 'Error loading function code.';
+                });
+        }
+        
+        function analyzeFunctionWithLLM() {
+            if (!llmAvailable) {
+                alert('LLM analysis is not available. Please configure your OpenAI API key.');
+                return;
+            }
+            
+            const functionSelect = document.getElementById('functionSelect');
+            const functionCode = document.getElementById('functionCode');
+            const customPrompt = document.getElementById('customPrompt');
+            const modelSelect = document.getElementById('modelSelect');
+            const analyzeBtn = document.getElementById('analyzeFunctionBtn');
+            const resultDiv = document.getElementById('functionAnalysisResult');
+            
+            if (!functionSelect.value) {
+                alert('Please select a function to analyze.');
+                return;
+            }
+            
+            if (!functionCode.value.trim()) {
+                alert('No function code available to analyze.');
+                return;
+            }
+            
+            const [functionName, filePath, lineNumber] = functionSelect.value.split('|');
+            
+            // Show loading state
+            analyzeBtn.classList.add('loading');
+            analyzeBtn.disabled = true;
+            resultDiv.style.display = 'none';
+            
+            const requestData = {
+                function_name: functionName,
+                source_code: functionCode.value,
+                file_path: filePath,
+                custom_prompt: customPrompt.value,
+                model_id: modelSelect.value
+            };
+            
+            fetch('/api/llm/analyze/function', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                analyzeBtn.classList.remove('loading');
+                analyzeBtn.disabled = false;
+                
+                if (data.status === 'success') {
+                    showAnalysisResult(resultDiv, data.analysis, 'success', {
+                        'Function': data.function_name,
+                        'File': data.file_path,
+                        'Model': data.model_used,
+                        'Custom Prompt': data.custom_prompt || 'None'
+                    });
+                } else {
+                    showAnalysisResult(resultDiv, data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error analyzing function:', error);
+                analyzeBtn.classList.remove('loading');
+                analyzeBtn.disabled = false;
+                showAnalysisResult(resultDiv, 'Network error occurred while analyzing function.', 'error');
+            });
+        }
+        
+        function loadSelectedDMA() {
+            const dmaSelect = document.getElementById('dmaSelect');
+            const dmaCode = document.getElementById('dmaCode');
+            const callGraph = document.getElementById('callGraph');
+            
+            if (!dmaSelect.value) {
+                dmaCode.value = '';
+                callGraph.value = '';
+                return;
+            }
+            
+            const dmaIndex = parseInt(dmaSelect.value);
+            
+            // Load DMA operation details from current data
+            fetch('/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    const dmaOp = data.dma_operations[dmaIndex];
+                    if (dmaOp) {
+                        // Try to load associated function code
+                        dmaCode.value = 'Loading associated function code...';
+                        
+                        // Show call graph if available
+                        if (dmaOp.stack_trace && dmaOp.stack_trace.length > 0) {
+                            callGraph.value = dmaOp.stack_trace.join('\\n');
+                        } else {
+                            callGraph.value = 'No call graph available for this DMA operation.';
+                        }
+                        
+                        // Try to load function code for the caller function
+                        fetch(`/api/dma-code/${dmaIndex}`)
+                            .then(response => response.json())
+                            .then(funcData => {
+                                if (funcData.function_code) {
+                                    dmaCode.value = funcData.function_code;
+                                } else {
+                                    dmaCode.value = 'No source code available for the caller function.';
+                                }
+                            })
+                            .catch(error => {
+                                dmaCode.value = 'Error loading function code.';
+                            });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading DMA details:', error);
+                    dmaCode.value = 'Error loading DMA operation details.';
+                });
+        }
+        
+        function loadSelectedUserCopy() {
+            const userCopySelect = document.getElementById('userCopySelect');
+            const userCopyCode = document.getElementById('userCopyCode');
+            
+            if (!userCopySelect.value) {
+                userCopyCode.value = '';
+                return;
+            }
+            
+            const copyIndex = parseInt(userCopySelect.value);
+            
+            // Load user copy operation details
+            userCopyCode.value = 'Loading function code...';
+            
+            fetch(`/api/copy-code/${copyIndex}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.function_code) {
+                        userCopyCode.value = data.function_code;
+                    } else {
+                        userCopyCode.value = 'No source code available for this user copy operation.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading user copy code:', error);
+                    userCopyCode.value = 'Error loading function code.';
+                });
+        }
+        
+        function loadSelectedIOCTL() {
+            const ioctlSelect = document.getElementById('ioctlSelect');
+            const ioctlCode = document.getElementById('ioctlCode');
+            
+            if (!ioctlSelect.value) {
+                ioctlCode.value = '';
+                return;
+            }
+            
+            const ioctlIndex = parseInt(ioctlSelect.value);
+            
+            // Load IOCTL handler code
+            ioctlCode.value = 'Loading function code...';
+            
+            fetch(`/api/ioctl-code/${ioctlIndex}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.function_code) {
+                        ioctlCode.value = data.function_code;
+                    } else {
+                        ioctlCode.value = 'No source code available for this IOCTL handler.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading IOCTL code:', error);
+                    ioctlCode.value = 'Error loading function code.';
+                });
+        }
+        
+        // LLM analysis functions moved to external JavaScript file
+        
+        // Quick analysis functions for inline buttons
+        function quickAnalyzeDMA(dmaIndex) {
+            if (!llmAvailable) {
+                alert('LLM analysis is not available. Please configure your OpenAI API key.');
+                return;
+            }
+            
+            // Switch to LLM Analysis tab and DMA Analysis subtab
+            showTab('llmAnalysis');
+            showAnalysisTab('dmaAnalysis');
+            
+            // Select the DMA operation
+            const dmaSelect = document.getElementById('dmaSelect');
+            dmaSelect.value = dmaIndex;
+            loadSelectedDMA();
+            
+            // Scroll to the analysis section
+            document.getElementById('llmAnalysis').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function quickAnalyzeUserCopy(copyIndex) {
+            if (!llmAvailable) {
+                alert('LLM analysis is not available. Please configure your OpenAI API key.');
+                return;
+            }
+            
+            // Switch to LLM Analysis tab and User Copy Analysis subtab
+            showTab('llmAnalysis');
+            showAnalysisTab('userCopyAnalysis');
+            
+            // Select the user copy operation
+            const userCopySelect = document.getElementById('userCopySelect');
+            userCopySelect.value = copyIndex;
+            loadSelectedUserCopy();
+            
+            // Scroll to the analysis section
+            document.getElementById('llmAnalysis').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function quickAnalyzeIOCTL(ioctlIndex) {
+            if (!llmAvailable) {
+                alert('LLM analysis is not available. Please configure your OpenAI API key.');
+                return;
+            }
+            
+            // Switch to LLM Analysis tab and IOCTL Analysis subtab
+            showTab('llmAnalysis');
+            showAnalysisTab('ioctlAnalysis');
+            
+            // Select the IOCTL handler
+            const ioctlSelect = document.getElementById('ioctlSelect');
+            ioctlSelect.value = ioctlIndex;
+            loadSelectedIOCTL();
+            
+            // Scroll to the analysis section
+            document.getElementById('llmAnalysis').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function quickAnalyzeFunction(functionName, filePath, lineNumber) {
+            if (!llmAvailable) {
+                alert('LLM analysis is not available. Please configure your OpenAI API key.');
+                return;
+            }
+            
+            // Switch to LLM Analysis tab and Function Analysis subtab
+            showTab('llmAnalysis');
+            showAnalysisTab('functionAnalysis');
+            
+            // Select the function
+            const functionSelect = document.getElementById('functionSelect');
+            functionSelect.value = `${functionName}|${filePath}|${lineNumber}`;
+            loadSelectedFunction();
+            
+            // Scroll to the analysis section
+            document.getElementById('llmAnalysis').scrollIntoView({ behavior: 'smooth' });
+        }
+        }
+        
+        function analyzeLogsWithLLM() {
+            if (!llmAvailable) {
+                alert('LLM analysis is not available. Please configure your OpenAI API key.');
+                return;
+            }
+            
+            const analysisType = document.getElementById('analysisType');
+            const logCustomPrompt = document.getElementById('logCustomPrompt');
+            const modelSelect = document.getElementById('modelSelect');
+            const analyzeBtn = document.getElementById('analyzeLogsBtn');
+            const resultDiv = document.getElementById('logAnalysisResult');
+            
+            // Show loading state
+            analyzeBtn.classList.add('loading');
+            analyzeBtn.disabled = true;
+            resultDiv.style.display = 'none';
+            
+            // Get all data for log analysis
+            fetch('/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    // Prepare logs from different categories
+                    const logs = [];
+                    
+                    // Add function entries
+                    if (data.function_entries) {
+                        logs.push(...data.function_entries.slice(0, 5)); // Limit to first 5
+                    }
+                    
+                    // Add DMA operations
+                    if (data.dma_operations) {
+                        logs.push(...data.dma_operations.slice(0, 5));
+                    }
+                    
+                    // Add user copy operations
+                    if (data.user_copy_operations) {
+                        logs.push(...data.user_copy_operations.slice(0, 5));
+                    }
+                    
+                    // Add IOCTL operations
+                    if (data.ioctl_operations) {
+                        logs.push(...data.ioctl_operations.slice(0, 5));
+                    }
+                    
+                    const requestData = {
+                        logs: logs,
+                        analysis_type: analysisType.value,
+                        custom_prompt: logCustomPrompt.value,
+                        model_id: modelSelect.value
+                    };
+                    
+                    return fetch('/api/llm/analyze/logs', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(requestData)
+                    });
+                })
+                .then(response => response.json())
+                .then(data => {
+                    analyzeBtn.classList.remove('loading');
+                    analyzeBtn.disabled = false;
+                    
+                    if (data.status === 'success') {
+                        showAnalysisResult(resultDiv, data.analysis, 'success', {
+                            'Analysis Type': data.analysis_type,
+                            'Log Count': data.log_count,
+                            'Model': data.model_used,
+                            'Custom Prompt': data.custom_prompt || 'None'
+                        });
+                    } else {
+                        showAnalysisResult(resultDiv, data.error, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error analyzing logs:', error);
+                    analyzeBtn.classList.remove('loading');
+                    analyzeBtn.disabled = false;
+                    showAnalysisResult(resultDiv, 'Network error occurred while analyzing logs.', 'error');
+                });
+        }
+        
+        function generateSecurityReport() {
+            if (!llmAvailable) {
+                alert('LLM analysis is not available. Please configure your OpenAI API key.');
+                return;
+            }
+            
+            const modelSelect = document.getElementById('modelSelect');
+            const analyzeBtn = document.getElementById('securityReportBtn');
+            const resultDiv = document.getElementById('securityReportResult');
+            
+            // Show loading state
+            analyzeBtn.classList.add('loading');
+            analyzeBtn.disabled = true;
+            resultDiv.style.display = 'none';
+            
+            const requestData = {
+                model_id: modelSelect.value
+            };
+            
+            fetch('/api/llm/security-report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                analyzeBtn.classList.remove('loading');
+                analyzeBtn.disabled = false;
+                
+                if (data.status === 'success') {
+                    showAnalysisResult(resultDiv, data.report, 'success', {
+                        'Report Type': 'Comprehensive Security Analysis',
+                        'Model': data.model_used,
+                        'Generated': new Date().toLocaleString()
+                    });
+                } else {
+                    showAnalysisResult(resultDiv, data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error generating security report:', error);
+                analyzeBtn.classList.remove('loading');
+                analyzeBtn.disabled = false;
+                showAnalysisResult(resultDiv, 'Network error occurred while generating security report.', 'error');
+            });
+        }
+        
+        function showAnalysisResult(resultDiv, text, type, metadata = {}) {
+            resultDiv.className = `analysis-result ${type}`;
+            
+            const title = type === 'success' ? '✅ Analysis Complete' : '❌ Analysis Failed';
+            const icon = type === 'success' ? '🤖' : '⚠️';
+            
+            let metadataHtml = '';
+            if (Object.keys(metadata).length > 0) {
+                metadataHtml = '<div class="analysis-metadata">';
+                for (const [key, value] of Object.entries(metadata)) {
+                    if (value) {
+                        metadataHtml += `<div class="metadata-item"><strong>${key}:</strong> ${value}</div>`;
+                    }
+                }
+                metadataHtml += '</div>';
+            }
+            
+            resultDiv.innerHTML = `
+                <h4>${icon} ${title}</h4>
+                <div class="analysis-text">${text}</div>
+                ${metadataHtml}
+            `;
+            
+            resultDiv.style.display = 'block';
+            
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     </script>
+    
+    <!-- Load external JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
 """
@@ -1989,6 +3320,17 @@ def load_data(json_file):
                 functions_by_file[file_path].append(func)
             parsed_data['functions_by_file'] = functions_by_file
         
+        # Create function_entries structure if it doesn't exist (flatten functions_by_file)
+        if 'function_entries' not in parsed_data and 'functions_by_file' in parsed_data:
+            function_entries = []
+            for file_path, file_functions in parsed_data['functions_by_file'].items():
+                for func in file_functions:
+                    # Ensure file_path is set if not present
+                    if 'file_path' not in func:
+                        func['file_path'] = file_path
+                    function_entries.append(func)
+            parsed_data['function_entries'] = function_entries
+        
         print(f"✅ Loaded data from {json_file}")
         return parsed_data
     except json.JSONDecodeError as e:
@@ -2029,6 +3371,10 @@ def start_web_ui(json_file=None, port=5000, host='127.0.0.1', auto_open=True):
     # Load the data
     if not load_data(json_file):
         return False
+    
+    # Store parsed data in app instance
+    app = create_app()
+    app.parsed_data = parsed_data
     
     print(f"\n🚀 Starting Kernel Log Analysis Web UI")
     print(f"📊 Data: {json_file}")

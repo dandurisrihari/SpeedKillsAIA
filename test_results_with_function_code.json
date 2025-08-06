@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "parser_version": "2.0.0",
+    "parsed_at": "2025-08-06T00:02:36.569764",
+    "log_file": "test_all_types_with_ui.log",
+    "total_lines": 9,
+    "parsed_lines": 9,
+    "unique_entries": 5
+  },
+  "function_entries": [
+    {
+      "function_name": "allocate_dma_buffer",
+      "file_path": "/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/tests/kernel_instrumenter_tests/test_data/test_dma_driver.c",
+      "line_number": 16,
+      "first_seen_timestamp": 123.456789,
+      "first_seen_time_str": "123.456789",
+      "entry_type": "function_entry",
+      "function_code": "static int allocate_dma_buffer(size_t size) {\n    void *coherent_mem;\n    dma_addr_t dma_handle;\n    \n    coherent_mem = dma_alloc_coherent(test_device, size, &dma_handle, GFP_KERNEL);\n    if (!coherent_mem) {\n        printk(KERN_ERR \"Failed to allocate DMA buffer\\n\");\n        return -ENOMEM;\n    }\n    \n    printk(KERN_INFO \"Allocated DMA buffer at %p, DMA handle: %llx\\n\", \n           coherent_mem, (unsigned long long)dma_handle);\n    \n    return 0;\n}",
+      "call_count": 1
+    },
+    {
+      "function_name": "simple_function",
+      "file_path": "/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/tests/kernel_instrumenter_tests/test_data/test_dma_driver.c",
+      "line_number": 9,
+      "first_seen_timestamp": 123.45679,
+      "first_seen_time_str": "123.456790",
+      "entry_type": "function_entry",
+      "function_code": "static int simple_function(int param) {\n    printk(KERN_INFO \"Simple function called with param: %d\\n\", param);\n    return param * 2;\n}",
+      "call_count": 2
+    }
+  ],
+  "functions_by_file": {
+    "/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/tests/kernel_instrumenter_tests/test_data/test_dma_driver.c": [
+      {
+        "function_name": "allocate_dma_buffer",
+        "line_number": 16,
+        "first_seen_timestamp": 123.456789,
+        "first_seen_time_str": "123.456789",
+        "entry_type": "function_entry",
+        "function_code": "static int allocate_dma_buffer(size_t size) {\n    void *coherent_mem;\n    dma_addr_t dma_handle;\n    \n    coherent_mem = dma_alloc_coherent(test_device, size, &dma_handle, GFP_KERNEL);\n    if (!coherent_mem) {\n        printk(KERN_ERR \"Failed to allocate DMA buffer\\n\");\n        return -ENOMEM;\n    }\n    \n    printk(KERN_INFO \"Allocated DMA buffer at %p, DMA handle: %llx\\n\", \n           coherent_mem, (unsigned long long)dma_handle);\n    \n    return 0;\n}",
+        "call_count": 1
+      },
+      {
+        "function_name": "simple_function",
+        "line_number": 9,
+        "first_seen_timestamp": 123.45679,
+        "first_seen_time_str": "123.456790",
+        "entry_type": "function_entry",
+        "function_code": "static int simple_function(int param) {\n    printk(KERN_INFO \"Simple function called with param: %d\\n\", param);\n    return param * 2;\n}",
+        "call_count": 2
+      }
+    ]
+  },
+  "dma_operations": [
+    {
+      "dma_function": "dma_alloc_coherent",
+      "caller_function": "allocate_dma_buffer",
+      "file_path": "/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/tests/kernel_instrumenter_tests/test_data/test_dma_driver.c",
+      "line_number": 19,
+      "first_seen_timestamp": 123.456791,
+      "first_seen_time_str": "123.456791",
+      "stack_trace": [],
+      "function_code": "static int allocate_dma_buffer(size_t size) {\n    void *coherent_mem;\n    dma_addr_t dma_handle;\n    \n    coherent_mem = dma_alloc_coherent(test_device, size, &dma_handle, GFP_KERNEL);\n    if (!coherent_mem) {\n        printk(KERN_ERR \"Failed to allocate DMA buffer\\n\");\n        return -ENOMEM;\n    }\n    \n    printk(KERN_INFO \"Allocated DMA buffer at %p, DMA handle: %llx\\n\", \n           coherent_mem, (unsigned long long)dma_handle);\n    \n    return 0;\n}",
+      "call_count": 2
+    }
+  ],
+  "user_copy_operations": [
+    {
+      "copy_function": "copy_from_user",
+      "caller_function": "some_handler",
+      "file_path": "/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/tests/kernel_instrumenter_tests/test_data/test_dma_driver.c",
+      "line_number": 30,
+      "first_seen_timestamp": 123.456793,
+      "first_seen_time_str": "123.456793",
+      "function_code": null,
+      "call_count": 2,
+      "process_info": null
+    }
+  ],
+  "ioctl_operations": [
+    {
+      "function_name": "device_ioctl",
+      "file_path": "/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/tests/kernel_instrumenter_tests/test_data/test_dma_driver.c",
+      "line_number": 35,
+      "first_seen_timestamp": 123.456795,
+      "first_seen_time_str": "123.456795",
+      "function_code": null,
+      "call_count": 2
+    }
+  ],
+  "statistics": {
+    "total_lines_processed": 9,
+    "unique_function_entries": 2,
+    "unique_dma_operations": 1,
+    "unique_user_copy_operations": 1,
+    "unique_ioctl_operations": 1,
+    "total_function_entries_found": 3,
+    "total_dma_operations_found": 2,
+    "total_user_copy_operations_found": 2,
+    "total_ioctl_operations_found": 2,
+    "function_entries_found": 3,
+    "dma_operations_found": 2,
+    "user_copy_operations_found": 2,
+    "ioctl_operations_found": 2,
+    "files_with_functions_entrypoint_instrumented": 1,
+    "total_files": 0,
+    "files_need_analysis": 1,
+    "files_instrumented_with_function_entries": 1,
+    "total_duplicates_skipped": 4
+  },
+  "memory_info": {
+    "reserved_memory": [],
+    "memory_zones": [],
+    "memory_nodes": [],
+    "total_reserved_memory_kb": 0,
+    "cma_pools": [],
+    "dma_pools": [],
+    "summary": {
+      "total_reserved_entries": 0,
+      "total_zones": 0,
+      "total_nodes": 0,
+      "total_cma_pools": 0,
+      "total_dma_pools": 0
+    }
+  },
+  "device_info": null
+}

@@ -123,8 +123,8 @@ class TestDeviceAccessWebviewer(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             html_content = response.get_data(as_text=True)
             
-            # Check for device access tab button
-            self.assertIn('onclick="showTab(\'devices\')"', html_content)
+            # Check for device access tab button (updated to expect new onclick format)
+            self.assertIn('onclick="showTab(\'devices\', this)"', html_content)
             self.assertIn('📱 Device Access', html_content)
             
             # Check for device access tab content

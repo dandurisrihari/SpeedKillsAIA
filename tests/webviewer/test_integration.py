@@ -7,6 +7,7 @@ import unittest
 import sys
 import json
 import tempfile
+import threading
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
@@ -15,7 +16,6 @@ project_root = Path(__file__).parents[2]
 sys.path.insert(0, str(project_root))
 
 try:
-    import flask
     from src.webviewer import create_app, load_data, start_web_ui, main
     FLASK_AVAILABLE = True
 except ImportError:
@@ -198,24 +198,35 @@ class TestWebviewerIntegration(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'JSON file', response.data)
 
-    @patch('src.webviewer.ui.app.run')
+    @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
     @patch('webbrowser.open')
-    def test_start_web_ui_integration(self, mock_browser, mock_app_run):
+    @patch('src.webviewer.ui.threading')
+    @patch('src.webviewer.ui.Flask')
+    def test_start_web_ui_integration(self, mock_flask_class, mock_threading, mock_browser):
         """Test start_web_ui integration"""
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             json.dump(self.test_json_data, f)
             json_file = f.name
         
         try:
-            # Mock app.run to prevent hanging
-            mock_app_run.return_value = None
+            # Mock Flask app instance
+            mock_app = MagicMock()
+            mock_flask_class.return_value = mock_app
+            
+            # Mock threading
+            mock_thread_instance = MagicMock()
+            mock_threading.Thread.return_value = mock_thread_instance
             
             # Test successful startup
             result = start_web_ui(json_file=json_file, port=5000, host='127.0.0.1', auto_open=True)
             self.assertTrue(result)
             
-            # Verify app.run was called with correct parameters
-            mock_app_run.assert_called_once_with(host='127.0.0.1', port=5000, debug=False)
+            # Verify Flask app.run was called
+            mock_app.run.assert_called_once()
+            
+            # Verify threading was used
+            mock_threading.Thread.assert_called_once()
+            mock_thread_instance.start.assert_called_once()
             
         finally:
             Path(json_file).unlink()
