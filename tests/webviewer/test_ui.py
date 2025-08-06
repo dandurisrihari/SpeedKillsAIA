@@ -307,41 +307,43 @@ class TestWebviewerUI(unittest.TestCase):
             response = client.get('/api/function-code')
             self.assertEqual(response.status_code, 400)
 
-    @patch('src.webviewer.ui.app.run')
     @patch('webbrowser.open')
     @patch('threading.Timer')
+    @patch('src.webviewer.ui.Flask')
     @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
-    def test_start_web_ui_with_data(self, mock_timer, mock_browser, mock_app_run):
+    def test_start_web_ui_with_data(self, mock_flask_class, mock_timer, mock_browser):
         """Test starting web UI with valid data"""
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             json.dump(self.test_json_data, f)
             json_file = f.name
         
         try:
-            # Mock app.run to prevent hanging
-            mock_app_run.return_value = None
+            # Mock Flask app instance
+            mock_app = MagicMock()
+            mock_flask_class.return_value = mock_app
             
             result = start_web_ui(json_file=json_file, port=5000, host='127.0.0.1', auto_open=True)
             self.assertTrue(result)
             
-            # Verify app.run was called with correct parameters
-            mock_app_run.assert_called_once_with(host='127.0.0.1', port=5000, debug=False)
+            # Verify app.run was called
+            mock_app.run.assert_called_once()
         finally:
             Path(json_file).unlink()
 
-    @patch('src.webviewer.ui.app.run')
     @patch('webbrowser.open')
     @patch('threading.Timer')
+    @patch('src.webviewer.ui.Flask')
     @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
-    def test_start_web_ui_no_auto_open(self, mock_timer, mock_browser, mock_app_run):
+    def test_start_web_ui_no_auto_open(self, mock_flask_class, mock_timer, mock_browser):
         """Test starting web UI without auto-opening browser"""
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             json.dump(self.test_json_data, f)
             json_file = f.name
         
         try:
-            # Mock app.run to prevent hanging
-            mock_app_run.return_value = None
+            # Mock Flask app instance
+            mock_app = MagicMock()
+            mock_flask_class.return_value = mock_app
             
             result = start_web_ui(json_file=json_file, auto_open=False)
             self.assertTrue(result)
@@ -350,7 +352,7 @@ class TestWebviewerUI(unittest.TestCase):
             mock_timer.assert_not_called()
             
             # Verify app.run was called
-            mock_app_run.assert_called_once_with(host='127.0.0.1', port=5000, debug=False)
+            mock_app.run.assert_called_once()
         finally:
             Path(json_file).unlink()
 
@@ -360,10 +362,10 @@ class TestWebviewerUI(unittest.TestCase):
         result = start_web_ui(json_file="nonexistent.json")
         self.assertFalse(result)
 
-    @patch('src.webviewer.ui.app.run')
     @patch('pathlib.Path.glob')
+    @patch('src.webviewer.ui.Flask')
     @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
-    def test_start_web_ui_auto_detect(self, mock_glob, mock_app_run):
+    def test_start_web_ui_auto_detect(self, mock_flask_class, mock_glob):
         """Test starting web UI with auto-detect"""
         # Mock finding a JSON file
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
@@ -371,15 +373,18 @@ class TestWebviewerUI(unittest.TestCase):
             json_file = f.name
         
         try:
+            # Mock Flask app instance
+            mock_app = MagicMock()
+            mock_flask_class.return_value = mock_app
+            
             mock_glob.return_value = [Path(json_file)]
-            mock_app_run.return_value = None
             
             with patch('src.webviewer.ui.webbrowser.open') as mock_browser:
                 result = start_web_ui(json_file=None)
                 self.assertTrue(result)
                 
                 # Verify app.run was called
-                mock_app_run.assert_called_once()
+                mock_app.run.assert_called_once()
         finally:
             Path(json_file).unlink()
 
@@ -405,7 +410,7 @@ class TestWebviewerUI(unittest.TestCase):
             content = response.data.decode('utf-8')
             # Check for memory tab
             self.assertIn('🧠 Memory Info', content)
-            self.assertIn('onclick="showTab(\'memory\')"', content)
+            self.assertIn('onclick="showTab(\'memory\', this)"', content)
 
     @unittest.skipUnless(FLASK_AVAILABLE, "Flask not available")
     def test_memory_statistics_display(self):

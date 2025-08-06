@@ -1,0 +1,375 @@
+#!/usr/bin/env python3
+"""
+Tests for Web UI LLM Integration
+
+Test cases for the enhanced web UI LLM analysis functionality including
+new API endpoints, token limiting, and user interaction features.
+"""
+
+import pytest
+import os
+import json
+from unittest.mock import Mock, patch, MagicMock
+import sys
+
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'src'))
+
+from llm_analysis.llm import LLMAnalyzer
+from webviewer.ui import create_app
+
+
+class TestWebUILLMIntegration:
+    """Test cases for Web UI LLM integration"""
+    
+    def setup_method(self):
+        """Setup for each test method"""
+        self.app = create_app()
+        self.app.config['TESTING'] = True
+        self.client = self.app.test_client()
+        
+        # Sample test data
+        self.test_data = {
+            "metadata": {
+                "parser_version": "2.0.0",
+                "parsed_at": "2023-01-01T12:00:00.000000",
+                "log_file": "test.log"
+            },
+            "function_entries": [
+                {
+                    "function_name": "test_function",
+                    "file_path": "test.c",
+                    "line_number": 10,
+                    "function_code": "void test_function() { return; }"
+                }
+            ],
+            "dma_operations": [
+                {
+                    "dma_function": "dma_alloc_coherent",
+                    "caller_function": "driver_init",
+                    "file_path": "driver.c",
+                    "line_number": 25,
+                    "stack_trace": ["driver_init", "module_init"]
+                }
+            ],
+            "user_copy_operations": [
+                {
+                    "copy_function": "copy_from_user",
+                    "caller_function": "ioctl_handler",
+                    "file_path": "device.c",
+                    "line_number": 50
+                }
+            ],
+            "ioctl_operations": [
+                {
+                    "function_name": "device_ioctl",
+                    "file_path": "device.c",
+                    "line_number": 100
+                }
+            ]
+        }
+
+    @patch('llm_analysis.llm.OPENAI_AVAILABLE', True)
+    @patch('llm_analysis.llm.LLMAnalyzer')
+    def test_llm_models_endpoint(self, mock_analyzer_class):
+        """Test LLM models API endpoint"""
+        mock_analyzer = Mock()
+        mock_analyzer.is_available.return_value = True
+        mock_analyzer_class.return_value = mock_analyzer
+        
+        response = self.client.get('/api/llm/models')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert isinstance(data, list)
+        assert any(model['id'] == 'gpt-3.5-turbo' for model in data)
+        assert any(model['id'] == 'gpt-4' for model in data)
+
+    @patch('llm_analysis.llm.OPENAI_AVAILABLE', True)
+    @patch('llm_analysis.llm.LLMAnalyzer')
+    def test_llm_analyze_function_endpoint(self, mock_analyzer_class):
+        """Test function analysis API endpoint"""
+        mock_analyzer = Mock()
+        mock_analyzer.is_available.return_value = True
+        mock_analyzer.analyze_function.return_value = {
+            "status": "success",
+            "analysis": "Test analysis result",
+            "function_name": "test_function",
+            "model_used": "gpt-3.5-turbo"
+        }
+        mock_analyzer_class.return_value = mock_analyzer
+        
+        request_data = {
+            "function_name": "test_function",
+            "source_code": "void test_function() { return; }",
+            "file_path": "test.c",
+            "custom_prompt": "Focus on security",
+            "model_id": "gpt-3.5-turbo"
+        }
+        
+        response = self.client.post('/api/llm/analyze/function',
+                                   data=json.dumps(request_data),
+                                   content_type='application/json')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'success'
+        assert data['analysis'] == 'Test analysis result'
+        
+        # Verify the analyzer was called with for_web_ui=True
+        mock_analyzer.analyze_function.assert_called_once_with(
+            "test_function", 
+            "void test_function() { return; }", 
+            "test.c", 
+            "Focus on security", 
+            "gpt-3.5-turbo", 
+            for_web_ui=True
+        )
+
+    @patch('llm_analysis.llm.OPENAI_AVAILABLE', True)
+    @patch('llm_analysis.llm.LLMAnalyzer')
+    def test_llm_analyze_dma_endpoint(self, mock_analyzer_class):
+        """Test DMA analysis API endpoint"""
+        mock_analyzer = Mock()
+        mock_analyzer.is_available.return_value = True
+        mock_analyzer.analyze_dma_operation.return_value = {
+            "status": "success",
+            "analysis": "DMA analysis result",
+            "model_used": "gpt-4"
+        }
+        mock_analyzer_class.return_value = mock_analyzer
+        
+        request_data = {
+            "dma_operation": {
+                "dma_function": "dma_alloc_coherent",
+                "caller_function": "driver_init"
+            },
+            "function_code": "void driver_init() { ... }",
+            "call_graph": ["driver_init", "module_init"],
+            "custom_prompt": "Check for coherency issues",
+            "model_id": "gpt-4"
+        }
+        
+        response = self.client.post('/api/llm/analyze/dma',
+                                   data=json.dumps(request_data),
+                                   content_type='application/json')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'success'
+        
+        # Verify the analyzer was called with for_web_ui=True
+        mock_analyzer.analyze_dma_operation.assert_called_once()
+        call_args = mock_analyzer.analyze_dma_operation.call_args
+        assert call_args[1]['for_web_ui'] == True
+
+    @patch('llm_analysis.llm.OPENAI_AVAILABLE', True)
+    @patch('llm_analysis.llm.LLMAnalyzer')
+    def test_llm_analyze_user_copy_endpoint(self, mock_analyzer_class):
+        """Test user copy analysis API endpoint"""
+        mock_analyzer = Mock()
+        mock_analyzer.is_available.return_value = True
+        mock_analyzer.analyze_user_copy_operation.return_value = {
+            "status": "success",
+            "analysis": "User copy analysis result",
+            "model_used": "gpt-3.5-turbo"
+        }
+        mock_analyzer_class.return_value = mock_analyzer
+        
+        request_data = {
+            "user_copy_operation": {
+                "copy_function": "copy_from_user",
+                "caller_function": "ioctl_handler"
+            },
+            "function_code": "int ioctl_handler() { ... }",
+            "custom_prompt": "Check for buffer overflows",
+            "model_id": "gpt-3.5-turbo"
+        }
+        
+        response = self.client.post('/api/llm/analyze/user-copy',
+                                   data=json.dumps(request_data),
+                                   content_type='application/json')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'success'
+
+    @patch('llm_analysis.llm.OPENAI_AVAILABLE', True)
+    @patch('llm_analysis.llm.LLMAnalyzer')
+    def test_llm_analyze_ioctl_endpoint(self, mock_analyzer_class):
+        """Test IOCTL analysis API endpoint"""
+        mock_analyzer = Mock()
+        mock_analyzer.is_available.return_value = True
+        mock_analyzer.analyze_ioctl_handler.return_value = {
+            "status": "success",
+            "analysis": "IOCTL analysis result",
+            "model_used": "gpt-4"
+        }
+        mock_analyzer_class.return_value = mock_analyzer
+        
+        request_data = {
+            "ioctl_operation": {
+                "function_name": "device_ioctl",
+                "file_path": "device.c"
+            },
+            "function_code": "long device_ioctl() { ... }",
+            "custom_prompt": "Check for privilege escalation",
+            "model_id": "gpt-4"
+        }
+        
+        response = self.client.post('/api/llm/analyze/ioctl',
+                                   data=json.dumps(request_data),
+                                   content_type='application/json')
+        
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert data['status'] == 'success'
+
+    @patch('llm_analysis.llm.OPENAI_AVAILABLE', False)
+    def test_llm_not_available(self):
+        """Test behavior when LLM is not available"""
+        response = self.client.get('/api/llm/models')
+        assert response.status_code == 503
+        
+        response = self.client.post('/api/llm/analyze/function',
+                                   data=json.dumps({}),
+                                   content_type='application/json')
+        assert response.status_code == 503
+
+    @patch('llm_analysis.llm.OPENAI_AVAILABLE', True)
+    @patch('llm_analysis.llm.LLMAnalyzer')
+    def test_missing_required_data(self, mock_analyzer_class):
+        """Test error handling for missing required data"""
+        mock_analyzer = Mock()
+        mock_analyzer.is_available.return_value = True
+        mock_analyzer_class.return_value = mock_analyzer
+        
+        # Test missing function name
+        response = self.client.post('/api/llm/analyze/function',
+                                   data=json.dumps({"source_code": "test"}),
+                                   content_type='application/json')
+        assert response.status_code == 400
+        
+        # Test missing DMA operation
+        response = self.client.post('/api/llm/analyze/dma',
+                                   data=json.dumps({}),
+                                   content_type='application/json')
+        assert response.status_code == 400
+
+    @patch('llm_analysis.llm.OPENAI_AVAILABLE', True)
+    @patch('llm_analysis.llm.LLMAnalyzer')
+    def test_api_key_not_configured(self, mock_analyzer_class):
+        """Test behavior when API key is not configured"""
+        mock_analyzer = Mock()
+        mock_analyzer.is_available.return_value = False
+        mock_analyzer_class.return_value = mock_analyzer
+        
+        request_data = {
+            "function_name": "test",
+            "source_code": "test"
+        }
+        
+        response = self.client.post('/api/llm/analyze/function',
+                                   data=json.dumps(request_data),
+                                   content_type='application/json')
+        assert response.status_code == 503
+
+
+class TestLLMAnalyzerEnhancements:
+    """Test cases for enhanced LLMAnalyzer functionality"""
+    
+    def setup_method(self):
+        """Setup for each test method"""
+        self.analyzer = LLMAnalyzer()
+
+    @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
+    @patch('llm_analysis.llm.openai.OpenAI')
+    def test_token_limiting_for_web_ui(self, mock_openai):
+        """Test token limiting for web UI"""
+        mock_client = Mock()
+        mock_response = Mock()
+        mock_response.choices = [Mock(message=Mock(content="Test analysis"))]
+        mock_client.chat.completions.create.return_value = mock_response
+        mock_openai.return_value = mock_client
+        
+        analyzer = LLMAnalyzer()
+        
+        # Test with for_web_ui=True
+        result = analyzer.analyze_function(
+            "test_func", 
+            "void test_func() {}", 
+            for_web_ui=True
+        )
+        
+        # Should use reduced token limit
+        call_args = mock_client.chat.completions.create.call_args
+        assert call_args[1]['max_tokens'] == 1500
+
+    def test_limit_tokens_for_web_ui(self):
+        """Test the token limiting function"""
+        long_text = "A" * 10000
+        limited = self.analyzer._limit_tokens_for_web_ui(long_text, max_length=100)
+        
+        assert len(limited) <= 100
+        assert "Output truncated for web display" in limited
+
+    @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
+    @patch('llm_analysis.llm.openai.OpenAI')
+    def test_user_copy_operation_analysis(self, mock_openai):
+        """Test user copy operation analysis"""
+        mock_client = Mock()
+        mock_response = Mock()
+        mock_response.choices = [Mock(message=Mock(content="User copy analysis"))]
+        mock_client.chat.completions.create.return_value = mock_response
+        mock_openai.return_value = mock_client
+        
+        analyzer = LLMAnalyzer()
+        
+        user_copy_op = {
+            "copy_function": "copy_from_user",
+            "caller_function": "ioctl_handler",
+            "file_path": "device.c",
+            "line_number": 50
+        }
+        
+        result = analyzer.analyze_user_copy_operation(
+            user_copy_op, 
+            "int ioctl_handler() { ... }",
+            "Focus on buffer overflows"
+        )
+        
+        assert result['status'] == 'success'
+        assert result['analysis'] == 'User copy analysis'
+        assert result['user_copy_operation'] == user_copy_op
+
+    @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
+    @patch('llm_analysis.llm.openai.OpenAI')
+    def test_ioctl_handler_analysis(self, mock_openai):
+        """Test IOCTL handler analysis"""
+        mock_client = Mock()
+        mock_response = Mock()
+        mock_response.choices = [Mock(message=Mock(content="IOCTL analysis"))]
+        mock_client.chat.completions.create.return_value = mock_response
+        mock_openai.return_value = mock_client
+        
+        analyzer = LLMAnalyzer()
+        
+        ioctl_op = {
+            "function_name": "device_ioctl",
+            "file_path": "device.c",
+            "line_number": 100
+        }
+        
+        result = analyzer.analyze_ioctl_handler(
+            ioctl_op, 
+            "long device_ioctl() { ... }",
+            "Check for privilege escalation"
+        )
+        
+        assert result['status'] == 'success'
+        assert result['analysis'] == 'IOCTL analysis'
+        assert result['ioctl_operation'] == ioctl_op
+
+
+if __name__ == '__main__':
+    pytest.main([__file__, '-v'])
