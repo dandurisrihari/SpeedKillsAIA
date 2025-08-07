@@ -153,189 +153,267 @@ class LLMAnalyzer:
         return f"{truncated}\n\n... [Output truncated for web display. Full analysis available in saved report.]"
     
     def analyze_function(self, function_name: str, source_code: str, file_path: str = "", 
-                        custom_prompt: str = "", model_id: str = "gpt-3.5-turbo", for_web_ui: bool = False) -> Dict[str, Any]:
-        """Analyze a specific function for security issues and best practices"""
+                        custom_prompt: str = "", model_id: str = "gpt-3.5-turbo", 
+                        for_web_ui: bool = False) -> Dict[str, Any]:
+        """Analyze general function for AIA integration patterns"""
         
-        # Check if LLM is available
-        if not self.is_available():
-            return {
-                "status": "unavailable",
-                "analysis": "LLM analysis is not available. Please check OpenAI API configuration.",
-                "error": "LLM analysis is not available. Please check OpenAI API configuration.",
-                "function_name": function_name,
-                "file_path": file_path,
-                "model_used": model_id,
-                "custom_prompt": custom_prompt
-            }
-        
-        base_prompt = f"""
-You are a security expert analyzing kernel code. Please analyze the following function for:
-1. Security vulnerabilities (buffer overflows, race conditions, etc.)
-2. Code quality and best practices
-3. Performance considerations
-4. Potential attack vectors
-
-Function: {function_name}
-File: {file_path}
-
-Source Code:
-{source_code}
-
-{f"Additional focus: {custom_prompt}" if custom_prompt else ""}
-
-Please provide a structured analysis with specific recommendations.
-"""
-        
-        messages = [
-            {"role": "system", "content": "You are an expert kernel security analyst."},
-            {"role": "user", "content": base_prompt}
-        ]
-        
-        # Use appropriate token limits based on context
-        max_tokens = 1500 if for_web_ui else 2000
-        analysis, error = self._make_request(messages, model_id, max_tokens)
-        
-        # Limit output for web UI
-        if for_web_ui and analysis:
-            analysis = self._limit_tokens_for_web_ui(analysis)
-        
-        return {
-            "status": "success" if analysis else "error",
-            "analysis": analysis or "Failed to generate analysis",
-            "error": error if error else ("Function analysis failed" if not analysis else None),
+        function_data = {
             "function_name": function_name,
             "file_path": file_path,
-            "model_used": model_id,
-            "custom_prompt": custom_prompt
+            "source_code": source_code
         }
+        
+        # Use AIA-specific analysis for general functions (focuses on AIARelevantFunction and Entry Points)
+        return self._analyze_aia_integration(
+            code_block=function_data,
+            function_code=source_code,
+            custom_prompt=custom_prompt,
+            model_id=model_id,
+            for_web_ui=for_web_ui,
+            analysis_type="general_function"
+        )
     
     def analyze_dma_operation(self, dma_operation: Dict[str, Any], function_code: str = "", 
                             call_graph: List[str] = None, custom_prompt: str = "", 
                             model_id: str = "gpt-3.5-turbo", for_web_ui: bool = False) -> Dict[str, Any]:
-        """Analyze DMA operations for security and correctness"""
+        """Analyze DMA operations for AIA integration patterns"""
         
-        call_graph_str = " -> ".join(call_graph) if call_graph else "Not available"
-        
-        base_prompt = f"""
-You are a security expert analyzing DMA operations in kernel code. Please analyze:
-1. DMA coherency and synchronization issues
-2. Potential race conditions
-3. Memory safety concerns
-4. Attack vectors related to DMA
-
-DMA Operation Details:
-- Function: {dma_operation.get('dma_function', 'Unknown')}
-- Caller: {dma_operation.get('caller_function', 'Unknown')}
-- File: {dma_operation.get('file_path', 'Unknown')}
-- Line: {dma_operation.get('line_number', 'Unknown')}
-
-Call Graph: {call_graph_str}
-
-{f"Associated Function Code:\n{function_code}" if function_code else ""}
-
-{f"Additional focus: {custom_prompt}" if custom_prompt else ""}
-
-Provide specific security recommendations for this DMA operation.
-"""
-        
-        messages = [
-            {"role": "system", "content": "You are an expert in kernel DMA security analysis."},
-            {"role": "user", "content": base_prompt}
-        ]
-        
-        # Use appropriate token limits based on context
-        max_tokens = 1500 if for_web_ui else 2000
-        analysis, error = self._make_request(messages, model_id, max_tokens)
-        
-        # Limit output for web UI
-        if for_web_ui and analysis:
-            analysis = self._limit_tokens_for_web_ui(analysis)
-        
-        return {
-            "status": "success" if analysis else "error",
-            "analysis": analysis or "Failed to generate DMA analysis",
-            "error": error if error else ("DMA analysis failed" if not analysis else None),
-            "dma_operation": dma_operation,
-            "model_used": model_id,
-            "custom_prompt": custom_prompt
+        # Prepare DMA operation data for AIA analysis
+        dma_data = {
+            "dma_function": dma_operation.get('dma_function', 'Unknown'),
+            "caller_function": dma_operation.get('caller_function', 'Unknown'), 
+            "file_path": dma_operation.get('file_path', 'Unknown'),
+            "line_number": dma_operation.get('line_number', 'Unknown'),
+            "call_graph": call_graph or []
         }
+        
+        # Use AIA-specific analysis for DMA operations (focuses on AIARelevantFunction)
+        result = self._analyze_aia_integration(
+            code_block=dma_data,
+            function_code=function_code,
+            custom_prompt=custom_prompt,
+            model_id=model_id,
+            for_web_ui=for_web_ui,
+            analysis_type="dma_operation"
+        )
+        
+        # Add DMA-specific fields for backward compatibility
+        result.update({
+            "dma_operation": dma_operation
+        })
+        
+        return result
     
     def analyze_user_copy_operation(self, user_copy_operation: Dict[str, Any], function_code: str = "", 
                                   custom_prompt: str = "", model_id: str = "gpt-3.5-turbo", 
                                   for_web_ui: bool = False) -> Dict[str, Any]:
-        """Analyze user copy operations for security issues"""
+        """Analyze user copy operations for AIA integration patterns"""
         
-        base_prompt = f"""
-You are a security expert analyzing user-space to kernel-space data copy operations. Please analyze:
-1. Buffer overflow vulnerabilities
-2. Input validation issues
-3. Privilege escalation possibilities
-4. Memory corruption vulnerabilities
-5. TOCTOU (Time of Check to Time of Use) vulnerabilities
-
-User Copy Operation Details:
-- Function: {user_copy_operation.get('copy_function', 'Unknown')}
-- Caller: {user_copy_operation.get('caller_function', 'Unknown')}
-- File: {user_copy_operation.get('file_path', 'Unknown')}
-- Line: {user_copy_operation.get('line_number', 'Unknown')}
-
-{f"Associated Function Code:\n{function_code}" if function_code else ""}
-
-{f"Additional focus: {custom_prompt}" if custom_prompt else ""}
-
-Provide specific security recommendations for this user copy operation.
-"""
-        
-        messages = [
-            {"role": "system", "content": "You are an expert in kernel security analysis, particularly user-space interfaces."},
-            {"role": "user", "content": base_prompt}
-        ]
-        
-        # Use appropriate token limits based on context
-        max_tokens = 1500 if for_web_ui else 2000
-        analysis, error = self._make_request(messages, model_id, max_tokens)
-        
-        # Limit output for web UI
-        if for_web_ui and analysis:
-            analysis = self._limit_tokens_for_web_ui(analysis)
-        
-        return {
-            "status": "success" if analysis else "error",
-            "analysis": analysis or "Failed to generate user copy analysis",
-            "error": error if error else ("User copy analysis failed" if not analysis else None),
-            "user_copy_operation": user_copy_operation,
-            "model_used": model_id,
-            "custom_prompt": custom_prompt
+        # Prepare user copy operation data for AIA analysis
+        user_copy_data = {
+            "copy_function": user_copy_operation.get('copy_function', 'Unknown'),
+            "caller_function": user_copy_operation.get('caller_function', 'Unknown'),
+            "file_path": user_copy_operation.get('file_path', 'Unknown'),
+            "line_number": user_copy_operation.get('line_number', 'Unknown')
         }
+        
+        # Use AIA-specific analysis for user copy operations (focuses on Message Structure Handling)
+        result = self._analyze_aia_integration(
+            code_block=user_copy_data,
+            function_code=function_code,
+            custom_prompt=custom_prompt,
+            model_id=model_id,
+            for_web_ui=for_web_ui,
+            analysis_type="user_copy_operation"
+        )
+        
+        # Add user copy-specific fields for backward compatibility
+        result.update({
+            "user_copy_operation": user_copy_operation
+        })
+        
+        return result
     
     def analyze_ioctl_handler(self, ioctl_operation: Dict[str, Any], function_code: str = "", 
                             custom_prompt: str = "", model_id: str = "gpt-3.5-turbo", 
                             for_web_ui: bool = False) -> Dict[str, Any]:
-        """Analyze IOCTL handler operations for security issues"""
+        """Analyze IOCTL handler operations for AIA integration patterns"""
         
-        base_prompt = f"""
-You are a security expert analyzing IOCTL handler functions in kernel code. Please analyze:
-1. Input validation and sanitization
-2. Privilege escalation vulnerabilities
-3. Buffer overflow and underflow issues
-4. Integer overflow/underflow vulnerabilities
-5. Improper access control
-6. Information disclosure vulnerabilities
+        # Use AIA-specific analysis for ioctl handlers (focuses on Message Structure Handling)
+        return self._analyze_aia_integration(
+            code_block=ioctl_operation,
+            function_code=function_code,
+            custom_prompt=custom_prompt,
+            model_id=model_id,
+            for_web_ui=for_web_ui,
+            analysis_type="ioctl_handler"
+        )
 
-IOCTL Handler Details:
-- Function: {ioctl_operation.get('function_name', 'Unknown')}
-- File: {ioctl_operation.get('file_path', 'Unknown')}
-- Line: {ioctl_operation.get('line_number', 'Unknown')}
+    def analyze_function(self, function_name: str, source_code: str, file_path: str = "", 
+                        custom_prompt: str = "", model_id: str = "gpt-3.5-turbo", 
+                        for_web_ui: bool = False) -> Dict[str, Any]:
+        """Analyze general function for AIA integration patterns"""
+        
+        function_data = {
+            "function_name": function_name,
+            "file_path": file_path,
+            "source_code": source_code
+        }
+        
+        # Use AIA-specific analysis for general functions (focuses on AIARelevantFunction and Entry Points)
+        return self._analyze_aia_integration(
+            code_block=function_data,
+            function_code=source_code,
+            custom_prompt=custom_prompt,
+            model_id=model_id,
+            for_web_ui=for_web_ui,
+            analysis_type="general_function"
+        )
+
+    def _analyze_aia_integration(self, code_block: Dict[str, Any], function_code: str = "", 
+                               custom_prompt: str = "", model_id: str = "gpt-3.5-turbo", 
+                               for_web_ui: bool = False, analysis_type: str = "general_function") -> Dict[str, Any]:
+        """Core AIA integration analysis with category-specific focus"""
+        
+        # Check if LLM is available first
+        if not self.is_available():
+            # Return legacy format for backward compatibility
+            if analysis_type == "ioctl_handler":
+                return {
+                    "status": "unavailable",
+                    "analysis": "LLM analysis is not available. Please check OpenAI API configuration.",
+                    "error": "LLM analysis is not available. Please check OpenAI API configuration.",
+                    "handler_name": code_block.get('handler_name', 'Unknown'),
+                    "file_path": code_block.get('file_path', ''),
+                    "model_used": model_id,
+                    "custom_prompt": custom_prompt
+                }
+            else:
+                return {
+                    "status": "unavailable",
+                    "analysis": "LLM analysis is not available. Please check OpenAI API configuration.",
+                    "error": "LLM analysis is not available. Please check OpenAI API configuration.",
+                    "function_name": code_block.get('function_name', 'Unknown'),
+                    "file_path": code_block.get('file_path', ''),
+                    "model_used": model_id,
+                    "custom_prompt": custom_prompt
+                }
+
+        # Determine analysis focus based on code type
+        if analysis_type == "ioctl_handler":
+            # For ioctl handlers: Default focus on Message Structure Handling
+            primary_focus = """
+3. Message Structure Handling (PRIMARY FOCUS)
+Assign a confidence score if the code block handles message structures exchanged between user space and kernel, especially involving Shared Memory Identifiers (SMIDs). These are usually detected via:
+• Use of copy_from_user() / copy_to_user()
+• Structures passed between user space and kernel that include:
+  • SMID (shared memory identifier)
+  • Device virtual address, physical address, DMA address
+  • Memory size, flags, or similar metadata
+These structures may represent requests by user space for AIA to access certain memory pages, or responses from kernel about memory regions accessible to the AIA.
+"""
+        elif analysis_type == "user_copy_operation":
+            # For user copy operations: Default focus on Message Structure Handling
+            primary_focus = """
+3. Message Structure Handling (PRIMARY FOCUS)
+Assign a confidence score if the code block handles message structures exchanged between user space and kernel, especially involving Shared Memory Identifiers (SMIDs). These are usually detected via:
+• Use of copy_from_user() / copy_to_user()
+• Structures passed between user space and kernel that include:
+  • SMID (shared memory identifier)
+  • Device virtual address, physical address, DMA address
+  • Memory size, flags, or similar metadata
+These structures may represent requests by user space for AIA to access certain memory pages, or responses from kernel about memory regions accessible to the AIA.
+"""
+        elif analysis_type == "dma_operation":
+            # For DMA operations: Default focus on AIARelevantFunction
+            primary_focus = """
+1. AIARelevantFunction (PRIMARY FOCUS)
+Assign a confidence score for whether the given function or code block is involved in sharing shared memory (SMem) with an AI Accelerator (AIA). Such functions often:
+• Pin user pages to memory (get_user_pages, pin_user_pages)
+• Obtain physical or DMA addresses of user pages
+• Program these addresses into:
+  • AIA device page tables (for memory mapping inside the AIA)
+  • AIA MMIO (Memory Mapped I/O) registers to notify AIA of accessible memory
+• Manage DMA buffers for communication between CPU and AIA
+These functions are typically critical for giving the AIA access to host memory regions.
+"""
+        else:
+            # For all other code: Default focus on AIARelevantFunction and Entry Points
+            primary_focus = """
+1. AIARelevantFunction (PRIMARY FOCUS)
+Assign a confidence score for whether the given function or code block is involved in sharing shared memory (SMem) with an AI Accelerator (AIA). Such functions often:
+• Pin user pages to memory (get_user_pages, pin_user_pages)
+• Obtain physical or DMA addresses of user pages
+• Program these addresses into:
+  • AIA device page tables (for memory mapping inside the AIA)
+  • AIA MMIO (Memory Mapped I/O) registers to notify AIA of accessible memory
+• Manage DMA buffers for communication between CPU and AIA
+These functions are typically critical for giving the AIA access to host memory regions.
+
+2. Relevant KD Entry Point (SECONDARY FOCUS)
+Assign a confidence score if the code block represents an entry point from user space to kernel, commonly through ioctl() functions. These:
+• Act as dispatch points in a switch-case over ioctl codes
+• Handle user commands and trigger deeper kernel logic leading to AIARelevantFunction
+• Identify which ioctl code is being handled (e.g., IOCTL_AIA_ALLOC_SMEM, IOCTL_AIA_SEND_MSG)
+If you find such code, identify the ioctl name or code value used and how the call flows into memory management or messaging logic.
+"""
+
+        base_prompt = f"""
+You are an expert in Linux Kernel Driver (KD) development with specialization in AI Accelerator (AIA) integration. Analyze the given kernel source code and assign confidence scores (0–100%) across three categories.
+
+{primary_focus}
+
+ALL CATEGORIES FOR REFERENCE:
+
+1. AIARelevantFunction
+Functions involved in sharing shared memory (SMem) with AI Accelerator (AIA):
+• Pin user pages to memory (get_user_pages, pin_user_pages)
+• Obtain physical or DMA addresses of user pages
+• Program addresses into AIA device page tables or MMIO registers
+• Manage DMA buffers for CPU-AIA communication
+
+2. Relevant KD Entry Point
+Entry points from user space to kernel (ioctl functions):
+• Dispatch points in switch-case over ioctl codes
+• Handle user commands triggering AIARelevantFunction
+• Identify ioctl codes (e.g., IOCTL_AIA_ALLOC_SMEM, IOCTL_AIA_SEND_MSG)
+
+3. Message Structure Handling
+Handle message structures between user space and kernel with SMIDs:
+• Use copy_from_user() / copy_to_user()
+• Structures with SMID, virtual/physical/DMA addresses, memory size, flags
+• Represent AIA memory access requests/responses
+
+Code Details:
+- Function: {code_block.get('function_name', 'Unknown')}
+- File: {code_block.get('file_path', 'Unknown')}
+- Line: {code_block.get('line_number', 'Unknown')}
 
 {f"Function Code:\n{function_code}" if function_code else ""}
 
 {f"Additional focus: {custom_prompt}" if custom_prompt else ""}
 
-Provide specific security recommendations for this IOCTL handler.
+OUTPUT FORMAT (YAML):
+```yaml
+Function/Code_Block_Name: <function_name_or_description>
+AIARelevantFunction: <0–100%>
+Relevant_KD_Entry_Point: <0–100%>
+Message_Structure_Handling: <0–100%>
+Reasoning:
+  - Describe the rationale behind each confidence score
+  - Reference specific APIs used (e.g., get_user_pages, dma_map_page, copy_from_user)
+  - Mention any relevant ioctl code names or struct fields (e.g., smid, phys_addr)
+  - Indicate if there's a flow from user space to kernel to AIA
+```
+
+GOAL: Identify and trace the path through which:
+• User space initiates a request (to share memory or send message to AIA)
+• Kernel pins and maps memory appropriately
+• AIA and userspace are informed of shared memory locations (via SMID or physical/DMA address)
 """
         
         messages = [
-            {"role": "system", "content": "You are an expert in kernel security analysis, particularly IOCTL interfaces."},
+            {"role": "system", "content": "You are an expert in Linux Kernel Driver development with specialization in AI Accelerator (AIA) integration."},
             {"role": "user", "content": base_prompt}
         ]
         
@@ -347,14 +425,45 @@ Provide specific security recommendations for this IOCTL handler.
         if for_web_ui and analysis:
             analysis = self._limit_tokens_for_web_ui(analysis)
         
-        return {
+        # Build return structure with both new AIA fields and legacy compatibility fields
+        result = {
             "status": "success" if analysis else "error",
-            "analysis": analysis or "Failed to generate IOCTL analysis",
-            "error": error if error else ("IOCTL analysis failed" if not analysis else None),
-            "ioctl_operation": ioctl_operation,
+            "analysis": analysis or "Failed to generate AIA integration analysis",
+            "error": error if error else ("AIA analysis failed" if not analysis else None),
+            "code_block": code_block,
             "model_used": model_id,
-            "custom_prompt": custom_prompt
+            "custom_prompt": custom_prompt,
+            "analysis_type": analysis_type
         }
+        
+        # Add legacy compatibility fields based on analysis type
+        if analysis_type == "ioctl_handler":
+            result.update({
+                "handler_name": code_block.get('handler_name', 'Unknown'),
+                "file_path": code_block.get('file_path', ''),
+                "ioctl_commands": code_block.get('ioctl_commands', [])
+            })
+        elif analysis_type == "dma_operation":
+            result.update({
+                "dma_function": code_block.get('dma_function', 'Unknown'),
+                "caller_function": code_block.get('caller_function', 'Unknown'),
+                "file_path": code_block.get('file_path', ''),
+                "line_number": code_block.get('line_number', 'Unknown')
+            })
+        elif analysis_type == "user_copy_operation":
+            result.update({
+                "copy_function": code_block.get('copy_function', 'Unknown'),
+                "caller_function": code_block.get('caller_function', 'Unknown'),
+                "file_path": code_block.get('file_path', ''),
+                "line_number": code_block.get('line_number', 'Unknown')
+            })
+        else:
+            result.update({
+                "function_name": code_block.get('function_name', 'Unknown'),
+                "file_path": code_block.get('file_path', '')
+            })
+        
+        return result
     
     def analyze_logs(self, logs: List[Dict[str, Any]], analysis_type: str = "general", 
                     custom_prompt: str = "", model_id: str = "gpt-3.5-turbo") -> Dict[str, Any]:
