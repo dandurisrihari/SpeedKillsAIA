@@ -420,7 +420,7 @@ function analyzeUserCopyWithLLM() {
                 model_id: modelSelect ? modelSelect.value : 'gpt-3.5-turbo'
             };
             
-            return fetch('/api/llm/analyze/user_copy', {
+            return fetch('/api/llm/analyze/user-copy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1276,7 +1276,7 @@ function quickAnalyzeFunction(functionName, filePath, lineNumber) {
                 // Set default prompt
                 const customPrompt = document.getElementById('customPrompt');
                 if (customPrompt) {
-                    customPrompt.value = 'Analyze this function for security vulnerabilities and potential attack vectors.';
+                    customPrompt.value = 'Analyze this function for AI Accelerator (AIA) integration patterns: memory sharing with AI accelerators, DMA operations, and entry points for AIA communication.';
                 }
             }
         })
@@ -1302,7 +1302,7 @@ function quickAnalyzeDMA(index) {
     // Set default prompt
     const dmaCustomPrompt = document.getElementById('dmaCustomPrompt');
     if (dmaCustomPrompt) {
-        dmaCustomPrompt.value = 'Analyze this DMA operation for security issues, coherency problems, and potential race conditions.';
+        dmaCustomPrompt.value = 'Analyze this DMA operation for AI Accelerator (AIA) integration: memory management, DMA buffer sharing, and AIA accessibility patterns.';
     }
 }
 
@@ -1377,7 +1377,7 @@ function quickAnalyzeUserCopy(index) {
     // Set default prompt for user copy analysis
     const customPrompt = document.getElementById('userCopyCustomPrompt');
     if (customPrompt) {
-        customPrompt.value = 'Analyze this user copy operation for buffer overflow vulnerabilities and input validation issues.';
+        customPrompt.value = 'Analyze this user copy operation for AI Accelerator (AIA) integration: message structures with SMIDs, memory metadata exchange, and AIA communication patterns.';
     }
 }
 
@@ -1391,7 +1391,7 @@ function quickAnalyzeIOCTL(index) {
     // Set default prompt for IOCTL analysis
     const customPrompt = document.getElementById('ioctlCustomPrompt');
     if (customPrompt) {
-        customPrompt.value = 'Analyze this IOCTL handler for privilege escalation vulnerabilities and input validation issues.';
+        customPrompt.value = 'Analyze this IOCTL handler for AI Accelerator (AIA) integration: message structure handling, SMID management, and user-kernel communication for AIA memory access.';
     }
 }
 
