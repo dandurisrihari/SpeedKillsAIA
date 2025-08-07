@@ -31,10 +31,12 @@ except ImportError:
 # Import OpenAI after loading .env
 try:
     import openai
+    from openai import OpenAI
     OPENAI_AVAILABLE = True
 except ImportError:
     OPENAI_AVAILABLE = False
     openai = None
+    OpenAI = None
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -47,11 +49,28 @@ class LLMAnalyzer:
         """Initialize LLM analyzer with OpenAI API configuration"""
         self.client = None
         self.available_models = [
-            "gpt-3.5-turbo",
-            "gpt-4",
-            "gpt-4-turbo-preview"
+            {
+                "id": "gpt-3.5-turbo",
+                "name": "GPT-3.5 Turbo",
+                "description": "Fast and cost-effective model for most tasks",
+                "max_tokens": 4096
+            },
+            {
+                "id": "gpt-4",
+                "name": "GPT-4",
+                "description": "Most capable model with enhanced reasoning",
+                "max_tokens": 8192
+            },
+            {
+                "id": "gpt-4-turbo-preview", 
+                "name": "GPT-4 Turbo",
+                "description": "Latest GPT-4 with improved performance",
+                "max_tokens": 128000
+            }
         ]
+        self.model_id = model_id or "gpt-3.5-turbo"
         self.default_model = model_id or "gpt-3.5-turbo"
+        self.system_prompt = "You are an expert kernel security analyst."
         
         # Initialize OpenAI client
         self._initialize_client()
@@ -68,7 +87,7 @@ class LLMAnalyzer:
             return
         
         try:
-            self.client = openai.OpenAI(api_key=api_key)
+            self.client = OpenAI(api_key=api_key)
             logger.info("OpenAI client initialized successfully")
         except Exception as e:
             logger.error(f"Failed to initialize OpenAI client: {e}")
@@ -90,16 +109,27 @@ class LLMAnalyzer:
             logger.error(f"OpenAI API test failed: {e}")
             return False
     
-    def get_available_models(self) -> List[str]:
+    def get_available_models(self) -> List[Dict[str, Any]]:
         """Get list of available AI models"""
         if not self.is_available():
             return []
         return self.available_models
     
-    def _make_request(self, messages: List[Dict[str, str]], model: str = "gpt-3.5-turbo", max_tokens: int = 2000) -> Optional[str]:
+    def set_model(self, model_id: str) -> bool:
+        """Set the model to use for analysis"""
+        # Check if the model is in our available models
+        available_model_ids = [model["id"] for model in self.available_models]
+        if model_id not in available_model_ids:
+            return False
+        
+        self.model_id = model_id
+        self.default_model = model_id
+        return True
+    
+    def _make_request(self, messages: List[Dict[str, str]], model: str = "gpt-3.5-turbo", max_tokens: int = 2000) -> tuple:
         """Make a request to the OpenAI API with configurable token limits"""
         if not self.client:
-            return None
+            return None, "OpenAI client not available"
         
         try:
             response = self.client.chat.completions.create(
@@ -108,10 +138,10 @@ class LLMAnalyzer:
                 max_tokens=max_tokens,
                 temperature=0.3
             )
-            return response.choices[0].message.content
+            return response.choices[0].message.content, None
         except Exception as e:
             logger.error(f"OpenAI API request failed: {e}")
-            return None
+            return None, str(e)
     
     def _limit_tokens_for_web_ui(self, text: str, max_length: int = 8000) -> str:
         """Limit text length for web UI display"""
@@ -125,6 +155,18 @@ class LLMAnalyzer:
     def analyze_function(self, function_name: str, source_code: str, file_path: str = "", 
                         custom_prompt: str = "", model_id: str = "gpt-3.5-turbo", for_web_ui: bool = False) -> Dict[str, Any]:
         """Analyze a specific function for security issues and best practices"""
+        
+        # Check if LLM is available
+        if not self.is_available():
+            return {
+                "status": "unavailable",
+                "analysis": "LLM analysis is not available. Please check OpenAI API configuration.",
+                "error": "LLM analysis is not available. Please check OpenAI API configuration.",
+                "function_name": function_name,
+                "file_path": file_path,
+                "model_used": model_id,
+                "custom_prompt": custom_prompt
+            }
         
         base_prompt = f"""
 You are a security expert analyzing kernel code. Please analyze the following function for:
@@ -151,7 +193,7 @@ Please provide a structured analysis with specific recommendations.
         
         # Use appropriate token limits based on context
         max_tokens = 1500 if for_web_ui else 2000
-        analysis = self._make_request(messages, model_id, max_tokens)
+        analysis, error = self._make_request(messages, model_id, max_tokens)
         
         # Limit output for web UI
         if for_web_ui and analysis:
@@ -160,6 +202,7 @@ Please provide a structured analysis with specific recommendations.
         return {
             "status": "success" if analysis else "error",
             "analysis": analysis or "Failed to generate analysis",
+            "error": error if error else ("Function analysis failed" if not analysis else None),
             "function_name": function_name,
             "file_path": file_path,
             "model_used": model_id,
@@ -202,7 +245,7 @@ Provide specific security recommendations for this DMA operation.
         
         # Use appropriate token limits based on context
         max_tokens = 1500 if for_web_ui else 2000
-        analysis = self._make_request(messages, model_id, max_tokens)
+        analysis, error = self._make_request(messages, model_id, max_tokens)
         
         # Limit output for web UI
         if for_web_ui and analysis:
@@ -211,6 +254,7 @@ Provide specific security recommendations for this DMA operation.
         return {
             "status": "success" if analysis else "error",
             "analysis": analysis or "Failed to generate DMA analysis",
+            "error": error if error else ("DMA analysis failed" if not analysis else None),
             "dma_operation": dma_operation,
             "model_used": model_id,
             "custom_prompt": custom_prompt
@@ -249,7 +293,7 @@ Provide specific security recommendations for this user copy operation.
         
         # Use appropriate token limits based on context
         max_tokens = 1500 if for_web_ui else 2000
-        analysis = self._make_request(messages, model_id, max_tokens)
+        analysis, error = self._make_request(messages, model_id, max_tokens)
         
         # Limit output for web UI
         if for_web_ui and analysis:
@@ -258,6 +302,7 @@ Provide specific security recommendations for this user copy operation.
         return {
             "status": "success" if analysis else "error",
             "analysis": analysis or "Failed to generate user copy analysis",
+            "error": error if error else ("User copy analysis failed" if not analysis else None),
             "user_copy_operation": user_copy_operation,
             "model_used": model_id,
             "custom_prompt": custom_prompt
@@ -296,7 +341,7 @@ Provide specific security recommendations for this IOCTL handler.
         
         # Use appropriate token limits based on context
         max_tokens = 1500 if for_web_ui else 2000
-        analysis = self._make_request(messages, model_id, max_tokens)
+        analysis, error = self._make_request(messages, model_id, max_tokens)
         
         # Limit output for web UI
         if for_web_ui and analysis:
@@ -305,17 +350,30 @@ Provide specific security recommendations for this IOCTL handler.
         return {
             "status": "success" if analysis else "error",
             "analysis": analysis or "Failed to generate IOCTL analysis",
+            "error": error if error else ("IOCTL analysis failed" if not analysis else None),
             "ioctl_operation": ioctl_operation,
             "model_used": model_id,
             "custom_prompt": custom_prompt
         }
     
-    def analyze_logs(self, log_data: Dict[str, Any], analysis_type: str = "general", 
+    def analyze_logs(self, logs: List[Dict[str, Any]], analysis_type: str = "general", 
                     custom_prompt: str = "", model_id: str = "gpt-3.5-turbo") -> Dict[str, Any]:
-        """Analyze comprehensive log data for patterns and issues"""
+        """Analyze log data for patterns and issues"""
+        
+        # Check if LLM is available
+        if not self.is_available():
+            return {
+                "status": "unavailable",
+                "analysis": "LLM analysis is not available. Please check OpenAI API configuration.",
+                "error": "LLM analysis is not available. Please check OpenAI API configuration.",
+                "analysis_type": analysis_type,
+                "log_count": len(logs),
+                "model_used": model_id,
+                "custom_prompt": custom_prompt
+            }
         
         # Create summary of log data
-        summary = self._create_log_summary(log_data)
+        summary = self._create_log_summary_from_list(logs)
         
         analysis_prompts = {
             "general": "Provide a general analysis of the kernel instrumentation data focusing on overall patterns, potential issues, and recommendations.",
@@ -339,12 +397,14 @@ Provide actionable insights and specific recommendations.
             {"role": "user", "content": base_prompt}
         ]
         
-        analysis = self._make_request(messages, model_id)
+        analysis, error = self._make_request(messages, model_id)
         
         return {
             "status": "success" if analysis else "error",
             "analysis": analysis or "Failed to generate log analysis",
+            "error": error if error else ("Log analysis failed" if not analysis else None),
             "analysis_type": analysis_type,
+            "log_count": len(logs),
             "model_used": model_id,
             "custom_prompt": custom_prompt
         }
@@ -378,15 +438,42 @@ Provide a professional, actionable security report.
             {"role": "user", "content": base_prompt}
         ]
         
-        analysis = self._make_request(messages, model_id)
+        analysis, error = self._make_request(messages, model_id)
         
         return {
             "status": "success" if analysis else "error",
+            "report": analysis or "Failed to generate security report",
             "analysis": analysis or "Failed to generate security report",
+            "data_summary": summary,
+            "error": error if error else ("Security report generation failed" if not analysis else None),
             "report_type": "comprehensive_security",
             "model_used": model_id,
             "timestamp": datetime.now().isoformat()
         }
+    
+    def _create_log_summary_from_list(self, logs: List[Dict[str, Any]]) -> str:
+        """Create a concise summary of log data from list format"""
+        summary_parts = []
+        
+        # Basic statistics
+        summary_parts.append(f"Total log entries: {len(logs)}")
+        
+        # Function names
+        function_names = [log.get('function_name', 'Unknown') for log in logs]
+        unique_functions = set(function_names)
+        summary_parts.append(f"Unique functions: {len(unique_functions)}")
+        
+        # Sample entries
+        if logs:
+            sample_size = min(5, len(logs))
+            sample_entries = []
+            for i, log in enumerate(logs[:sample_size]):
+                func_name = log.get('function_name', 'Unknown')
+                timestamp = log.get('timestamp', 'Unknown')
+                sample_entries.append(f"{i+1}. {func_name} at {timestamp}")
+            summary_parts.append(f"Sample entries:\n" + "\n".join(sample_entries))
+        
+        return "\n\n".join(summary_parts)
     
     def _create_log_summary(self, log_data: Dict[str, Any]) -> str:
         """Create a concise summary of log data for analysis"""
@@ -452,3 +539,27 @@ Provide a professional, actionable security report.
 def get_llm_analyzer() -> LLMAnalyzer:
     """Get LLM analyzer instance"""
     return LLMAnalyzer()
+
+# Exports for backward compatibility with tests
+AVAILABLE_MODELS = [
+    {
+        "id": "gpt-3.5-turbo",
+        "name": "GPT-3.5 Turbo",
+        "description": "Fast and cost-effective model for most tasks",
+        "max_tokens": 4096
+    },
+    {
+        "id": "gpt-4",
+        "name": "GPT-4",
+        "description": "Most capable model with enhanced reasoning",
+        "max_tokens": 8192
+    },
+    {
+        "id": "gpt-4-turbo-preview", 
+        "name": "GPT-4 Turbo",
+        "description": "Latest GPT-4 with improved performance",
+        "max_tokens": 128000
+    }
+]
+
+SYSTEM_PROMPT = "You are an expert kernel security analyst."

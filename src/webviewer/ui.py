@@ -79,6 +79,21 @@ def register_routes(app):
         data = session['results']
         return render_template_string(HTML_TEMPLATE, data=data)
 
+    @app.route('/analysis')
+    def analysis():
+        """Analysis page - similar to results but checks app.parsed_data first"""
+        # Check if app has parsed_data (for testing)
+        if hasattr(app, 'parsed_data') and app.parsed_data:
+            data = app.parsed_data
+            return render_template_string(HTML_TEMPLATE, data=data)
+        
+        # Fall back to session data
+        if 'results' not in session:
+            return redirect(url_for('upload'))
+        
+        data = session['results']
+        return render_template_string(HTML_TEMPLATE, data=data)
+
     @app.route('/upload', methods=['GET', 'POST'])
     def upload():
         """Upload page for JSON files"""
@@ -3237,6 +3252,7 @@ HTML_TEMPLATE = """
     </script>
     
     <!-- Load external JavaScript -->
+    <script src="{{ url_for('static', filename='js/llm.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
