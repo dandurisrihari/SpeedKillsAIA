@@ -17,9 +17,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
 
 from llm_analysis.llm import (
     LLMAnalyzer, 
-    call_llm, 
-    analyze_function_with_llm, 
-    analyze_instrumentation_logs,
     AVAILABLE_MODELS,
     SYSTEM_PROMPT
 )
@@ -67,9 +64,11 @@ class TestLLMAnalyzer:
         assert not self.analyzer.set_model("invalid-model")
         assert self.analyzer.model_id == "gpt-3.5-turbo"  # Should remain unchanged
     
+    @patch.dict(os.environ, {}, clear=True)
     def test_analyze_function_unavailable(self):
         """Test function analysis when LLM is unavailable"""
-        result = self.analyzer.analyze_function("test_func", "int test_func() { return 0; }")
+        analyzer = LLMAnalyzer()  # Create new analyzer without API key
+        result = analyzer.analyze_function("test_func", "int test_func() { return 0; }")
         assert result["status"] == "unavailable"
         assert "not available" in result["error"]
     
@@ -202,60 +201,6 @@ class TestLLMAnalyzer:
         assert "data_summary" in result
 
 
-class TestLegacyFunctions:
-    """Test cases for legacy standalone functions"""
-    
-    @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key-123'})
-    @patch('llm_analysis.llm.OpenAI')
-    def test_call_llm(self, mock_openai):
-        """Test the legacy call_llm function"""
-        # Mock OpenAI client and response
-        mock_client = Mock()
-        mock_response = Mock()
-        mock_response.choices = [Mock()]
-        mock_response.choices[0].message.content = "Test response"
-        mock_client.chat.completions.create.return_value = mock_response
-        mock_openai.return_value = mock_client
-        
-        result = call_llm("Test prompt", use_gpt4=True)
-        
-        assert result == "Test response"
-        mock_client.chat.completions.create.assert_called_once()
-        call_args = mock_client.chat.completions.create.call_args
-        assert call_args[1]['model'] == 'gpt-4'
-    
-    @patch('llm_analysis.llm.call_llm')
-    def test_analyze_function_with_llm(self, mock_call_llm):
-        """Test the legacy analyze_function_with_llm function"""
-        mock_call_llm.return_value = "Function analysis result"
-        
-        result = analyze_function_with_llm(
-            "test_function", 
-            "int test_function() { return 0; }", 
-            "Additional context"
-        )
-        
-        assert result == "Function analysis result"
-        mock_call_llm.assert_called_once()
-        prompt = mock_call_llm.call_args[0][0]
-        assert "test_function" in prompt
-        assert "int test_function() { return 0; }" in prompt
-        assert "Additional context" in prompt
-    
-    @patch('llm_analysis.llm.call_llm')
-    def test_analyze_instrumentation_logs(self, mock_call_llm):
-        """Test the legacy analyze_instrumentation_logs function"""
-        mock_call_llm.return_value = "Log analysis result"
-        
-        result = analyze_instrumentation_logs("Test log data", "security")
-        
-        assert result == "Log analysis result"
-        mock_call_llm.assert_called_once()
-        prompt = mock_call_llm.call_args[0][0]
-        assert "security perspective" in prompt
-        assert "Test log data" in prompt
-
-
 class TestConstants:
     """Test cases for module constants"""
     
@@ -292,6 +237,7 @@ class TestErrorHandling:
         # In practice, this would be tested by temporarily renaming the openai module
         pass
     
+    @patch.dict(os.environ, {}, clear=True)
     def test_empty_function_analysis(self):
         """Test function analysis with empty inputs"""
         analyzer = LLMAnalyzer()

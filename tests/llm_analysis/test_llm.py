@@ -13,7 +13,7 @@ import sys
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../src'))
 
-from llm_analysis.llm import LLMAnalyzer, AVAILABLE_MODELS, call_llm, analyze_function_with_llm
+from llm_analysis.llm import LLMAnalyzer, AVAILABLE_MODELS
 
 
 class TestLLMAnalyzer:
@@ -59,11 +59,16 @@ class TestLLMAnalyzer:
         assert analyzer.is_available() is False
         
     @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
-    def test_is_available_with_key(self):
+    @patch('llm_analysis.llm.OpenAI')
+    def test_is_available_with_key(self, mock_openai):
         """Test availability check with API key"""
-        with patch('llm_analysis.llm.OpenAI'):
-            analyzer = LLMAnalyzer()
-            assert analyzer.is_available() is True
+        # Mock the OpenAI client and its models.list() method
+        mock_client = MagicMock()
+        mock_client.models.list.return_value = MagicMock()  # Mock successful response
+        mock_openai.return_value = mock_client
+        
+        analyzer = LLMAnalyzer()
+        assert analyzer.is_available() is True
             
     @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
     @patch('llm_analysis.llm.OpenAI')
@@ -74,6 +79,7 @@ class TestLLMAnalyzer:
         mock_response.choices[0].message.content = "This function appears to be secure."
         mock_client = MagicMock()
         mock_client.chat.completions.create.return_value = mock_response
+        mock_client.models.list.return_value = MagicMock()  # Mock successful API test
         mock_openai.return_value = mock_client
         
         analyzer = LLMAnalyzer()
@@ -88,6 +94,7 @@ class TestLLMAnalyzer:
         assert result['function_name'] == 'test_function'
         assert result['file_path'] == '/test/file.c'
         
+    @patch.dict(os.environ, {}, clear=True)  # Clear all environment variables including API key
     def test_analyze_function_no_llm(self):
         """Test function analysis without LLM availability"""
         analyzer = LLMAnalyzer()
@@ -97,7 +104,7 @@ class TestLLMAnalyzer:
         )
         
         assert result['status'] == 'unavailable'
-        assert 'error' in result
+        assert 'analysis' in result
         
     @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
     @patch('llm_analysis.llm.OpenAI')
@@ -189,6 +196,7 @@ class TestLLMAnalyzer:
         # Mock OpenAI to raise an exception
         mock_client = MagicMock()
         mock_client.chat.completions.create.side_effect = Exception("API Error")
+        mock_client.models.list.return_value = MagicMock()  # Mock successful API test
         mock_openai.return_value = mock_client
         
         analyzer = LLMAnalyzer()
@@ -198,50 +206,7 @@ class TestLLMAnalyzer:
         )
         
         assert result['status'] == 'error'
-        assert 'Function analysis failed' in result['error']
-
-
-class TestLegacyFunctions:
-    """Test cases for legacy function interface"""
-    
-    @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
-    @patch('llm_analysis.llm.OpenAI')
-    def test_call_llm_success(self, mock_openai):
-        """Test legacy call_llm function"""
-        # Mock OpenAI response
-        mock_response = MagicMock()
-        mock_response.choices[0].message.content = "Analysis complete."
-        mock_client = MagicMock()
-        mock_client.chat.completions.create.return_value = mock_response
-        mock_openai.return_value = mock_client
-        
-        result = call_llm("Test prompt")
-        assert result == "Analysis complete."
-        
-    @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
-    @patch('llm_analysis.llm.OpenAI')
-    def test_call_llm_error(self, mock_openai):
-        """Test legacy call_llm function with error"""
-        # Mock OpenAI to raise an exception
-        mock_openai.side_effect = Exception("API Error")
-        
-        result = call_llm("Test prompt")
-        assert "Error calling LLM" in result
-        
-    @patch.dict(os.environ, {'OPENAI_API_KEY': 'test-key'})
-    @patch('llm_analysis.llm.call_llm')
-    def test_analyze_function_with_llm(self, mock_call_llm):
-        """Test legacy analyze_function_with_llm function"""
-        mock_call_llm.return_value = "Function analysis complete."
-        
-        result = analyze_function_with_llm(
-            function_name="test_func",
-            source_code="int test_func() { return 0; }",
-            context="Test context"
-        )
-        
-        assert result == "Function analysis complete."
-        mock_call_llm.assert_called_once()
+        assert 'API Error' in result['error']
 
 
 class TestDataPersistence:

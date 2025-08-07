@@ -490,13 +490,13 @@ function analyzeIOCTLWithLLM() {
     fetch('/api/data')
         .then(response => response.json())
         .then(data => {
-            const ioctlHandler = data.ioctl_handlers && data.ioctl_handlers[ioctlIndex];
-            if (!ioctlHandler) {
-                throw new Error('IOCTL handler not found');
+            const ioctlOperation = data.ioctl_operations && data.ioctl_operations[ioctlIndex];
+            if (!ioctlOperation) {
+                throw new Error('IOCTL operation not found');
             }
             
             const requestData = {
-                ioctl_handler: ioctlHandler,
+                ioctl_operation: ioctlOperation,
                 function_code: ioctlCode ? ioctlCode.value : '',
                 call_graph: ioctlCallGraph && ioctlCallGraph.value ? ioctlCallGraph.value.split('\n') : [],
                 custom_prompt: ioctlCustomPrompt ? ioctlCustomPrompt.value : '',
@@ -520,8 +520,8 @@ function analyzeIOCTLWithLLM() {
             
             if (data.status === 'success') {
                 showAnalysisResult(resultDiv, data.analysis, 'success', {
-                    'Handler Function': data.ioctl_handler ? data.ioctl_handler.handler_function : 'Unknown',
-                    'Device': data.ioctl_handler ? data.ioctl_handler.device_name : 'Unknown',
+                    'Function Name': data.ioctl_operation ? data.ioctl_operation.function_name : 'Unknown',
+                    'File Path': data.ioctl_operation ? data.ioctl_operation.file_path : 'Unknown',
                     'Model': data.model_used || 'gpt-3.5-turbo',
                     'Custom Prompt': data.custom_prompt || 'None'
                 });
@@ -701,21 +701,20 @@ function loadSelectedUserCopy() {
     const userCopyOperation = currentData.user_copy_operations && currentData.user_copy_operations[copyIndex];
     
     if (userCopyOperation && userCopyCode) {
-        // Load function code for the user copy operation
-        const functionName = userCopyOperation.copy_function || userCopyOperation.function_name;
-        const filePath = userCopyOperation.file_path;
-        const lineNumber = userCopyOperation.line_number;
-        
-        if (functionName && filePath) {
-            loadFunctionCode(functionName, filePath, lineNumber)
-                .then(code => {
-                    userCopyCode.value = code;
-                })
-                .catch(error => {
-                    console.error('Error loading user copy code:', error);
-                    userCopyCode.value = 'Error loading function code.';
-                });
-        }
+        // Try to load from API first
+        fetch(`/api/copy-code/${copyIndex}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.function_code) {
+                    userCopyCode.value = data.function_code;
+                } else {
+                    userCopyCode.value = 'No source code available for this user copy operation.';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading user copy code:', error);
+                userCopyCode.value = 'Error loading function code.';
+            });
     }
 }
 
@@ -726,24 +725,23 @@ function loadSelectedIOCTL() {
     if (!ioctlSelect || !ioctlSelect.value || !currentData) return;
     
     const ioctlIndex = parseInt(ioctlSelect.value);
-    const ioctlHandler = currentData.ioctl_handlers && currentData.ioctl_handlers[ioctlIndex];
+    const ioctlOperation = currentData.ioctl_operations && currentData.ioctl_operations[ioctlIndex];
     
-    if (ioctlHandler && ioctlCode) {
-        // Load function code for the IOCTL handler
-        const functionName = ioctlHandler.handler_function || ioctlHandler.function_name;
-        const filePath = ioctlHandler.file_path;
-        const lineNumber = ioctlHandler.line_number;
-        
-        if (functionName && filePath) {
-            loadFunctionCode(functionName, filePath, lineNumber)
-                .then(code => {
-                    ioctlCode.value = code;
-                })
-                .catch(error => {
-                    console.error('Error loading IOCTL code:', error);
-                    ioctlCode.value = 'Error loading function code.';
-                });
-        }
+    if (ioctlOperation && ioctlCode) {
+        // Try to load from API first
+        fetch(`/api/ioctl-code/${ioctlIndex}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.function_code) {
+                    ioctlCode.value = data.function_code;
+                } else {
+                    ioctlCode.value = 'No source code available for this IOCTL operation.';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading IOCTL code:', error);
+                ioctlCode.value = 'Error loading function code.';
+            });
     }
 }
 
@@ -862,14 +860,14 @@ function filterDevices() {
 
 function toggleDeviceDetails(element) {
     const details = element.nextElementSibling;
-    if (details) {
-        const isExpanded = element.classList.contains('expanded');
-        if (isExpanded) {
-            element.classList.remove('expanded');
-            details.style.display = 'none';
+    if (details && details.classList.contains('access-details')) {
+        const isHidden = details.classList.contains('hidden');
+        if (isHidden) {
+            details.classList.remove('hidden');
+            element.textContent = 'Hide Access Details';
         } else {
-            element.classList.add('expanded');
-            details.style.display = 'block';
+            details.classList.add('hidden');
+            element.textContent = 'Show Access Details';
         }
     }
 }
@@ -1248,13 +1246,6 @@ function toggleStackTrace(button) {
             stackTraceElement.classList.add('hidden');
             button.textContent = 'Show Call Graph';
         }
-    }
-}
-
-function toggleDeviceDetails(element) {
-    const details = element.querySelector('.device-details');
-    if (details) {
-        details.style.display = details.style.display === 'none' ? 'block' : 'none';
     }
 }
 
