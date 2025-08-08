@@ -217,7 +217,10 @@ class TestFunctionDropdownFix(unittest.TestCase):
     def test_function_code_api_no_data_loaded(self):
         """Test /api/function-code endpoint when no data is loaded"""
         app = create_app()
-        # Don't set parsed_data
+        # Clear all global data sources
+        import src.webviewer.ui as webviewer_ui
+        webviewer_ui.parsed_data = None
+        webviewer_ui.global_data = None
         
         with app.test_client() as client:
             response = client.get('/api/function-code?name=test_function')

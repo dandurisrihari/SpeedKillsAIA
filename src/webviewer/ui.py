@@ -12,6 +12,7 @@ import json
 import os
 import argparse
 import webbrowser
+import logging
 from datetime import datetime
 from pathlib import Path
 
@@ -29,8 +30,12 @@ except ImportError:
     LLMAnalyzer = None
     LLM_AVAILABLE = False
 
+# Configure logging
+logger = logging.getLogger(__name__)
+
 # Global variable to store parsed data (used as fallback)
 parsed_data = None
+global_data = None
 
 def create_app():
     """Create and configure Flask application"""
@@ -38,9 +43,12 @@ def create_app():
         raise ImportError("Flask is not available")
         
     app = Flask(__name__, 
-                template_folder='templates',
                 static_folder='static')
     app.secret_key = 'kernel-log-parser-secret-key'  # Change this in production
+    
+    # Enable template auto-reload for development  
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.jinja_env.auto_reload = True
     
     register_routes(app)
     return app
@@ -57,18 +65,21 @@ def register_routes(app):
     @app.route('/')
     def index():
         """Main page showing the analysis results"""
-        # Check session first, then app instance data, avoid global state
+        global parsed_data, global_data
+        # Check session first, then app instance data, then global state
         data = session.get('results')
         if data is None:
             data = getattr(app, 'parsed_data', None)
         if data is None:
-            data = parsed_data  # Fallback to global
+            data = global_data  # Use new global data first
+        if data is None:
+            data = parsed_data  # Fallback to old global
         
         if data is None:
             return redirect(url_for('upload'))
         
-        # Render the results template with data
-        return render_template_string(HTML_TEMPLATE, data=data)
+        # Use modern template file with clean separation of concerns
+        return render_template('index.html', data=data)
 
     @app.route('/results')
     def results():
@@ -77,7 +88,8 @@ def register_routes(app):
             return redirect(url_for('upload'))
         
         data = session['results']
-        return render_template_string(HTML_TEMPLATE, data=data)
+        # Use modern template file with clean separation of concerns
+        return render_template('index.html', data=data)
 
     @app.route('/analysis')
     def analysis():
@@ -85,14 +97,16 @@ def register_routes(app):
         # Check if app has parsed_data (for testing)
         if hasattr(app, 'parsed_data') and app.parsed_data:
             data = app.parsed_data
-            return render_template_string(HTML_TEMPLATE, data=data)
+            # Use modern template file with clean separation of concerns
+            return render_template('index.html', data=data)
         
         # Fall back to session data
         if 'results' not in session:
             return redirect(url_for('upload'))
         
         data = session['results']
-        return render_template_string(HTML_TEMPLATE, data=data)
+        # Use modern template file with clean separation of concerns
+        return render_template('index.html', data=data)
 
     @app.route('/upload', methods=['GET', 'POST'])
     def upload():
@@ -100,11 +114,11 @@ def register_routes(app):
         if request.method == 'POST':
             # Handle file upload
             if 'file' not in request.files:
-                return render_template_string(UPLOAD_TEMPLATE, error="No file selected")
+                return render_template('upload.html', error="No file selected")
             
             file = request.files['file']
             if file.filename == '':
-                return render_template_string(UPLOAD_TEMPLATE, error="No file selected")
+                return render_template('upload.html', error="No file selected")
             
             if file and file.filename.endswith('.json'):
                 try:
@@ -118,12 +132,12 @@ def register_routes(app):
                     # Redirect to results page
                     return redirect(url_for('results'))
                 except Exception as e:
-                    return render_template_string(UPLOAD_TEMPLATE, error=f"Error processing file: {str(e)}")
+                    return render_template('upload.html', error=f"Error processing file: {str(e)}")
             else:
-                return render_template_string(UPLOAD_TEMPLATE, error="Please select a JSON file")
+                return render_template('upload.html', error="Please select a JSON file")
         
         # GET request - show upload form
-        return render_template_string(UPLOAD_TEMPLATE)
+        return render_template('upload.html')
 
     @app.route('/api/data')
     def api_data():
@@ -169,12 +183,20 @@ def register_routes(app):
     @app.route('/api/status')
     def api_status():
         """API endpoint to check if data has been updated"""
-        return jsonify({"updated": False, "timestamp": datetime.now().isoformat()})
+        return jsonify({"status": "ready", "updated": False, "timestamp": datetime.now().isoformat()})
 
     @app.route('/api/search/<category>')
     def api_search(category):
         """API endpoint for searching specific categories"""
-        data = session.get('results', parsed_data)
+        global parsed_data, global_data
+        # Check session first, then app instance data, then global state
+        data = session.get('results')
+        if data is None:
+            data = getattr(app, 'parsed_data', None)
+        if data is None:
+            data = global_data  # Use new global data first
+        if data is None:
+            data = parsed_data  # Use old global fallback
         if data is None:
             return jsonify({"error": "No data loaded"}), 404
         
@@ -226,7 +248,7 @@ def register_routes(app):
     @app.route('/api/function-code')
     def api_function_code():
         """API endpoint to get function code for a specific function by name and file"""
-        global parsed_data
+        global parsed_data, global_data
         function_name = request.args.get('name')
         file_path = request.args.get('file')
         line_number = request.args.get('line', type=int)
@@ -239,8 +261,12 @@ def register_routes(app):
         if data is None:
             data = getattr(app, 'parsed_data', None)
         if data is None:
-            data = parsed_data  # Use global fallback
+            data = global_data  # Use new global data first
         if data is None:
+            data = parsed_data  # Use old global fallback
+        
+        # Check if data is truly empty (not just None, but also empty dict)
+        if data is None or (isinstance(data, dict) and len(data) == 0):
             return jsonify({"error": "No data loaded"}), 404
         
         # Search in function_entries for the specific function
@@ -568,7 +594,15 @@ def register_routes(app):
     @app.route('/api/memory-info')
     def api_memory_info():
         """API endpoint to get memory information"""
-        data = session.get('results', parsed_data)
+        global parsed_data, global_data
+        # Check session first, then app instance data, then global state
+        data = session.get('results')
+        if data is None:
+            data = getattr(app, 'parsed_data', None)
+        if data is None:
+            data = global_data  # Use new global data first
+        if data is None:
+            data = parsed_data  # Fallback to old global
         if data is None:
             return jsonify({"error": "No data loaded"}), 404
         
@@ -577,6 +611,367 @@ def register_routes(app):
             return jsonify({"error": "No memory information available"}), 404
         
         return jsonify(memory_info)
+
+    @app.route('/api/memory')
+    def api_memory():
+        """API endpoint to get memory information (alternative endpoint)"""
+        global parsed_data, global_data
+        # Check session first, then app instance data, then global state
+        data = session.get('results')
+        if data is None:
+            data = getattr(app, 'parsed_data', None)
+        if data is None:
+            data = global_data  # Use new global data first
+        if data is None:
+            data = parsed_data  # Fallback to old global
+        if data is None:
+            return jsonify({"error": "No data loaded"}), 404
+        
+        # Return memory-related data
+        memory_data = {
+            'memory_info': data.get('memory_info', {}),
+            'dma_operations': data.get('dma_operations', []),
+            'user_copy_operations': data.get('user_copy_operations', [])
+        }
+        
+        return jsonify(memory_data)
+
+    @app.route('/api/devices')
+    def api_devices():
+        """API endpoint to get device access information"""
+        global parsed_data, global_data
+        # Check session first, then app instance data, then global state
+        data = session.get('results')
+        if data is None:
+            data = getattr(app, 'parsed_data', None)
+        if data is None:
+            data = global_data  # Use new global data first
+        if data is None:
+            data = parsed_data  # Use old global fallback
+        if data is None:
+            return jsonify({"devices": []})
+        
+        device_info = data.get('device_info')
+        if device_info is None:
+            return jsonify({"devices": []})
+        
+        return jsonify({"devices": device_info.get('device_accesses', [])})
+
+    @app.route('/api/devices/search')
+    def api_devices_search():
+        """API endpoint to search device access information"""
+        global parsed_data, global_data
+        # Check session first, then app instance data, then global state
+        data = session.get('results')
+        if data is None:
+            data = getattr(app, 'parsed_data', None)
+        if data is None:
+            data = global_data  # Use new global data first
+        if data is None:
+            data = parsed_data  # Use old global fallback
+        if data is None:
+            return jsonify({"results": []})
+        
+        query = request.args.get('query', '').lower()
+        
+        device_info = data.get('device_info')
+        if device_info is None:
+            return jsonify({"results": []})
+        
+        # Search through device accesses
+        results = []
+        for access in device_info.get('device_accesses', []):
+            device_path = access.get('device_path', '').lower()
+            access_type = access.get('access_type', '').lower()
+            
+            if query in device_path or query in access_type:
+                results.append(access)
+        
+        return jsonify({"results": results})
+
+    @app.route('/api/analyze/comprehensive', methods=['POST'])
+    def api_analyze_comprehensive():
+        """API endpoint for comprehensive analysis"""
+        global parsed_data, global_data
+        
+        # Get request data
+        request_data = request.get_json() or {}
+        component_types = request_data.get('component_types', [])
+        batch_size = request_data.get('batch_size', 10)
+        model_id = request_data.get('model_id', 'gpt-3.5-turbo')
+        custom_prompt = request_data.get('custom_prompt', '')
+        
+        # Check session first, then app instance data, then global state
+        data = session.get('results')
+        if data is None:
+            data = getattr(app, 'parsed_data', None)
+        if data is None:
+            data = global_data  # Use new global data first
+        if data is None:
+            data = parsed_data  # Fallback to old global
+        
+        if data is None or (isinstance(data, dict) and len(data) == 0):
+            return jsonify({"status": "completed", "error": "No data loaded", "results": [], "total": 0}), 200
+        
+        # Initialize LLM analyzer if available
+        analyzer = None
+        if LLM_AVAILABLE:
+            try:
+                analyzer = LLMAnalyzer(model_id=model_id)
+                if not analyzer.is_available():
+                    analyzer = None
+            except Exception as e:
+                logger.warning(f"Failed to initialize LLM analyzer: {e}")
+                analyzer = None
+        
+        # Perform comprehensive analysis
+        analysis_results = []
+        total_analyzed = 0
+        
+        for component_type in component_types:
+            if component_type == 'dma_operations':
+                dma_ops = data.get('dma_operations', [])[:batch_size]
+                for op in dma_ops:
+                    if analyzer:
+                        try:
+                            # Use LLM analysis for DMA operations
+                            result = analyzer.analyze_dma_operation(
+                                dma_operation=op,
+                                function_code=op.get('function_code', ''),
+                                call_graph=[],
+                                custom_prompt=custom_prompt,
+                                model_id=model_id,
+                                for_web_ui=True
+                            )
+                            analysis_results.append({
+                                'type': 'dma',
+                                'component': {
+                                    'name': f"{op.get('dma_function', 'unknown')} ({op.get('caller_function', 'unknown')})",
+                                    'filePath': op.get('file_path', 'Unknown'),
+                                    'lineNumber': op.get('line_number'),
+                                    'code': op.get('function_code', ''),
+                                    'data': op
+                                },
+                                'result': result,
+                                'confidenceScores': result.get('confidence_scores', {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0})
+                            })
+                        except Exception as e:
+                            # Fallback to mock data if LLM analysis fails
+                            analysis_results.append({
+                                'type': 'dma',
+                                'component': {
+                                    'name': f"{op.get('dma_function', 'unknown')} ({op.get('caller_function', 'unknown')})",
+                                    'filePath': op.get('file_path', 'Unknown'),
+                                    'lineNumber': op.get('line_number'),
+                                    'code': op.get('function_code', ''),
+                                    'data': op
+                                },
+                                'result': {'status': 'error', 'analysis': f"Analysis failed: {str(e)}"},
+                                'confidenceScores': {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0}
+                            })
+                    else:
+                        # Mock analysis when LLM is not available
+                        analysis_results.append({
+                            'type': 'dma',
+                            'component': {
+                                'name': f"{op.get('dma_function', 'unknown')} ({op.get('caller_function', 'unknown')})",
+                                'filePath': op.get('file_path', 'Unknown'),
+                                'lineNumber': op.get('line_number'),
+                                'code': op.get('function_code', ''),
+                                'data': op
+                            },
+                            'result': {'status': 'unavailable', 'analysis': f"DMA operation in {op.get('caller_function', 'unknown')} - LLM analysis not available"},
+                            'confidenceScores': {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0}
+                        })
+                    total_analyzed += 1
+                    
+            elif component_type == 'user_copy_operations':
+                copy_ops = data.get('user_copy_operations', [])[:batch_size]
+                for op in copy_ops:
+                    if analyzer:
+                        try:
+                            # Use LLM analysis for user copy operations
+                            result = analyzer.analyze_user_copy_operation(
+                                user_copy_operation=op,
+                                function_code=op.get('function_code', ''),
+                                custom_prompt=custom_prompt,
+                                model_id=model_id,
+                                for_web_ui=True
+                            )
+                            analysis_results.append({
+                                'type': 'user_copy',
+                                'component': {
+                                    'name': f"{op.get('copy_function', 'unknown')} ({op.get('caller_function', 'unknown')})",
+                                    'filePath': op.get('file_path', 'Unknown'),
+                                    'lineNumber': op.get('line_number'),
+                                    'code': op.get('function_code', ''),
+                                    'data': op
+                                },
+                                'result': result,
+                                'confidenceScores': result.get('confidence_scores', {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0})
+                            })
+                        except Exception as e:
+                            # Fallback to mock data if LLM analysis fails
+                            analysis_results.append({
+                                'type': 'user_copy',
+                                'component': {
+                                    'name': f"{op.get('copy_function', 'unknown')} ({op.get('caller_function', 'unknown')})",
+                                    'filePath': op.get('file_path', 'Unknown'),
+                                    'lineNumber': op.get('line_number'),
+                                    'code': op.get('function_code', ''),
+                                    'data': op
+                                },
+                                'result': {'status': 'error', 'analysis': f"Analysis failed: {str(e)}"},
+                                'confidenceScores': {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0}
+                            })
+                    else:
+                        # Mock analysis when LLM is not available
+                        analysis_results.append({
+                            'type': 'user_copy',
+                            'component': {
+                                'name': f"{op.get('copy_function', 'unknown')} ({op.get('caller_function', 'unknown')})",
+                                'filePath': op.get('file_path', 'Unknown'),
+                                'lineNumber': op.get('line_number'),
+                                'code': op.get('function_code', ''),
+                                'data': op
+                            },
+                            'result': {'status': 'unavailable', 'analysis': f"User copy in {op.get('caller_function', 'unknown')} - LLM analysis not available"},
+                            'confidenceScores': {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0}
+                        })
+                    total_analyzed += 1
+                    
+            elif component_type == 'ioctl_operations':
+                ioctl_ops = data.get('ioctl_operations', [])[:batch_size]
+                for op in ioctl_ops:
+                    if analyzer:
+                        try:
+                            # Use LLM analysis for IOCTL operations
+                            result = analyzer.analyze_ioctl_handler(
+                                ioctl_operation=op,
+                                function_code=op.get('function_code', ''),
+                                custom_prompt=custom_prompt,
+                                model_id=model_id,
+                                for_web_ui=True
+                            )
+                            analysis_results.append({
+                                'type': 'ioctl',
+                                'component': {
+                                    'name': op.get('function_name', op.get('handler_name', 'unknown')),
+                                    'filePath': op.get('file_path', 'Unknown'),
+                                    'lineNumber': op.get('line_number'),
+                                    'code': op.get('function_code', ''),
+                                    'data': op
+                                },
+                                'result': result,
+                                'confidenceScores': result.get('confidence_scores', {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0})
+                            })
+                        except Exception as e:
+                            # Fallback to mock data if LLM analysis fails
+                            analysis_results.append({
+                                'type': 'ioctl',
+                                'component': {
+                                    'name': op.get('function_name', op.get('handler_name', 'unknown')),
+                                    'filePath': op.get('file_path', 'Unknown'),
+                                    'lineNumber': op.get('line_number'),
+                                    'code': op.get('function_code', ''),
+                                    'data': op
+                                },
+                                'result': {'status': 'error', 'analysis': f"Analysis failed: {str(e)}"},
+                                'confidenceScores': {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0}
+                            })
+                    else:
+                        # Mock analysis when LLM is not available
+                        analysis_results.append({
+                            'type': 'ioctl',
+                            'component': {
+                                'name': op.get('function_name', op.get('handler_name', 'unknown')),
+                                'filePath': op.get('file_path', 'Unknown'),
+                                'lineNumber': op.get('line_number'),
+                                'code': op.get('function_code', ''),
+                                'data': op
+                            },
+                            'result': {'status': 'unavailable', 'analysis': f"IOCTL handler: {op.get('function_name', op.get('handler_name', 'unknown'))} - LLM analysis not available"},
+                            'confidenceScores': {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0}
+                        })
+                    total_analyzed += 1
+                    
+            elif component_type == 'functions':
+                # Process functions from functions_by_file
+                functions_by_file = data.get('functions_by_file', {})
+                function_count = 0
+                for file_path, functions in functions_by_file.items():
+                    if function_count >= batch_size:
+                        break
+                    for func in functions:
+                        if function_count >= batch_size:
+                            break
+                        if analyzer:
+                            try:
+                                # Use LLM analysis for functions
+                                result = analyzer.analyze_function(
+                                    function_name=func.get('function_name', 'unknown'),
+                                    source_code=func.get('function_code', ''),
+                                    file_path=file_path,
+                                    custom_prompt=custom_prompt,
+                                    model_id=model_id,
+                                    for_web_ui=True
+                                )
+                                analysis_results.append({
+                                    'type': 'function',
+                                    'component': {
+                                        'name': func.get('function_name', 'unknown'),
+                                        'filePath': file_path,
+                                        'lineNumber': func.get('line_number'),
+                                        'code': func.get('function_code', ''),
+                                        'data': func
+                                    },
+                                    'result': result,
+                                    'confidenceScores': result.get('confidence_scores', {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0})
+                                })
+                            except Exception as e:
+                                # Fallback to mock data if LLM analysis fails
+                                analysis_results.append({
+                                    'type': 'function',
+                                    'component': {
+                                        'name': func.get('function_name', 'unknown'),
+                                        'filePath': file_path,
+                                        'lineNumber': func.get('line_number'),
+                                        'code': func.get('function_code', ''),
+                                        'data': func
+                                    },
+                                    'result': {'status': 'error', 'analysis': f"Analysis failed: {str(e)}"},
+                                    'confidenceScores': {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0}
+                                })
+                        else:
+                            # Mock analysis when LLM is not available
+                            analysis_results.append({
+                                'type': 'function',
+                                'component': {
+                                    'name': func.get('function_name', 'unknown'),
+                                    'filePath': file_path,
+                                    'lineNumber': func.get('line_number'),
+                                    'code': func.get('function_code', ''),
+                                    'data': func
+                                },
+                                'result': {'status': 'unavailable', 'analysis': f"Function: {func.get('function_name', 'unknown')} - LLM analysis not available"},
+                                'confidenceScores': {'AIARelevantFunction': 0, 'Relevant_KD_Entry_Point': 0, 'Message_Structure_Handling': 0}
+                            })
+                        function_count += 1
+                        total_analyzed += 1
+        
+        return jsonify({
+            "status": "success",
+            "results": analysis_results,
+            "total": total_analyzed,
+            "batch_size": batch_size,
+            "success": True,
+            "statistics": {
+                "total_analyzed": total_analyzed,
+                "batch_size": batch_size,
+                "component_types": len(component_types),
+                "llm_available": analyzer is not None
+            }
+        })
 
 app = create_app()
 
@@ -1217,6 +1612,292 @@ HTML_TEMPLATE = """
             display: block;
         }
         
+        /* Analyze All Styles */
+        .analyze-all-controls {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+        
+        .control-group select,
+        .control-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .control-group select:focus,
+        .control-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .analyze-all-button {
+            width: 100%;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .analyze-all-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .analyze-all-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .progress-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+        
+        .progress-stats {
+            font-size: 0.9em;
+            color: #718096;
+        }
+        
+        .results-dashboard {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .results-header h3 {
+            color: #2d3748;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
+        }
+        
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .results-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #4299e1;
+        }
+        
+        .summary-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .summary-label {
+            font-size: 0.9em;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        
+        .results-list {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #48bb78;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .result-type {
+            background: #48bb78;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .result-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-family: monospace;
+        }
+        
+        .result-details {
+            margin-bottom: 15px;
+            color: #718096;
+            font-size: 0.9em;
+        }
+        
+        .result-file {
+            margin-bottom: 5px;
+        }
+        
+        .result-analysis {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: 0.95em;
+        }
+        
+        .confidence-scores {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .score {
+            background: #e2e8f0;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        .no-results {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            padding: 40px;
+        }
+        
+        .analyze-all-info {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            margin-top: 20px;
+        }
+        
+        .analysis-categories {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .analysis-categories li {
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+        
         /* Memory Information Styles */
         .memory-summary {
             margin-bottom: 30px;
@@ -1752,7 +2433,8 @@ HTML_TEMPLATE = """
         <div class="content">
             <div class="tab-container">
                 <div class="tabs">
-                    <button class="tab active" onclick="showTab('functions', this)">📍 Functions</button>
+                    <button class="tab active" onclick="showTab('analyzeAll', this)">🚀 Analyze All</button>
+                    <button class="tab" onclick="showTab('functions', this)">📍 Functions</button>
                     <button class="tab" onclick="showTab('dma', this)">🔄 DMA Operations</button>
                     <button class="tab" onclick="showTab('userCopy', this)">👤 User Copy</button>
                     <button class="tab" onclick="showTab('ioctl', this)">🔧 IOCTL Handlers</button>
@@ -1761,7 +2443,117 @@ HTML_TEMPLATE = """
                     <button class="tab" onclick="showTab('llmAnalysis', this)">🤖 LLM Analysis</button>
                 </div>
                 
-                <div id="functions" class="tab-content active">
+                <!-- Analyze All Tab -->
+                <div id="analyzeAll" class="tab-content active">
+                    <div class="section">
+                        <div class="section-title">🚀 AI-Powered Comprehensive Analysis</div>
+                        <p>Analyze all code components at once using AI to identify AIA integration patterns</p>
+                    </div>
+                    
+                    <div class="analyze-all-controls batch-analysis">
+                        <div class="control-group">
+                            <label for="analyzeAllModel">AI Model</label>
+                            <select id="analyzeAllModel">
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast)</option>
+                                <option value="gpt-4">GPT-4 (Comprehensive)</option>
+                                <option value="gpt-4-turbo-preview">GPT-4 Turbo (Latest)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="analyzeAllPrompt">Custom Focus (Optional)</label>
+                            <input type="text" id="analyzeAllPrompt" placeholder="e.g., Focus on DMA mappings for neural networks..." maxlength="200">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="batchSize">Batch Size (Components per batch)</label>
+                            <select id="batchSize">
+                                <option value="1">1 (Slowest, Most Reliable)</option>
+                                <option value="3" selected>3 (Recommended)</option>
+                                <option value="5">5 (Fast)</option>
+                                <option value="10">10 (Fastest, May Fail)</option>
+                                <option value="999">All at Once (Risk of Timeout)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="maxComponents">Maximum Components to Analyze</label>
+                            <select id="maxComponents">
+                                <option value="10">10 (Quick Test)</option>
+                                <option value="25">25 (Fast Analysis)</option>
+                                <option value="50" selected>50 (Balanced)</option>
+                                <option value="100">100 (Comprehensive)</option>
+                                <option value="999">All Available (Full Analysis)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="confidenceThreshold">Minimum Confidence %</label>
+                            <select id="confidenceThreshold">
+                                <option value="0">All Results (0%+)</option>
+                                <option value="25">Low Confidence (25%+)</option>
+                                <option value="50" selected>Medium Confidence (50%+)</option>
+                                <option value="75">High Confidence (75%+)</option>
+                                <option value="90">Very High Confidence (90%+)</option>
+                            </select>
+                        </div>
+                        
+                        <button class="analyze-all-button" onclick="runComprehensiveAnalysis()" id="analyzeAllBtn">
+                            <span id="analyzeAllBtnText">🔍 Analyze All Components</span>
+                        </button>
+                        
+                        <div class="progress-section" id="progressSection" style="display: none;">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="progressBar"></div>
+                            </div>
+                            <div class="progress-text" id="progressText">Preparing analysis...</div>
+                            <div class="progress-stats" id="progressStats">
+                                <span id="processedCount">0</span> / <span id="totalCount">0</span> components
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-dashboard" id="resultsDashboard">
+                        <div class="results-header">
+                            <h3>📊 Comprehensive Analysis Results</h3>
+                            <p id="resultsSubtitle">Analysis completed successfully</p>
+                            <div class="results-actions">
+                                <button class="download-btn primary" onclick="downloadAnalysisResults('json')" id="downloadJsonBtn">
+                                    📥 Download JSON
+                                </button>
+                                <button class="download-btn secondary" onclick="downloadAnalysisResults('csv')" id="downloadCsvBtn">
+                                    📊 Download CSV
+                                </button>
+                                <button class="download-btn tertiary" onclick="downloadAnalysisResults('html')" id="downloadHtmlBtn">
+                                    🌐 Download Report
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="results-summary" id="resultsSummary">
+                            <!-- Summary cards will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="results-grid" id="resultsGrid">
+                            <!-- Result cards will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">About Comprehensive Analysis</div>
+                        <div class="analyze-all-info">
+                            <p>This powerful feature analyzes all components of your kernel code simultaneously to provide a comprehensive overview of AI Accelerator (AIA) integration patterns. The analysis focuses on three key categories:</p>
+                            <ul class="analysis-categories">
+                                <li><strong>AIARelevantFunction:</strong> Functions involved in shared memory management with AI accelerators</li>
+                                <li><strong>Relevant KD Entry Point:</strong> Kernel driver entry points from user space (ioctl handlers)</li>
+                                <li><strong>Message Structure Handling:</strong> Code handling message structures between user space and kernel</li>
+                            </ul>
+                            <p>Results are organized by confidence level and category to help you quickly identify the most relevant code for AIA integration analysis.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="functions" class="tab-content">
                     <div class="section">
                         <div class="section-title">Function Entries by File</div>
                         <input type="text" class="search-box" id="functionSearch" placeholder="🔍 Search functions..." onkeyup="filterFunctions()">
@@ -3248,6 +4040,433 @@ HTML_TEMPLATE = """
             
             // Scroll to result
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Download functionality
+        function downloadAnalysisResults(format) {
+            fetch('/api/data')
+                .then(response => response.json())
+                .then(data => {
+                    if (format === 'json') {
+                        downloadJSON(data);
+                    } else if (format === 'csv') {
+                        downloadCSV(data);
+                    } else if (format === 'html') {
+                        downloadHTML(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error downloading data:', error);
+                    alert('Error downloading analysis results. Please try again.');
+                });
+        }
+
+        function downloadJSON(data) {
+            const jsonString = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kernel_analysis_results_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadCSV(data) {
+            let csvContent = generateCSVReport(data);
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kernel_analysis_results_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadHTML(data) {
+            let htmlContent = generateHTMLReport(data);
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kernel_analysis_report_${new Date().toISOString().slice(0, 10)}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function generateCSVReport(data) {
+            let csv = '';
+            
+            // Functions CSV
+            if (data.functions_by_file) {
+                csv += 'Functions Analysis\\n';
+                csv += 'File Path,Function Name,Line Number,Parameters,Return Type\\n';
+                for (const [filePath, functions] of Object.entries(data.functions_by_file)) {
+                    for (const func of functions) {
+                        csv += `"${filePath}","${func.function_name}","${func.line_number || ''}","${func.parameters || ''}","${func.return_type || ''}"\\n`;
+                    }
+                }
+                csv += '\\n';
+            }
+            
+            // DMA Operations CSV
+            if (data.dma_operations && data.dma_operations.length > 0) {
+                csv += 'DMA Operations\\n';
+                csv += 'DMA Function,Caller Function,File Path,Line Number,Parameters\\n';
+                for (const dma of data.dma_operations) {
+                    csv += `"${dma.dma_function}","${dma.caller_function}","${dma.file_path}","${dma.line_number || ''}","${dma.parameters || ''}"\\n`;
+                }
+                csv += '\\n';
+            }
+            
+            // User Copy Operations CSV
+            if (data.user_copy_operations && data.user_copy_operations.length > 0) {
+                csv += 'User Copy Operations\\n';
+                csv += 'Copy Function,Caller Function,File Path,Line Number,Parameters\\n';
+                for (const copy of data.user_copy_operations) {
+                    csv += `"${copy.copy_function}","${copy.caller_function}","${copy.file_path}","${copy.line_number || ''}","${copy.parameters || ''}"\\n`;
+                }
+                csv += '\\n';
+            }
+            
+            // IOCTL Operations CSV
+            if (data.ioctl_operations && data.ioctl_operations.length > 0) {
+                csv += 'IOCTL Operations\\n';
+                csv += 'Function Name,File Path,Line Number,Handler Type\\n';
+                for (const ioctl of data.ioctl_operations) {
+                    csv += `"${ioctl.function_name}","${ioctl.file_path}","${ioctl.line_number || ''}","${ioctl.handler_type || ''}"\\n`;
+                }
+            }
+            
+            return csv;
+        }
+
+        function generateHTMLReport(data) {
+            const timestamp = new Date().toISOString();
+            const stats = data.statistics || {};
+            
+            return `<!DOCTYPE html>
+<html>
+<head>
+    <title>Kernel Analysis Report - ${timestamp.slice(0, 10)}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        h1, h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .stats { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .stat-item { display: inline-block; margin: 10px 20px 10px 0; }
+        .stat-number { font-size: 24px; font-weight: bold; color: #3498db; }
+        .stat-label { font-size: 12px; color: #666; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .section { margin: 30px 0; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Kernel Log Analysis Report</h1>
+    <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+    
+    <div class="stats">
+        <h2>📊 Analysis Statistics</h2>
+        <div class="stat-item">
+            <div class="stat-number">${stats.unique_function_entries || 0}</div>
+            <div class="stat-label">Functions</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">${stats.unique_dma_operations || 0}</div>
+            <div class="stat-label">DMA Operations</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">${stats.unique_user_copy_operations || 0}</div>
+            <div class="stat-label">User Copy Operations</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">${stats.unique_ioctl_operations || 0}</div>
+            <div class="stat-label">IOCTL Operations</div>
+        </div>
+    </div>
+    
+    ${generateFunctionsHTML(data)}
+    ${generateDMAHTML(data)}
+    ${generateUserCopyHTML(data)}
+    ${generateIOCTLHTML(data)}
+    
+</body>
+</html>`;
+        }
+
+        function generateFunctionsHTML(data) {
+            if (!data.functions_by_file) return '';
+            
+            let html = '<div class="section"><h2>🔧 Functions Analysis</h2>';
+            
+            for (const [filePath, functions] of Object.entries(data.functions_by_file)) {
+                html += `<h3>📁 ${filePath}</h3><table>`;
+                html += '<tr><th>Function Name</th><th>Line</th><th>Parameters</th><th>Return Type</th></tr>';
+                
+                for (const func of functions) {
+                    html += `<tr>
+                        <td><code>${func.function_name}</code></td>
+                        <td>${func.line_number || 'N/A'}</td>
+                        <td>${func.parameters || 'N/A'}</td>
+                        <td>${func.return_type || 'N/A'}</td>
+                    </tr>`;
+                }
+                html += '</table>';
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function generateDMAHTML(data) {
+            if (!data.dma_operations || data.dma_operations.length === 0) return '';
+            
+            let html = '<div class="section"><h2>🚀 DMA Operations</h2><table>';
+            html += '<tr><th>DMA Function</th><th>Caller Function</th><th>File Path</th><th>Line</th></tr>';
+            
+            for (const dma of data.dma_operations) {
+                html += `<tr>
+                    <td><code>${dma.dma_function}</code></td>
+                    <td><code>${dma.caller_function}</code></td>
+                    <td>${dma.file_path}</td>
+                    <td>${dma.line_number || 'N/A'}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+            return html;
+        }
+
+        function generateUserCopyHTML(data) {
+            if (!data.user_copy_operations || data.user_copy_operations.length === 0) return '';
+            
+            let html = '<div class="section"><h2>👥 User Copy Operations</h2><table>';
+            html += '<tr><th>Copy Function</th><th>Caller Function</th><th>File Path</th><th>Line</th></tr>';
+            
+            for (const copy of data.user_copy_operations) {
+                html += `<tr>
+                    <td><code>${copy.copy_function}</code></td>
+                    <td><code>${copy.caller_function}</code></td>
+                    <td>${copy.file_path}</td>
+                    <td>${copy.line_number || 'N/A'}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+            return html;
+        }
+
+        function generateIOCTLHTML(data) {
+            if (!data.ioctl_operations || data.ioctl_operations.length === 0) return '';
+            
+            let html = '<div class="section"><h2>⚙️ IOCTL Operations</h2><table>';
+            html += '<tr><th>Function Name</th><th>File Path</th><th>Line</th><th>Handler Type</th></tr>';
+            
+            for (const ioctl of data.ioctl_operations) {
+                html += `<tr>
+                    <td><code>${ioctl.function_name}</code></td>
+                    <td>${ioctl.file_path}</td>
+                    <td>${ioctl.line_number || 'N/A'}</td>
+                    <td>${ioctl.handler_type || 'N/A'}</td>
+                </tr>`;
+            }
+            html += '</table></div>';
+            return html;
+        }
+
+        // Comprehensive Analysis Function
+        function runComprehensiveAnalysis() {
+            console.log('Starting comprehensive analysis...');
+            
+            // Get form values
+            const modelSelect = document.getElementById('analyzeAllModel');
+            const promptInput = document.getElementById('analyzeAllPrompt');
+            const batchSizeSelect = document.getElementById('batchSize');
+            const maxComponentsSelect = document.getElementById('maxComponents');
+            const confidenceSelect = document.getElementById('confidenceThreshold');
+            const analyzeBtn = document.getElementById('analyzeAllBtn');
+            const progressSection = document.getElementById('progressSection');
+            const resultsDashboard = document.getElementById('resultsDashboard');
+            
+            // Get values
+            const modelId = modelSelect ? modelSelect.value : 'gpt-3.5-turbo';
+            const customPrompt = promptInput ? promptInput.value : '';
+            const batchSize = batchSizeSelect ? parseInt(batchSizeSelect.value) : 3;
+            const maxComponents = maxComponentsSelect ? parseInt(maxComponentsSelect.value) : 50;
+            const confidenceThreshold = confidenceSelect ? parseInt(confidenceSelect.value) : 50;
+            
+            // Show progress and disable button
+            if (analyzeBtn) {
+                analyzeBtn.disabled = true;
+                analyzeBtn.innerHTML = '<span>🔄 Running Analysis...</span>';
+            }
+            
+            if (progressSection) {
+                progressSection.style.display = 'block';
+                updateProgress(0, 0, 'Initializing comprehensive analysis...');
+            }
+            
+            // Prepare request data
+            const requestData = {
+                component_types: ['functions', 'dma_operations', 'user_copy_operations', 'ioctl_operations'],
+                batch_size: batchSize,
+                model_id: modelId,
+                custom_prompt: customPrompt,
+                max_components: maxComponents,
+                confidence_threshold: confidenceThreshold
+            };
+            
+            console.log('Analysis request:', requestData);
+            
+            // Make API request
+            fetch('/api/analyze/comprehensive', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Analysis complete:', data);
+                
+                // Update progress to 100%
+                updateProgress(data.total || 0, data.total || 0, 'Analysis completed successfully!');
+                
+                // Show results dashboard
+                if (resultsDashboard) {
+                    resultsDashboard.classList.add('visible');
+                    resultsDashboard.style.display = 'block';
+                    
+                    // Update results summary
+                    updateResultsSummary(data);
+                    
+                    // Populate results grid
+                    populateResultsGrid(data.results || []);
+                    
+                    // Scroll to results
+                    resultsDashboard.scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                // Re-enable button
+                if (analyzeBtn) {
+                    analyzeBtn.disabled = false;
+                    analyzeBtn.innerHTML = '<span>✅ Analysis Complete - Run Again</span>';
+                }
+                
+                console.log('Results dashboard shown, download buttons should be visible');
+            })
+            .catch(error => {
+                console.error('Analysis failed:', error);
+                
+                updateProgress(0, 0, 'Analysis failed. Please try again.');
+                
+                if (analyzeBtn) {
+                    analyzeBtn.disabled = false;
+                    analyzeBtn.innerHTML = '<span>❌ Analysis Failed - Try Again</span>';
+                }
+            });
+        }
+        
+        function updateProgress(processed, total, message) {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const processedCount = document.getElementById('processedCount');
+            const totalCount = document.getElementById('totalCount');
+            
+            if (progressBar && total > 0) {
+                const percentage = (processed / total) * 100;
+                progressBar.style.width = percentage + '%';
+            }
+            
+            if (progressText) {
+                progressText.textContent = message;
+            }
+            
+            if (processedCount) {
+                processedCount.textContent = processed;
+            }
+            
+            if (totalCount) {
+                totalCount.textContent = total;
+            }
+        }
+        
+        function updateResultsSummary(data) {
+            const summaryDiv = document.getElementById('resultsSummary');
+            if (!summaryDiv) return;
+            
+            const stats = data.statistics || {};
+            const total = data.total || 0;
+            
+            summaryDiv.innerHTML = `
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="summary-number">${total}</div>
+                        <div class="summary-label">Components Analyzed</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-number">${data.results ? data.results.length : 0}</div>
+                        <div class="summary-label">Results Generated</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-number">${stats.llm_available ? 'Yes' : 'No'}</div>
+                        <div class="summary-label">AI Analysis</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-number">${data.batch_size || 'N/A'}</div>
+                        <div class="summary-label">Batch Size</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function populateResultsGrid(results) {
+            const gridDiv = document.getElementById('resultsGrid');
+            if (!gridDiv) return;
+            
+            if (!results || results.length === 0) {
+                gridDiv.innerHTML = '<div class="no-results">No analysis results to display.</div>';
+                return;
+            }
+            
+            let html = '<div class="results-list">';
+            
+            results.forEach((result, index) => {
+                const component = result.component || {};
+                const analysis = result.result || {};
+                const scores = result.confidenceScores || {};
+                
+                html += `
+                    <div class="result-card">
+                        <div class="result-header">
+                            <span class="result-type">${result.type || 'Unknown'}</span>
+                            <span class="result-name">${component.name || 'Unnamed'}</span>
+                        </div>
+                        <div class="result-details">
+                            <div class="result-file">${component.filePath || 'Unknown file'}</div>
+                            ${component.lineNumber ? `<div class="result-line">Line: ${component.lineNumber}</div>` : ''}
+                        </div>
+                        <div class="result-analysis">
+                            ${analysis.analysis || 'No analysis available'}
+                        </div>
+                        <div class="confidence-scores">
+                            <div class="score">AIA Relevant: ${scores.AIARelevantFunction || 0}%</div>
+                            <div class="score">Entry Point: ${scores.Relevant_KD_Entry_Point || 0}%</div>
+                            <div class="score">Message Handling: ${scores.Message_Structure_Handling || 0}%</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            gridDiv.innerHTML = html;
         }
     </script>
     
