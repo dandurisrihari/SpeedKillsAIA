@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simplified tests for webviewer memory display functionality
+Simplified tests for webviewer device access functionality
 """
 
 import pytest
@@ -24,33 +24,28 @@ except ImportError:
     webviewer_ui = None
 
 @pytest.fixture
-def mock_memory_data():
-    """Mock memory data for testing"""
+def mock_device_data():
+    """Mock device data for testing"""
     return {
         "metadata": {
-            "log_file": "test_memory.log",
+            "log_file": "test_device.log",
             "parsed_at": "2024-01-01T12:00:00"
         },
-        "memory_info": {
-            "reserved_memory": [
+        "device_info": {
+            "device_accesses": [
                 {
-                    "start_address": "0x40000000",
-                    "end_address": "0x5fffffff",
-                    "size_kb": 524288,
-                    "size_readable": "512 MiB",
-                    "name": "test_pool",
-                    "memory_type": "CMA",
-                    "compatible_id": "test,cma"
+                    "device_path": "/dev/test_device",
+                    "access_type": "openat",
+                    "timestamp": 1234567890.123,
+                    "timestamp_str": "10:00:00.123",
+                    "pid": 1234,
+                    "flags": "O_RDWR",
+                    "result": "3"
                 }
             ],
-            "cma_pools": [],
-            "memory_zones": [],
-            "total_reserved_memory_kb": 524288,
-            "summary": {
-                "total_reserved_entries": 1,
-                "total_cma_pools": 0,
-                "total_zones": 0
-            }
+            "unique_devices": ["/dev/test_device"],
+            "total_accesses": 1,
+            "unique_device_count": 1
         },
         "function_entries": [],
         "dma_operations": [],
@@ -62,8 +57,8 @@ def mock_memory_data():
             "unique_dma_operations": 0,
             "unique_user_copy_operations": 0,
             "unique_ioctl_operations": 0,
-            "total_files": 1,
-            "files_need_analysis": 1
+            "total_files": 0,
+            "files_need_analysis": 0
         }
     }
 
@@ -83,34 +78,35 @@ def client(app):
     return app.test_client()
 
 @pytest.mark.skipif(not WEBVIEWER_AVAILABLE, reason="Webviewer not available")
-class TestMemoryDisplay:
-    """Simplified memory display tests"""
+class TestDeviceAccess:
+    """Simplified device access tests"""
     
-    def test_memory_tab_exists(self, client, mock_memory_data):
-        """Test that the memory tab exists in the interface"""
+    def test_device_tab_exists(self, client, mock_device_data):
+        """Test that the device tab exists in the interface"""
         # Set up global data
-        webviewer_ui.global_data = mock_memory_data
+        webviewer_ui.global_data = mock_device_data
         
         response = client.get('/')
         assert response.status_code == 200
         # Just check that we can load the page
-        assert b'Memory Info' in response.data or b'memory' in response.data
+        assert b'Device Access' in response.data or b'devices' in response.data
 
-    def test_memory_api_endpoint(self, client, mock_memory_data):
-        """Test the memory API endpoint"""
+    def test_device_api_endpoint(self, client, mock_device_data):
+        """Test the device API endpoint"""
         # Set up global data
-        webviewer_ui.global_data = mock_memory_data
+        webviewer_ui.global_data = mock_device_data
         
-        response = client.get('/api/memory')
+        response = client.get('/api/devices')
         assert response.status_code == 200
         data = json.loads(response.data)
-        assert 'memory_info' in data or 'results' in data
+        assert 'devices' in data
 
-    def test_memory_with_no_data(self, client):
-        """Test memory display with no data"""
-        # Clear global data
-        webviewer_ui.global_data = {}
+    def test_device_search_endpoint(self, client, mock_device_data):
+        """Test device search functionality"""
+        # Set up global data
+        webviewer_ui.global_data = mock_device_data
         
-        response = client.get('/')
+        response = client.get('/api/devices/search?query=test')
         assert response.status_code == 200
-        # Should still load without errors
+        data = json.loads(response.data)
+        assert 'results' in data

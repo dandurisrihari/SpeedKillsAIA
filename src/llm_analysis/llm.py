@@ -144,13 +144,84 @@ class LLMAnalyzer:
             return None, str(e)
     
     def _limit_tokens_for_web_ui(self, text: str, max_length: int = 8000) -> str:
-        """Limit text length for web UI display"""
+        """Limit text length for web UI to prevent token overflow"""
         if len(text) <= max_length:
             return text
         
-        # Truncate and add indicator
-        truncated = text[:max_length - 100]
-        return f"{truncated}\n\n... [Output truncated for web display. Full analysis available in saved report.]"
+        # Try to cut at a sentence boundary
+        cutoff = text[:max_length].rfind('.')
+        if cutoff > max_length * 0.8:  # If we find a sentence end near the limit
+            return text[:cutoff + 1] + "..."
+        else:
+            return text[:max_length] + "..."
+    
+    def _parse_confidence_scores(self, analysis_text: str) -> Dict[str, int]:
+        """Parse confidence scores from LLM analysis text"""
+        import re
+        
+        # Default scores
+        scores = {
+            "AIARelevantFunction": 0,
+            "Relevant_KD_Entry_Point": 0,
+            "Message_Structure_Handling": 0
+        }
+        
+        if not analysis_text:
+            return scores
+        
+        # Try to find confidence scores in various formats
+        patterns = [
+            # Format: "AIARelevantFunction: 85%"
+            r'AIARelevantFunction:\s*(\d+)%',
+            r'Relevant_KD_Entry_Point:\s*(\d+)%',
+            r'Message_Structure_Handling:\s*(\d+)%',
+            # Alternative format: "AIA Relevant Function: 85%"
+            r'AIA\s+Relevant\s+Function:\s*(\d+)%',
+            r'Relevant\s+KD\s+Entry\s+Point:\s*(\d+)%',
+            r'Message\s+Structure\s+Handling:\s*(\d+)%',
+            # Simple format: "85% confidence"
+            r'AIARelevantFunction.*?(\d+)%',
+            r'Relevant_KD_Entry_Point.*?(\d+)%',
+            r'Message_Structure_Handling.*?(\d+)%'
+        ]
+        
+        # Try exact format first
+        aia_match = re.search(r'AIARelevantFunction:\s*(\d+)%', analysis_text, re.IGNORECASE)
+        if aia_match:
+            scores["AIARelevantFunction"] = min(100, max(0, int(aia_match.group(1))))
+        
+        entry_match = re.search(r'Relevant_KD_Entry_Point:\s*(\d+)%', analysis_text, re.IGNORECASE)
+        if entry_match:
+            scores["Relevant_KD_Entry_Point"] = min(100, max(0, int(entry_match.group(1))))
+        
+        msg_match = re.search(r'Message_Structure_Handling:\s*(\d+)%', analysis_text, re.IGNORECASE)
+        if msg_match:
+            scores["Message_Structure_Handling"] = min(100, max(0, int(msg_match.group(1))))
+        
+        # If exact format didn't work, try alternative patterns
+        if all(score == 0 for score in scores.values()):
+            # Look for any percentage values and try to map them
+            percentages = re.findall(r'(\d+)%', analysis_text)
+            if percentages:
+                # If we have at least 3 percentages, use the first 3
+                if len(percentages) >= 3:
+                    scores["AIARelevantFunction"] = min(100, max(0, int(percentages[0])))
+                    scores["Relevant_KD_Entry_Point"] = min(100, max(0, int(percentages[1])))
+                    scores["Message_Structure_Handling"] = min(100, max(0, int(percentages[2])))
+                elif len(percentages) >= 1:
+                    # If only one percentage, assume it's for the most relevant category
+                    main_score = min(100, max(0, int(percentages[0])))
+                    # Distribute based on keywords in the text
+                    if any(keyword in analysis_text.lower() for keyword in ['dma', 'memory', 'buffer', 'page']):
+                        scores["AIARelevantFunction"] = main_score
+                    elif any(keyword in analysis_text.lower() for keyword in ['ioctl', 'entry', 'syscall']):
+                        scores["Relevant_KD_Entry_Point"] = main_score
+                    elif any(keyword in analysis_text.lower() for keyword in ['message', 'structure', 'copy_from_user', 'copy_to_user']):
+                        scores["Message_Structure_Handling"] = main_score
+                    else:
+                        scores["AIARelevantFunction"] = main_score
+        
+        return scores
     
     def analyze_function(self, function_name: str, source_code: str, file_path: str = "", 
                         custom_prompt: str = "", model_id: str = "gpt-3.5-turbo", 
@@ -277,7 +348,13 @@ class LLMAnalyzer:
         
         # Check if LLM is available first
         if not self.is_available():
-            # Return legacy format for backward compatibility
+            # Return legacy format for backward compatibility with default confidence scores
+            default_scores = {
+                "AIARelevantFunction": 0,
+                "Relevant_KD_Entry_Point": 0,
+                "Message_Structure_Handling": 0
+            }
+            
             if analysis_type == "ioctl_handler":
                 return {
                     "status": "unavailable",
@@ -286,7 +363,8 @@ class LLMAnalyzer:
                     "handler_name": code_block.get('handler_name', 'Unknown'),
                     "file_path": code_block.get('file_path', ''),
                     "model_used": model_id,
-                    "custom_prompt": custom_prompt
+                    "custom_prompt": custom_prompt,
+                    "confidence_scores": default_scores
                 }
             else:
                 return {
@@ -296,7 +374,8 @@ class LLMAnalyzer:
                     "function_name": code_block.get('function_name', 'Unknown'),
                     "file_path": code_block.get('file_path', ''),
                     "model_used": model_id,
-                    "custom_prompt": custom_prompt
+                    "custom_prompt": custom_prompt,
+                    "confidence_scores": default_scores
                 }
 
         # Determine analysis focus based on code type
@@ -425,6 +504,9 @@ GOAL: Identify and trace the path through which:
         if for_web_ui and analysis:
             analysis = self._limit_tokens_for_web_ui(analysis)
         
+        # Parse confidence scores from analysis
+        confidence_scores = self._parse_confidence_scores(analysis)
+        
         # Build return structure with both new AIA fields and legacy compatibility fields
         result = {
             "status": "success" if analysis else "error",
@@ -433,7 +515,8 @@ GOAL: Identify and trace the path through which:
             "code_block": code_block,
             "model_used": model_id,
             "custom_prompt": custom_prompt,
-            "analysis_type": analysis_type
+            "analysis_type": analysis_type,
+            "confidence_scores": confidence_scores
         }
         
         # Add legacy compatibility fields based on analysis type

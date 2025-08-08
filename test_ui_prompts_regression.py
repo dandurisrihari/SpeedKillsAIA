@@ -30,10 +30,10 @@ def test_ui_prompts_are_aia_specific():
     
     # Test that new AIA-specific prompts ARE present
     aia_prompts = [
-        "AI accelerator interface vulnerabilities and kernel entry point security issues specific to accelerator drivers",
-        "AI accelerator-specific coherency issues, shared memory vulnerabilities, and accelerator-to-host data transfer security concerns",
-        "accelerator model loading vulnerabilities, tensor data validation issues, and privilege escalation through AI model manipulation",
-        "AI accelerator command injection, model execution privilege escalation, and accelerator hardware access control bypass vulnerabilities"
+        "AI Accelerator (AIA) integration patterns: memory sharing with AI accelerators",
+        "AI Accelerator (AIA) integration: memory management, DMA buffer sharing",
+        "AI Accelerator (AIA) integration: message structures with SMIDs",
+        "AI Accelerator (AIA) integration: message structure handling, SMID management"
     ]
     
     for aia_prompt in aia_prompts:

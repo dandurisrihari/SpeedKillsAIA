@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Kernel Log Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Kernel Log Analysis</h1>
+            <p>Upload your parsed kernel log JSON file to begin analysis</p>
+        </div>
+        
+        <div class="upload-section">
+            <form method="post" enctype="multipart/form-data" class="upload-form">
+                <div class="upload-area">
+                    <div class="upload-icon">📁</div>
+                    <h3>Upload JSON File</h3>
+                    <p>Select your parsed kernel log JSON file</p>
+                    <input type="file" name="file" accept=".json" required class="file-input">
+                    <button type="submit" class="upload-btn">Upload & Analyze</button>
+                </div>
+            </form>
+            
+            {% if error %}
+            <div class="error-message">
+                <span class="error-icon">❌</span>
+                {{ error }}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="info-section">
+            <h3>About This Tool</h3>
+            <p>This web interface allows you to analyze kernel instrumentation data and identify potential AI Accelerator (AIA) integration patterns.</p>
+            <ul>
+                <li>Upload a JSON file containing parsed kernel log data</li>
+                <li>Explore functions, DMA operations, IOCTL handlers, and more</li>
+                <li>Use AI-powered analysis to identify security patterns</li>
+                <li>Download comprehensive reports in multiple formats</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

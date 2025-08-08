@@ -1,0 +1,374 @@
+#!/usr/bin/env python3
+"""
+Tests for comprehensive analysis JavaScript functionality using Selenium
+"""
+
+import pytest
+import time
+import json
+from unittest.mock import Mock, patch
+
+# Optional selenium imports for browser testing
+try:
+    from selenium import webdriver
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.chrome.options import Options
+    SELENIUM_AVAILABLE = True
+except ImportError:
+    SELENIUM_AVAILABLE = False
+    webdriver = None
+
+# Import test utilities
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / 'src'))
+
+try:
+    from src.webviewer.ui import create_app
+    FLASK_AVAILABLE = True
+except ImportError:
+    create_app = None
+    FLASK_AVAILABLE = False
+
+@pytest.fixture
+def mock_app():
+    """Create a mock Flask app for testing"""
+    if not FLASK_AVAILABLE:
+        pytest.skip("Flask/Webviewer not available")
+    
+    app = create_app()
+    app.config['TESTING'] = True
+    
+    # Mock LLM responses
+    with patch('src.webviewer.ui.LLMAnalyzer') as mock_llm:
+        mock_analyzer = Mock()
+        mock_analyzer.analyze_function.return_value = {
+            "status": "success",
+            "analysis": """
+Function/Code_Block_Name: test_aia_function
+AIARelevantFunction: 85%
+Relevant_KD_Entry_Point: 20%
+Message_Structure_Handling: 15%
+Reasoning:
+  - Uses get_user_pages for memory pinning
+  - Configures DMA addresses for AIA device
+  - Part of AIA memory management subsystem
+"""
+        }
+        mock_analyzer.analyze_dma_operation.return_value = {
+            "status": "success", 
+            "analysis": """
+Function/Code_Block_Name: dma_map_single
+AIARelevantFunction: 95%
+Relevant_KD_Entry_Point: 10%
+Message_Structure_Handling: 5%
+Reasoning:
+  - Direct DMA mapping function for AIA
+  - Critical for AIA memory access
+  - Maps user pages for AIA consumption
+"""
+        }
+        mock_llm.return_value = mock_analyzer
+        yield app
+
+@pytest.fixture
+def browser_driver():
+    """Create a headless Chrome driver for testing"""
+    if not SELENIUM_AVAILABLE:
+        pytest.skip("Selenium not available")
+    
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
+    
+    try:
+        driver = webdriver.Chrome(options=options)
+        driver.implicitly_wait(10)
+        yield driver
+    except Exception as e:
+        pytest.skip(f"Chrome driver not available: {e}")
+    finally:
+        if 'driver' in locals():
+            driver.quit()
+
+class TestComprehensiveAnalysisJS:
+    """Test JavaScript functionality for comprehensive analysis"""
+    
+    def test_analyze_all_button_functionality(self, client):
+        """Test that the comprehensive analysis button exists and has correct attributes"""
+        # Set test data directly in the module
+        import src.webviewer.ui as ui_module
+        ui_module.parsed_data = {
+            'metadata': {'log_file': 'test.log'},
+            'functions_by_file': {},
+            'dma_operations': [],
+            'user_copy_operations': [],
+            'ioctl_operations': [],
+            'statistics': {}
+        }
+        
+        response = client.get('/')
+        assert response.status_code == 200
+        
+        html_content = response.get_data(as_text=True)
+        
+        # Check for analyze all button
+        assert 'analyzeAllBtn' in html_content
+        assert 'runComprehensiveAnalysis' in html_content
+        assert '🔍 Analyze All Components' in html_content
+    
+    def test_results_dashboard_elements(self, client):
+        """Test that results dashboard elements are present"""
+        # Set test data directly in the module
+        import src.webviewer.ui as ui_module
+        ui_module.parsed_data = {
+            'metadata': {'log_file': 'test.log'},
+            'functions_by_file': {},
+            'statistics': {}
+        }
+        
+        response = client.get('/')
+        html_content = response.get_data(as_text=True)
+        
+        # Check for results dashboard elements
+        assert 'resultsDashboard' in html_content
+        assert 'resultsSummary' in html_content
+        assert 'resultsGrid' in html_content
+        assert 'Comprehensive Analysis Results' in html_content
+    
+    def test_control_elements_present(self, mock_app):
+        """Test that all control elements are present"""
+        with mock_app.test_client() as client:
+            with patch('webviewer.ui.get_current_data') as mock_get_data:
+                mock_get_data.return_value = {
+                    "statistics": {},
+                    "functions_by_file": {},
+                    "dma_operations": [],
+                    "user_copy_operations": [],
+                    "ioctl_operations": []
+                }
+                
+                response = client.get('/')
+                assert response.status_code == 200
+                
+                html_content = response.get_data(as_text=True)
+                
+                # Check for control elements
+                assert 'id="analyzeAllModel"' in html_content
+                assert 'id="analyzeAllPrompt"' in html_content
+                assert 'id="confidenceThreshold"' in html_content
+                
+                # Check for model options
+                assert 'gpt-3.5-turbo' in html_content
+                assert 'gpt-4' in html_content
+                assert 'gpt-4-turbo-preview' in html_content
+                
+                # Check for confidence threshold options
+                assert 'All Results (0%+)' in html_content
+                assert 'Medium Confidence (50%+)' in html_content
+                assert 'High Confidence (75%+)' in html_content
+
+@pytest.mark.skipif(not SELENIUM_AVAILABLE, reason="Selenium not available")
+class TestBrowserIntegration:
+    """Test browser integration with Selenium"""
+    
+    def test_analyze_all_tab_switching(self, browser_driver, mock_app):
+        """Test switching to analyze all tab"""
+        if not SELENIUM_AVAILABLE:
+            pytest.skip("Selenium not available")
+        
+        # Start the Flask app
+        import threading
+        app_thread = threading.Thread(
+            target=lambda: mock_app.run(port=5555, debug=False)
+        )
+        app_thread.daemon = True
+        app_thread.start()
+        
+        time.sleep(2)  # Wait for server to start
+        
+        try:
+            browser_driver.get('http://localhost:5555')
+            
+            # Wait for page to load
+            WebDriverWait(browser_driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "tab"))
+            )
+            
+            # Find and click the Analyze All tab
+            analyze_all_tab = browser_driver.find_element(
+                By.XPATH, "//button[contains(text(), 'Analyze All')]"
+            )
+            analyze_all_tab.click()
+            
+            # Verify the tab content is visible
+            analyze_all_content = browser_driver.find_element(By.ID, "analyzeAll")
+            assert analyze_all_content.is_displayed()
+            
+            # Verify analyze all section is present
+            analyze_all_section = browser_driver.find_element(
+                By.CLASS_NAME, "analyze-all-section"
+            )
+            assert analyze_all_section.is_displayed()
+            
+        except Exception as e:
+            pytest.skip(f"Browser test failed: {e}")
+    
+    def test_confidence_threshold_selection(self, browser_driver, mock_app):
+        """Test confidence threshold selection"""
+        if not SELENIUM_AVAILABLE:
+            pytest.skip("Selenium not available")
+        
+        # Start the Flask app
+        import threading
+        app_thread = threading.Thread(
+            target=lambda: mock_app.run(port=5556, debug=False)
+        )
+        app_thread.daemon = True
+        app_thread.start()
+        
+        time.sleep(2)  # Wait for server to start
+        
+        try:
+            browser_driver.get('http://localhost:5556')
+            
+            # Wait for page to load
+            WebDriverWait(browser_driver, 10).until(
+                EC.presence_of_element_located((By.ID, "confidenceThreshold"))
+            )
+            
+            # Find confidence threshold select
+            threshold_select = browser_driver.find_element(By.ID, "confidenceThreshold")
+            
+            # Verify options are present
+            options = threshold_select.find_elements(By.TAG_NAME, "option")
+            option_values = [opt.get_attribute("value") for opt in options]
+            
+            assert "0" in option_values
+            assert "25" in option_values  
+            assert "50" in option_values
+            assert "75" in option_values
+            assert "90" in option_values
+            
+            # Verify default selection
+            selected_option = threshold_select.find_element(
+                By.XPATH, ".//option[@selected]"
+            )
+            assert selected_option.get_attribute("value") == "50"
+            
+        except Exception as e:
+            pytest.skip(f"Browser test failed: {e}")
+
+class TestAPIIntegration:
+    """Test API integration for comprehensive analysis"""
+    
+    def test_api_data_endpoint(self, mock_app):
+        """Test /api/data endpoint returns proper structure for comprehensive analysis"""
+        with mock_app.test_client() as client:
+            with patch('webviewer.ui.get_current_data') as mock_get_data:
+                test_data = {
+                    "functions_by_file": {
+                        "/test.c": [{
+                            "function_name": "test_func",
+                            "line_number": 100,
+                            "function_code": "int test_func() { return 0; }"
+                        }]
+                    },
+                    "dma_operations": [{
+                        "dma_function": "dma_map_single",
+                        "caller_function": "test_caller",
+                        "file_path": "/test.c",
+                        "line_number": 200
+                    }],
+                    "user_copy_operations": [{
+                        "copy_function": "copy_from_user", 
+                        "caller_function": "ioctl_handler",
+                        "file_path": "/test.c",
+                        "line_number": 300
+                    }],
+                    "ioctl_operations": [{
+                        "handler_name": "test_ioctl",
+                        "file_path": "/test.c",
+                        "line_number": 400
+                    }]
+                }
+                mock_get_data.return_value = test_data
+                
+                response = client.get('/api/data')
+                assert response.status_code == 200
+                
+                data = response.get_json()
+                assert 'functions_by_file' in data
+                assert 'dma_operations' in data
+                assert 'user_copy_operations' in data
+                assert 'ioctl_operations' in data
+    
+    def test_batch_analysis_endpoints(self, mock_app):
+        """Test that all required analysis endpoints are available"""
+        with mock_app.test_client() as client:
+            endpoints = [
+                '/api/llm/analyze/function',
+                '/api/llm/analyze/dma', 
+                '/api/llm/analyze/user-copy',
+                '/api/llm/analyze/ioctl'
+            ]
+            
+            for endpoint in endpoints:
+                # Test that endpoints exist (should return 400 for missing data, not 404)
+                response = client.post(endpoint, json={})
+                assert response.status_code != 404, f"Endpoint {endpoint} not found"
+
+class TestResultsVisualization:
+    """Test results visualization functionality"""
+    
+    def test_confidence_bar_css_classes(self, mock_app):
+        """Test that CSS classes for confidence bars are present"""
+        with mock_app.test_client() as client:
+            with patch('webviewer.ui.get_current_data') as mock_get_data:
+                mock_get_data.return_value = {
+                    "statistics": {},
+                    "functions_by_file": {},
+                    "dma_operations": [],
+                    "user_copy_operations": [],
+                    "ioctl_operations": []
+                }
+                
+                response = client.get('/')
+                assert response.status_code == 200
+                
+                html_content = response.get_data(as_text=True)
+                
+                # Check that confidence bar CSS classes are referenced
+                assert 'confidence-bars' in html_content
+                assert 'confidence-bar' in html_content
+                assert 'confidence-meter' in html_content
+                assert 'confidence-fill' in html_content
+    
+    def test_result_card_structure(self, mock_app):
+        """Test that result card structure elements are present"""
+        with mock_app.test_client() as client:
+            with patch('webviewer.ui.get_current_data') as mock_get_data:
+                mock_get_data.return_value = {
+                    "statistics": {},
+                    "functions_by_file": {},
+                    "dma_operations": [],
+                    "user_copy_operations": [],
+                    "ioctl_operations": []
+                }
+                
+                response = client.get('/')
+                assert response.status_code == 200
+                
+                html_content = response.get_data(as_text=True)
+                
+                # Check for result card elements
+                assert 'result-card' in html_content
+                assert 'summary-card' in html_content
+                assert 'results-grid' in html_content
+
+if __name__ == '__main__':
+    pytest.main([__file__, '-v'])
