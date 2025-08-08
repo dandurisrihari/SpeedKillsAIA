@@ -13,7 +13,7 @@ def test_download_functionality():
     
     try:
         # Test 1: Main page loads with visibility fixes
-        print("📱 Testing main page visibility...")
+        print("Testing main page visibility...")
         response = requests.get(base_url)
         if response.status_code == 200:
             print("✅ Main page loads successfully")

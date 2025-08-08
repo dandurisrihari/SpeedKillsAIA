@@ -1,6 +1,6 @@
 # LLM Analysis Integration
 
-This document describes the LLM (Large Language Model) analysis integration for the Kernel Log Analysis Web UI. The integration provides AI-powered security analysis capabilities using OpenAI's GPT models.
+This document describes the LLM (Large Language Model) analysis integration for the Kernel Log Analysis Web UI. The integration provides LLM Assisted security analysis capabilities using OpenAI's GPT models.
 
 ## Features
 
@@ -68,7 +68,7 @@ The integration supports multiple OpenAI models:
 
 ### Web Interface
 
-1. **Access LLM Tab**: Navigate to the "🤖 LLM Analysis" tab in the web UI
+1. **Access LLM Tab**: Navigate to the "LLM Analysis" tab in the web UI
 2. **Check Status**: Verify LLM availability (green indicator)
 3. **Select Model**: Choose appropriate AI model for your analysis needs
 4. **Choose Analysis Type**: Select from Function, DMA, Log, or Security Report analysis

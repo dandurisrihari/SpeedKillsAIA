@@ -4,7 +4,7 @@ A modular web interface for kernel log analysis with integrated LLM-powered secu
 
 ## Overview
 
-This webviewer provides a comprehensive web-based interface for analyzing kernel instrumentation logs with AI-powered insights. The interface is built with a modular architecture using Flask, with separate CSS, JavaScript, and HTML template files for maintainability.
+This webviewer provides a comprehensive web-based interface for analyzing kernel instrumentation logs with LLM Assisted insights. The interface is built with a modular architecture using Flask, with separate CSS, JavaScript, and HTML template files for maintainability.
 
 ## Features
 
@@ -15,7 +15,7 @@ This webviewer provides a comprehensive web-based interface for analyzing kernel
 - **IOCTL Handlers**: Monitor system call interactions
 - **Search & Filter**: Powerful search across all collected data
 
-### AI-Powered Analysis
+### LLM Assisted Analysis
 - **LLM Integration**: OpenAI GPT models for intelligent code analysis
 - **Security Assessment**: Automated vulnerability detection
 - **Performance Insights**: AI-driven performance recommendations
@@ -91,10 +91,10 @@ Open your browser to `http://localhost:5000`
 3. **DMA Operations Tab**: View DMA-related activities
 4. **IOCTL Handlers Tab**: Monitor system call interactions
 5. **Logs Tab**: Raw log viewer with search and filtering
-6. **LLM Analysis Tab**: AI-powered code analysis
+6. **LLM Analysis Tab**: LLM Assisted code analysis
 
 ### LLM Analysis Workflow
-1. Navigate to the 🤖 LLM Analysis tab
+1. Navigate to the LLM Analysis tab
 2. Check LLM status (should show green if available)
 3. Select your preferred AI model
 4. Choose analysis type:

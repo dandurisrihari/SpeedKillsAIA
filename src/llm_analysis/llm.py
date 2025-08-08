@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-LLM Analysis Module - AI-powered analysis for kernel instrumentation
+LLM Analysis Module - LLM Assisted analysis for kernel instrumentation
 
 This module provides LLM-based analysis capabilities for kernel log data,
 function analysis, DMA operations, and security assessments.
@@ -43,7 +43,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class LLMAnalyzer:
-    """AI-powered analyzer for kernel instrumentation data"""
+    """LLM Assisted analyzer for kernel instrumentation data"""
     
     def __init__(self, model_id=None):
         """Initialize LLM analyzer with OpenAI API configuration"""

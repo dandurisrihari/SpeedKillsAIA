@@ -78,7 +78,7 @@ class TestEnhancedAnalysis:
         assert 'batchSize' in html_content
         assert 'maxComponents' in html_content
         assert 'progressSection' in html_content
-        assert 'AI-Powered Comprehensive Analysis' in html_content
+        assert 'LLM Assisted Comprehensive Analysis' in html_content
         
         # Check for batch size options
         assert '1 (Slowest, Most Reliable)' in html_content

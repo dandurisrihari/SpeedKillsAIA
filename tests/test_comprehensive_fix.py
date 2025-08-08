@@ -150,7 +150,7 @@ def test_download_api_functionality():
         print(f"   ❌ Download API test failed: {e}")
 
 if __name__ == "__main__":
-    print("🔧 Testing Download Functionality Fix")
+    print("Testing Download Functionality Fix")
     print("=" * 50)
     
     success1 = test_comprehensive_analysis_fix()

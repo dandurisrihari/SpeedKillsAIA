@@ -42,7 +42,7 @@ def main():
     total_failed = 0
     total_errors = 0
     
-    print("🚀 Running Kernel Instrumenter Comprehensive Test Suite")
+    print("Running Kernel Instrumenter Comprehensive Test Suite")
     print("=" * 80)
     
     for category, test_files in test_categories.items():

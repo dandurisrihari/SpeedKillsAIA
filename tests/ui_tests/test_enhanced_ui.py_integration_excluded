@@ -90,7 +90,7 @@ def test_enhanced_ui():
             "confidence_threshold": 50
         }
         
-        print("   🔄 Running test analysis...")
+        print("   Running test analysis...")
         api_response = requests.post(api_url, json=test_request, timeout=60)
         
         if api_response.status_code == 200:

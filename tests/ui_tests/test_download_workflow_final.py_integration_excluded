@@ -73,7 +73,7 @@ def test_end_to_end_download_workflow():
             
             print("\n🎯 MANUAL TESTING INSTRUCTIONS:")
             print("   1. Open http://127.0.0.1:5000 in your browser")
-            print("   2. Click the '🤖 LLM Analysis' tab")
+            print("   2. Click the 'LLM Analysis' tab")
             print("   3. Scroll down to 'Comprehensive Analysis' section")
             print("   4. Click 'Start Comprehensive Analysis'")
             print("   5. Wait for progress bar to complete")

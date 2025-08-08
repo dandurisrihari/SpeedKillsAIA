@@ -52,7 +52,7 @@ class TestComprehensiveAnalysisUI:
         # Check for analyze all button
         assert 'analyzeAllBtn' in html_content
         assert 'runComprehensiveAnalysis' in html_content
-        assert '🔍 Analyze All Components' in html_content
+        assert 'Analyze All Components' in html_content
 
     def test_results_dashboard_elements(self, client):
         """Test that results dashboard elements are present"""

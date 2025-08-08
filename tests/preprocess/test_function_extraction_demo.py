@@ -30,13 +30,13 @@ def test_function_code_extraction_with_ui():
     with open(test_log_file, 'w') as f:
         f.write(test_log_content)
     
-    print("🚀 Testing Function Code Extraction for All Types")
+    print("Testing Function Code Extraction for All Types")
     print("=" * 60)
     print("This test demonstrates function code extraction for:")
-    print("📍 Function Entries")
-    print("🔄 DMA Operations") 
-    print("👤 User Copy Operations")
-    print("🔧 IOCTL Operations")
+    print("Function Entries")
+    print("DMA Operations") 
+    print("User Copy Operations")
+    print("IOCTL Operations")
     print()
     
     try:
@@ -47,11 +47,11 @@ def test_function_code_extraction_with_ui():
         results = engine.parse_log_file(test_log_file)
         
         print()
-        print("🔍 RESULTS SUMMARY:")
+        print("RESULTS SUMMARY:")
         print("=" * 40)
         
         # Function entries
-        print(f"\n📍 FUNCTION ENTRIES: {len(results['function_entries'])}")
+        print(f"\nFUNCTION ENTRIES: {len(results['function_entries'])}")
         for func in results['function_entries']:
             print(f"  • {func['function_name']} (called {func['call_count']} times)")
             if func.get('function_code'):
@@ -60,7 +60,7 @@ def test_function_code_extraction_with_ui():
                 print(f"    ❌ No function code extracted")
         
         # DMA operations
-        print(f"\n🔄 DMA OPERATIONS: {len(results['dma_operations'])}")
+        print(f"\nDMA OPERATIONS: {len(results['dma_operations'])}")
         for dma in results['dma_operations']:
             print(f"  • {dma['dma_function']} called by {dma['caller_function']} (called {dma['call_count']} times)")
             if dma.get('function_code'):
@@ -69,7 +69,7 @@ def test_function_code_extraction_with_ui():
                 print(f"    ❌ No function code extracted")
         
         # User copy operations
-        print(f"\n👤 USER COPY OPERATIONS: {len(results['user_copy_operations'])}")
+        print(f"\nUSER COPY OPERATIONS: {len(results['user_copy_operations'])}")
         for copy_op in results['user_copy_operations']:
             print(f"  • {copy_op['copy_function']} called by {copy_op['caller_function']} (called {copy_op['call_count']} times)")
             if copy_op.get('function_code'):
@@ -78,7 +78,7 @@ def test_function_code_extraction_with_ui():
                 print(f"    ❌ No function code extracted")
         
         # IOCTL operations
-        print(f"\n🔧 IOCTL OPERATIONS: {len(results['ioctl_operations'])}")
+        print(f"\nIOCTL OPERATIONS: {len(results['ioctl_operations'])}")
         for ioctl in results['ioctl_operations']:
             print(f"  • {ioctl['function_name']} (called {ioctl['call_count']} times)")
             if ioctl.get('function_code'):

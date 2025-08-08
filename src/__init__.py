@@ -18,13 +18,13 @@ def main():
     
     This provides a menu to access different tools.
     """
-    print("🚀 SpeedKillsAIA Research Tools")
+    print("SpeedKillsAIA Research Tools")
     print("=" * 40)
     print("Available tools:")
     print("1. Kernel Instrumenter - Add logging to kernel modules")
     print("2. Log Preprocessor - Parse and analyze kernel logs")
     print("3. Static Analysis - Analyze code for vulnerabilities")
-    print("4. LLM Analysis - AI-powered security analysis")
+    print("4. LLM Analysis - LLM Assisted security analysis")
     print()
     print("To use a specific tool directly:")
     print("  python -m src.kernel_instrumenter [options]")

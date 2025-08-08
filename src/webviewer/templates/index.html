@@ -11,8 +11,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔍 Kernel Log Analysis</h1>
-            <p>Interactive analysis of kernel instrumentation data with AI-powered insights</p>
+            <h1>Kernel Log Analysis</h1>
+            <p>Interactive analysis of kernel instrumentation data with LLM Assisted insights</p>
+            {% if data and data.get('metadata', {}).get('log_file') %}
+            <div class="log-file-banner" title="Currently analyzed log file">
+                <span class="log-file-label">Analyzing:</span>
+                <span class="log-file-name">{{ data.metadata.log_file }}</span>
+            </div>
+            {% endif %}
         </div>
         
         <div class="stats-grid">
@@ -55,20 +61,20 @@
         <div class="content">
             <div class="tab-container">
                 <div class="tabs">
-                    <button class="tab active" onclick="showTab('analyzeAll')">🚀 Analyze All</button>
-                    <button class="tab" onclick="showTab('functions')">📍 Functions</button>
-                    <button class="tab" onclick="showTab('dma')">🔄 DMA Operations</button>
-                    <button class="tab" onclick="showTab('userCopy')">👤 User Copy</button>
-                    <button class="tab" onclick="showTab('ioctl')">🔧 IOCTL Handlers</button>
-                    <button class="tab" onclick="showTab('devices')">📱 Device Access</button>
-                    <button class="tab" onclick="showTab('memory')">🧠 Memory Info</button>
-                    <button class="tab" onclick="showTab('llmAnalysis')">🤖 Individual LLM Analysis</button>
+                    <button class="tab active" onclick="showTab('analyzeAll')">Analyze All</button>
+                    <button class="tab" onclick="showTab('functions')">Functions</button>
+                    <button class="tab" onclick="showTab('dma')">DMA Operations</button>
+                    <button class="tab" onclick="showTab('userCopy')">User Copy</button>
+                    <button class="tab" onclick="showTab('ioctl')">IOCTL Handlers</button>
+                    <button class="tab" onclick="showTab('devices')">Device Access</button>
+                    <button class="tab" onclick="showTab('memory')">Memory Info</button>
+                    <button class="tab" onclick="showTab('llmAnalysis')">Individual LLM Analysis</button>
                 </div>
                 
                 <!-- Analyze All Tab -->
                 <div id="analyzeAll" class="tab-content active">
                     <div class="section">
-                        <div class="section-title">🚀 AI-Powered Comprehensive Analysis</div>
+                        <div class="section-title">LLM Assisted Comprehensive Analysis</div>
                         <p>Analyze all code components at once using AI to identify AIA integration patterns</p>
                     </div>
                     
@@ -121,7 +127,7 @@
                         </div>
                         
                         <button class="analyze-all-button" onclick="runComprehensiveAnalysis()" id="analyzeAllBtn">
-                            <span id="analyzeAllBtnText">🔍 Analyze All Components</span>
+                            <span id="analyzeAllBtnText">Analyze All Components</span>
                         </button>
                         
                         <div class="progress-section" id="progressSection" style="display: none;">
@@ -156,7 +162,7 @@
                             <p>This powerful feature analyzes all components of your kernel code simultaneously to provide a comprehensive overview of AI Accelerator (AIA) integration patterns. The analysis focuses on three key categories:</p>
                             <ul class="analysis-categories">
                                 <li><strong>AIARelevantFunction:</strong> Functions involved in shared memory management with AI accelerators</li>
-                                <li><strong>Relevant KD Entry Point:</strong> Kernel driver entry points from user space (ioctl handlers)</li>
+                                <li><strong>Relevant KD Entry Point:</strong> Kernel driver entry points from user space (ex ioctl handlers) that reach AIA relevant functions</li>
                                 <li><strong>Message Structure Handling:</strong> Code handling message structures between user space and kernel</li>
                             </ul>
                             <p>Results are organized by confidence level and category to help you quickly identify the most relevant code for AIA integration analysis.</p>
@@ -168,7 +174,7 @@
                 <div id="functions" class="tab-content">
                     <div class="section">
                         <div class="section-title">Function Entries by File</div>
-                        <input type="text" class="search-box" id="functionSearch" placeholder="🔍 Search functions..." onkeyup="filterFunctions()">
+                        <input type="text" class="search-box" id="functionSearch" placeholder="Search functions..." onkeyup="filterFunctions()">
                         
                         <div class="function-grid" id="functionGrid">
                             {% for file_path, functions in data.get('functions_by_file', {}).items() %}
@@ -191,7 +197,11 @@
                                     </div>
                                     {% else %}
                                     <div class="function-code">
-                                        <details onclick="loadFunctionCode(this, '{{ func.function_name }}', '{{ file_path }}', {{ func.line_number }})">
+                                        <details 
+                                            onclick="loadFunctionCode(this, this.dataset.fn, this.dataset.fp, this.dataset.ln)"
+                                            data-fn="{{ func.function_name }}"
+                                            data-fp="{{ file_path }}"
+                                            data-ln="{{ func.line_number }}">
                                             <summary><strong>Function Source Code</strong> <span class="loading-indicator" style="display:none;">Loading...</span></summary>
                                             <div class="code-container">
                                                 <pre><code>Click to load source code...</code></pre>
@@ -211,7 +221,7 @@
                 <div id="dma" class="tab-content">
                     <div class="section">
                         <div class="section-title">DMA Operations with Call Graphs</div>
-                        <input type="text" class="search-box" id="dmaSearch" placeholder="🔍 Search DMA operations..." onkeyup="filterDMA()">
+                        <input type="text" class="search-box" id="dmaSearch" placeholder="Search DMA operations..." onkeyup="filterDMA()">
                         
                         <div class="dma-grid" id="dmaGrid">
                             {% if data.dma_operations %}
@@ -273,7 +283,7 @@
                 <div id="userCopy" class="tab-content">
                     <div class="section">
                         <div class="section-title">User Copy Operations</div>
-                        <input type="text" class="search-box" id="userCopySearch" placeholder="🔍 Search user copy operations..." onkeyup="filterUserCopy()">
+                        <input type="text" class="search-box" id="userCopySearch" placeholder="Search user copy operations..." onkeyup="filterUserCopy()">
                         
                         <div class="user-copy-grid" id="userCopyGrid">
                             {% if data.user_copy_operations %}
@@ -333,7 +343,7 @@
                 <div id="ioctl" class="tab-content">
                     <div class="section">
                         <div class="section-title">IOCTL Handlers</div>
-                        <input type="text" class="search-box" id="ioctlSearch" placeholder="🔍 Search IOCTL handlers..." onkeyup="filterIOCTL()">
+                        <input type="text" class="search-box" id="ioctlSearch" placeholder="Search IOCTL handlers..." onkeyup="filterIOCTL()">
                         
                         <div class="ioctl-grid" id="ioctlGrid">
                             {% if data.ioctl_operations %}
@@ -401,7 +411,7 @@
                 <div id="devices" class="tab-content">
                     <div class="section">
                         <div class="section-title">Device Access Information</div>
-                        <input type="text" class="search-box" id="deviceSearch" placeholder="🔍 Search device access..." onkeyup="filterDevices()">
+                        <input type="text" class="search-box" id="deviceSearch" placeholder="Search device access..." onkeyup="filterDevices()">
                         
                         <div class="device-grid" id="deviceGrid">
                             {% if data.device_info and data.device_info.device_accesses %}
@@ -480,7 +490,7 @@
                             <button class="memory-tab active" onclick="showMemoryTab('summary')">Summary</button>
                             <button class="memory-tab" onclick="showMemoryTab('reserved')">Reserved Memory</button>
                             <button class="memory-tab" onclick="showMemoryTab('cma')">CMA Pools</button>
-                            <button class="memory-tab" onclick="showMemoryTab('dma')">DMA Pools</button>
+                            <button class="memory-tab" onclick="showMemoryTab('dmaPools')">DMA Pools</button>
                             <button class="memory-tab" onclick="showMemoryTab('zones')">Memory Zones</button>
                             <button class="memory-tab" onclick="showMemoryTab('nodes')">Memory Nodes</button>
                         </div>
@@ -624,7 +634,7 @@
                         </div>
                         
                         <!-- DMA Pools -->
-                        <div id="dma" class="memory-tab-content">
+                        <div id="dmaPools" class="memory-tab-content">
                             <div class="memory-section">
                                 <h3>DMA Memory Pools</h3>
                                 {% if data.memory_info.dma_pools %}
@@ -755,7 +765,7 @@
                 <!-- LLM Analysis Tab -->
                 <div id="llmAnalysis" class="tab-content">
                     <div class="section">
-                        <div class="section-title">🤖 AI-Powered Security Analysis</div>
+                        <div class="section-title">LLM Assisted Security Analysis</div>
                         
                         <!-- LLM Controls -->
                         <div class="llm-controls">
@@ -812,8 +822,8 @@
                                 
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="analyzeFunctionWithLLM()" id="analyzeFunctionBtn">
-                                        <span class="btn-text">🔍 Analyze Function</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                        <span class="btn-text">Analyze Function</span>
+                                        <span class="btn-loading" style="display:none;">Analyzing...</span>
                                     </button>
                                 </div>
                                 
@@ -854,8 +864,8 @@
                                 
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="analyzeDMAWithLLM()" id="analyzeDMABtn">
-                                        <span class="btn-text">🔍 Analyze DMA Operation</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                        <span class="btn-text">Analyze DMA Operation</span>
+                                        <span class="btn-loading" style="display:none;">Analyzing...</span>
                                     </button>
                                 </div>
                                 
@@ -883,8 +893,8 @@
                                 
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="analyzeLogsWithLLM()" id="analyzeLogsBtn">
-                                        <span class="btn-text">🔍 Analyze All Logs</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                        <span class="btn-text">Analyze All Logs</span>
+                                        <span class="btn-loading" style="display:none;">Analyzing...</span>
                                     </button>
                                 </div>
                                 
@@ -903,7 +913,7 @@
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="generateSecurityReport()" id="securityReportBtn">
                                         <span class="btn-text">📋 Generate Security Report</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Generating...</span>
+                                        <span class="btn-loading" style="display:none;">Generating...</span>
                                     </button>
                                 </div>
                                 

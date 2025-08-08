@@ -45,12 +45,12 @@ class ProgressUI:
         self.print_message(f"Unique entries found: {metadata.unique_entries}")
         self.print_message(f"Duplicates skipped: {statistics.total_duplicates_skipped}")
         self.print_message("")
-        self.print_message(f"📍 Unique function entries: {statistics.unique_function_entries}")
-        self.print_message(f"🔄 Unique DMA operations: {statistics.unique_dma_operations}")
-        self.print_message(f"👤 Unique user copy operations: {statistics.unique_user_copy_operations}")
+        self.print_message(f"Unique function entries: {statistics.unique_function_entries}")
+        self.print_message(f"Unique DMA operations: {statistics.unique_dma_operations}")
+        self.print_message(f"Unique user copy operations: {statistics.unique_user_copy_operations}")
         self.print_message(f"📁 Total files: {statistics.total_files}")
         self.print_message(f"📋 Files need analysis: {statistics.files_need_analysis}")
-        self.print_message(f"🔧 Files with functions entry Instrumented: {statistics.files_instrumented_with_function_entries}")
+        self.print_message(f"Files with functions entry Instrumented: {statistics.files_instrumented_with_function_entries}")
         self.print_message(f"📄 Files with functions: {statistics.files_with_functions_entrypoint_instrumented}")
     
     def print_file_analysis(self, functions_by_file):
@@ -63,7 +63,7 @@ class ProgressUI:
             self.print_message(f"  {file_path}: {len(functions)} unique functions")
             
             for func in functions:
-                self.print_message(f"    📍 {func.function_name} (called {func.call_count} times)")
+                self.print_message(f"    {func.function_name} (called {func.call_count} times)")
                 if hasattr(func, 'function_code') and func.function_code:
                     lines = func.function_code.split('\n')
                     self.print_message(f"       📜 Function code: {len(lines)} lines")

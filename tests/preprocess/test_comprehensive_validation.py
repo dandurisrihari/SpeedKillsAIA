@@ -282,7 +282,7 @@ def print_feature_summary():
     print("    ├── Updated statistics display")
     print("    └── Clear labeling for all metrics")
     
-    print("\n🔄 BACKWARD COMPATIBILITY:")
+    print("\nBACKWARD COMPATIBILITY:")
     print("├── JSON Format: Old format still loads correctly")
     print("├── Field Mapping: total_files_analyzed → files_need_analysis")
     print("├── Default Values: Missing fields get appropriate defaults")

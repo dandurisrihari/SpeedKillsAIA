@@ -160,7 +160,7 @@ class KernelLogParserEngine:
         
         self.metadata.log_file = str(log_file_path)
         
-        self.ui.print_message(f"\n🔍 Parsing Kernel Log: {log_file_path.name}")
+        self.ui.print_message(f"\nParsing Kernel Log: {log_file_path.name}")
         self.ui.print_message("=" * 60)
         
         # Count total lines
@@ -282,12 +282,12 @@ class KernelLogParserEngine:
             if function_data:
                 function_name, function_code, start_line, end_line = function_data
                 function_entry.function_code = function_code
-                self.ui.print_operation("📍 Function", 
+                self.ui.print_operation("Function", 
                     f"{function_entry.function_name} in {file_path}:{function_entry.line_number}")
                 self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
                 self.ui.print_function_code(function_name, function_code)
             else:
-                self.ui.print_operation("📍 Function", 
+                self.ui.print_operation("Function", 
                     f"{function_entry.function_name} in {file_path}:{function_entry.line_number}")
                 self.ui.print_operation("", "⚠️  Could not extract function code")
             
@@ -312,12 +312,12 @@ class KernelLogParserEngine:
                 if function_data:
                     function_name, function_code, start_line, end_line = function_data
                     result.function_code = function_code
-                    self.ui.print_operation("🔄 DMA", 
+                    self.ui.print_operation("DMA", 
                         f"{result.dma_function} called by {result.caller_function}")
                     self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
                     self.ui.print_function_code(function_name, function_code)
                 else:
-                    self.ui.print_operation("🔄 DMA", 
+                    self.ui.print_operation("DMA", 
                         f"{result.dma_function} called by {result.caller_function}")
                     self.ui.print_operation("", "⚠️  Could not extract function code")
                 
@@ -365,12 +365,12 @@ class KernelLogParserEngine:
                 if function_data:
                     function_name, function_code, start_line, end_line = function_data
                     result.function_code = function_code
-                    self.ui.print_operation("👤 User Copy", 
+                    self.ui.print_operation("User Copy", 
                         f"{result.copy_function} called by {result.caller_function}")
                     self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
                     self.ui.print_function_code(function_name, function_code)
                 else:
-                    self.ui.print_operation("👤 User Copy", 
+                    self.ui.print_operation("User Copy", 
                         f"{result.copy_function} called by {result.caller_function}")
                     self.ui.print_operation("", "⚠️  Could not extract function code")
                 
@@ -403,12 +403,12 @@ class KernelLogParserEngine:
                 if function_data:
                     function_name, function_code, start_line, end_line = function_data
                     result.function_code = function_code
-                    self.ui.print_operation("🔧 IOCTL Handler", 
+                    self.ui.print_operation("IOCTL Handler", 
                         f"{result.function_name} at {result.file_path}:{result.line_number}")
                     self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
                     self.ui.print_function_code(function_name, function_code)
                 else:
-                    self.ui.print_operation("🔧 IOCTL Handler", 
+                    self.ui.print_operation("IOCTL Handler", 
                         f"{result.function_name} at {result.file_path}:{result.line_number}")
                     self.ui.print_operation("", "⚠️  Could not extract function code")
                 
@@ -417,7 +417,7 @@ class KernelLogParserEngine:
     def _handle_memory_result(self, result):
         """Handle memory parser result"""
         if result:
-            self.ui.print_operation("🧠 Memory Info", f"Parsed memory entry: {type(result).__name__}")
+            self.ui.print_operation("Memory Info", f"Parsed memory entry: {type(result).__name__}")
     
     def _build_results(self) -> ParseResults:
         """Build final ParseResults object"""
@@ -505,7 +505,7 @@ class KernelLogParserEngine:
                 self.ui.print_message(f"❌ Strace file not found: {strace_file}")
                 return None
             
-            self.ui.print_message(f"📱 Processing strace log: {strace_file.name}")
+            self.ui.print_message(f"Processing strace log: {strace_file.name}")
             
             # Initialize strace parser
             strace_parser = StraceParser()
@@ -531,7 +531,7 @@ class KernelLogParserEngine:
             device_info = strace_parser.get_device_info()
             
             # Print summary
-            self.ui.print_message(f"📱 Strace parsing complete:")
+            self.ui.print_message(f"Strace parsing complete:")
             self.ui.print_message(f"   • Total lines processed: {total_lines}")
             self.ui.print_message(f"   • Device accesses found: {len(device_info.device_accesses)}")
             self.ui.print_message(f"   • Unique devices: {len(device_info.unique_devices)}")

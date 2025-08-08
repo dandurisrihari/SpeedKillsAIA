@@ -742,7 +742,7 @@ function loadSelectedDMA() {
         const lineNumber = dmaOperation.line_number;
         
         if (functionName && filePath) {
-            loadFunctionCode(functionName, filePath, lineNumber)
+            fetchFunctionCode(functionName, filePath, lineNumber)
                 .then(code => {
                     dmaCode.value = code;
                 })
@@ -963,21 +963,9 @@ function loadFunctionCode(detailsElement, functionName, filePath, lineNumber) {
         loadingIndicator.style.display = 'inline-block';
     }
     
-    // Build query parameters
-    const params = new URLSearchParams({
-        name: functionName,
-        file: filePath,
-        line: lineNumber
-    });
-    
-    fetch(`/api/function-code?${params}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                codeContainer.textContent = `Error: ${data.error}`;
-            } else {
-                codeContainer.textContent = data.function_code || 'No source code available';
-            }
+    fetchFunctionCode(functionName, filePath, lineNumber)
+        .then(code => {
+            codeContainer.textContent = code;
         })
         .catch(error => {
             console.error('Error loading function code:', error);
@@ -987,6 +975,26 @@ function loadFunctionCode(detailsElement, functionName, filePath, lineNumber) {
             if (loadingIndicator) {
                 loadingIndicator.style.display = 'none';
             }
+        });
+}
+
+// Helper: fetch function code as a Promise<string>
+function fetchFunctionCode(functionName, filePath, lineNumber) {
+    const params = new URLSearchParams({
+        name: functionName,
+        file: filePath,
+        line: lineNumber
+    });
+    return fetch(`/api/function-code?${params}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.function_code) {
+                return data.function_code;
+            }
+            if (data && data.error) {
+                return `Error: ${data.error}`;
+            }
+            return 'No source code available';
         });
 }
 
@@ -1245,25 +1253,7 @@ function showDataStorageIndicator(message, type = 'success') {
 }
 
 // Function Code Loading Functions
-function loadFunctionCode(element, functionName, filePath, lineNumber) {
-    // This function is called when function details are expanded
-    console.log(`Loading function code for: ${functionName} in ${filePath}:${lineNumber}`);
-    
-    // Make API call to get function code if needed
-    fetch(`/api/function-code?name=${encodeURIComponent(functionName)}&file=${encodeURIComponent(filePath)}&line=${lineNumber}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.function_code) {
-                const codeElement = element.querySelector('code');
-                if (codeElement) {
-                    codeElement.textContent = data.function_code;
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error loading function code:', error);
-        });
-}
+// (Removed duplicate loadFunctionCode definition to avoid conflicts)
 
 function loadDmaCode(element, index, dmaFunction) {
     // This function is called when DMA operation details are expanded
@@ -1317,30 +1307,27 @@ function quickAnalyzeFunction(functionName, filePath, lineNumber) {
     console.log(`Quick analyzing function: ${functionName} in ${filePath}:${lineNumber}`);
     
     // Get function code
-    fetch(`/api/function-code?name=${encodeURIComponent(functionName)}&file=${encodeURIComponent(filePath)}&line=${lineNumber}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.function_code) {
-                // Switch to LLM Analysis tab
-                showTab('llmAnalysis');
-                showAnalysisTab('functionAnalysis');
-                
-                // Populate function data
-                const functionSelect = document.getElementById('functionSelect');
-                if (functionSelect) {
-                    functionSelect.value = `${functionName}|${filePath}|${lineNumber}`;
-                }
-                
-                const functionCode = document.getElementById('functionCode');
-                if (functionCode) {
-                    functionCode.value = data.function_code;
-                }
-                
-                // Set default prompt
-                const customPrompt = document.getElementById('customPrompt');
-                if (customPrompt) {
-                    customPrompt.value = 'Analyze this function for AI Accelerator (AIA) integration patterns: memory sharing with AI accelerators, DMA operations, and entry points for AIA communication.';
-                }
+    fetchFunctionCode(functionName, filePath, lineNumber)
+        .then(code => {
+            // Switch to LLM Analysis tab
+            showTab('llmAnalysis');
+            showAnalysisTab('functionAnalysis');
+            
+            // Populate function data
+            const functionSelect = document.getElementById('functionSelect');
+            if (functionSelect) {
+                functionSelect.value = `${functionName}|${filePath}|${lineNumber}`;
+            }
+            
+            const functionCode = document.getElementById('functionCode');
+            if (functionCode) {
+                functionCode.value = code;
+            }
+            
+            // Set default prompt
+            const customPrompt = document.getElementById('customPrompt');
+            if (customPrompt) {
+                customPrompt.value = 'Analyze this function for AI Accelerator (AIA) integration patterns: memory sharing with AI accelerators, DMA operations, and entry points for AIA communication.';
             }
         })
         .catch(error => {
@@ -1502,7 +1489,7 @@ async function runComprehensiveAnalysis() {
     
     // Show loading state and progress
     button.disabled = true;
-    buttonText.innerHTML = '🔄 Preparing analysis...';
+    buttonText.innerHTML = 'Preparing analysis...';
     dashboard.classList.remove('visible');
     progressSection.style.display = 'block';
     progressBar.style.width = '0%';
@@ -1538,7 +1525,7 @@ async function runComprehensiveAnalysis() {
         processedCountEl.textContent = '0';
         
         progressText.textContent = `Starting analysis of ${components.length} components...`;
-        buttonText.innerHTML = `🔄 Analyzing 0/${components.length} components...`;
+        buttonText.innerHTML = `Analyzing 0/${components.length} components...`;
         
         // Process components in batches
         const actualBatchSize = batchSize === 999 ? components.length : batchSize;
@@ -1561,7 +1548,7 @@ async function runComprehensiveAnalysis() {
                 
                 progressBar.style.width = `${progressPercent}%`;
                 processedCountEl.textContent = processedCount;
-                buttonText.innerHTML = `🔄 Analyzing ${processedCount}/${components.length} components (${progressPercent}%)`;
+                buttonText.innerHTML = `Analyzing ${processedCount}/${components.length} components (${progressPercent}%)`;
                 
                 // Small delay between batches to be respectful to the API
                 if (i + actualBatchSize < components.length) {
@@ -1604,7 +1591,7 @@ async function runComprehensiveAnalysis() {
     } finally {
         // Reset button
         button.disabled = false;
-        buttonText.innerHTML = '🔍 Analyze All Components';
+        buttonText.innerHTML = 'Analyze All Components';
     }
 }
 
@@ -1731,7 +1718,7 @@ async function analyzeAllComponents(components, model, customPrompt) {
             // Update progress
             const progress = Math.round(((i + batch.length) / components.length) * 100);
             const buttonText = document.getElementById('analyzeAllBtnText');
-            buttonText.innerHTML = `🔄 Analyzing... ${progress}% (${i + batch.length}/${components.length})`;
+            buttonText.innerHTML = `Analyzing... ${progress}% (${i + batch.length}/${components.length})`;
             
             // Small delay between batches to be respectful to the API
             if (i + batchSize < components.length) {
@@ -2021,7 +2008,7 @@ function displayComprehensiveResults(results, threshold, stats) {
         <h4>📋 Category Breakdown</h4>
         <div class="category-stats">
             <div class="category-stat">
-                <div class="category-name">🔧 AIA Relevant Functions</div>
+                <div class="category-name">AIA Relevant Functions</div>
                 <div class="category-count">${stats.categories.AIARelevantFunction}</div>
                 <div class="category-avg">Avg: ${stats.averageConfidence.AIARelevantFunction}%</div>
             </div>
@@ -2114,10 +2101,10 @@ function displayComprehensiveResults(results, threshold, stats) {
         categorySection.className = 'category-section';
         
         const categoryTitle = {
-            'AIARelevantFunction': '🔧 AIA Relevant Functions',
+            'AIARelevantFunction': 'AIA Relevant Functions',
             'Relevant_KD_Entry_Point': '🚪 Kernel Entry Points', 
             'Message_Structure_Handling': '📨 Message Structure Handling',
-            'Other': '🔍 Other High-Confidence Results'
+            'Other': 'Other High-Confidence Results'
         };
         
         // Create sorted list with rankings
@@ -2257,7 +2244,7 @@ function createRankedResultCard(result, rank, score, category) {
                 </div>
                 <div class="component-details">
                     <span class="file-path">📁 ${component.filePath || 'Unknown file'}</span>
-                    ${component.lineNumber ? `<span class="line-number">📍 Line ${component.lineNumber}</span>` : ''}
+                    ${component.lineNumber ? `<span class="line-number">Line ${component.lineNumber}</span>` : ''}
                 </div>
             </div>
             
@@ -2286,7 +2273,7 @@ function createRankedResultCard(result, rank, score, category) {
             </div>
             
             <div class="analysis-preview">
-                <strong>🤖 Analysis:</strong>
+                <strong>Analysis:</strong>
                 <p>${result.result.analysis ? result.result.analysis.substring(0, 150) + '...' : 'Analysis not available'}</p>
             </div>
             
@@ -2587,7 +2574,7 @@ function generateHTMLReport(data) {
 </head>
 <body>
     <div class="container">
-        <h1>🔍 AIA Kernel Integration Analysis Report</h1>
+        <h1>AIA Kernel Integration Analysis Report</h1>
         <p><strong>Generated:</strong> ${timestamp}</p>
         
         <div class="stats-grid">
@@ -2633,10 +2620,10 @@ function generateHTMLReport(data) {
         if (results.length === 0) return;
         
         const categoryTitles = {
-            'AIARelevantFunction': '🔧 AIA Relevant Functions',
+            'AIARelevantFunction': 'AIA Relevant Functions',
             'Relevant_KD_Entry_Point': '🚪 Kernel Entry Points',
             'Message_Structure_Handling': '📨 Message Structure Handling',
-            'Other': '🔍 Other High-Confidence Results'
+            'Other': 'Other High-Confidence Results'
         };
         
         html += `
@@ -2660,7 +2647,7 @@ function generateHTMLReport(data) {
                     <h4 style="margin: 0;">${component.name || 'Unknown Component'}</h4>
                     <span class="rank-badge ${index < 3 ? 'top-rank' : ''}">#${index + 1} (${score}%)</span>
                 </div>
-                <p style="margin: 5px 0; color: #7f8c8d;">📁 ${component.filePath || 'Unknown file'}${component.lineNumber ? ` 📍 Line ${component.lineNumber}` : ''}</p>
+                <p style="margin: 5px 0; color: #7f8c8d;">📁 ${component.filePath || 'Unknown file'}${component.lineNumber ? ` Line ${component.lineNumber}` : ''}</p>
                 
                 <div class="confidence-bars">
                     <div class="confidence-bar">
@@ -2690,7 +2677,7 @@ function generateHTMLReport(data) {
                 </div>
                 
                 <div class="analysis-text">
-                    <strong>🤖 Analysis:</strong><br>
+                    <strong>Analysis:</strong><br>
                     ${result.result.analysis || 'Analysis not available'}
                 </div>
             </div>`;

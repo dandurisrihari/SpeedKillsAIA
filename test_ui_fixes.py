@@ -23,7 +23,7 @@ def test_ui_fixes():
         print("✅ Server is running and responding")
         
         # Check IOCTL operations
-        print("\n🔧 Testing IOCTL Operations:")
+        print("\nTesting IOCTL Operations:")
         if 'ioctl_operations' in data and len(data['ioctl_operations']) > 0:
             ioctl = data['ioctl_operations'][0]
             print(f"  • Found {len(data['ioctl_operations'])} IOCTL operations")
@@ -37,7 +37,7 @@ def test_ui_fixes():
             print("  ❌ No IOCTL operations found")
         
         # Check device access info
-        print("\n📱 Testing Device Access Info:")
+        print("\nTesting Device Access Info:")
         if 'device_info' in data and 'device_accesses' in data['device_info']:
             device_accesses = data['device_info']['device_accesses']
             print(f"  • Found {len(device_accesses)} device accesses")
@@ -52,7 +52,7 @@ def test_ui_fixes():
             print("  ❌ No device access info found")
         
         # Check DMA operations for call graph
-        print("\n🔄 Testing DMA Operations Call Graph:")
+        print("\nTesting DMA Operations Call Graph:")
         if 'dma_operations' in data and len(data['dma_operations']) > 0:
             dma = data['dma_operations'][0]
             print(f"  • Found {len(data['dma_operations'])} DMA operations")

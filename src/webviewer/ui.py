@@ -2372,7 +2372,7 @@ HTML_TEMPLATE = """
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔍 Kernel Log Analysis</h1>
+            <h1>Kernel Log Analysis</h1>
             <p>{{ data.metadata.log_file }}</p>
             <p><strong>Parsed:</strong> {{ data.metadata.get('parsed_at', 'Unknown')[:19] if data.metadata.get('parsed_at') else 'Unknown' }} | <strong>Lines:</strong> {{ data.metadata.get('total_lines', 0) }}</p>
         </div>
@@ -2433,20 +2433,20 @@ HTML_TEMPLATE = """
         <div class="content">
             <div class="tab-container">
                 <div class="tabs">
-                    <button class="tab active" onclick="showTab('analyzeAll', this)">🚀 Analyze All</button>
-                    <button class="tab" onclick="showTab('functions', this)">📍 Functions</button>
-                    <button class="tab" onclick="showTab('dma', this)">🔄 DMA Operations</button>
-                    <button class="tab" onclick="showTab('userCopy', this)">👤 User Copy</button>
-                    <button class="tab" onclick="showTab('ioctl', this)">🔧 IOCTL Handlers</button>
-                    <button class="tab" onclick="showTab('devices', this)">📱 Device Access</button>
-                    <button class="tab" onclick="showTab('memory', this)">🧠 Memory Info</button>
-                    <button class="tab" onclick="showTab('llmAnalysis', this)">🤖 LLM Analysis</button>
+                    <button class="tab active" onclick="showTab('analyzeAll', this)">Analyze All</button>
+                    <button class="tab" onclick="showTab('functions', this)">Functions</button>
+                    <button class="tab" onclick="showTab('dma', this)">DMA Operations</button>
+                    <button class="tab" onclick="showTab('userCopy', this)">User Copy</button>
+                    <button class="tab" onclick="showTab('ioctl', this)">IOCTL Handlers</button>
+                    <button class="tab" onclick="showTab('devices', this)">Device Access</button>
+                    <button class="tab" onclick="showTab('memory', this)">Memory Info</button>
+                    <button class="tab" onclick="showTab('llmAnalysis', this)">LLM Analysis</button>
                 </div>
                 
                 <!-- Analyze All Tab -->
                 <div id="analyzeAll" class="tab-content active">
                     <div class="section">
-                        <div class="section-title">🚀 AI-Powered Comprehensive Analysis</div>
+                        <div class="section-title">LLM Assisted Comprehensive Analysis</div>
                         <p>Analyze all code components at once using AI to identify AIA integration patterns</p>
                     </div>
                     
@@ -2499,7 +2499,7 @@ HTML_TEMPLATE = """
                         </div>
                         
                         <button class="analyze-all-button" onclick="runComprehensiveAnalysis()" id="analyzeAllBtn">
-                            <span id="analyzeAllBtnText">🔍 Analyze All Components</span>
+                            <span id="analyzeAllBtnText">Analyze All Components</span>
                         </button>
                         
                         <div class="progress-section" id="progressSection" style="display: none;">
@@ -2556,7 +2556,7 @@ HTML_TEMPLATE = """
                 <div id="functions" class="tab-content">
                     <div class="section">
                         <div class="section-title">Function Entries by File</div>
-                        <input type="text" class="search-box" id="functionSearch" placeholder="🔍 Search functions..." onkeyup="filterFunctions()">
+                        <input type="text" class="search-box" id="functionSearch" placeholder="Search functions..." onkeyup="filterFunctions()">
                         
                         <div class="function-grid" id="functionGrid">
                             {% set function_index = namespace(value=0) %}
@@ -2592,7 +2592,7 @@ HTML_TEMPLATE = """
                                     <!-- LLM Analysis Button -->
                                     <div class="llm-action-buttons" style="margin-top: 15px;">
                                         <button class="analyze-btn" onclick="quickAnalyzeFunction('{{ func.function_name }}', '{{ file_path }}', {{ func.line_number }})" style="font-size: 0.9em; padding: 8px 16px;">
-                                            <span class="btn-text">🤖 Quick LLM Analysis</span>
+                                            <span class="btn-text">Quick LLM Analysis</span>
                                             <span class="btn-loading" style="display:none;">🔄</span>
                                         </button>
                                     </div>
@@ -2608,14 +2608,14 @@ HTML_TEMPLATE = """
                 <div id="dma" class="tab-content">
                     <div class="section">
                         <div class="section-title">DMA Operations with Call Graphs</div>
-                        <input type="text" class="search-box" id="dmaSearch" placeholder="🔍 Search DMA operations..." onkeyup="filterDMA()">
+                        <input type="text" class="search-box" id="dmaSearch" placeholder="Search DMA operations..." onkeyup="filterDMA()">
                         
                         <div id="dmaGrid">
                             {% if data.dma_operations %}
                             {% for dma in data.dma_operations %}
                             <div class="dma-item">
                                 <div class="dma-header">
-                                    🔄 {{ dma.dma_function }} → {{ dma.caller_function }}
+                                    {{ dma.dma_function }} → {{ dma.caller_function }}
                                     <span class="call-count">Called {{ dma.call_count }} times</span>
                                 </div>
                                 <div class="dma-details">
@@ -2654,7 +2654,7 @@ HTML_TEMPLATE = """
                                 <!-- LLM Analysis Button -->
                                 <div class="llm-action-buttons" style="margin-top: 15px;">
                                     <button class="analyze-btn" onclick="quickAnalyzeDMA({{ loop.index0 }})" style="font-size: 0.9em; padding: 8px 16px;">
-                                        <span class="btn-text">🤖 Quick LLM Analysis</span>
+                                        <span class="btn-text">Quick LLM Analysis</span>
                                         <span class="btn-loading" style="display:none;">🔄</span>
                                     </button>
                                 </div>
@@ -2672,14 +2672,14 @@ HTML_TEMPLATE = """
                 <div id="userCopy" class="tab-content">
                     <div class="section">
                         <div class="section-title">User Copy Operations</div>
-                        <input type="text" class="search-box" id="copySearch" placeholder="🔍 Search user copy operations..." onkeyup="filterUserCopy()">
+                        <input type="text" class="search-box" id="copySearch" placeholder="Search user copy operations..." onkeyup="filterUserCopy()">
                         
                         <div id="copyGrid">
                             {% if data.user_copy_operations %}
                             {% for copy in data.user_copy_operations %}
                             <div class="copy-item">
                                 <div class="copy-header">
-                                    👤 {{ copy.copy_function }} → {{ copy.caller_function }}
+                                    {{ copy.copy_function }} → {{ copy.caller_function }}
                                     <span class="call-count">Called {{ copy.call_count }} times</span>
                                 </div>
                                 <div class="copy-details">
@@ -2724,7 +2724,7 @@ HTML_TEMPLATE = """
                                 <!-- LLM Analysis Button -->
                                 <div class="llm-action-buttons" style="margin-top: 15px;">
                                     <button class="analyze-btn" onclick="quickAnalyzeUserCopy({{ loop.index0 }})" style="font-size: 0.9em; padding: 8px 16px;">
-                                        <span class="btn-text">🤖 Quick LLM Analysis</span>
+                                        <span class="btn-text">Quick LLM Analysis</span>
                                         <span class="btn-loading" style="display:none;">🔄</span>
                                     </button>
                                 </div>
@@ -2742,14 +2742,14 @@ HTML_TEMPLATE = """
                 <div id="ioctl" class="tab-content">
                     <div class="section">
                         <div class="section-title">IOCTL Handler Operations</div>
-                        <input type="text" class="search-box" id="ioctlSearch" placeholder="🔍 Search IOCTL handlers..." onkeyup="filterIOCTL()">
+                        <input type="text" class="search-box" id="ioctlSearch" placeholder="Search IOCTL handlers..." onkeyup="filterIOCTL()">
                         
                         <div id="ioctlGrid">
                             {% if data.ioctl_operations %}
                             {% for ioctl in data.ioctl_operations %}
                             <div class="ioctl-item">
                                 <div class="ioctl-header">
-                                    🔧 {{ ioctl.function_name }}
+                                    {{ ioctl.function_name }}
                                     <span class="call-count">Called {{ ioctl.call_count }} times</span>
                                 </div>
                                 <div class="ioctl-details">
@@ -2788,7 +2788,7 @@ HTML_TEMPLATE = """
                                 <!-- LLM Analysis Button -->
                                 <div class="llm-action-buttons" style="margin-top: 15px;">
                                     <button class="analyze-btn" onclick="quickAnalyzeIOCTL({{ loop.index0 }})" style="font-size: 0.9em; padding: 8px 16px;">
-                                        <span class="btn-text">🤖 Quick LLM Analysis</span>
+                                        <span class="btn-text">Quick LLM Analysis</span>
                                         <span class="btn-loading" style="display:none;">🔄</span>
                                     </button>
                                 </div>
@@ -2823,7 +2823,7 @@ HTML_TEMPLATE = """
                             </div>
                         </div>
                         
-                        <input type="text" class="search-box" id="deviceSearch" placeholder="🔍 Search devices..." onkeyup="filterDevices()">
+                        <input type="text" class="search-box" id="deviceSearch" placeholder="Search devices..." onkeyup="filterDevices()">
                         
                         <!-- Device Access List -->
                         <div id="deviceGrid">
@@ -2832,7 +2832,7 @@ HTML_TEMPLATE = """
                             {% set device_accesses = data.device_info.device_accesses | selectattr("device_path", "equalto", device_path) | list %}
                             <div class="device-item">
                                 <div class="device-header">
-                                    📱 {{ device_path }}
+                                    {{ device_path }}
                                     <span class="access-count">{{ device_accesses|length }} accesses</span>
                                 </div>
                                 
@@ -2926,7 +2926,7 @@ HTML_TEMPLATE = """
                         
                         <!-- Memory Tabs -->
                         <div class="memory-tabs">
-                            <button class="memory-tab active" onclick="showMemoryTab('reserved')">Reserved Memory</button>
+                            <button class="memory-tab active" onclick="showMemoryTab('reserved')">All Memory Pools</button>
                             <button class="memory-tab" onclick="showMemoryTab('zones')">Memory Zones</button>
                             <button class="memory-tab" onclick="showMemoryTab('nodes')">Memory Nodes</button>
                         </div>
@@ -3056,7 +3056,7 @@ HTML_TEMPLATE = """
                 <!-- LLM Analysis Tab -->
                 <div id="llmAnalysis" class="tab-content">
                     <div class="section">
-                        <div class="section-title">🤖 AI-Powered Security Analysis</div>
+                        <div class="section-title">LLM Assisted Security Analysis</div>
                         
                         <!-- LLM Status and Model Selection -->
                         <div class="llm-controls">
@@ -3115,8 +3115,8 @@ HTML_TEMPLATE = """
                                 
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="analyzeFunctionWithLLM()" id="analyzeFunctionBtn">
-                                        <span class="btn-text">🔍 Analyze Function</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                        <span class="btn-text">Analyze Function</span>
+                                        <span class="btn-loading" style="display:none;">Analyzing...</span>
                                     </button>
                                 </div>
                                 
@@ -3157,8 +3157,8 @@ HTML_TEMPLATE = """
                                 
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="analyzeDMAWithLLM()" id="analyzeDMABtn">
-                                        <span class="btn-text">🔍 Analyze DMA Operation</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                        <span class="btn-text">Analyze DMA Operation</span>
+                                        <span class="btn-loading" style="display:none;">Analyzing...</span>
                                     </button>
                                 </div>
                                 
@@ -3194,8 +3194,8 @@ HTML_TEMPLATE = """
                                 
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="analyzeUserCopyWithLLM()" id="analyzeUserCopyBtn">
-                                        <span class="btn-text">🔍 Analyze User Copy Operation</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                        <span class="btn-text">Analyze User Copy Operation</span>
+                                        <span class="btn-loading" style="display:none;">Analyzing...</span>
                                     </button>
                                 </div>
                                 
@@ -3231,8 +3231,8 @@ HTML_TEMPLATE = """
                                 
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="analyzeIOCTLWithLLM()" id="analyzeIOCTLBtn">
-                                        <span class="btn-text">🔍 Analyze IOCTL Handler</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                        <span class="btn-text">Analyze IOCTL Handler</span>
+                                        <span class="btn-loading" style="display:none;">Analyzing...</span>
                                     </button>
                                 </div>
                                 
@@ -3260,8 +3260,8 @@ HTML_TEMPLATE = """
                                 
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="analyzeLogsWithLLM()" id="analyzeLogsBtn">
-                                        <span class="btn-text">🔍 Analyze All Logs</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Analyzing...</span>
+                                        <span class="btn-text">Analyze All Logs</span>
+                                        <span class="btn-loading" style="display:none;">Analyzing...</span>
                                     </button>
                                 </div>
                                 
@@ -3280,7 +3280,7 @@ HTML_TEMPLATE = """
                                 <div class="form-group">
                                     <button class="analyze-btn" onclick="generateSecurityReport()" id="securityReportBtn">
                                         <span class="btn-text">📋 Generate Security Report</span>
-                                        <span class="btn-loading" style="display:none;">🔄 Generating...</span>
+                                        <span class="btn-loading" style="display:none;">Generating...</span>
                                     </button>
                                 </div>
                                 
@@ -4171,7 +4171,7 @@ HTML_TEMPLATE = """
     </style>
 </head>
 <body>
-    <h1>🔍 Kernel Log Analysis Report</h1>
+    <h1>Kernel Log Analysis Report</h1>
     <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
     
     <div class="stats">
@@ -4206,7 +4206,7 @@ HTML_TEMPLATE = """
         function generateFunctionsHTML(data) {
             if (!data.functions_by_file) return '';
             
-            let html = '<div class="section"><h2>🔧 Functions Analysis</h2>';
+            let html = '<div class="section"><h2>Functions Analysis</h2>';
             
             for (const [filePath, functions] of Object.entries(data.functions_by_file)) {
                 html += `<h3>📁 ${filePath}</h3><table>`;
@@ -4229,7 +4229,7 @@ HTML_TEMPLATE = """
         function generateDMAHTML(data) {
             if (!data.dma_operations || data.dma_operations.length === 0) return '';
             
-            let html = '<div class="section"><h2>🚀 DMA Operations</h2><table>';
+            let html = '<div class="section"><h2>DMA Operations</h2><table>';
             html += '<tr><th>DMA Function</th><th>Caller Function</th><th>File Path</th><th>Line</th></tr>';
             
             for (const dma of data.dma_operations) {
@@ -4304,7 +4304,7 @@ HTML_TEMPLATE = """
             // Show progress and disable button
             if (analyzeBtn) {
                 analyzeBtn.disabled = true;
-                analyzeBtn.innerHTML = '<span>🔄 Running Analysis...</span>';
+                analyzeBtn.innerHTML = '<span>Running Analysis...</span>';
             }
             
             if (progressSection) {
@@ -4493,7 +4493,7 @@ UPLOAD_TEMPLATE = """
 </head>
 <body>
     <div class="container">
-        <h1>🔍 Kernel Log Parser Results</h1>
+        <h1>Kernel Log Parser Results</h1>
         <h2>Upload Results File</h2>
         <p>Upload a JSON results file to view the analysis.</p>
         
@@ -4611,7 +4611,7 @@ def start_web_ui(json_file=None, port=5000, host='127.0.0.1', auto_open=True):
     app = create_app()
     app.parsed_data = parsed_data
     
-    print(f"\n🚀 Starting Kernel Log Analysis Web UI")
+    print(f"\nStarting Kernel Log Analysis Web UI")
     print(f"📊 Data: {json_file}")
     print(f"🌐 Server: http://{host}:{port}")
     print(f"📈 Statistics:")

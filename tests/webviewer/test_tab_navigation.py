@@ -48,13 +48,13 @@ class TestTabNavigation(unittest.TestCase):
         
         # Check for all expected tab buttons with correct onclick handlers
         expected_tabs = [
-            ('functions', '📍 Functions'),
-            ('dma', '🔄 DMA Operations'), 
-            ('userCopy', '👤 User Copy'),
-            ('ioctl', '🔧 IOCTL Handlers'),
-            ('devices', '📱 Device Access'),
-            ('memory', '🧠 Memory Info'),
-            ('llmAnalysis', '🤖 LLM Analysis')
+            ('functions', 'Functions'),
+            ('dma', 'DMA Operations'), 
+            ('userCopy', 'User Copy'),
+            ('ioctl', 'IOCTL Handlers'),
+            ('devices', 'Device Access'),
+            ('memory', 'Memory Info'),
+            ('llmAnalysis', 'LLM Analysis')
         ]
         
         for tab_id, tab_text in expected_tabs:
@@ -85,7 +85,7 @@ class TestTabNavigation(unittest.TestCase):
         
         # Check that functions tab button is active
         self.assertIn('class="tab active"', content)
-        self.assertIn('onclick="showTab(\'functions\', this)">📍 Functions', content)
+        self.assertIn('onclick="showTab(\'functions\', this)">Functions', content)
         
         # Check that functions tab content is active
         self.assertRegex(content, r'id="functions"[^>]*class="[^"]*tab-content[^"]*active')
