@@ -93,7 +93,7 @@ def create_download_test_page():
 </head>
 <body>
     <div class="container">
-        <h1>🔍 Download Functionality Test Page</h1>
+        <h1>Download Functionality Test Page</h1>
         
         <div class="test-section success">
             <h2>Test Data Simulation</h2>
@@ -135,7 +135,7 @@ def create_download_test_page():
         </div>
         
         <div class="test-section">
-            <h2>🔧 JavaScript Console Output</h2>
+            <h2>JavaScript Console Output</h2>
             <p>Check for any errors or messages:</p>
             <div id="console-output"></div>
         </div>
@@ -325,7 +325,7 @@ def create_download_test_page():
     </style>
 </head>
 <body>
-    <h1>🔍 Kernel Log Analysis Report</h1>
+    <h1>Kernel Log Analysis Report</h1>
     <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
     <h2>📊 Statistics</h2>
     <p>Functions: ${stats.unique_function_entries || 0}</p>

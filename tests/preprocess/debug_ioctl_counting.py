@@ -33,7 +33,7 @@ def test_ioctl_counting():
         engine = KernelLogParserEngine(show_ui=True)
         
         # Add some debug output for the deduplication process
-        print("\n🔧 Checking deduplication tracker before parsing...")
+        print("\nChecking deduplication tracker before parsing...")
         
         # Debug the deduplication tracker itself
         original_is_duplicate = engine.deduplicator.ioctl_operations.is_duplicate
@@ -72,7 +72,7 @@ def test_ioctl_counting():
             print(f"  Location: {ioctl['file_path']}:{ioctl['line_number']}")
             print(f"  Call count: {ioctl['call_count']}")
         
-        print("\n🔍 EXPECTED:")
+        print("\nEXPECTED:")
         print("  drv_ioctl at drivers/test.c:100 should have call_count = 4")
         print("  other_ioctl at drivers/test.c:200 should have call_count = 1")
         

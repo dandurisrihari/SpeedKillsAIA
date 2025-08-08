@@ -46,7 +46,7 @@ def test_ioctl_parsing():
     
     # Check the first IOCTL operation
     first_ioctl = engine.ioctl_operations[0]
-    print(f"\n🔧 First IOCTL Operation:")
+    print(f"\nFirst IOCTL Operation:")
     print(f"   Function: {first_ioctl.function_name}")
     print(f"   File: {first_ioctl.file_path}")
     print(f"   Line: {first_ioctl.line_number}")

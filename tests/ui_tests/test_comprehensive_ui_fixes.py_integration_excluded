@@ -40,7 +40,7 @@ def test_with_data_file(data_file, description):
         print("✅ Server is running and responding")
         
         # Test IOCTL Operations
-        print("\n🔧 IOCTL HANDLERS TEST:")
+        print("\nIOCTL HANDLERS TEST:")
         ioctl_count = len(data.get('ioctl_operations', []))
         print(f"  • Found {ioctl_count} IOCTL operations")
         
@@ -60,7 +60,7 @@ def test_with_data_file(data_file, description):
             print("  ℹ️ No IOCTL operations in this dataset")
         
         # Test Device Access Information
-        print("\n📱 DEVICE ACCESS INFORMATION TEST:")
+        print("\nDEVICE ACCESS INFORMATION TEST:")
         
         # Check both old and new data structures
         device_info = data.get('device_info', {})
@@ -82,7 +82,7 @@ def test_with_data_file(data_file, description):
             print("  ℹ️ No device access information in this dataset")
         
         # Test DMA Operations Call Graph
-        print("\n🔄 DMA OPERATION ANALYSIS - CALL GRAPH TEST:")
+        print("\nDMA OPERATION ANALYSIS - CALL GRAPH TEST:")
         dma_count = len(data.get('dma_operations', []))
         print(f"  • Found {dma_count} DMA operations")
         
@@ -121,7 +121,7 @@ def test_with_data_file(data_file, description):
         subprocess.run(["pkill", "-f", "python.*webviewer"], capture_output=True)
 
 def main():
-    print("🚀 COMPREHENSIVE UI FIXES TESTING")
+    print("COMPREHENSIVE UI FIXES TESTING")
     print("Testing all reported issues:")
     print("  1. IOCTL Handlers showing 'Unknown Command'")
     print("  2. Device Access Information not showing")

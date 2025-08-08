@@ -743,7 +743,7 @@ HTML_TEMPLATE = """
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔍 Kernel Log Analysis</h1>
+            <h1>Kernel Log Analysis</h1>
             <p>{{ data.metadata.log_file }}</p>
             <p><strong>Parsed:</strong> {{ data.metadata.parsed_at[:19] }} | <strong>Lines:</strong> {{ data.metadata.total_lines }}</p>
         </div>
@@ -786,16 +786,16 @@ HTML_TEMPLATE = """
         <div class="content">
             <div class="tab-container">
                 <div class="tabs">
-                    <button class="tab active" onclick="showTab('functions')">📍 Functions</button>
-                    <button class="tab" onclick="showTab('dma')">🔄 DMA Operations</button>
-                    <button class="tab" onclick="showTab('userCopy')">👤 User Copy</button>
-                    <button class="tab" onclick="showTab('ioctl')">🔧 IOCTL Handlers</button>
+                    <button class="tab active" onclick="showTab('functions')">Functions</button>
+                    <button class="tab" onclick="showTab('dma')">DMA Operations</button>
+                    <button class="tab" onclick="showTab('userCopy')">User Copy</button>
+                    <button class="tab" onclick="showTab('ioctl')">IOCTL Handlers</button>
                 </div>
                 
                 <div id="functions" class="tab-content active">
                     <div class="section">
                         <div class="section-title">Function Entries by File</div>
-                        <input type="text" class="search-box" id="functionSearch" placeholder="🔍 Search functions..." onkeyup="filterFunctions()">
+                        <input type="text" class="search-box" id="functionSearch" placeholder="Search functions..." onkeyup="filterFunctions()">
                         
                         <div class="function-grid" id="functionGrid">
                             {% set function_index = namespace(value=0) %}
@@ -839,7 +839,7 @@ HTML_TEMPLATE = """
                 <div id="dma" class="tab-content">
                     <div class="section">
                         <div class="section-title">DMA Operations with Call Graphs</div>
-                        <input type="text" class="search-box" id="dmaSearch" placeholder="🔍 Search DMA operations..." onkeyup="filterDMA()">
+                        <input type="text" class="search-box" id="dmaSearch" placeholder="Search DMA operations..." onkeyup="filterDMA()">
                         
                         <div id="dmaGrid">
                             {% for dma in data.dma_operations %}
@@ -889,7 +889,7 @@ HTML_TEMPLATE = """
                 <div id="userCopy" class="tab-content">
                     <div class="section">
                         <div class="section-title">User Copy Operations</div>
-                        <input type="text" class="search-box" id="copySearch" placeholder="🔍 Search user copy operations..." onkeyup="filterUserCopy()">
+                        <input type="text" class="search-box" id="copySearch" placeholder="Search user copy operations..." onkeyup="filterUserCopy()">
                         
                         <div id="copyGrid">
                             {% for copy in data.user_copy_operations %}
@@ -935,13 +935,13 @@ HTML_TEMPLATE = """
                 <div id="ioctl" class="tab-content">
                     <div class="section">
                         <div class="section-title">IOCTL Handler Operations</div>
-                        <input type="text" class="search-box" id="ioctlSearch" placeholder="🔍 Search IOCTL handlers..." onkeyup="filterIOCTL()">
+                        <input type="text" class="search-box" id="ioctlSearch" placeholder="Search IOCTL handlers..." onkeyup="filterIOCTL()">
                         
                         <div id="ioctlGrid">
                             {% for ioctl in data.ioctl_operations %}
                             <div class="ioctl-item">
                                 <div class="ioctl-header">
-                                    🔧 {{ ioctl.function_name }}
+                                    {{ ioctl.function_name }}
                                     <span class="call-count">Called {{ ioctl.call_count }} times</span>
                                 </div>
                                 <div class="ioctl-details">
@@ -1215,7 +1215,7 @@ UPLOAD_TEMPLATE = """
 </head>
 <body>
     <div class="container">
-        <h1>🔍 Kernel Log Parser Results</h1>
+        <h1>Kernel Log Parser Results</h1>
         <h2>Upload Results File</h2>
         <p>Upload a JSON results file to view the analysis.</p>
         
@@ -1299,7 +1299,7 @@ def start_web_ui(json_file=None, port=5000, host='127.0.0.1', auto_open=True):
     if not load_data(json_file):
         return False
     
-    print(f"\n🚀 Starting Kernel Log Analysis Web UI")
+    print(f"\nStarting Kernel Log Analysis Web UI")
     print(f"📊 Data: {json_file}")
     print(f"🌐 Server: http://{host}:{port}")
     print(f"📈 Statistics:")

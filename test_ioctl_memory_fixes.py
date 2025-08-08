@@ -21,7 +21,7 @@ def test_fixes():
         print(f"📊 Statistics: {data.get('statistics', {}).get('unique_ioctl_operations', 0)} IOCTL operations")
         
         # Test IOCTL Operations
-        print("\n🔧 IOCTL HANDLERS TEST:")
+        print("\nIOCTL HANDLERS TEST:")
         ioctl_ops = data.get('ioctl_operations', [])
         print(f"  • Found {len(ioctl_ops)} IOCTL operations")
         

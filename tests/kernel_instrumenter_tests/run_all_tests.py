@@ -101,7 +101,7 @@ class ComprehensiveTestRunner:
     
     def check_dependencies(self) -> bool:
         """Check if all required dependencies are available"""
-        print("\\n🔍 Checking Dependencies...")
+        print("\\nChecking Dependencies...")
         
         dependencies_ok = True
         
@@ -129,7 +129,7 @@ class ComprehensiveTestRunner:
     
     def discover_tests(self) -> Dict[str, unittest.TestSuite]:
         """Discover all test suites"""
-        print("\\n🔍 Discovering Test Suites...")
+        print("\\nDiscovering Test Suites...")
         
         test_suites = {}
         
@@ -257,7 +257,7 @@ class ComprehensiveTestRunner:
     
     def run_performance_tests(self):
         """Run performance benchmarks"""
-        print("\\n🚀 Running Performance Benchmarks...")
+        print("\\nRunning Performance Benchmarks...")
         
         try:
             # Create a temporary test file for performance testing
@@ -415,7 +415,7 @@ static int test_function_{i}(void) {{
             return False
         
         # Run tests
-        print(f"\\n🚀 Starting test execution...")
+        print(f"\\nStarting test execution...")
         overall_start_time = time.time()
         
         for suite_name, suite in test_suites.items():

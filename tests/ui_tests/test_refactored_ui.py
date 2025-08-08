@@ -15,7 +15,7 @@ sys.path.insert(0, str(src_path))
 
 def test_refactored_ui():
     """Test the refactored UI that uses template files"""
-    print("🔄 Testing Refactored Web UI...")
+    print("Testing Refactored Web UI...")
     
     # Create test data
     test_data = {
@@ -61,7 +61,7 @@ def test_refactored_ui():
         app.parsed_data = test_data
         
         with app.test_client() as client:
-            print("📱 Testing main page...")
+            print("Testing main page...")
             response = client.get('/')
             if response.status_code == 200:
                 print("✅ Main page loads successfully")
@@ -73,7 +73,7 @@ def test_refactored_ui():
                     print("✅ Page title found")
                 if "Analyze All Components" in html_content:
                     print("✅ Comprehensive analysis button found")
-                if "🔍 Search functions" in html_content:
+                if "Search functions" in html_content:
                     print("✅ Search functionality found")
                 if "downloadAnalysisReport" in html_content:
                     print("✅ Download functionality found")
@@ -102,7 +102,7 @@ def test_refactored_ui():
         print("✅ Fixed template includes and removed duplicates")
         print("✅ Main.js download functionality is preserved")
         print("✅ UI loads with proper separation of concerns")
-        print("\n🚀 The download buttons should now work with the existing main.js functionality!")
+        print("\nThe download buttons should now work with the existing main.js functionality!")
         
     except Exception as e:
         print(f"❌ Test failed: {e}")

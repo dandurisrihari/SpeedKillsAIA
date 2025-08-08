@@ -93,13 +93,13 @@ class TestClickFunctionality(unittest.TestCase):
         buttons = re.findall(button_pattern, content)
         
         expected_button_texts = [
-            '📍 Functions',
-            '🔄 DMA Operations', 
-            '👤 User Copy',
-            '🔧 IOCTL Handlers',
-            '📱 Device Access',
-            '🧠 Memory Info',
-            '🤖 LLM Analysis'
+            'Functions',
+            'DMA Operations', 
+            'User Copy',
+            'IOCTL Handlers',
+            'Device Access',
+            'Memory Info',
+            'LLM Analysis'
         ]
         
         for expected_text in expected_button_texts:

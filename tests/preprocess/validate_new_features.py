@@ -72,7 +72,7 @@ int driver_function_{i}(void) {{
         stats_no_root = results_no_root['statistics']
         print(f"   📁 Total files: {stats_no_root['total_files']} (expected: 0)")
         print(f"   📋 Files need analysis: {stats_no_root['files_need_analysis']}")
-        print(f"   📍 Function entries: {stats_no_root['unique_function_entries']}")
+        print(f"   Function entries: {stats_no_root['unique_function_entries']}")
         
         # Test engine with source root (should count all .c files)
         print("\n4. Testing engine WITH source root...")
@@ -82,9 +82,9 @@ int driver_function_{i}(void) {{
         stats_with_root = results_with_root['statistics']
         print(f"   📁 Total files: {stats_with_root['total_files']} (expected: 6)")
         print(f"   📋 Files need analysis: {stats_with_root['files_need_analysis']}")
-        print(f"   📍 Function entries: {stats_with_root['unique_function_entries']}")
-        print(f"   🔄 DMA operations: {stats_with_root['unique_dma_operations']}")
-        print(f"   👤 User copy operations: {stats_with_root['unique_user_copy_operations']}")
+        print(f"   Function entries: {stats_with_root['unique_function_entries']}")
+        print(f"   DMA operations: {stats_with_root['unique_dma_operations']}")
+        print(f"   User copy operations: {stats_with_root['unique_user_copy_operations']}")
         
         # Demonstrate JSON output with new fields
         print("\n5. Testing JSON output...")

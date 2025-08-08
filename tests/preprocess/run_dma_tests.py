@@ -47,7 +47,7 @@ def run_dma_tests():
     suite.addTest(loader.loadTestsFromTestCase(TestEngineLineProcessing))
     
     # Run tests
-    print("\n🚀 Running Tests...")
+    print("\nRunning Tests...")
     runner = unittest.TextTestRunner(verbosity=2, buffer=True)
     result = runner.run(suite)
     

@@ -18,7 +18,7 @@ def test_argument_parsing():
         "--help"
     ]
     
-    print("🔍 Testing help output for --source-root option...")
+    print("Testing help output for --source-root option...")
     result = subprocess.run(cmd, capture_output=True, text=True)
     
     assert result.returncode == 0, f"Help command failed: {result.stderr}"
@@ -36,7 +36,7 @@ def test_argument_parsing():
         "--help"  # Using --help to test parsing without actually running
     ]
     
-    print("🔍 Testing command argument parsing...")
+    print("Testing command argument parsing...")
     result = subprocess.run(cmd, capture_output=True, text=True)
     
     # With --help, it should show help and exit with code 0
@@ -64,7 +64,7 @@ def test_basic_functionality():
             "-o", "test_output.json"
         ]
         
-        print("🔍 Testing basic functionality...")
+        print("Testing basic functionality...")
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
         
         assert result.returncode == 0, f"Basic functionality test failed: {result.stderr}"
@@ -84,7 +84,7 @@ def test_basic_functionality():
 
 
 if __name__ == "__main__":
-    print("🚀 Running quick integration tests for --source-root option...")
+    print("Running quick integration tests for --source-root option...")
     print("=" * 60)
     
     success = True

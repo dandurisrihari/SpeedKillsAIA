@@ -68,7 +68,7 @@ class InteractiveInterface:
     def _print_banner(self) -> None:
         """Print application banner"""
         print("\n" + "="*60)
-        print("🔍 KERNEL LOG PARSER - Interactive Mode")
+        print("KERNEL LOG PARSER - Interactive Mode")
         print("="*60)
         print("AI Accelerator Instrumentation Log Analysis Tool")
         print("Version 2.0.0 - Production Ready")
@@ -132,7 +132,7 @@ class InteractiveInterface:
         
         # Parse the file
         try:
-            print(f"\n🚀 Starting to parse {file_path}...")
+            print(f"\nStarting to parse {file_path}...")
             
             engine = KernelLogParserEngine(
                 show_ui=self.config.show_ui,
@@ -201,7 +201,7 @@ class InteractiveInterface:
             return
         
         try:
-            print(f"\n🚀 Starting batch processing...")
+            print(f"\nStarting batch processing...")
             
             processor = BatchProcessor(self.config)
             summary = processor.process_files(file_paths, output_dir, concurrent=True)
@@ -317,7 +317,7 @@ class InteractiveInterface:
         print("─"*40)
         
         help_text = """
-🔍 KERNEL LOG PARSER HELP
+KERNEL LOG PARSER HELP
 
 WHAT IT DOES:
   This tool parses AI accelerator instrumentation logs to extract:

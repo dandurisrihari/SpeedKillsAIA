@@ -16,7 +16,7 @@ def test_end_to_end_workflow():
     base_url = "http://127.0.0.1:5002"
     
     # Step 1: Load the homepage
-    print("1. 📱 Loading homepage...")
+    print("1. Loading homepage...")
     try:
         response = requests.get(base_url, timeout=10)
         assert response.status_code == 200
@@ -24,7 +24,7 @@ def test_end_to_end_workflow():
         print("   ✅ Homepage loaded successfully")
         
         # Verify LLM Analysis tab exists
-        if "LLM Analysis" in homepage_html or "AI-Powered" in homepage_html:
+        if "LLM Analysis" in homepage_html or "LLM Assisted" in homepage_html:
             print("   ✅ LLM Analysis tab found")
         else:
             print("   ⚠️ LLM Analysis tab not found in HTML")
@@ -34,7 +34,7 @@ def test_end_to_end_workflow():
         return False
     
     # Step 2: Verify comprehensive analysis section exists
-    print("2. 🔍 Checking comprehensive analysis section...")
+    print("2. Checking comprehensive analysis section...")
     if "runComprehensiveAnalysis" in homepage_html:
         print("   ✅ Comprehensive analysis button found")
     else:
@@ -48,7 +48,7 @@ def test_end_to_end_workflow():
         return False
     
     # Step 3: Test the comprehensive analysis API
-    print("3. 🚀 Running comprehensive analysis...")
+    print("3. Running comprehensive analysis...")
     analysis_request = {
         "component_types": ["functions", "dma_operations", "user_copy_operations"],
         "batch_size": 2,

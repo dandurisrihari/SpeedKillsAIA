@@ -36,8 +36,8 @@ class ComprehensiveAnalysis {
                 const sectionHTML = `
                     <div id="comprehensiveAnalysisSection" class="analysis-section">
                         <div class="section-header">
-                            <h3>🚀 Comprehensive Analysis</h3>
-                            <p>Run AI-powered analysis across all components with downloadable results</p>
+                            <h3>Comprehensive Analysis</h3>
+                            <p>Run LLM Assisted analysis across all components with downloadable results</p>
                         </div>
                         
                         <div class="analysis-controls">
@@ -475,7 +475,7 @@ class ComprehensiveAnalysis {
         </head>
         <body>
             <div class="header">
-                <h1>🔍 Comprehensive Analysis Report</h1>
+                <h1>Comprehensive Analysis Report</h1>
                 <p>Generated on: ${new Date().toLocaleString()}</p>
                 <p>Total Results: ${results.length}</p>
             </div>

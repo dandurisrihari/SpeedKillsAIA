@@ -71,7 +71,7 @@ class DownloadFunctionalityTester:
     
     def test_main_page_loads(self):
         """Test that main page loads successfully."""
-        print("\n🔍 Testing main page loading...")
+        print("\nTesting main page loading...")
         
         try:
             response = requests.get(self.base_url, timeout=10)
@@ -87,7 +87,7 @@ class DownloadFunctionalityTester:
     
     def test_download_buttons_present(self, html_content):
         """Test that download buttons are present in HTML."""
-        print("\n🔍 Testing download buttons presence...")
+        print("\nTesting download buttons presence...")
         
         download_tests = [
             ("📥 Download JSON", "downloadAnalysisResults('json')"),
@@ -113,7 +113,7 @@ class DownloadFunctionalityTester:
     
     def test_javascript_functions_present(self, html_content):
         """Test that JavaScript download functions are present."""
-        print("\n🔍 Testing JavaScript download functions...")
+        print("\nTesting JavaScript download functions...")
         
         js_functions = [
             "function downloadAnalysisResults",
@@ -136,7 +136,7 @@ class DownloadFunctionalityTester:
     
     def test_api_data_endpoint(self):
         """Test that API data endpoint works."""
-        print("\n🔍 Testing API data endpoint...")
+        print("\nTesting API data endpoint...")
         
         try:
             response = requests.get(f"{self.base_url}/api/data", timeout=10)
@@ -157,7 +157,7 @@ class DownloadFunctionalityTester:
     
     def test_results_dashboard_visibility(self, html_content):
         """Test that results dashboard section is visible."""
-        print("\n🔍 Testing results dashboard visibility...")
+        print("\nTesting results dashboard visibility...")
         
         dashboard_tests = [
             "results-dashboard",
@@ -180,7 +180,7 @@ class DownloadFunctionalityTester:
     
     def test_comprehensive_analysis_flow(self):
         """Test comprehensive analysis to see if download buttons appear after analysis."""
-        print("\n🔍 Testing comprehensive analysis flow...")
+        print("\nTesting comprehensive analysis flow...")
         
         try:
             # Make comprehensive analysis request
@@ -225,7 +225,7 @@ class DownloadFunctionalityTester:
     
     def check_download_button_visibility_js(self):
         """Test JavaScript to check if download buttons are visible."""
-        print("\n🔍 Testing download button visibility via JavaScript...")
+        print("\nTesting download button visibility via JavaScript...")
         
         # This would require a browser automation tool like Selenium
         # For now, we'll check the HTML structure
@@ -290,7 +290,7 @@ class DownloadFunctionalityTester:
             # Test 7: Run comprehensive analysis and check again
             analysis_success, post_analysis_html = self.test_comprehensive_analysis_flow()
             if analysis_success and post_analysis_html:
-                print("\n🔍 Re-checking download buttons after analysis...")
+                print("\nRe-checking download buttons after analysis...")
                 post_analysis_buttons = self.test_download_buttons_present(post_analysis_html)
                 post_analysis_dashboard = self.test_results_dashboard_visibility(post_analysis_html)
             else:

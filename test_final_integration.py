@@ -19,7 +19,7 @@ def test_complete_integration():
     print("🧪 Testing Complete UI Integration...")
     
     # Start the webviewer
-    print("🚀 Starting webviewer server...")
+    print("Starting webviewer server...")
     import subprocess
     process = subprocess.Popen(
         [sys.executable, "-m", "src.webviewer"],
@@ -35,7 +35,7 @@ def test_complete_integration():
         base_url = "http://localhost:5003"
         
         # Test 1: Check main page loads
-        print("📱 Testing main page...")
+        print("Testing main page...")
         response = requests.get(base_url)
         if response.status_code == 200:
             print("✅ Main page loads successfully")

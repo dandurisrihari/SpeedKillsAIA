@@ -1,7 +1,7 @@
 // JavaScript Diagnostic Script for Tab Navigation
 // Add this to browser console to debug tab issues
 
-console.log("🔍 Tab Navigation Diagnostic Started");
+console.log("Tab Navigation Diagnostic Started");
 
 // Check if showTab function exists
 if (typeof showTab === 'function') {
@@ -82,7 +82,7 @@ function testShowTabFunction() {
     });
 }
 
-console.log("🔧 Available test functions:");
+console.log("Available test functions:");
 console.log("  - testTabClicking() - Test clicking each tab");
 console.log("  - testShowTabFunction() - Test showTab function directly");
 console.log("📝 Run these functions to diagnose tab issues");

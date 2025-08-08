@@ -142,7 +142,7 @@ def test_download_buttons():
             'confidence_threshold': 50
         }
         
-        print("   🔄 Running comprehensive analysis...")
+        print("   Running comprehensive analysis...")
         api_response = requests.post(api_url, json=request_data, timeout=30)
         
         if api_response.status_code == 200:
