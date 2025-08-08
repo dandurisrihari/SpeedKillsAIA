@@ -2546,7 +2546,7 @@ HTML_TEMPLATE = """
                             <ul class="analysis-categories">
                                 <li><strong>AIARelevantFunction:</strong> Functions involved in shared memory management with AI accelerators</li>
                                 <li><strong>Relevant KD Entry Point:</strong> Kernel driver entry points from user space (ioctl handlers)</li>
-                                <li><strong>Message Structure Handling:</strong> Code handling message structures between user space and kernel</li>
+                                <li><strong>Message Structure Handling:</strong> Code handling message structures between user space and kernel that contain SMIDs (Shared Memory IDs)</li>
                             </ul>
                             <p>Results are organized by confidence level and category to help you quickly identify the most relevant code for AIA integration analysis.</p>
                         </div>

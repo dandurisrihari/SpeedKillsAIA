@@ -265,9 +265,11 @@ function loadSelectedDMA() {
                         });
                 }
                 
-                // Show call graph if available
-                if (dmaOp.call_graph) {
+                // Show call graph if available (support both call_graph and stack_trace)
+                if (Array.isArray(dmaOp.call_graph) && dmaOp.call_graph.length > 0) {
                     callGraphTextarea.value = dmaOp.call_graph.join('\n');
+                } else if (Array.isArray(dmaOp.stack_trace) && dmaOp.stack_trace.length > 0) {
+                    callGraphTextarea.value = dmaOp.stack_trace.join('\n');
                 } else {
                     callGraphTextarea.value = 'No call graph available';
                 }
