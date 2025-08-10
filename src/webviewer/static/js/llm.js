@@ -194,12 +194,31 @@ async function analyzeFunctionWithLLM() {
     setButtonLoading(button, true);
     hideResult(resultDiv);
     
+    // Get preprocessed code from global data if available
+    let preprocessedCode = '';
+    if (window.globalData && window.globalData.function_entries) {
+        const functionEntry = window.globalData.function_entries.find(entry => 
+            entry.function_name === functionName && entry.file_path === filePath
+        );
+        if (functionEntry && functionEntry.preprocessed_code) {
+            preprocessedCode = functionEntry.preprocessed_code;
+        }
+    }
+    
+    // Include extra context from struct/function requests
+    let additionalContext = '';
+    if (window.__extraLLMContext) {
+        additionalContext = window.__extraLLMContext;
+    }
+    
     const requestData = {
         function_name: functionName,
         source_code: codeTextarea.value,
+        preprocessed_code: preprocessedCode,
         file_path: filePath,
         custom_prompt: customPrompt.value,
-        model_id: modelSelect.value
+        model_id: modelSelect.value,
+        additional_context: additionalContext
     };
     
     try {
@@ -227,6 +246,136 @@ async function analyzeFunctionWithLLM() {
         setButtonLoading(button, false);
     }
 }
+
+// Context request panel for augmenting LLM with more source
+function buildContextRequestUI() {
+    if (document.getElementById('contextRequestPanel')) return;
+    const container = document.createElement('div');
+    container.id = 'contextRequestPanel';
+    container.className = 'analysis-form';
+    container.innerHTML = `
+        <h3>Augment LLM Context</h3>
+        <div class="form-group">
+            <label>Max requests:</label>
+            <input id="ctxMaxRequests" type="number" min="1" max="10" value="3" />
+        </div>
+        <div id="ctxRequests">
+            <div class="form-group">
+                <select class="ctxType">
+                    <option value="function">Function</option>
+                    <option value="struct">Struct</option>
+                </select>
+                <input class="ctxName" type="text" placeholder="name (function or struct)"/>
+                <input class="ctxFile" type="text" placeholder="file path (optional)"/>
+                <input class="ctxLine" type="number" placeholder="line (optional for functions)"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="addCtxRow" class="analyze-btn">+ Add Request</button>
+            <button id="runCtxFetch" class="analyze-btn">Fetch Context</button>
+        </div>
+        <div id="ctxLog" style="white-space:pre; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px;"></div>
+    `;
+
+    const dmaTab = document.getElementById('dmaAnalysis');
+    if (dmaTab) dmaTab.appendChild(container);
+
+    document.getElementById('addCtxRow').onclick = (e) => {
+        e.preventDefault();
+        const row = document.createElement('div');
+        row.className = 'form-group';
+        row.innerHTML = `
+            <select class="ctxType">
+                <option value="function">Function</option>
+                <option value="struct">Struct</option>
+            </select>
+            <input class="ctxName" type="text" placeholder="name"/>
+            <input class="ctxFile" type="text" placeholder="file path (optional)"/>
+            <input class="ctxLine" type="number" placeholder="line (optional)"/>
+        `;
+        document.getElementById('ctxRequests').appendChild(row);
+    };
+
+    document.getElementById('runCtxFetch').onclick = async (e) => {
+        e.preventDefault();
+        const maxReq = parseInt(document.getElementById('ctxMaxRequests').value) || 3;
+        const rows = [...document.querySelectorAll('#ctxRequests .form-group')];
+        const requests = rows.map(r => ({
+            type: r.querySelector('.ctxType').value,
+            name: r.querySelector('.ctxName').value.trim(),
+            file_path: r.querySelector('.ctxFile').value.trim(),
+            line_number: parseInt(r.querySelector('.ctxLine').value) || undefined
+        })).filter(x => x.name);
+
+        const log = document.getElementById('ctxLog');
+        log.textContent = 'Requesting context...\n' + JSON.stringify({requests, max_items: maxReq}, null, 2);
+
+        try {
+            // Handle struct requests with new endpoint
+            const responses = [];
+            for (const request of requests.slice(0, maxReq)) {
+                let response;
+                if (request.type === 'struct') {
+                    // Use dedicated struct definition endpoint
+                    const structRes = await fetch('/api/struct-definition', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            struct_name: request.name,
+                            file_hint: request.file_path,
+                            prefer_preprocessed: true
+                        })
+                    });
+                    response = await structRes.json();
+                    responses.push({
+                        request: request,
+                        status: response.status === 'success' ? 'ok' : response.status,
+                        content: response.content,
+                        location: response.location,
+                        error: response.error
+                    });
+                } else {
+                    // Use existing function code endpoint
+                    const params = new URLSearchParams({
+                        name: request.name,
+                        file: request.file_path || '',
+                        line: request.line_number || ''
+                    });
+                    const funcRes = await fetch(`/api/function-code?${params}`);
+                    const funcData = await funcRes.json();
+                    responses.push({
+                        request: request,
+                        status: funcData.error ? 'error' : 'ok',
+                        content: funcData.function_code,
+                        location: { file_path: request.file_path },
+                        error: funcData.error
+                    });
+                }
+            }
+            
+            const data = { responses };
+            log.textContent += '\n\nResponse:\n' + JSON.stringify(data, null, 2);
+
+            // If on function analysis tab, append returned content into the textarea as additional context
+            const fnCode = document.getElementById('functionCode');
+            if (fnCode && data.responses) {
+                const bundle = data.responses.filter(r => r.status === 'ok').map(r => `/*\nContext for ${r.request.type} ${r.request.name} (${(r.location && r.location.file_path) || ''})\n*/\n${r.content}\n`).join('\n');
+                if (bundle) {
+                    // Send as part of additional_context in analyzeFunctionWithLLM later
+                    window.__extraLLMContext = bundle;
+                }
+            }
+        } catch (err) {
+            log.textContent += `\n\nError: ${err}`;
+        }
+    };
+}
+
+// Hook to build context UI when LLM tab is shown
+document.addEventListener('DOMContentLoaded', () => {
+    // Slight delay to ensure DOM is ready
+    setTimeout(buildContextRequestUI, 500);
+});
 
 // DMA analysis
 function loadSelectedDMA() {
@@ -307,12 +456,26 @@ async function analyzeDMAWithLLM() {
         const dmaIndex = parseInt(dmaSelect.value);
         const dmaOperation = data.dma_operations[dmaIndex];
         
+        // Get preprocessed code if available
+        let preprocessedCode = '';
+        if (dmaOperation && dmaOperation.preprocessed_code) {
+            preprocessedCode = dmaOperation.preprocessed_code;
+        }
+        
+        // Include extra context from struct/function requests
+        let additionalContext = '';
+        if (window.__extraLLMContext) {
+            additionalContext = window.__extraLLMContext;
+        }
+        
         const requestData = {
             dma_operation: dmaOperation,
             function_code: codeTextarea.value,
+            preprocessed_code: preprocessedCode,
             call_graph: callGraphTextarea.value.split('\n').filter(line => line.trim()),
             custom_prompt: customPrompt.value,
-            model_id: modelSelect.value
+            model_id: modelSelect.value,
+            additional_context: additionalContext
         };
         
         const response = await fetch('/api/llm/analyze/dma', {
@@ -450,7 +613,9 @@ function setButtonLoading(button, loading) {
 
 function showAnalysisResult(container, result, title) {
     container.className = 'analysis-result show';
-    container.innerHTML = `
+    
+    // Build the HTML content
+    let html = `
         <div class="result-header">
             <div class="result-title">${title}</div>
             <div class="result-meta">
@@ -459,10 +624,85 @@ function showAnalysisResult(container, result, title) {
                 ${result.custom_prompt ? `<span>Custom Prompt: Yes</span>` : ''}
             </div>
         </div>
+    `;
+    
+    // Add tool calling history if available
+    if (result.tool_history && result.tool_history.length > 0) {
+        html += `
+            <div class="tool-calling-section" style="margin: 20px 0; padding: 15px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <h4 style="margin: 0 0 10px 0; color: #374151;">🔧 LLM Tool Calling History</h4>
+                <p style="margin: 0 0 15px 0; color: #6b7280; font-size: 0.9em;">The LLM requested additional context during analysis:</p>
+                <div class="tool-calling-history">
+        `;
+        
+        result.tool_history.forEach((entry, index) => {
+            const statusClass = entry.response.status === 'success' ? 'success' : 
+                               entry.response.status === 'not_found' ? 'warning' : 'error';
+            const statusIcon = entry.response.status === 'success' ? '✅' : 
+                              entry.response.status === 'not_found' ? '⚠️' : '❌';
+            
+            html += `
+                <div class="tool-call-card" style="margin-bottom: 10px; padding: 12px; background: white; border-radius: 6px; border: 1px solid #e5e7eb;">
+                    <div class="tool-call-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span class="tool-call-number" style="background: #3b82f6; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.8em;">#${index + 1}</span>
+                            <span class="tool-call-type" style="background: #e5e7eb; padding: 2px 6px; border-radius: 3px; font-size: 0.8em;">${entry.request.type}</span>
+                            <span class="tool-call-name" style="font-weight: 600; color: #374151;">${entry.request.name}</span>
+                        </div>
+                        <span class="tool-call-status ${statusClass}" style="font-size: 0.8em; font-weight: 600;">${statusIcon} ${entry.response.status}</span>
+                    </div>
+                    <div class="tool-call-details" style="font-size: 0.85em; color: #6b7280;">
+                        <div class="request-details" style="margin-bottom: 5px;">
+                            <strong>Request:</strong> ${entry.request.type} "${entry.request.name}"
+                            ${entry.request.file_path ? ` from ${entry.request.file_path}` : ''}
+                        </div>
+                        ${entry.response.location ? `<div style="margin-bottom: 5px;"><strong>Found in:</strong> ${entry.response.location.file || entry.response.location.file_path}</div>` : ''}
+                        ${entry.response.error ? `<div style="color: #dc2626; margin-bottom: 5px;"><strong>Error:</strong> ${entry.response.error}</div>` : ''}
+                        ${entry.response.content ? `
+                            <div class="tool-call-content" style="margin-top: 8px;">
+                                <details>
+                                    <summary style="cursor: pointer; color: #3b82f6; font-weight: 600;">Show Retrieved ${entry.request.type === 'struct' ? 'Struct Definition' : 'Function Code'}</summary>
+                                    <pre style="background: #f9fafb; padding: 10px; border-radius: 4px; margin-top: 5px; overflow-x: auto; font-size: 0.8em;"><code>${escapeHtml(entry.response.content)}</code></pre>
+                                </details>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += `
+                </div>
+            </div>
+        `;
+    }
+    
+    // Add SMID detection results if available
+    const analysis = result.analysis || '';
+    if (analysis.includes('SMID_Fields_Detected:') || analysis.includes('Struct_Analysis:')) {
+        html += `
+            <div class="smid-detection-section" style="margin: 20px 0; padding: 15px; background: #f0fdf4; border-radius: 8px; border: 1px solid #bbf7d0;">
+                <h4 style="margin: 0 0 10px 0; color: #166534;">🔍 SMID Detection Results</h4>
+                <p style="margin: 0 0 10px 0; color: #15803d; font-size: 0.9em;">Analyzing code for Shared Memory Identifiers (SMIDs) and related structures:</p>
+            </div>
+        `;
+    }
+    
+    // Add the main analysis content
+    html += `
         <div class="result-content">
             ${formatAnalysisContent(result.analysis)}
         </div>
     `;
+    
+    container.innerHTML = html;
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 function showErrorResult(container, error) {
@@ -480,16 +720,50 @@ function hideResult(container) {
 }
 
 function formatAnalysisContent(content) {
-    // Convert markdown-like formatting to HTML
-    return content
+    // Enhanced formatting for SMID and struct analysis
+    let formatted = content;
+    
+    // Highlight SMID fields detected
+    formatted = formatted.replace(
+        /SMID_Fields_Detected:\s*(.+?)(?=\n|$)/gi,
+        '<div style="background: #f0fdf4; padding: 8px; margin: 8px 0; border-radius: 4px; border-left: 4px solid #10b981;"><strong style="color: #166534;">🔍 SMID Fields Detected:</strong> <span style="color: #15803d; font-family: monospace;">$1</span></div>'
+    );
+    
+    // Highlight struct analysis
+    formatted = formatted.replace(
+        /Struct_Analysis:\s*(.+?)(?=\n|$)/gi,
+        '<div style="background: #eff6ff; padding: 8px; margin: 8px 0; border-radius: 4px; border-left: 4px solid #3b82f6;"><strong style="color: #1e40af;">🏗️ Struct Analysis:</strong> <span style="color: #1d4ed8;">$1</span></div>'
+    );
+    
+    // Highlight confidence scores with visual bars
+    formatted = formatted.replace(
+        /(AIARelevantFunction|Relevant_KD_Entry_Point|Message_Structure_Handling):\s*(\d+)%/g,
+        (match, category, score) => {
+            const scoreNum = parseInt(score);
+            const colorClass = scoreNum >= 75 ? '#10b981' : scoreNum >= 50 ? '#f59e0b' : '#ef4444';
+            const width = Math.max(scoreNum, 5); // Minimum 5% width for visibility
+            
+            return `<div style="margin: 8px 0;">
+                <strong>${category.replace(/_/g, ' ')}:</strong> ${score}%
+                <div style="background: #f3f4f6; border-radius: 4px; overflow: hidden; margin-top: 2px;">
+                    <div style="background: ${colorClass}; height: 8px; width: ${width}%; transition: width 0.3s ease;"></div>
+                </div>
+            </div>`;
+        }
+    );
+    
+    // Convert standard markdown-like formatting to HTML
+    formatted = formatted
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code>$1</code>')
+        .replace(/`(.*?)`/g, '<code style="background: #f3f4f6; padding: 2px 4px; border-radius: 3px; font-family: monospace;">$1</code>')
         .replace(/\n\n/g, '</p><p>')
         .replace(/\n/g, '<br>')
         .replace(/^/, '<p>')
         .replace(/$/, '</p>')
         .replace(/(<p><\/p>)/g, '');
+    
+    return formatted;
 }
 
 // Data persistence functions

@@ -39,7 +39,7 @@ class FunctionCodeExtractor:
             self.language = None
             self.parser = None
     
-    def extract_function_at_line(self, file_path: str, line_number: int) -> Optional[Tuple[str, str, int, int]]:
+    def extract_function_at_line(self, file_path: str, line_number: int) -> Optional[Tuple[str, str, int, int, Optional[str]]]:
         """
         Extract function source code containing the specified line number
         
@@ -48,7 +48,7 @@ class FunctionCodeExtractor:
             line_number: Line number within the function
             
         Returns:
-            Tuple of (function_name, function_code, start_line, end_line) or None if not found
+            Tuple of (function_name, function_code, start_line, end_line, preprocessed_code) or None if not found
         """
         if not TREE_SITTER_AVAILABLE:
             return None
@@ -83,7 +83,10 @@ class FunctionCodeExtractor:
                 start_line = function_node.start_point[0] + 1  # Convert to 1-based
                 end_line = function_node.end_point[0] + 1
                 
-                return function_name, function_code, start_line, end_line
+                # Extract preprocessed code from corresponding .i file
+                preprocessed_code = self._extract_preprocessed_function(file_path, function_name, start_line, end_line)
+                
+                return function_name, function_code, start_line, end_line, preprocessed_code
             
         except Exception as e:
             print(f"Error extracting function from {full_path}: {e}")
@@ -173,8 +176,122 @@ class FunctionCodeExtractor:
         """
         result = self.extract_function_at_line(file_path, line_number)
         if result:
-            extracted_name, code, start_line, end_line = result
+            extracted_name, code, start_line, end_line, preprocessed_code = result
             # Verify the function name matches (case-insensitive)
             if extracted_name.lower() == function_name.lower():
                 return code
+        return None
+    
+    def _extract_preprocessed_function(self, file_path: str, function_name: str, start_line: int, end_line: int) -> Optional[str]:
+        """
+        Extract function code from corresponding .i (preprocessed) file
+        
+        Args:
+            file_path: Original C file path
+            function_name: Name of the function
+            start_line: Start line in original file
+            end_line: End line in original file
+            
+        Returns:
+            Preprocessed function code or None if not found
+        """
+        if not self.source_root_path:
+            return None
+            
+        try:
+            # Find corresponding .i file
+            preprocessed_path = self._find_preprocessed_file(file_path)
+            if not preprocessed_path or not preprocessed_path.exists():
+                return None
+            
+            # Read the preprocessed file
+            with open(preprocessed_path, 'r', encoding='utf-8', errors='ignore') as f:
+                preprocessed_content = f.read()
+            
+            # Parse with tree-sitter to find the function
+            tree = self.parser.parse(preprocessed_content.encode('utf-8'))
+            preprocessed_bytes = preprocessed_content.encode('utf-8')
+            
+            # Find the function by name in the preprocessed file
+            preprocessed_function = self._find_function_by_name(tree.root_node, function_name, preprocessed_bytes)
+            
+            if preprocessed_function:
+                # Extract the preprocessed function code
+                start_byte = preprocessed_function.start_byte
+                end_byte = preprocessed_function.end_byte
+                return preprocessed_bytes[start_byte:end_byte].decode('utf-8', errors='ignore')
+            
+        except Exception as e:
+            # Silently fail - preprocessed code is optional
+            pass
+        
+        return None
+    
+    def _find_preprocessed_file(self, file_path: str) -> Optional[Path]:
+        """
+        Find the corresponding .i file for a given .c file
+        
+        Args:
+            file_path: Original C file path
+            
+        Returns:
+            Path to .i file or None if not found
+        """
+        # Convert file.c to file.i
+        c_path = Path(file_path)
+        if c_path.suffix == '.c':
+            i_filename = c_path.stem + '.i'
+            
+            # Try multiple locations
+            search_paths = [
+                c_path.parent / i_filename,  # Same directory
+                Path(self.source_root_path) / c_path.parent / i_filename,  # Under source root
+                Path(self.source_root_path) / i_filename,  # Directly in source root
+            ]
+            
+            # Search recursively in source root if above paths don't exist
+            for search_path in search_paths:
+                if search_path.exists():
+                    return search_path
+            
+            # Recursive search in source root
+            try:
+                source_root = Path(self.source_root_path)
+                if source_root.exists() and source_root.is_dir():
+                    for i_file in source_root.rglob(i_filename):
+                        return i_file
+            except Exception:
+                pass
+        
+        return None
+
+    # Public helper to allow other components (e.g., struct extraction) to
+    # locate the corresponding preprocessed file for a given source file.
+    def find_preprocessed_file(self, file_path: str) -> Optional[Path]:
+        return self._find_preprocessed_file(file_path)
+    
+    def _find_function_by_name(self, node: Any, function_name: str, source_bytes: bytes) -> Optional[Any]:
+        """
+        Find a function node by name in the syntax tree
+        
+        Args:
+            node: Tree-sitter node to search
+            function_name: Name of the function to find
+            source_bytes: Source code as bytes
+            
+        Returns:
+            Function node or None if not found
+        """
+        if node.type == 'function_definition':
+            # Get the function name from this node
+            current_function_name = self._get_function_name(node, source_bytes)
+            if current_function_name == function_name:
+                return node
+        
+        # Recursively search child nodes
+        for child in node.children:
+            result = self._find_function_by_name(child, function_name, source_bytes)
+            if result:
+                return result
+        
         return None

@@ -6,7 +6,7 @@ trap 'echo "An error occurred at line $LINENO. Exiting."' ERR
 # Absolute path for the PID file to avoid confusion
 PID_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/webviewer_pids.txt"
 
-PLATFORMS=("nxp" "ti" "coral")
+PLATFORMS=("nxp")
 
 run_preprocess() {
   local platform=$1

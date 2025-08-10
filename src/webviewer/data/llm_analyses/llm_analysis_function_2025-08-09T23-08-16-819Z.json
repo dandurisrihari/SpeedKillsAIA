@@ -1,0 +1,52 @@
+{
+  "type": "function",
+  "timestamp": "2025-08-09T23:08:16.819Z",
+  "request": {
+    "function_name": "_FindNode",
+    "source_code": "static gcuVIDMEM_NODE_PTR\n_FindNode(IN gckKERNEL Kernel, IN gckVIDMEM Memory,\n          IN gctINT Bank, IN gctSIZE_T Bytes,\n          IN gceVIDMEM_TYPE Type, IN OUT gctUINT32_PTR Alignment)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function _FindNode at %s:%d\\n\", __FILE__, __LINE__);\n    gcuVIDMEM_NODE_PTR node;\n    gctUINT32          alignment;\n    gctUINT32          bankAlignment;\n\n    if (Memory->sentinel[Bank].VidMem.nextFree == gcvNULL) {\n        /* No free nodes left. */\n        return gcvNULL;\n    }\n\n    /*\n     * Walk all free nodes until we have one that is big enough or we have\n     * reached the sentinel.\n     */\n    for (node = Memory->sentinel[Bank].VidMem.nextFree;\n         node->VidMem.bytes != 0;\n         node = node->VidMem.nextFree) {\n        gctUINT32 offset = (gctUINT32)(node->VidMem.parent->physicalBase + node->VidMem.offset);\n\n        if (node->VidMem.bytes < Bytes)\n            continue;\n\n#if gcdENABLE_BANK_ALIGNMENT\n        if (gcmIS_ERROR(_GetSurfaceBankAlignment(Kernel, Type, offset, &bankAlignment)))\n            return gcvNULL;\n\n        /*bankAlignment = gcmALIGN(bankAlignment, *Alignment);*/\n#else\n        bankAlignment = 0;\n#endif\n\n        /* Compute number of bytes to skip for alignment. */\n        alignment = (*Alignment == 0) ?\n                        0 : (*Alignment - ((offset + bankAlignment) & (*Alignment - 1)));\n\n        if (alignment == *Alignment) {\n            /* Node is already aligned. */\n            alignment = 0;\n        }\n\n        if (node->VidMem.bytes >= Bytes + alignment + bankAlignment) {\n            /* This node is big enough. */\n            *Alignment = alignment + bankAlignment;\n            return node;\n        }\n    }\n\n    /* Not enough memory. */\n    return gcvNULL;\n}",
+    "preprocessed_code": "",
+    "file_path": "drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c",
+    "custom_prompt": "",
+    "model_id": "gpt-3.5-turbo",
+    "additional_context": ""
+  },
+  "result": {
+    "analysis": "```yaml\nFunction/Code_Block_Name: _FindNode function in gc_hal_kernel_video_memory.c\nAIARelevantFunction: 20%\nRelevant_KD_Entry_Point: 0%\nMessage_Structure_Handling: 0%\nSMID_Fields_Detected: None\nStruct_Analysis: N/A\nReasoning:\n  - The _FindNode function in gc_hal_kernel_video_memory.c does not directly involve shared memory operations with an AI Accelerator (AIA).\n  - This function is primarily focused on finding a suitable memory node based on certain conditions and alignment requirements within the video memory structure.\n  - There are no explicit calls to functions like get_user_pages, DMA mapping, or AIA-specific memory management operations.\n  - The function does not serve as an entry point for user space interactions or IOCTL handling related to AI Accelerator operations.\n```",
+    "analysis_type": "general_function",
+    "code_block": {
+      "file_path": "drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c",
+      "function_name": "_FindNode",
+      "source_code": "static gcuVIDMEM_NODE_PTR\n_FindNode(IN gckKERNEL Kernel, IN gckVIDMEM Memory,\n          IN gctINT Bank, IN gctSIZE_T Bytes,\n          IN gceVIDMEM_TYPE Type, IN OUT gctUINT32_PTR Alignment)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function _FindNode at %s:%d\\n\", __FILE__, __LINE__);\n    gcuVIDMEM_NODE_PTR node;\n    gctUINT32          alignment;\n    gctUINT32          bankAlignment;\n\n    if (Memory->sentinel[Bank].VidMem.nextFree == gcvNULL) {\n        /* No free nodes left. */\n        return gcvNULL;\n    }\n\n    /*\n     * Walk all free nodes until we have one that is big enough or we have\n     * reached the sentinel.\n     */\n    for (node = Memory->sentinel[Bank].VidMem.nextFree;\n         node->VidMem.bytes != 0;\n         node = node->VidMem.nextFree) {\n        gctUINT32 offset = (gctUINT32)(node->VidMem.parent->physicalBase + node->VidMem.offset);\n\n        if (node->VidMem.bytes < Bytes)\n            continue;\n\n#if gcdENABLE_BANK_ALIGNMENT\n        if (gcmIS_ERROR(_GetSurfaceBankAlignment(Kernel, Type, offset, &bankAlignment)))\n            return gcvNULL;\n\n        /*bankAlignment = gcmALIGN(bankAlignment, *Alignment);*/\n#else\n        bankAlignment = 0;\n#endif\n\n        /* Compute number of bytes to skip for alignment. */\n        alignment = (*Alignment == 0) ?\n                        0 : (*Alignment - ((offset + bankAlignment) & (*Alignment - 1)));\n\n        if (alignment == *Alignment) {\n            /* Node is already aligned. */\n            alignment = 0;\n        }\n\n        if (node->VidMem.bytes >= Bytes + alignment + bankAlignment) {\n            /* This node is big enough. */\n            *Alignment = alignment + bankAlignment;\n            return node;\n        }\n    }\n\n    /* Not enough memory. */\n    return gcvNULL;\n}"
+    },
+    "confidence_scores": {
+      "AIARelevantFunction": 20,
+      "Message_Structure_Handling": 0,
+      "Relevant_KD_Entry_Point": 0
+    },
+    "custom_prompt": "\n\n\n=== RELEVANT STRUCT DEFINITIONS ===\nFrom file: gc_hal_kernel_video_memory.i\nContent: Smart-filtered struct definitions (reduced by 100.0%)\nOriginal size: 236,647 chars \u2192 Filtered size: 0 chars\nNote: Only showing structs referenced in the function being analyzed\n\n/* No directly referenced structs found */\n\n=== END STRUCT DEFINITIONS ===\n",
+    "error": null,
+    "file_path": "drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c",
+    "function_code": "static gcuVIDMEM_NODE_PTR\n_FindNode(IN gckKERNEL Kernel, IN gckVIDMEM Memory,\n          IN gctINT Bank, IN gctSIZE_T Bytes,\n          IN gceVIDMEM_TYPE Type, IN OUT gctUINT32_PTR Alignment)\n{\n    printk(KERN_INFO \"FUNC_ENTRY: Entering function _FindNode at %s:%d\\n\", __FILE__, __LINE__);\n    gcuVIDMEM_NODE_PTR node;\n    gctUINT32          alignment;\n    gctUINT32          bankAlignment;\n\n    if (Memory->sentinel[Bank].VidMem.nextFree == gcvNULL) {\n        /* No free nodes left. */\n        return gcvNULL;\n    }\n\n    /*\n     * Walk all free nodes until we have one that is big enough or we have\n     * reached the sentinel.\n     */\n    for (node = Memory->sentinel[Bank].VidMem.nextFree;\n         node->VidMem.bytes != 0;\n         node = node->VidMem.nextFree) {\n        gctUINT32 offset = (gctUINT32)(node->VidMem.parent->physicalBase + node->VidMem.offset);\n\n        if (node->VidMem.bytes < Bytes)\n            continue;\n\n#if gcdENABLE_BANK_ALIGNMENT\n        if (gcmIS_ERROR(_GetSurfaceBankAlignment(Kernel, Type, offset, &bankAlignment)))\n            return gcvNULL;\n\n        /*bankAlignment = gcmALIGN(bankAlignment, *Alignment);*/\n#else\n        bankAlignment = 0;\n#endif\n\n        /* Compute number of bytes to skip for alignment. */\n        alignment = (*Alignment == 0) ?\n                        0 : (*Alignment - ((offset + bankAlignment) & (*Alignment - 1)));\n\n        if (alignment == *Alignment) {\n            /* Node is already aligned. */\n            alignment = 0;\n        }\n\n        if (node->VidMem.bytes >= Bytes + alignment + bankAlignment) {\n            /* This node is big enough. */\n            *Alignment = alignment + bankAlignment;\n            return node;\n        }\n    }\n\n    /* Not enough memory. */\n    return gcvNULL;\n}",
+    "function_name": "_FindNode",
+    "model_used": "gpt-3.5-turbo",
+    "status": "success",
+    "struct_context": {
+      "content_length": 42,
+      "count": 0,
+      "extraction_method": "smart_filtering",
+      "file": "gc_hal_kernel_video_memory.i",
+      "filtered_size": 0,
+      "full_path": "/media/sri/D/Research/Accelerators_Research/SpeedKillsAIA/data/kernel_sources/nxp/drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.i",
+      "has_definitions": true,
+      "original_size": 236647,
+      "size_reduction_percent": 100,
+      "smart_filtered": true
+    },
+    "struct_definitions_formatted": "\n=== RELEVANT STRUCT DEFINITIONS ===\nFrom file: gc_hal_kernel_video_memory.i\nContent: Smart-filtered struct definitions (reduced by 100.0%)\nOriginal size: 236,647 chars \u2192 Filtered size: 0 chars\nNote: Only showing structs referenced in the function being analyzed\n\n/* No directly referenced structs found */\n\n=== END STRUCT DEFINITIONS ===\n",
+    "struct_definitions_used": 0
+  },
+  "metadata": {
+    "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+    "url": "http://127.0.0.1:8081/"
+  }
+}

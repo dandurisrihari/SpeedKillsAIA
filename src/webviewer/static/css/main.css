@@ -1899,6 +1899,120 @@ details summary::-webkit-details-marker {
 .confidence-details li {
     padding: 8px 0;
     border-bottom: 1px solid #f1f5f9;
+}
+
+.confidence-details li:last-child {
+    border-bottom: none;
+}
+
+/* Enhanced Modal Content Sections */
+.analysis-meta {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #3b82f6;
+}
+
+.analysis-meta h4 {
+    color: #1e293b;
+    margin-bottom: 10px;
+    font-size: 1.4em;
+}
+
+.analysis-meta p {
+    margin: 5px 0;
+    color: #475569;
+}
+
+.full-analysis {
+    margin-bottom: 25px;
+}
+
+.analysis-content {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+    white-space: pre-wrap;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+.function-code-section,
+.struct-definitions-section {
+    margin: 25px 0;
+}
+
+.function-code-section h5,
+.struct-definitions-section h5 {
+    color: #374151;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+    font-size: 1.2em;
+}
+
+.code-container,
+.struct-code-container {
+    background: #1f2937;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #374151;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.code-container pre,
+.struct-code-container pre {
+    margin: 0;
+    padding: 20px;
+    overflow-x: auto;
+    background: transparent;
+}
+
+.code-container code,
+.struct-code-container code {
+    color: #e5e7eb;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre;
+    display: block;
+}
+
+/* Syntax highlighting for struct code */
+.struct-code-container code {
+    color: #d1d5db;
+}
+
+/* Responsive modal design */
+@media (max-width: 768px) {
+    .analysis-modal {
+        padding: 10px;
+    }
+    
+    .modal-content {
+        max-width: 100%;
+    }
+    
+    .modal-header {
+        padding: 15px 20px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .code-container pre,
+    .struct-code-container pre {
+        padding: 15px;
+        font-size: 12px;
+    }
+}
+
+.confidence-details li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
     display: flex;
     justify-content: space-between;
 }
@@ -1930,7 +2044,380 @@ details summary::-webkit-details-marker {
     font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
 }
 
+/* LLM Details Styling */
+.llm-details {
+    margin: 25px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    background: #f8fafc;
+    /* Sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+.llm-details h5 {
+    color: #1e293b;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 8px;
+    font-weight: 600;
+    /* Sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.llm-request, .llm-response, .llm-conversation {
+    margin: 15px 0;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+.llm-request summary, .llm-response summary, .llm-conversation summary {
+    padding: 12px 15px;
+    background: #f3f4f6;
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    font-weight: 600;
+    color: #374151;
+    transition: background-color 0.2s ease;
+    /* Sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.llm-request summary:hover, .llm-response summary:hover, .llm-conversation summary:hover {
+    background: #e5e7eb;
+}
+
+.llm-request[open] summary, .llm-response[open] summary, .llm-conversation[open] summary {
+    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.prompt-content, .response-content, .conversation-content {
+    padding: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: white;
+    border-radius: 0 0 6px 6px;
+    /* Sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+.prompt-content pre, .response-content pre {
+    margin: 0;
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    /* High quality monospace rendering */
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga" 0, "calt" 0;
+    /* Additional sharpness fixes */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: auto;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+.conversation-content .message {
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 3px solid #6b7280;
+    /* Sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+.conversation-content .message-system {
+    background: #fef3c7;
+    border-left-color: #f59e0b;
+}
+
+.conversation-content .message-user {
+    background: #dbeafe;
+    border-left-color: #3b82f6;
+}
+
+.conversation-content .message-assistant {
+    background: #d1fae5;
+    border-left-color: #10b981;
+}
+
+.conversation-content .message strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    /* Sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.conversation-content .message pre {
+    margin: 0;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    /* High quality monospace rendering */
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.5;
+}
+
+.llm-details p {
+    margin: 8px 0;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.6;
+    /* Sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+.llm-details p strong {
+    color: #1f2937;
+    font-weight: 600;
+    /* Sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Override any blurry text rendering in LLM sections */
+.llm-details *,
+.llm-request *,
+.llm-response *,
+.llm-conversation *,
+.prompt-content *,
+.response-content *,
+.conversation-content * {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+}
+
+/* High-quality monospace rendering for all LLM code blocks */
+.llm-details pre,
+.llm-details code,
+.prompt-content pre,
+.response-content pre,
+.conversation-content pre {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    font-feature-settings: "liga" 0, "calt" 0 !important;
+    font-variant-ligatures: none !important;
+}
+
+/* Additional fixes for extremely sharp text rendering */
+.analysis-modal .llm-details,
+.analysis-modal .llm-details *,
+.analysis-modal .prompt-content,
+.analysis-modal .prompt-content *,
+.analysis-modal .response-content,
+.analysis-modal .response-content *,
+.analysis-modal .conversation-content,
+.analysis-modal .conversation-content * {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
+}
+
+/* Force sharp rendering for all text in LLM prompts */
+.prompt-content pre code,
+.response-content pre code,
+.conversation-content pre code {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', monospace !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    font-feature-settings: "liga" 0, "calt" 0, "kern" 1 !important;
+    font-variant-ligatures: none !important;
+    -webkit-text-stroke: 0.01em transparent !important;
+}
+
+/* Sharp text for summary headings */
+.llm-request summary,
+.llm-response summary,
+.llm-conversation summary {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+}
+
 /* Responsive Design */
+
+/* Ultimate fix for blurry text - highest specificity */
+body .analysis-modal .modal-content .llm-details .prompt-content pre,
+body .analysis-modal .modal-content .llm-details .response-content pre,
+body .analysis-modal .modal-content .llm-details .conversation-content pre,
+body .analysis-modal .modal-content .llm-details .prompt-content code,
+body .analysis-modal .modal-content .llm-details .response-content code,
+body .analysis-modal .modal-content .llm-details .conversation-content code {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', monospace !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    font-weight: 400 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    font-feature-settings: normal !important;
+    font-variant-ligatures: none !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
+    will-change: auto !important;
+    letter-spacing: 0.01em !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: none !important;
+}
+
+/* Force sharp rendering on summary text */
+body .analysis-modal .modal-content .llm-details summary strong {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+}
+
+/* NUCLEAR OPTION - Extreme text sharpening */
+.llm-details,
+.llm-details *,
+.prompt-content,
+.prompt-content *,
+.response-content,
+.response-content *,
+.conversation-content,
+.conversation-content *,
+.llm-request,
+.llm-response,
+.llm-conversation {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    /* Pixel-perfect rendering */
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    -webkit-perspective: 1000px !important;
+    perspective: 1000px !important;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
+    /* Force GPU acceleration for sharpness */
+    will-change: transform !important;
+    /* Disable any filters or effects */
+    filter: none !important;
+    -webkit-filter: none !important;
+    /* Perfect pixel alignment */
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    /* Font optimization */
+    font-variant-ligatures: none !important;
+    font-feature-settings: "kern" 1, "liga" 0, "calt" 0, "clig" 0, "dlig" 0, "hlig" 0 !important;
+}
+
+/* Maximum contrast and sharpness for all text */
+.prompt-content pre,
+.response-content pre,
+.conversation-content pre,
+.llm-details pre,
+.prompt-content code,
+.response-content code,
+.conversation-content code {
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-stretch: normal !important;
+    font-variant: normal !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    /* Aggressive sharpening */
+    -webkit-text-stroke: 0.01em transparent !important;
+    text-stroke: 0.01em transparent !important;
+    /* Perfect positioning */
+    transform: translateZ(0) scale(1) !important;
+    -webkit-transform: translateZ(0) scale(1) !important;
+    /* No blur effects */
+    filter: contrast(1.1) !important;
+    -webkit-filter: contrast(1.1) !important;
+    /* Pixel grid alignment */
+    position: relative !important;
+    /* Letter spacing for clarity */
+    letter-spacing: 0.025em !important;
+    word-spacing: 0 !important;
+}
+
+/* Browser zoom and scaling fixes */
+.analysis-modal {
+    zoom: 1 !important;
+    -webkit-zoom: 1 !important;
+    -moz-transform-origin: 0 0 !important;
+    -webkit-transform-origin: 0 0 !important;
+    transform-origin: 0 0 !important;
+}
+
+/* Disable fractional pixel rendering */
+.analysis-modal *,
+.llm-details *,
+.prompt-content *,
+.response-content * {
+    /* Force integer pixel positions */
+    -webkit-transform-style: flat !important;
+    transform-style: flat !important;
+    /* Disable subpixel rendering */
+    -webkit-font-feature-settings: "kern" 1 !important;
+    font-feature-settings: "kern" 1 !important;
+    /* Sharp edges */
+    image-rendering: pixelated !important;
+    image-rendering: -moz-crisp-edges !important;
+    image-rendering: crisp-edges !important;
+}
 @media (max-width: 768px) {
     .ranked-result-card {
         padding: 15px;
@@ -2198,5 +2685,1224 @@ details summary::-webkit-details-marker {
     .component-item {
         grid-template-columns: 1fr;
         gap: 5px;
+    }
+}
+
+/* Struct Context Styles */
+.struct-context-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9ff;
+    border: 2px solid #e3e8ff;
+    border-radius: 10px;
+}
+
+.struct-context-section h5 {
+    color: #4f46e5;
+    margin-bottom: 12px;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.struct-list {
+    display: grid;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.struct-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e1e5e9;
+    transition: all 0.2s ease;
+}
+
+.struct-item:hover {
+    background: #f8f9ff;
+    border-color: #c7d2fe;
+    transform: translateY(-1px);
+}
+
+.struct-name {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-weight: 500;
+    color: #1e293b;
+    font-size: 0.9em;
+}
+
+.struct-file {
+    font-size: 0.8em;
+    color: #64748b;
+}
+
+.struct-summary {
+    background: rgba(79, 70, 229, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.struct-file-info {
+    font-size: 0.9em;
+    color: #4f46e5;
+    line-height: 1.5;
+}
+
+.struct-context-note {
+    font-size: 0.85em;
+    color: #64748b;
+    font-style: italic;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Dynamic Struct Controls Styles */
+.dynamic-struct-controls {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px solid #0ea5e9;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.dynamic-struct-controls h4 {
+    color: #0c4a6e;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group {
+    margin-bottom: 15px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: #1e293b;
+    gap: 12px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #0ea5e9;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+    background: #0ea5e9;
+    border-color: #0ea5e9;
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.help-text {
+    color: #64748b;
+    font-size: 0.85em;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.form-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-col label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.9em;
+}
+
+.form-col select {
+    padding: 8px 12px;
+    border: 2px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9em;
+    transition: border-color 0.2s ease;
+}
+
+.form-col select:focus {
+    outline: none;
+    border-color: #0ea5e9;
+}
+
+/* Dynamic Structs Section Styles */
+.dynamic-structs-section {
+    margin-top: 25px;
+    padding: 20px;
+    background: #f0f9ff;
+    border: 2px solid #0ea5e9;
+    border-radius: 12px;
+}
+
+.dynamic-structs-section h5 {
+    color: #0c4a6e;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.struct-requests-list {
+    display: grid;
+    gap: 15px;
+}
+
+.struct-request-item {
+    background: white;
+    border: 2px solid #e0f2fe;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.struct-request-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+}
+
+.request-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.request-number {
+    background: #0ea5e9;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    min-width: 24px;
+    text-align: center;
+}
+
+.status-icon {
+    font-size: 1.2em;
+}
+
+.file-hint {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.struct-response-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 8px;
+}
+
+.struct-response-success p {
+    margin: 4px 0;
+    font-size: 0.9em;
+}
+
+.struct-response-success p strong {
+    color: #166534;
+}
+
+.struct-definition-details {
+    margin-top: 12px;
+}
+
+.struct-definition-details summary {
+    cursor: pointer;
+    color: #0ea5e9;
+    font-weight: 500;
+    padding: 8px;
+    background: #f0f9ff;
+    border-radius: 6px;
+    border: 1px solid #bae6fd;
+    transition: all 0.2s ease;
+}
+
+.struct-definition-details summary:hover {
+    background: #e0f2fe;
+    transform: translateY(-1px);
+}
+
+.struct-definition-details pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.85em;
+    line-height: 1.4;
+    margin-top: 8px;
+    border: 1px solid #374151;
+}
+
+.struct-definition-details code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+}
+
+.struct-response-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 8px;
+    color: #dc2626;
+    font-size: 0.9em;
+}
+
+/* Conversation History Styles */
+.conversation-history-section {
+    margin-top: 25px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.conversation-history-section details summary {
+    cursor: pointer;
+    color: #4f46e5;
+    font-weight: 600;
+    padding: 8px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.conversation-history-section details summary:hover {
+    background: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.conversation-messages {
+    margin-top: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.message {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.message:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+.message-assistant {
+    border-color: #c7d2fe;
+    background: #f0f4ff;
+}
+
+.message-user {
+    border-color: #fed7aa;
+    background: #fffbf0;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.message-content {
+    color: #374151;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* Enhanced Analysis Result Styles */
+.analysis-result {
+    margin-top: 20px;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.analysis-result h4 {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    margin: 0;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1.2em;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.analysis-result.success h4 {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+}
+
+.analysis-result.error h4 {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+}
+
+.analysis-text {
+    padding: 20px;
+    line-height: 1.6;
+    color: #374151;
+    white-space: pre-wrap;
+}
+
+.analysis-metadata {
+    background: #f9fafb;
+    padding: 15px 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.metadata-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    color: #6b7280;
+    font-size: 0.9em;
+}
+
+.metadata-item strong {
+    color: #374151;
+}
+
+/* Responsive Design for New Components */
+@media (max-width: 768px) {
+    .dynamic-struct-controls {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .struct-requests-list {
+        gap: 12px;
+    }
+    
+    .struct-request-item {
+        padding: 12px;
+    }
+    
+    .request-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .conversation-messages {
+        max-height: 300px;
+    }
+    
+    .message {
+        padding: 12px;
+    }
+    
+    .analysis-result h4 {
+        padding: 12px 15px;
+        font-size: 1.1em;
+    }
+    
+    .analysis-text {
+        padding: 15px;
+    }
+}
+
+/* Hide/show controls based on checkbox state */
+#enableDynamicStructs:not(:checked) ~ #structRequestSettings {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Animation for dynamic content */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dynamic-structs-section,
+.conversation-history-section {
+    animation: fadeIn 0.3s ease;
+}
+
+.struct-name {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95em;
+}
+
+.struct-info {
+    font-size: 0.85em;
+    color: #6b7280;
+    text-align: right;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.struct-context-note {
+    margin-top: 12px;
+    padding: 10px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    font-size: 0.9em;
+    color: #1e40af;
+    text-align: center;
+}
+
+/* Mobile responsive for struct context */
+@media (max-width: 768px) {
+    .struct-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .struct-info {
+        text-align: left;
+        margin-left: 0;
+    }
+    
+    .struct-context-section {
+        padding: 10px;
+        margin-top: 15px;
+    }
+}
+
+/* Enhanced Full Analysis Modal Styles */
+.full-analysis-modal {
+    max-width: 1200px;
+    max-height: 95vh;
+}
+
+.analysis-overview {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 25px;
+    margin: -25px -25px 25px -25px;
+    border-radius: 12px 12px 0 0;
+}
+
+.analysis-overview h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.4em;
+}
+
+.meta-info {
+    opacity: 0.9;
+    font-size: 0.95em;
+}
+
+.meta-info code {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.confidence-summary {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border-left: 4px solid #667eea;
+}
+
+.confidence-grid {
+    display: grid;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.confidence-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.confidence-item .label {
+    min-width: 200px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.confidence-item.message-structure .label {
+    color: #9b59b6;
+    font-weight: 600;
+}
+
+.confidence-item .score-bar {
+    flex: 1;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.confidence-item .score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.confidence-item.message-structure .score-fill {
+    background: linear-gradient(90deg, #9b59b6, #c084fc);
+}
+
+.confidence-item .score {
+    min-width: 50px;
+    text-align: right;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.full-analysis-section {
+    margin: 25px 0;
+}
+
+.analysis-content.enhanced {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.llm-request-details,
+.struct-context-details {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.llm-request-details h5,
+.struct-context-details h5 {
+    margin: 0 0 15px 0;
+    color: #374151;
+    font-size: 1.1em;
+}
+
+.request-info p,
+.context-info p {
+    margin: 8px 0;
+    color: #4b5563;
+}
+
+.prompt-content {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    border-left: 4px solid #667eea;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+    text-rendering: optimizeLegibility;
+}
+
+.conversation-history {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin: 25px 0;
+    overflow: hidden;
+}
+
+.conversation-history h5 {
+    background: #f9fafb;
+    margin: 0;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.conversation-messages {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.message {
+    border-bottom: 1px solid #f3f4f6;
+    padding: 15px 20px;
+}
+
+.message:last-child {
+    border-bottom: none;
+}
+
+.message-system {
+    background: #f9fafb;
+}
+
+.message-user {
+    background: #eff6ff;
+}
+
+.message-assistant {
+    background: #f0fdf4;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.role-icon {
+    font-size: 1.2em;
+}
+
+.message-header strong {
+    color: #374151;
+    font-size: 0.9em;
+}
+
+.message-content {
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.function-code-section,
+.struct-definitions-section {
+    margin: 25px 0;
+}
+
+.code-container,
+.struct-code-container {
+    background: #1f2937;
+    border-radius: 8px;
+    padding: 0;
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.code-container pre,
+.struct-code-container pre {
+    margin: 0;
+    padding: 20px;
+    color: #f9fafb;
+    background: transparent;
+    overflow-x: auto;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 20px 0 0 0;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 30px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+/* Responsive design for full analysis modal */
+@media (max-width: 768px) {
+    .full-analysis-modal {
+        max-width: 100%;
+        margin: 10px;
+    }
+    
+    .confidence-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .confidence-item .label {
+        min-width: auto;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Enhanced Analysis Modal Features - Failure Details */
+.failure-details {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.failure-details h5 {
+    color: #dc2626;
+    margin-bottom: 12px;
+}
+
+.error-message {
+    background: white;
+    border: 1px solid #fca5a5;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+    color: #991b1b;
+    font-weight: 500;
+}
+
+.stack-trace {
+    margin-top: 12px;
+}
+
+.stack-trace summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #7c2d12;
+    padding: 8px;
+    background: #fef7ed;
+    border-radius: 4px;
+}
+
+.error-trace {
+    background: #1f2937;
+    color: #f9fafb;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    margin-top: 8px;
+}
+
+.failed-fields {
+    margin-top: 12px;
+    background: white;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.failed-fields ul {
+    margin: 8px 0 0 20px;
+}
+
+.failed-fields li {
+    margin-bottom: 4px;
+}
+
+.partial-results {
+    margin-top: 12px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.partial-results pre {
+    background: white;
+    padding: 8px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+/* Enhanced LLM Transaction Details */
+.llm-transaction-details {
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.llm-transaction-details h5 {
+    color: #1e40af;
+    margin-bottom: 16px;
+}
+
+.transaction-timeline {
+    background: #eff6ff;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-left: 4px solid #3b82f6;
+}
+
+.transaction-timeline p {
+    margin: 4px 0;
+    font-size: 0.9em;
+}
+
+.request-section,
+.response-section {
+    margin-bottom: 20px;
+}
+
+.request-section h6,
+.response-section h6 {
+    color: #1f2937;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.request-details,
+.response-details {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #d1d5db;
+}
+
+.request-prompt,
+.request-context,
+.struct-context-sent,
+.raw-response,
+.parsed-response {
+    margin: 12px 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+.request-prompt summary,
+.request-context summary,
+.struct-context-sent summary,
+.raw-response summary,
+.parsed-response summary {
+    cursor: pointer;
+    padding: 12px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+    color: #374151;
+}
+
+.request-prompt summary:hover,
+.request-context summary:hover,
+.struct-context-sent summary:hover,
+.raw-response summary:hover,
+.parsed-response summary:hover {
+    background: #f3f4f6;
+}
+
+.prompt-content,
+.context-content,
+.struct-context-content,
+.raw-response-content,
+.parsed-content {
+    padding: 16px;
+    background: white;
+}
+
+.prompt-content pre,
+.raw-response-content {
+    background: #1f2937;
+    color: #f9fafb;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+}
+
+.yaml-content {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9em;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Enhanced Struct Context Analysis */
+.struct-context-analysis {
+    background: #f0fdf4;
+    border-radius: 10px;
+    border: 1px solid #bbf7d0;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.struct-context-analysis h5 {
+    color: #15803d;
+    margin-bottom: 16px;
+}
+
+.struct-workflow {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.struct-request,
+.struct-provided,
+.filtering-details {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #d1fae5;
+}
+
+.struct-request h6,
+.struct-provided h6,
+.filtering-details h6 {
+    color: #047857;
+    margin-bottom: 10px;
+}
+
+.context-stats {
+    display: grid;
+    gap: 8px;
+}
+
+.size-reduction {
+    background: #ecfdf5;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 8px;
+    border-left: 4px solid #10b981;
+}
+
+.reduction-percent {
+    font-weight: bold;
+    color: #059669;
+}
+
+.filtering-info {
+    font-weight: 600;
+    color: #065f46;
+}
+
+.no-structs {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.no-structs p:first-child {
+    color: #dc2626;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.no-structs p:last-child {
+    color: #7f1d1d;
+    font-style: italic;
+}
+
+/* Enhanced Analysis Content Status */
+.analysis-content.enhanced.success {
+    border-left: 4px solid #10b981;
+}
+
+.analysis-content.enhanced.error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 4px solid #ef4444;
+    color: #991b1b;
+}
+
+/* Analysis Status Indicators */
+.analysis-status .success {
+    color: #10b981;
+    font-weight: bold;
+}
+
+.analysis-status .error {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+/* Enhanced Conversation History */
+.conversation-history .message-timestamp {
+    margin-left: auto;
+    font-size: 0.8em;
+    color: #6b7280;
+    font-weight: normal;
+}
+
+/* Enhanced Modal Actions */
+.btn-warning {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Enhanced Code Display in Modals */
+.modal-content pre,
+.modal-content code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    color: #24292e !important;
+    background-color: #f8f9fa !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "calt" 0 !important;
+}
+
+.prompt-content pre,
+.context-content pre,
+.struct-context-content pre,
+.raw-response-content,
+.yaml-content {
+    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Source Code Pro', monospace !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: #2d3748 !important;
+    background-color: #f7fafc !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    -webkit-font-smoothing: subpixel-antialiased !important;
+    -moz-osx-font-smoothing: auto !important;
+    text-rendering: optimizeLegibility !important;
+    font-variant-ligatures: common-ligatures !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
+}
+
+/* Fix code highlighting in collapsed sections */
+.language-c,
+.language-yaml {
+    color: #2d3748 !important;
+    background: transparent !important;
+}
+
+/* Responsive Design for Enhanced Features */
+@media (max-width: 768px) {
+    .struct-workflow {
+        gap: 12px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .modal-actions button {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .btn-warning {
+        width: 100%;
+        justify-content: center;
     }
 }

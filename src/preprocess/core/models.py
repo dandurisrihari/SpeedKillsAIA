@@ -20,6 +20,7 @@ class FunctionEntry:
     file_path: str = ""  # File path where the function is located
     entry_type: str = "function_entry"
     function_code: Optional[str] = None  # Will contain extracted function source code
+    preprocessed_code: Optional[str] = None  # Will contain extracted .i file content
     call_count: int = 1  # Number of times this function was called
 
 
@@ -41,6 +42,7 @@ class DMAOperation:
     first_seen_time_str: str  # Human-readable timestamp format
     stack_trace: List[str] = field(default_factory=list)
     function_code: Optional[str] = None  # Will contain extracted function source code
+    preprocessed_code: Optional[str] = None  # Will contain extracted .i file content
     call_count: int = 1  # Number of times this DMA operation was called
 
 
@@ -55,6 +57,7 @@ class UserCopyOperation:
     first_seen_time_str: str  # Human-readable timestamp format
     process_info: Optional[ProcessInfo] = None
     function_code: Optional[str] = None  # Will contain extracted function source code
+    preprocessed_code: Optional[str] = None  # Will contain extracted .i file content
     call_count: int = 1  # Number of times this user copy operation was called
 
 
@@ -67,6 +70,7 @@ class IOCTLOperation:
     first_seen_timestamp: float
     first_seen_time_str: str  # Human-readable timestamp format
     function_code: Optional[str] = None  # Will contain extracted function source code
+    preprocessed_code: Optional[str] = None  # Will contain extracted .i file content
     call_count: int = 1  # Number of times this IOCTL operation was called
     
     def to_dict(self) -> Dict:
@@ -78,6 +82,7 @@ class IOCTLOperation:
             'first_seen_timestamp': self.first_seen_timestamp,
             'first_seen_time_str': self.first_seen_time_str,
             'function_code': self.function_code,
+            'preprocessed_code': self.preprocessed_code,
             'call_count': self.call_count
         }
 
@@ -237,10 +242,11 @@ class ParseResults:
     statistics: ParseStatistics
     memory_info: Optional[MemoryInfo] = None
     device_info: Optional[DeviceInfo] = None
+    # Newly added: extracted C struct/union definitions from preprocessed .i files
+    struct_definitions: Optional[List[Dict]] = None
 
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization"""
-        # Flatten functions_by_file into function_entries list
         function_entries = []
         for file_path, functions in self.functions_by_file.items():
             for func in functions:
@@ -252,9 +258,97 @@ class ParseResults:
                     'first_seen_time_str': func.first_seen_time_str,
                     'entry_type': func.entry_type,
                     'function_code': func.function_code,
+                    'preprocessed_code': func.preprocessed_code,
                     'call_count': func.call_count
                 })
-        
+
+        functions_by_file_dict = {
+            file_path: [
+                {
+                    'function_name': func.function_name,
+                    'line_number': func.line_number,
+                    'first_seen_timestamp': func.first_seen_timestamp,
+                    'first_seen_time_str': func.first_seen_time_str,
+                    'entry_type': func.entry_type,
+                    'function_code': func.function_code,
+                    'preprocessed_code': func.preprocessed_code,
+                    'call_count': func.call_count
+                }
+                for func in functions
+            ]
+            for file_path, functions in self.functions_by_file.items()
+        }
+
+        dma_ops = [
+            {
+                'dma_function': dma.dma_function,
+                'caller_function': dma.caller_function,
+                'file_path': dma.file_path,
+                'line_number': dma.line_number,
+                'first_seen_timestamp': dma.first_seen_timestamp,
+                'first_seen_time_str': dma.first_seen_time_str,
+                'stack_trace': dma.stack_trace,
+                'function_code': dma.function_code,
+                'preprocessed_code': dma.preprocessed_code,
+                'call_count': dma.call_count
+            }
+            for dma in self.dma_operations
+        ]
+
+        user_copy_ops = [
+            {
+                'copy_function': copy_op.copy_function,
+                'caller_function': copy_op.caller_function,
+                'file_path': copy_op.file_path,
+                'line_number': copy_op.line_number,
+                'first_seen_timestamp': copy_op.first_seen_timestamp,
+                'first_seen_time_str': copy_op.first_seen_time_str,
+                'function_code': copy_op.function_code,
+                'preprocessed_code': copy_op.preprocessed_code,
+                'call_count': copy_op.call_count,
+                'process_info': {
+                    'pid': copy_op.process_info.pid,
+                    'comm': copy_op.process_info.comm
+                } if copy_op.process_info else None
+            }
+            for copy_op in self.user_copy_operations
+        ]
+
+        ioctl_ops = [
+            {
+                'function_name': ioctl_op.function_name,
+                'file_path': ioctl_op.file_path,
+                'line_number': ioctl_op.line_number,
+                'first_seen_timestamp': ioctl_op.first_seen_timestamp,
+                'first_seen_time_str': ioctl_op.first_seen_time_str,
+                'function_code': ioctl_op.function_code,
+                'preprocessed_code': ioctl_op.preprocessed_code,
+                'call_count': ioctl_op.call_count
+            }
+            for ioctl_op in self.ioctl_operations
+        ]
+
+        stats_dict = {
+            'total_lines_processed': self.metadata.total_lines,
+            'unique_function_entries': self.statistics.unique_function_entries,
+            'unique_dma_operations': self.statistics.unique_dma_operations,
+            'unique_user_copy_operations': self.statistics.unique_user_copy_operations,
+            'unique_ioctl_operations': self.statistics.unique_ioctl_operations,
+            'total_function_entries_found': self.statistics.total_function_entries_found,
+            'total_dma_operations_found': self.statistics.total_dma_operations_found,
+            'total_user_copy_operations_found': self.statistics.total_user_copy_operations_found,
+            'total_ioctl_operations_found': self.statistics.total_ioctl_operations_found,
+            'function_entries_found': self.statistics.total_function_entries_found,
+            'dma_operations_found': self.statistics.total_dma_operations_found,
+            'user_copy_operations_found': self.statistics.total_user_copy_operations_found,
+            'ioctl_operations_found': self.statistics.total_ioctl_operations_found,
+            'files_with_functions_entrypoint_instrumented': self.statistics.files_with_functions_entrypoint_instrumented,
+            'total_files': self.statistics.total_files,
+            'files_need_analysis': self.statistics.files_need_analysis,
+            'files_instrumented_with_function_entries': self.statistics.files_instrumented_with_function_entries,
+            'total_duplicates_skipped': self.statistics.total_duplicates_skipped
+        }
+
         return {
             'metadata': {
                 'parser_version': self.metadata.parser_version,
@@ -265,84 +359,12 @@ class ParseResults:
                 'unique_entries': self.metadata.unique_entries
             },
             'function_entries': function_entries,
-            'functions_by_file': {
-                file_path: [
-                    {
-                        'function_name': func.function_name,
-                        'line_number': func.line_number,
-                        'first_seen_timestamp': func.first_seen_timestamp,
-                        'first_seen_time_str': func.first_seen_time_str,
-                        'entry_type': func.entry_type,
-                        'function_code': func.function_code,
-                        'call_count': func.call_count
-                    }
-                    for func in functions
-                ]
-                for file_path, functions in self.functions_by_file.items()
-            },
-            'dma_operations': [
-                {
-                    'dma_function': dma.dma_function,
-                    'caller_function': dma.caller_function,
-                    'file_path': dma.file_path,
-                    'line_number': dma.line_number,
-                    'first_seen_timestamp': dma.first_seen_timestamp,
-                    'first_seen_time_str': dma.first_seen_time_str,
-                    'stack_trace': dma.stack_trace,
-                    'function_code': dma.function_code,
-                    'call_count': dma.call_count
-                }
-                for dma in self.dma_operations
-            ],
-            'user_copy_operations': [
-                {
-                    'copy_function': copy_op.copy_function,
-                    'caller_function': copy_op.caller_function,
-                    'file_path': copy_op.file_path,
-                    'line_number': copy_op.line_number,
-                    'first_seen_timestamp': copy_op.first_seen_timestamp,
-                    'first_seen_time_str': copy_op.first_seen_time_str,
-                    'function_code': copy_op.function_code,
-                    'call_count': copy_op.call_count,
-                    'process_info': {
-                        'pid': copy_op.process_info.pid,
-                        'comm': copy_op.process_info.comm
-                    } if copy_op.process_info else None
-                }
-                for copy_op in self.user_copy_operations
-            ],
-            'ioctl_operations': [
-                {
-                    'function_name': ioctl_op.function_name,
-                    'file_path': ioctl_op.file_path,
-                    'line_number': ioctl_op.line_number,
-                    'first_seen_timestamp': ioctl_op.first_seen_timestamp,
-                    'first_seen_time_str': ioctl_op.first_seen_time_str,
-                    'function_code': ioctl_op.function_code,
-                    'call_count': ioctl_op.call_count
-                }
-                for ioctl_op in self.ioctl_operations
-            ],
-            'statistics': {
-                'total_lines_processed': self.metadata.total_lines,
-                'unique_function_entries': self.statistics.unique_function_entries,
-                'unique_dma_operations': self.statistics.unique_dma_operations,
-                'unique_user_copy_operations': self.statistics.unique_user_copy_operations,
-                'unique_ioctl_operations': self.statistics.unique_ioctl_operations,
-                'total_function_entries_found': self.statistics.total_function_entries_found,
-                'total_dma_operations_found': self.statistics.total_dma_operations_found,
-                'total_user_copy_operations_found': self.statistics.total_user_copy_operations_found,
-                'total_ioctl_operations_found': self.statistics.total_ioctl_operations_found,
-                'function_entries_found': self.statistics.total_function_entries_found,
-                'dma_operations_found': self.statistics.total_dma_operations_found,
-                'user_copy_operations_found': self.statistics.total_user_copy_operations_found,
-                'ioctl_operations_found': self.statistics.total_ioctl_operations_found,
-                'files_with_functions_entrypoint_instrumented': self.statistics.files_with_functions_entrypoint_instrumented,
-                'total_files': self.statistics.total_files,
-                'files_need_analysis': self.statistics.files_need_analysis,
-                'files_instrumented_with_function_entries': self.statistics.files_instrumented_with_function_entries,
-                'total_duplicates_skipped': self.statistics.total_duplicates_skipped
-            },
+            'functions_by_file': functions_by_file_dict,
+            'dma_operations': dma_ops,
+            'user_copy_operations': user_copy_ops,
+            'ioctl_operations': ioctl_ops,
+            'statistics': stats_dict,
             'memory_info': self.memory_info.to_dict() if self.memory_info else None,
-            'device_info': self.device_info.to_dict() if self.device_info else None
+            'device_info': self.device_info.to_dict() if self.device_info else None,
+            'struct_definitions': self.struct_definitions if self.struct_definitions else []
         }

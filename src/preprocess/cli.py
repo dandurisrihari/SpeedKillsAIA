@@ -11,16 +11,23 @@ import argparse
 from pathlib import Path
 from .tool import KernelLogParserTool
 from .core.engine import KernelLogParserEngine
+from .struct_tool import generate_struct_json, find_i_files
 
 
 def create_parser():
     """Create and return the argument parser"""
     parser = argparse.ArgumentParser(
-        description="Kernel Log Parser - Parse AI accelerator instrumentation logs"
+        description="Kernel Log Parser - Parse AI accelerator instrumentation logs and extract struct definitions"
     )
     
+    # Add subcommands
+    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+    
+    # Parse command (default behavior)
+    parse_parser = subparsers.add_parser('parse', help='Parse kernel log files')
+    
     # Use a mutually exclusive group for input methods
-    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group = parse_parser.add_mutually_exclusive_group(required=True)
     input_group.add_argument(
         "log_file", 
         nargs='?',
@@ -31,43 +38,69 @@ def create_parser():
         help="Path to the kernel log file to parse (alternative to positional argument)"
     )
     
-    parser.add_argument(
+    parse_parser.add_argument(
         "-o", "--output", 
         help="Output JSON file path (optional)"
     )
-    parser.add_argument(
+    parse_parser.add_argument(
         "--no-ui", 
         action="store_true",
         help="Disable progress UI"
     )
-    parser.add_argument(
+    parse_parser.add_argument(
         "--web-ui", 
         action="store_true",
         help="Start web UI after processing"
     )
-    parser.add_argument(
+    parse_parser.add_argument(
         "--source-root",
         help="Root path to prepend to relative file paths in logs (for function code extraction)"
     )
-    parser.add_argument(
+    parse_parser.add_argument(
         "--strace-log",
         help="Path to strace log file for device access analysis (processed after dmesg log)"
     )
-    parser.add_argument(
+    parse_parser.add_argument(
         "--quiet", 
         action="store_true",
         help="Suppress output and run quietly"
     )
-    parser.add_argument(
+    parse_parser.add_argument(
         "--verbose", 
         action="store_true",
         help="Enable verbose output"
     )
+    
+    # Struct extraction command
+    struct_parser = subparsers.add_parser('extract-structs', help='Extract struct definitions from .i files')
+    struct_parser.add_argument(
+        '--source-dir',
+        action='append',
+        help="Source directory to scan for .i files (can be used multiple times)"
+    )
+    struct_parser.add_argument(
+        '--files',
+        nargs='*',
+        help="Specific .i files to process"
+    )
+    struct_parser.add_argument(
+        '-o', '--output',
+        required=True,
+        help="Output JSON file path"
+    )
+    
     parser.add_argument(
         "--version", 
         action="version", 
         version="Kernel Log Parser 2.0.0"
     )
+    
+    # If no subcommand is provided, default to parse
+    if len(sys.argv) == 1 or (len(sys.argv) > 1 and not sys.argv[1].startswith('-') and sys.argv[1] not in ['parse', 'extract-structs']):
+        # Default to parse command for backward compatibility
+        if len(sys.argv) > 1 and not sys.argv[1] in ['parse', 'extract-structs']:
+            sys.argv.insert(1, 'parse')
+    
     return parser
 
 
@@ -106,10 +139,21 @@ def validate_arguments(args):
 
 
 def main():
-    """Simple CLI entry point"""
+    """Main CLI entry point with subcommands"""
     parser = create_parser()
     args = parser.parse_args()
     
+    # Handle different commands
+    command = getattr(args, 'command', 'parse')
+    
+    if command == 'extract-structs':
+        handle_struct_command(args)
+    else:  # default to parse
+        handle_parse_command(args)
+
+
+def handle_parse_command(args):
+    """Handle the parse command"""
     validate_arguments(args)
     
     # Get the validated log file path
@@ -179,6 +223,83 @@ def main():
     except Exception as e:
         print(f"Error parsing log file: {e}", file=sys.stderr)
         sys.exit(1)
+
+
+def handle_struct_command(args):
+    """Handle the extract-structs command"""
+    # Collect all files to process
+    files_to_process = []
+    
+    # Add files from source directories
+    if args.source_dir:
+        for source_dir_str in args.source_dir:
+            source_dir = Path(source_dir_str)
+            if not source_dir.exists():
+                print(f"❌ Source directory does not exist: {source_dir}")
+                sys.exit(1)
+            
+            i_files = find_i_files(source_dir)
+            files_to_process.extend(i_files)
+            print(f"🔍 Found {len(i_files)} .i files in {source_dir}")
+    
+    # Add specific files
+    if args.files:
+        for file_str in args.files:
+            file_path = Path(file_str)
+            if not file_path.exists():
+                print(f"❌ File does not exist: {file_path}")
+                sys.exit(1)
+            files_to_process.append(file_path)
+    
+    if not files_to_process:
+        print("❌ No .i files found to process")
+        print("Use --source-dir to scan directories or --files to specify individual files")
+        sys.exit(1)
+    
+    # Remove duplicates while preserving order
+    files_to_process = list(dict.fromkeys(files_to_process))
+    
+    # Generate the struct JSON
+    output_path = Path(args.output)
+    try:
+        generate_struct_json(files_to_process, output_path)
+        print(f"🎉 Struct extraction completed successfully!")
+    except Exception as e:
+        print(f"❌ Error generating struct JSON: {e}")
+        sys.exit(1)
+
+
+def validate_arguments(args):
+    """Validate command line arguments for parse command"""
+    # Determine which log file to use
+    log_file_path = args.input or args.log_file
+    if not log_file_path:
+        print("Error: Log file is required (use positional argument or --input)", file=sys.stderr)
+        sys.exit(1)
+    
+    # Validate input file
+    log_file = Path(log_file_path)
+    if not log_file.exists():
+        print(f"Error: Log file not found: {log_file}", file=sys.stderr)
+        sys.exit(1)
+    
+    # Update args to use the determined log file
+    if not args.log_file:
+        args.log_file = log_file_path
+    
+    # Validate strace log if provided
+    if args.strace_log:
+        strace_file = Path(args.strace_log)
+        if not strace_file.exists():
+            print(f"Error: Strace log file not found: {strace_file}", file=sys.stderr)
+            sys.exit(1)
+    
+    # Validate output directory if specified
+    if args.output:
+        output_path = Path(args.output)
+        if not output_path.parent.exists():
+            print(f"Error: Output directory does not exist: {output_path.parent}", file=sys.stderr)
+            sys.exit(1)
 
 
 if __name__ == "__main__":

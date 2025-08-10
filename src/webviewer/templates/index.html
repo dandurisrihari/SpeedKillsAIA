@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Kernel Log Analysis - {{ data.metadata.log_file }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/llm.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/visibility-fix.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tool-calling.css') }}">
+    <!-- Browser compatibility fixes -->
+    <script src="{{ url_for('static', filename='js/browser-compatibility.js') }}"></script>
 </head>
 <body>
     <div class="container">
@@ -68,7 +72,7 @@
                     <button class="tab" onclick="showTab('ioctl')">IOCTL Handlers</button>
                     <button class="tab" onclick="showTab('devices')">Device Access</button>
                     <button class="tab" onclick="showTab('memory')">Memory Info</button>
-                    <button class="tab" onclick="showTab('llmAnalysis')">Individual LLM Analysis</button>
+                    <button class="tab" onclick="showTab('llmAnalysis')">LLM Analysis</button>
                 </div>
                 
                 <!-- Analyze All Tab -->
@@ -817,7 +821,43 @@
                                 
                                 <div class="form-group">
                                     <label for="customPrompt">Custom Analysis Prompt (Optional):</label>
-                                    <textarea id="customPrompt" placeholder="e.g., 'Focus on potential buffer overflow vulnerabilities', 'Analyze for race conditions', etc." rows="3"></textarea>
+                                    <textarea id="customPrompt" placeholder="e.g., 'Focus on potential buffer overflow vulnerabilities', 'Analyze for race conditions', 'Identify messaging structs and SMIDs', etc." rows="3"></textarea>
+                                    <div class="prompt-suggestions">
+                                        <h5>💡 Suggested Analysis Focus Areas:</h5>
+                                        <div class="suggestion-buttons">
+                                            <button type="button" class="suggestion-btn" onclick="setPrompt('Focus on Message Structure Handling: Identify messaging structs, SMIDs, and communication patterns')">📨 Message Structures & SMIDs</button>
+                                            <button type="button" class="suggestion-btn" onclick="setPrompt('Analyze for buffer overflow vulnerabilities and memory safety issues')">🔒 Memory Safety</button>
+                                            <button type="button" class="suggestion-btn" onclick="setPrompt('Focus on DMA operations and potential memory mapping issues')">💾 DMA Operations</button>
+                                            <button type="button" class="suggestion-btn" onclick="setPrompt('Identify race conditions and concurrency issues')">⚡ Concurrency Analysis</button>
+                                            <button type="button" class="suggestion-btn" onclick="setPrompt('Look for IOCTL vulnerabilities and input validation issues')">🔧 IOCTL Security</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Dynamic Struct Request Controls -->
+                                <div class="form-group dynamic-struct-controls">
+                                    <h4>🔍 Dynamic Struct Analysis</h4>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="enableDynamicStructs" checked>
+                                            <span class="checkmark"></span>
+                                            Enable dynamic struct requests during analysis
+                                        </label>
+                                        <small class="help-text">
+                                            When enabled, the LLM can request additional struct definitions from .i files if needed
+                                        </small>
+                                    </div>
+                                    <div class="form-row" id="structRequestSettings">
+                                        <div class="form-col">
+                                            <label for="maxStructRequests">Max struct requests:</label>
+                                            <select id="maxStructRequests">
+                                                <option value="3">3 requests</option>
+                                                <option value="5" selected>5 requests</option>
+                                                <option value="7">7 requests</option>
+                                                <option value="10">10 requests</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 
                                 <div class="form-group">
@@ -922,6 +962,112 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Tool Calling Tab -->
+                <div id="toolCalling" class="tab-content">
+                    <div class="section">
+                        <div class="section-title">🔧 LLM Tool Calling Monitor</div>
+                        <p>Monitor and control LLM tool calling requests for code information during analysis</p>
+                        
+                        <!-- Tool Calling Configuration -->
+                        <div class="tool-calling-config">
+                            <h4>Configuration</h4>
+                            <div class="config-controls">
+                                <div class="control-group">
+                                    <label for="toolMaxTokens">Max Tokens per Response:</label>
+                                    <select id="toolMaxTokens">
+                                        <option value="2000">2,000 tokens</option>
+                                        <option value="4000" selected>4,000 tokens</option>
+                                        <option value="8000">8,000 tokens</option>
+                                        <option value="16000">16,000 tokens</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label for="toolMaxDepth">Max Request Depth:</label>
+                                    <select id="toolMaxDepth">
+                                        <option value="1">1 level</option>
+                                        <option value="3" selected>3 levels</option>
+                                        <option value="5">5 levels</option>
+                                        <option value="10">10 levels</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="confirmLargeResponses" checked>
+                                        <span class="checkmark"></span>
+                                        Ask for confirmation on large responses
+                                    </label>
+                                </div>
+                                <div class="control-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="usePreprocessed" checked>
+                                        <span class="checkmark"></span>
+                                        Use preprocessed .i files (recommended)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Manual Tool Call Testing -->
+                        <div class="manual-tool-test">
+                            <h4>Test Tool Calling</h4>
+                            <div class="test-controls">
+                                <div class="control-group">
+                                    <label for="testRequestType">Request Type:</label>
+                                    <select id="testRequestType">
+                                        <option value="function">Function</option>
+                                        <option value="struct">Struct</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label for="testRequestName">Name:</label>
+                                    <input type="text" id="testRequestName" placeholder="e.g., copy_from_user or task_struct">
+                                </div>
+                                <div class="control-group">
+                                    <label for="testRequestFile">File (optional):</label>
+                                    <input type="text" id="testRequestFile" placeholder="e.g., mm/memory.c">
+                                </div>
+                                <button class="test-btn" onclick="testToolCall()">Test Tool Call</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Request/Response History -->
+                        <div class="tool-calling-history">
+                            <div class="history-header">
+                                <h4>Request/Response History</h4>
+                                <div class="history-controls">
+                                    <button class="refresh-btn" onclick="refreshToolHistory()">🔄 Refresh</button>
+                                    <button class="clear-btn" onclick="clearToolHistory()">🗑️ Clear</button>
+                                </div>
+                            </div>
+                            
+                            <div class="history-stats" id="toolHistoryStats">
+                                <!-- Stats will be populated by JS -->
+                            </div>
+                            
+                            <div class="history-list" id="toolHistoryList">
+                                <div class="no-history">No tool calling history yet</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Active Confirmation Request -->
+                        <div id="confirmationModal" class="confirmation-modal" style="display: none;">
+                            <div class="confirmation-content">
+                                <h4>⚠️ Large Response Detected</h4>
+                                <div class="confirmation-details">
+                                    <p>The LLM has requested code that may exceed the context length limit:</p>
+                                    <ul id="confirmationDetails">
+                                        <!-- Details will be populated by JS -->
+                                    </ul>
+                                </div>
+                                <div class="confirmation-actions">
+                                    <button class="confirm-btn approve" onclick="confirmToolCall(true)">✅ Continue Anyway</button>
+                                    <button class="confirm-btn cancel" onclick="confirmToolCall(false)">❌ Cancel Request</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -929,5 +1075,6 @@
         <!-- Enhanced Main JavaScript -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/llm.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tool-calling.js') }}"></script>
 </body>
 </html>

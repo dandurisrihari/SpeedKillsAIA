@@ -50,6 +50,19 @@ def create_app():
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.jinja_env.auto_reload = True
     
+    # Add CORS headers for browser compatibility
+    @app.after_request
+    def after_request(response):
+        # Allow cross-origin requests from any domain (for development)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        # Security headers for better browser compatibility
+        response.headers.add('X-Content-Type-Options', 'nosniff')
+        response.headers.add('X-Frame-Options', 'DENY')
+        response.headers.add('X-XSS-Protection', '1; mode=block')
+        return response
+    
     register_routes(app)
     return app
 
@@ -135,6 +148,34 @@ def register_routes(app):
                     return render_template('upload.html', error=f"Error processing file: {str(e)}")
             else:
                 return render_template('upload.html', error="Please select a JSON file")
+
+    # Handle OPTIONS requests for CORS preflight
+    @app.route('/api/<path:path>', methods=['OPTIONS'])
+    @app.route('/api/', methods=['OPTIONS'])
+    def handle_options(path=None):
+        """Handle CORS preflight requests"""
+        response = jsonify({'status': 'ok'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        return response
+
+    # Add missing tool-calling endpoints that don't require LLM
+    @app.route('/api/tool-calling/config', methods=['GET'])
+    def api_tool_calling_config_fallback():
+        """Fallback tool-calling config endpoint"""
+        return jsonify({
+            'enabled': False,
+            'reason': 'LLM not available or not configured'
+        })
+
+    @app.route('/api/tool-calling/history', methods=['GET'])
+    def api_tool_calling_history_fallback():
+        """Fallback tool-calling history endpoint"""
+        return jsonify({
+            'history': [],
+            'count': 0
+        })
         
         # GET request - show upload form
         return render_template('upload.html')
@@ -332,7 +373,190 @@ def register_routes(app):
 
     @app.route('/api/llm/analyze/function', methods=['POST'])
     def api_llm_analyze_function():
-        """Analyze function with LLM"""
+        print("[Debug sri] Analyzing function with LLM")
+
+        logging.basicConfig(level=logging.DEBUG)
+        logging.debug("[Debug sri] Analyzing function with LLM")
+
+        """Analyze function with LLM and interactive confirmation support"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        function_name = data.get('function_name')
+        source_code = data.get('source_code')
+        preprocessed_code = data.get('preprocessed_code', '')
+        file_path = data.get('file_path', '')
+        custom_prompt = data.get('custom_prompt', '')
+        model_id = data.get('model_id', 'gpt-3.5-turbo')
+        additional_context = data.get('additional_context', '')
+        confirmation_approved = data.get('confirmation_approved', False)  # For handling confirmations
+        
+        if not function_name or not source_code:
+            return jsonify({"error": "Function name and source code required"}), 400
+        
+        # Build enhanced context with preprocessed code if available
+        enhanced_context = ""
+        
+        # Add preprocessed code from JSON if available
+        if preprocessed_code and preprocessed_code.strip() != source_code.strip():
+            enhanced_context += f"/* ==== Preprocessed Code (.i file) Start ==== */\n{preprocessed_code}\n/* ==== Preprocessed Code End ==== */\n\n"
+        
+        # Add any additional context provided by tool calling
+        if additional_context:
+            enhanced_context += f"/* ==== Supplemental Context Start ==== */\n{additional_context}\n/* ==== Supplemental Context End ==== */\n\n"
+        
+        logging.debug(f"Enhanced context for {function_name}:\n{enhanced_context}")
+        
+        # Store pending confirmation in session if needed
+        def interactive_confirmation_callback(confirmation_data):
+            # Store confirmation data in session
+            session['pending_confirmation'] = confirmation_data
+            # Return False to pause processing - client will need to call with approval
+            return confirmation_approved
+        
+        # Auto-extract struct definitions for IOCTL and Message Structure Handling analysis
+        if file_path and ('ioctl' in function_name.lower() or 'copy_' in function_name.lower()):
+            try:
+                from src.llm_analysis.tool_calling import SourceCodeExtractor
+                import re
+                
+                # Look for potential struct names in the source code
+                struct_patterns = [
+                    r'struct\s+(\w+)',
+                    r'copy_from_user.*?&(\w+)',
+                    r'copy_to_user.*?&(\w+)',
+                    r'(\w*ioctl\w*_\w+)',
+                    r'(\w*_data)',
+                    r'(\w*_info)',
+                    r'(\w*_req)',
+                    r'(\w*_resp)'
+                ]
+                
+                potential_structs = set()
+                combined_source = source_code + (preprocessed_code or '')
+                
+                for pattern in struct_patterns:
+                    matches = re.findall(pattern, combined_source, re.IGNORECASE)
+                    potential_structs.update(matches)
+                
+                # Try to extract struct definitions
+                if potential_structs and global_data and 'metadata' in global_data:
+                    source_root = global_data['metadata'].get('source_root', 'data/kernel_sources/')
+                    
+                    try:
+                        extractor = SourceCodeExtractor(source_root, use_preprocessed=True)
+                        struct_context = ""
+                        
+                        for struct_name in list(potential_structs)[:3]:  # Limit to 3 structs
+                            try:
+                                response = extractor.extract_struct(struct_name)
+                                if response.status == "success" and response.content:
+                                    struct_context += f"/* ==== Auto-extracted Struct Definition: {struct_name} ==== */\n{response.content}\n\n"
+                            except Exception:
+                                continue
+                        
+                        if struct_context:
+                            enhanced_context += struct_context
+                    except Exception:
+                        pass  # Silently fail - auto struct extraction is optional
+                        
+            except Exception:
+                pass  # Silently fail - auto struct extraction is optional
+        
+        # Combine all context with the original source code
+        if enhanced_context:
+            source_code = enhanced_context + f"/* ==== Original Source Code Start ==== */\n{source_code}\n/* ==== Original Source Code End ==== */"
+
+        analyzer = LLMAnalyzer(model_id=model_id, data_dir="data")
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        # Call with interactive callback support
+        result = analyzer.analyze_function(
+            function_name, source_code, file_path, custom_prompt, 
+            model_id, for_web_ui=True, interactive_callback=interactive_confirmation_callback
+        )
+        
+        # Check if confirmation is needed
+        if not confirmation_approved and session.get('pending_confirmation'):
+            confirmation_data = session['pending_confirmation']
+            return jsonify({
+                "requires_confirmation": True,
+                "confirmation_data": confirmation_data,
+                "function_name": function_name,
+                "file_path": file_path
+            })
+        
+        return jsonify(result)
+    
+    @app.route('/api/llm/analyze/function-confirm', methods=['POST'])
+    def api_llm_analyze_function_confirm():
+        """Handle user confirmation for large analysis requests"""
+        if not LLM_AVAILABLE:
+            return jsonify({"error": "LLM analysis not available"}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        approved = data.get('approved', False)
+        
+        if not approved:
+            # Clear pending confirmation
+            session.pop('pending_confirmation', None)
+            return jsonify({"success": False, "message": "Analysis cancelled by user"})
+        
+        # Get the original request data
+        confirmation_data = session.get('pending_confirmation')
+        if not confirmation_data:
+            return jsonify({"error": "No pending confirmation found"}), 400
+        
+        # Re-run the analysis with approval
+        original_request = {
+            'function_name': confirmation_data.get('function_name'),
+            'source_code': data.get('source_code', ''),  # Client should re-send source code
+            'file_path': confirmation_data.get('file_path'),
+            'custom_prompt': data.get('custom_prompt', ''),
+            'model_id': confirmation_data.get('model'),
+            'confirmation_approved': True
+        }
+        
+        # Clear the pending confirmation
+        session.pop('pending_confirmation', None)
+        
+        # Call the analyze function endpoint with approval
+        return api_llm_analyze_function_with_data(original_request)
+    
+    def api_llm_analyze_function_with_data(data):
+        """Internal helper for analyze function with data dict"""
+        function_name = data.get('function_name')
+        source_code = data.get('source_code')
+        file_path = data.get('file_path', '')
+        custom_prompt = data.get('custom_prompt', '')
+        model_id = data.get('model_id', 'gpt-3.5-turbo')
+        confirmation_approved = data.get('confirmation_approved', False)
+        
+        def interactive_confirmation_callback(confirmation_data):
+            return confirmation_approved
+        
+        analyzer = LLMAnalyzer(model_id=model_id, data_dir="data")
+        if not analyzer.is_available():
+            return jsonify({"error": "OpenAI API key not configured"}), 503
+        
+        result = analyzer.analyze_function(
+            function_name, source_code, file_path, custom_prompt, 
+            model_id, for_web_ui=True, interactive_callback=interactive_confirmation_callback
+        )
+        
+        return jsonify(result)
+
+    @app.route('/api/llm/analyze/function-enhanced', methods=['POST'])
+    def api_llm_analyze_function_enhanced():
+        """Analyze function with LLM using dynamic struct requests during analysis"""
         if not LLM_AVAILABLE:
             return jsonify({"error": "LLM analysis not available"}), 503
         
@@ -345,16 +569,27 @@ def register_routes(app):
         file_path = data.get('file_path', '')
         custom_prompt = data.get('custom_prompt', '')
         model_id = data.get('model_id', 'gpt-3.5-turbo')
+        enable_dynamic_structs = data.get('enable_dynamic_structs', True)
+        max_struct_requests = data.get('max_struct_requests', 5)
         
         if not function_name or not source_code:
             return jsonify({"error": "Function name and source code required"}), 400
         
-        analyzer = LLMAnalyzer(model_id=model_id)
+        # Initialize analyzer with dynamic struct support
+        analyzer = LLMAnalyzer(model_id=model_id, data_dir="data", enable_dynamic_structs=enable_dynamic_structs)
         if not analyzer.is_available():
             return jsonify({"error": "OpenAI API key not configured"}), 503
         
-        result = analyzer.analyze_function(function_name, source_code, file_path, custom_prompt, 
-                                         model_id, for_web_ui=True)
+        # Use dynamic struct analysis if enabled
+        if enable_dynamic_structs:
+            result = analyzer.analyze_function_with_dynamic_structs(
+                function_name, source_code, file_path, custom_prompt, model_id, max_struct_requests
+            )
+        else:
+            # Fallback to regular analysis
+            result = analyzer.analyze_function(function_name, source_code, file_path, custom_prompt, 
+                                             model_id, for_web_ui=True)
+        
         return jsonify(result)
 
     @app.route('/api/llm/analyze/dma', methods=['POST'])
@@ -369,20 +604,444 @@ def register_routes(app):
         
         dma_operation = data.get('dma_operation')
         function_code = data.get('function_code', '')
+        preprocessed_code = data.get('preprocessed_code', '')
         call_graph = data.get('call_graph', [])
         custom_prompt = data.get('custom_prompt', '')
         model_id = data.get('model_id', 'gpt-3.5-turbo')
+        additional_context = data.get('additional_context', '')
         
         if not dma_operation:
             return jsonify({"error": "DMA operation data required"}), 400
         
-        analyzer = LLMAnalyzer(model_id=model_id)
+        # Build enhanced context with preprocessed code if available
+        enhanced_function_code = function_code
+        if preprocessed_code and preprocessed_code.strip() != function_code.strip():
+            enhanced_function_code = f"/* ==== Preprocessed Code (.i file) Start ==== */\n{preprocessed_code}\n/* ==== Preprocessed Code End ==== */\n\n/* ==== Original Source Code Start ==== */\n{function_code}\n/* ==== Original Source Code End ==== */"
+        
+        # Add any additional context from struct/function requests
+        if additional_context:
+            enhanced_function_code = f"/* ==== Additional Context Start ==== */\n{additional_context}\n/* ==== Additional Context End ==== */\n\n{enhanced_function_code}"
+        
+        # Auto-extract struct definitions for DMA operations
+        dma_func_name = dma_operation.get('dma_function', '')
+        if dma_func_name:
+            try:
+                from src.llm_analysis.tool_calling import SourceCodeExtractor
+                import re
+                
+                # Look for DMA-related struct patterns
+                struct_patterns = [
+                    r'struct\s+(\w*dma\w*)',
+                    r'struct\s+(\w*buffer\w*)',
+                    r'struct\s+(\w*mem\w*)',
+                    r'(\w*_desc)',
+                    r'(\w*_req)',
+                    r'(\w*_data)'
+                ]
+                
+                potential_structs = set()
+                combined_source = enhanced_function_code + (preprocessed_code or '')
+                
+                for pattern in struct_patterns:
+                    matches = re.findall(pattern, combined_source, re.IGNORECASE)
+                    potential_structs.update(matches)
+                
+                # Try to extract struct definitions
+                if potential_structs and global_data and 'metadata' in global_data:
+                    source_root = global_data['metadata'].get('source_root', 'data/kernel_sources/')
+                    
+                    try:
+                        extractor = SourceCodeExtractor(source_root, use_preprocessed=True)
+                        struct_context = ""
+                        
+                        for struct_name in list(potential_structs)[:2]:  # Limit to 2 structs
+                            try:
+                                response = extractor.extract_struct(struct_name)
+                                if response.status == "success" and response.content:
+                                    struct_context += f"/* ==== Auto-extracted DMA Struct: {struct_name} ==== */\n{response.content}\n\n"
+                            except Exception:
+                                continue
+                        
+                        if struct_context:
+                            enhanced_function_code = struct_context + enhanced_function_code
+                    except Exception:
+                        pass  # Silently fail
+                        
+            except Exception:
+                pass  # Silently fail
+        
+        analyzer = LLMAnalyzer(model_id=model_id, data_dir="data")
         if not analyzer.is_available():
             return jsonify({"error": "OpenAI API key not configured"}), 503
         
-        result = analyzer.analyze_dma_operation(dma_operation, function_code, call_graph, 
+        result = analyzer.analyze_dma_operation(dma_operation, enhanced_function_code, call_graph, 
                                               custom_prompt, model_id, for_web_ui=True)
         return jsonify(result)
+
+    @app.route('/api/context/fetch', methods=['POST'])
+    def api_context_fetch():
+        """Fetch additional C context (functions/structs) for LLM from source tree.
+
+        Request JSON:
+        {
+          "requests": [{"type": "function"|"struct", "name": "foo", "file_path": "path.c", "line_number": 123}],
+          "max_items": 3,
+          "source_root": "/path/to/src",    # optional, falls back to env SOURCE_ROOT or None
+          "prefer_preprocessed": true         # search *.i files first for struct definitions
+        }
+        """
+        payload = request.get_json(silent=True) or {}
+        reqs = payload.get('requests', [])
+        max_items = int(payload.get('max_items', 3) or 3)
+        source_root = payload.get('source_root') or os.environ.get('SOURCE_ROOT')
+        prefer_pre = bool(payload.get('prefer_preprocessed', True))
+
+        if not isinstance(reqs, list) or len(reqs) == 0:
+            return jsonify({"error": "requests array required"}), 400
+
+        # Local helper: brace-matching extract for struct in text
+        def extract_struct_from_text(text: str, struct_name: str) -> str:
+            import re
+            pattern = re.compile(rf"\bstruct\s+{re.escape(struct_name)}\s*\{{", re.MULTILINE)
+            m = pattern.search(text)
+            if not m:
+                return ''
+            start = m.start()
+            # Find matching closing brace followed by semicolon
+            brace = 0
+            i = m.end() - 1
+            while i < len(text):
+                if text[i] == '{':
+                    brace += 1
+                elif text[i] == '}':
+                    brace -= 1
+                    if brace == 0:
+                        # include trailing semicolon if present
+                        j = i + 1
+                        while j < len(text) and text[j].isspace():
+                            j += 1
+                        if j < len(text) and text[j] == ';':
+                            j += 1
+                        return text[start:j]
+                i += 1
+            return ''
+
+        # Initialize function extractor if available
+        func_extractor = None
+        try:
+            from src.preprocess.utils.function_extractor import FunctionCodeExtractor  # type: ignore
+            func_extractor = FunctionCodeExtractor(source_root_path=source_root)
+        except Exception:
+            func_extractor = None
+
+        responses = []
+        processed = 0
+        for r in reqs:
+            if processed >= max_items:
+                break
+            rtype = (r.get('type') or '').lower()
+            name = r.get('name')
+            fpath = r.get('file_path')
+            line_number = r.get('line_number')
+            item = {"request": r, "status": "not_found", "content": "", "location": None}
+
+            try:
+                if rtype == 'function':
+                    code = ''
+                    # Prefer precise extraction if line_number provided
+                    if func_extractor and fpath and line_number:
+                        data = func_extractor.extract_function_at_line(fpath, int(line_number))
+                        if data:
+                            _, code, start_line, end_line = data
+                            item["location"] = {"file_path": fpath, "start_line": start_line, "end_line": end_line}
+                            code = code or ''
+                    # Fallback: naive search by name in file
+                    if not code and fpath and source_root:
+                        full = os.path.join(source_root, fpath) if not os.path.isabs(fpath) else fpath
+                        if os.path.exists(full):
+                            with open(full, 'r', encoding='utf-8', errors='ignore') as fh:
+                                text = fh.read()
+                            # crude heuristic: find function name and then capture braces
+                            import re
+                            m = re.search(rf"\b{name}\s*\(", text)
+                            if m:
+                                # find next '{' and match braces
+                                i = text.find('{', m.end())
+                                if i != -1:
+                                    brace = 0
+                                    j = i
+                                    while j < len(text):
+                                        if text[j] == '{':
+                                            brace += 1
+                                        elif text[j] == '}':
+                                            brace -= 1
+                                            if brace == 0:
+                                                j += 1
+                                                code = text[m.start():j]
+                                                break
+                                        j += 1
+                    if code:
+                        item["status"] = "ok"
+                        item["content"] = code
+                        responses.append(item)
+                        processed += 1
+                        continue
+
+                elif rtype == 'struct' and name:
+                    text = ''
+                    # Search .i preprocessed files first if preferred
+                    candidate_paths = []
+                    if fpath:
+                        candidate_paths.append(fpath)
+                    if source_root:
+                        # Expand to .i variant when possible
+                        if fpath and fpath.endswith('.c'):
+                            candidate_paths.insert(0, fpath[:-2] + '.i')
+                    for cand in candidate_paths:
+                        full = os.path.join(source_root, cand) if source_root and not os.path.isabs(cand) else cand
+                        if os.path.exists(full):
+                            with open(full, 'r', encoding='utf-8', errors='ignore') as fh:
+                                t = fh.read()
+                            s = extract_struct_from_text(t, name)
+                            if s:
+                                text = s
+                                item["location"] = {"file_path": cand}
+                                break
+                    # If still not found, scan all .i or .c under source_root (bounded)
+                    if not text and source_root:
+                        search_exts = ['.i', '.h', '.c'] if prefer_pre else ['.h', '.c', '.i']
+                        limit = 50
+                        count = 0
+                        for root, _, files in os.walk(source_root):
+                            for fn in files:
+                                if any(fn.endswith(ext) for ext in search_exts):
+                                    full = os.path.join(root, fn)
+                                    try:
+                                        with open(full, 'r', encoding='utf-8', errors='ignore') as fh:
+                                            t = fh.read()
+                                        s = extract_struct_from_text(t, name)
+                                        if s:
+                                            text = s
+                                            item["location"] = {"file_path": os.path.relpath(full, source_root)}
+                                            break
+                                    except Exception:
+                                        pass
+                                    count += 1
+                                    if count >= 2000:
+                                        break
+                            if text or count >= 2000:
+                                break
+                    if text:
+                        item["status"] = "ok"
+                        item["content"] = text
+                        responses.append(item)
+                        processed += 1
+                        continue
+
+                # default not found path
+                responses.append(item)
+                processed += 1
+            except Exception as e:
+                item["status"] = "error"
+                item["error"] = str(e)
+                responses.append(item)
+                processed += 1
+
+        return jsonify({"responses": responses, "processed": processed})
+    
+    @app.route('/api/llm/tool-calling/request', methods=['POST'])
+    def api_llm_tool_calling_request():
+        """Handle LLM tool calling requests for code information"""
+        try:
+            from src.llm_analysis.tool_calling import LLMToolCaller
+        except ImportError:
+            return jsonify({"error": "Tool calling not available"}), 503
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        # Get source root from global data or request
+        source_root = data.get('source_root')
+        if not source_root and global_data and global_data.get('metadata'):
+            # Try to infer from file paths
+            functions = global_data.get('function_entries', [])
+            if functions:
+                first_file = functions[0].get('file_path', '')
+                if first_file:
+                    # Try to find common root
+                    import os
+                    source_root = os.path.dirname(first_file)
+        
+        if not source_root:
+            return jsonify({"error": "Source root path required"}), 400
+        
+        max_depth = data.get('max_depth', 3)
+        use_preprocessed = data.get('use_preprocessed', True)
+        max_tokens = data.get('max_tokens', 4000)
+        
+        # Check if user confirmation is needed
+        confirm_large_responses = data.get('confirm_large_responses', True)
+        user_confirmation = data.get('user_confirmation', None)
+        
+        def user_confirmation_callback(req, resp):
+            """Handle user confirmation for large responses"""
+            if not confirm_large_responses:
+                return True  # Auto-approve
+            
+            if user_confirmation is not None:
+                return user_confirmation  # Use provided confirmation
+            
+            # Return False to require manual confirmation via separate endpoint
+            return False
+        
+        # Initialize tool caller with confirmation callback
+        tool_caller = LLMToolCaller(
+            source_root, 
+            max_depth, 
+            use_preprocessed, 
+            max_tokens,
+            user_confirmation_callback if confirm_large_responses else None
+        )
+        
+        # Handle the request
+        response = tool_caller.handle_request(data)
+        
+        # Store tool caller in session for history
+        if 'tool_calling_history' not in session:
+            session['tool_calling_history'] = []
+        
+        session['tool_calling_history'].append({
+            'request': data,
+            'response': response,
+            'timestamp': datetime.now().isoformat()
+        })
+        
+        # Limit history size
+        if len(session['tool_calling_history']) > 50:
+            session['tool_calling_history'] = session['tool_calling_history'][-50:]
+        
+        return jsonify(response)
+    
+    @app.route('/api/llm/tool-calling/confirm', methods=['POST'])
+    def api_llm_tool_calling_confirm():
+        """Handle user confirmation for large tool calling responses"""
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        request_id = data.get('request_id')
+        confirm = data.get('confirm', False)
+        
+        if not request_id:
+            return jsonify({"error": "Request ID required"}), 400
+        
+        # Re-run the request with user confirmation
+        original_request = data.get('original_request', {})
+        original_request['user_confirmation'] = confirm
+        original_request['request_id'] = request_id
+        
+        # Process the confirmed request
+        return api_llm_tool_calling_request()
+    
+    @app.route('/api/llm/tool-calling/history', methods=['GET'])
+    def api_llm_tool_calling_history():
+        """Get tool calling request/response history"""
+        history = session.get('tool_calling_history', [])
+        
+        # Add statistics
+        stats = {
+            'total_requests': len(history),
+            'successful_requests': sum(1 for h in history if h.get('response', {}).get('status') == 'success'),
+            'size_warnings': sum(1 for h in history if h.get('response', {}).get('size_warning', False)),
+            'truncated_responses': sum(1 for h in history if h.get('response', {}).get('truncated', False))
+        }
+        
+        return jsonify({
+            "history": history,
+            "stats": stats
+        })
+    
+    @app.route('/api/llm/tool-calling/clear-history', methods=['POST'])
+    def api_llm_tool_calling_clear_history():
+        """Clear tool calling history"""
+        session['tool_calling_history'] = []
+        return jsonify({"status": "success"})
+    
+    @app.route('/api/llm/tool-calling/config', methods=['GET', 'POST'])
+    def api_llm_tool_calling_config():
+        """Get or set tool calling configuration"""
+        if request.method == 'GET':
+            config = session.get('tool_calling_config', {
+                "max_depth": 3,
+                "use_preprocessed": True,
+                "max_tokens": 4000,
+                "confirm_large_responses": True,
+                "source_root": None
+            })
+            return jsonify(config)
+        else:
+            data = request.get_json()
+            session['tool_calling_config'] = data
+            return jsonify({"status": "success", "config": data})
+    
+    @app.route('/api/struct-definition', methods=['POST'])
+    def api_struct_definition():
+        """Get struct definition from source files"""
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request data required"}), 400
+        
+        struct_name = data.get('struct_name')
+        file_hint = data.get('file_hint', '')
+        prefer_preprocessed = data.get('prefer_preprocessed', True)
+        
+        if not struct_name:
+            return jsonify({"error": "Struct name required"}), 400
+        
+        # Try to get source root from global data metadata
+        source_root = None
+        if global_data and 'metadata' in global_data:
+            # Try to infer source root from file paths
+            if 'source_root' in global_data['metadata']:
+                source_root = global_data['metadata']['source_root']
+            else:
+                # Attempt to infer from function entries
+                if global_data.get('function_entries'):
+                    first_entry = global_data['function_entries'][0]
+                    file_path = first_entry.get('file_path', '')
+                    if '/' in file_path:
+                        # Try to find a reasonable source root
+                        source_root = 'data/kernel_sources/'
+        
+        if not source_root:
+            return jsonify({"error": "Source root not available"}), 400
+        
+        try:
+            from src.llm_analysis.tool_calling import SourceCodeExtractor
+            
+            extractor = SourceCodeExtractor(
+                source_root=source_root,
+                use_preprocessed=prefer_preprocessed
+            )
+            
+            response = extractor.extract_struct(struct_name, file_hint)
+            
+            return jsonify({
+                "status": response.status,
+                "struct_name": struct_name,
+                "content": response.content,
+                "location": response.location,
+                "error": response.error,
+                "file_hint": file_hint,
+                "prefer_preprocessed": prefer_preprocessed
+            })
+            
+        except Exception as e:
+            return jsonify({
+                "error": f"Struct extraction failed: {str(e)}",
+                "status": "error"
+            }), 500
 
     @app.route('/api/llm/analyze/user-copy', methods=['POST'])
     def api_llm_analyze_user_copy():
@@ -402,7 +1061,7 @@ def register_routes(app):
         if not user_copy_operation:
             return jsonify({"error": "User copy operation data required"}), 400
         
-        analyzer = LLMAnalyzer(model_id=model_id)
+        analyzer = LLMAnalyzer(model_id=model_id, data_dir="data")
         if not analyzer.is_available():
             return jsonify({"error": "OpenAI API key not configured"}), 503
         
@@ -422,17 +1081,28 @@ def register_routes(app):
         
         ioctl_operation = data.get('ioctl_operation')
         function_code = data.get('function_code', '')
+        preprocessed_code = data.get('preprocessed_code', '')
         custom_prompt = data.get('custom_prompt', '')
         model_id = data.get('model_id', 'gpt-3.5-turbo')
+        additional_context = data.get('additional_context', '')
         
         if not ioctl_operation:
             return jsonify({"error": "IOCTL operation data required"}), 400
         
-        analyzer = LLMAnalyzer(model_id=model_id)
+        # Build enhanced context with preprocessed code if available
+        enhanced_function_code = function_code
+        if preprocessed_code and preprocessed_code.strip() != function_code.strip():
+            enhanced_function_code = f"/* ==== Preprocessed Code (.i file) Start ==== */\n{preprocessed_code}\n/* ==== Preprocessed Code End ==== */\n\n/* ==== Original Source Code Start ==== */\n{function_code}\n/* ==== Original Source Code End ==== */"
+        
+        # Add any additional context from struct/function requests
+        if additional_context:
+            enhanced_function_code = f"/* ==== Additional Context Start ==== */\n{additional_context}\n/* ==== Additional Context End ==== */\n\n{enhanced_function_code}"
+        
+        analyzer = LLMAnalyzer(model_id=model_id, data_dir="data")
         if not analyzer.is_available():
             return jsonify({"error": "OpenAI API key not configured"}), 503
         
-        result = analyzer.analyze_ioctl_handler(ioctl_operation, function_code, 
+        result = analyzer.analyze_ioctl_handler(ioctl_operation, enhanced_function_code, 
                                               custom_prompt, model_id, for_web_ui=True)
         return jsonify(result)
 
@@ -454,7 +1124,7 @@ def register_routes(app):
         if not logs:
             return jsonify({"error": "Logs data required"}), 400
         
-        analyzer = LLMAnalyzer(model_id=model_id)
+        analyzer = LLMAnalyzer(model_id=model_id, data_dir="data")
         if not analyzer.is_available():
             return jsonify({"error": "OpenAI API key not configured"}), 503
         
@@ -478,7 +1148,7 @@ def register_routes(app):
         if all_data is None:
             return jsonify({"error": "No data loaded"}), 404
         
-        analyzer = LLMAnalyzer(model_id=model_id)
+        analyzer = LLMAnalyzer(model_id=model_id, data_dir="data")
         if not analyzer.is_available():
             return jsonify({"error": "OpenAI API key not configured"}), 503
         
@@ -694,39 +1364,50 @@ def register_routes(app):
         """API endpoint for comprehensive analysis"""
         global parsed_data, global_data
         
-        # Get request data
-        request_data = request.get_json() or {}
-        component_types = request_data.get('component_types', [])
-        batch_size = request_data.get('batch_size', 10)
-        model_id = request_data.get('model_id', 'gpt-3.5-turbo')
-        custom_prompt = request_data.get('custom_prompt', '')
-        
-        # Check session first, then app instance data, then global state
-        data = session.get('results')
-        if data is None:
-            data = getattr(app, 'parsed_data', None)
-        if data is None:
-            data = global_data  # Use new global data first
-        if data is None:
-            data = parsed_data  # Fallback to old global
-        
-        if data is None or (isinstance(data, dict) and len(data) == 0):
-            return jsonify({"status": "completed", "error": "No data loaded", "results": [], "total": 0}), 200
-        
-        # Initialize LLM analyzer if available
-        analyzer = None
-        if LLM_AVAILABLE:
-            try:
-                analyzer = LLMAnalyzer(model_id=model_id)
-                if not analyzer.is_available():
+        try:
+            # Get request data
+            request_data = request.get_json() or {}
+            component_types = request_data.get('component_types', [])
+            batch_size = request_data.get('batch_size', 10)
+            model_id = request_data.get('model_id', 'gpt-3.5-turbo')
+            custom_prompt = request_data.get('custom_prompt', '')
+            
+            logger.info(f"Starting comprehensive analysis with types: {component_types}, batch_size: {batch_size}, model: {model_id}")
+            
+            # Check session first, then app instance data, then global state
+            data = session.get('results')
+            if data is None:
+                data = getattr(app, 'parsed_data', None)
+            if data is None:
+                data = global_data  # Use new global data first
+            if data is None:
+                data = parsed_data  # Fallback to old global
+            
+            if data is None or (isinstance(data, dict) and len(data) == 0):
+                logger.warning("No data available for comprehensive analysis")
+                return jsonify({"status": "completed", "error": "No data loaded", "results": [], "total": 0}), 200
+            
+            # Initialize LLM analyzer if available
+            analyzer = None
+            if LLM_AVAILABLE:
+                try:
+                    analyzer = LLMAnalyzer(model_id=model_id, data_dir="data")
+                    if not analyzer.is_available():
+                        logger.warning("LLM analyzer not available")
+                        analyzer = None
+                except Exception as e:
+                    logger.warning(f"Failed to initialize LLM analyzer: {e}")
                     analyzer = None
-            except Exception as e:
-                logger.warning(f"Failed to initialize LLM analyzer: {e}")
-                analyzer = None
-        
-        # Perform comprehensive analysis
-        analysis_results = []
-        total_analyzed = 0
+            
+            # Perform comprehensive analysis
+            analysis_results = []
+            total_analyzed = 0
+            successful_analyses = 0
+            failed_analyses = 0
+            
+        except Exception as e:
+            logger.error(f"Error in comprehensive analysis setup: {str(e)}")
+            return jsonify({"status": "error", "error": f"Analysis setup failed: {str(e)}", "results": [], "total": 0}), 500
         
         for component_type in component_types:
             if component_type == 'dma_operations':
@@ -743,6 +1424,14 @@ def register_routes(app):
                                 model_id=model_id,
                                 for_web_ui=True
                             )
+                            
+                            # Check if analysis was successful
+                            if result.get('status') == 'error' or not result.get('analysis'):
+                                failed_analyses += 1
+                                logger.warning(f"DMA analysis failed for {op.get('caller_function', 'unknown')}")
+                            else:
+                                successful_analyses += 1
+                                
                             analysis_results.append({
                                 'type': 'dma',
                                 'component': {
@@ -757,6 +1446,8 @@ def register_routes(app):
                             })
                         except Exception as e:
                             # Fallback to mock data if LLM analysis fails
+                            failed_analyses += 1
+                            logger.error(f"DMA analysis exception for {op.get('caller_function', 'unknown')}: {str(e)}")
                             analysis_results.append({
                                 'type': 'dma',
                                 'component': {
@@ -771,6 +1462,7 @@ def register_routes(app):
                             })
                     else:
                         # Mock analysis when LLM is not available
+                        failed_analyses += 1
                         analysis_results.append({
                             'type': 'dma',
                             'component': {
@@ -959,6 +1651,8 @@ def register_routes(app):
                         function_count += 1
                         total_analyzed += 1
         
+        logger.info(f"Comprehensive analysis completed: {total_analyzed} total, {successful_analyses} successful, {failed_analyses} failed")
+        
         return jsonify({
             "status": "success",
             "results": analysis_results,
@@ -967,6 +1661,8 @@ def register_routes(app):
             "success": True,
             "statistics": {
                 "total_analyzed": total_analyzed,
+                "successful_analyses": successful_analyses,
+                "failed_analyses": failed_analyses,
                 "batch_size": batch_size,
                 "component_types": len(component_types),
                 "llm_available": analyzer is not None
@@ -1738,6 +2434,30 @@ HTML_TEMPLATE = """
             flex-wrap: wrap;
         }
         
+        .result-actions {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .view-analysis-btn {
+            background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(128, 90, 213, 0.3);
+        }
+        
+        .view-analysis-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(128, 90, 213, 0.4);
+        }
+        
         .download-btn {
             background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
             color: white;
@@ -1817,11 +2537,67 @@ HTML_TEMPLATE = """
             border-left: 4px solid #48bb78;
         }
         
+        .result-card.result-error {
+            border-left-color: #e53e3e;
+            background: #fef5e7;
+        }
+        
+        .result-card.result-unavailable {
+            border-left-color: #ed8936;
+            background: #fffaf0;
+        }
+        
+        .result-card.result-empty {
+            border-left-color: #3182ce;
+            background: #f7fafc;
+        }
+        
+        .analysis-summary {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .summary-item {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .summary-item.success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .summary-item.failed {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        .summary-item.total {
+            background: #bee3f8;
+            color: #2a4365;
+        }
+        
         .result-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
+        }
+        
+        .result-status {
+            font-size: 0.8em;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: #f7fafc;
+            color: #4a5568;
         }
         
         .result-type {
@@ -4437,36 +5213,85 @@ HTML_TEMPLATE = """
             }
             
             let html = '<div class="results-list">';
+            let successCount = 0;
+            let failureCount = 0;
             
             results.forEach((result, index) => {
                 const component = result.component || {};
                 const analysis = result.result || {};
                 const scores = result.confidenceScores || {};
                 
+                // Determine if analysis was successful
+                const isSuccess = analysis.status !== 'error' && analysis.status !== 'unavailable';
+                const hasAnalysis = analysis.analysis && analysis.analysis.length > 0;
+                
+                if (isSuccess && hasAnalysis) {
+                    successCount++;
+                } else {
+                    failureCount++;
+                }
+                
+                // Determine status class and message
+                let statusClass = 'result-success';
+                let statusIcon = '✅';
+                let statusText = 'Success';
+                
+                if (analysis.status === 'error') {
+                    statusClass = 'result-error';
+                    statusIcon = '❌';
+                    statusText = 'Failed';
+                } else if (analysis.status === 'unavailable') {
+                    statusClass = 'result-unavailable';
+                    statusIcon = '⚠️';
+                    statusText = 'Unavailable';
+                } else if (!hasAnalysis) {
+                    statusClass = 'result-empty';
+                    statusIcon = '📝';
+                    statusText = 'No Analysis';
+                }
+                
                 html += `
-                    <div class="result-card">
+                    <div class="result-card ${statusClass}">
                         <div class="result-header">
                             <span class="result-type">${result.type || 'Unknown'}</span>
                             <span class="result-name">${component.name || 'Unnamed'}</span>
+                            <span class="result-status">${statusIcon} ${statusText}</span>
                         </div>
                         <div class="result-details">
                             <div class="result-file">${component.filePath || 'Unknown file'}</div>
                             ${component.lineNumber ? `<div class="result-line">Line: ${component.lineNumber}</div>` : ''}
                         </div>
                         <div class="result-analysis">
-                            ${analysis.analysis || 'No analysis available'}
+                            ${analysis.analysis || analysis.error || 'No analysis available'}
                         </div>
                         <div class="confidence-scores">
                             <div class="score">AIA Relevant: ${scores.AIARelevantFunction || 0}%</div>
                             <div class="score">Entry Point: ${scores.Relevant_KD_Entry_Point || 0}%</div>
                             <div class="score">Message Handling: ${scores.Message_Structure_Handling || 0}%</div>
                         </div>
+                        ${hasAnalysis && analysis.llm_request ? `
+                            <div class="result-actions">
+                                <button class="view-analysis-btn" onclick="viewFullAnalysis('${index}', ${JSON.stringify(analysis).replace(/"/g, '&quot;')})">
+                                    📄 View Full Analysis
+                                </button>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             });
             
             html += '</div>';
-            gridDiv.innerHTML = html;
+            
+            // Add summary at the top
+            const summaryHtml = `
+                <div class="analysis-summary">
+                    <div class="summary-item success">✅ Successful: ${successCount}</div>
+                    <div class="summary-item failed">❌ Failed: ${failureCount}</div>
+                    <div class="summary-item total">📊 Total: ${results.length}</div>
+                </div>
+            `;
+            
+            gridDiv.innerHTML = summaryHtml + html;
         }
     </script>
     
@@ -4615,13 +5440,19 @@ def start_web_ui(json_file=None, port=5000, host='127.0.0.1', auto_open=True):
     print(f"📊 Data: {json_file}")
     print(f"🌐 Server: http://{host}:{port}")
     print(f"📈 Statistics:")
-    print(f"   • Functions: {parsed_data['statistics']['unique_function_entries']}")
-    print(f"   • DMA Operations: {parsed_data['statistics']['unique_dma_operations']}")
-    print(f"   • User Copy Operations: {parsed_data['statistics']['unique_user_copy_operations']}")
-    print(f"   • IOCTL Operations: {parsed_data['statistics'].get('unique_ioctl_operations', 0)}")
-    print(f"   • Total Files: {parsed_data['statistics'].get('total_files', 0)}")
-    print(f"   • Files need analysis: {parsed_data['statistics'].get('files_need_analysis', parsed_data['statistics'].get('total_files_analyzed', 0))}")
-    print(f"   • Files with functions entry Instrumented: {parsed_data['statistics']['files_instrumented_with_function_entries']}")
+    if 'statistics' in parsed_data:
+        print(f"   • Functions: {parsed_data['statistics'].get('unique_function_entries', 0)}")
+        print(f"   • DMA Operations: {parsed_data['statistics'].get('unique_dma_operations', 0)}")
+        print(f"   • User Copy Operations: {parsed_data['statistics'].get('unique_user_copy_operations', 0)}")
+        print(f"   • IOCTL Operations: {parsed_data['statistics'].get('unique_ioctl_operations', 0)}")
+        print(f"   • Total Files: {parsed_data['statistics'].get('total_files', 0)}")
+        print(f"   • Files need analysis: {parsed_data['statistics'].get('files_need_analysis', parsed_data['statistics'].get('total_files_analyzed', 0))}")
+        print(f"   • Files with functions entry Instrumented: {parsed_data['statistics'].get('files_instrumented_with_function_entries', 0)}")
+    elif 'struct_definitions' in parsed_data:
+        print(f"   • Struct Definitions: {parsed_data.get('total_structs', len(parsed_data['struct_definitions']))}")
+        print(f"   • Source File: {parsed_data.get('source_file', 'Unknown')}")
+    else:
+        print("   • No statistics available")
     print(f"\n💡 Use Ctrl+C to stop the server\n")
     
     # Open browser in a separate thread unless disabled
@@ -4632,7 +5463,15 @@ def start_web_ui(json_file=None, port=5000, host='127.0.0.1', auto_open=True):
     
     # Run the Flask app
     try:
-        app.run(host=host, port=port, debug=False)
+        # Better configuration for browser compatibility
+        app.run(
+            host=host, 
+            port=port, 
+            debug=True,  
+            use_reloader=False,
+            threaded=True,  # Enable threading for better performance
+            passthrough_errors=False  # Better error handling
+        )
         return True
     except KeyboardInterrupt:
         print("\n👋 Server stopped by user")

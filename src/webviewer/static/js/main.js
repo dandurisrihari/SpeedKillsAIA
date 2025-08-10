@@ -1472,6 +1472,8 @@ function showMemoryTab(tabName) {
 
 // Comprehensive Analysis Functions
 async function runComprehensiveAnalysis() {
+    console.log("🚀 Analyze All button clicked - starting comprehensive analysis!");
+    
     const button = document.getElementById('analyzeAllBtn');
     const buttonText = document.getElementById('analyzeAllBtnText');
     const dashboard = document.getElementById('resultsDashboard');
@@ -1500,9 +1502,17 @@ async function runComprehensiveAnalysis() {
     let processedCount = 0;
     
     try {
-        // Get current data
+        // Get current data with timeout to prevent hanging
         progressText.textContent = 'Fetching kernel data...';
-        const response = await fetch('/api/data');
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        const response = await fetch('/api/data', { 
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
         if (!response.ok) {
             throw new Error(`Failed to fetch data: ${response.statusText}`);
         }
@@ -1587,7 +1597,12 @@ async function runComprehensiveAnalysis() {
     } catch (error) {
         console.error('Error during comprehensive analysis:', error);
         progressSection.style.display = 'none';
-        showNotification(`Analysis failed: ${error.message}`, 'error');
+        
+        if (error.name === 'AbortError') {
+            showNotification('Analysis timed out while fetching data. Please try again with fewer components or check your connection.', 'error');
+        } else {
+            showNotification(`Analysis failed: ${error.message}`, 'error');
+        }
     } finally {
         // Reset button
         button.disabled = false;
@@ -1815,8 +1830,14 @@ async function analyzeComponent(component, model, customPrompt) {
         
         const result = await response.json();
         
-        if (result.status !== 'success') {
-            throw new Error(result.error || 'Analysis returned non-success status');
+        // Handle different status types
+        if (result.status === 'error') {
+            throw new Error(result.error || 'Analysis failed with error status');
+        } else if (result.status === 'unavailable') {
+            // LLM is not available, but we can still show this as a result with default scores
+            console.warn('LLM analysis unavailable for component:', component.name);
+        } else if (result.status !== 'success') {
+            throw new Error(result.error || `Analysis returned unexpected status: ${result.status}`);
         }
         
         // Parse confidence scores from the analysis
@@ -1882,9 +1903,10 @@ function calculateAnalysisStats(allResults, filteredResults, totalComponents) {
     const stats = {
         totalComponents: totalComponents,
         analyzedComponents: allResults.length,
-        successfulAnalyses: allResults.filter(r => r.result.status === 'success').length,
-        skippedComponents: allResults.filter(r => r.result.status === 'skipped').length,
-        failedAnalyses: allResults.filter(r => r.result.status === 'error').length,
+        successfulAnalyses: allResults.filter(r => r.status === 'success').length,
+        unavailableAnalyses: allResults.filter(r => r.status === 'unavailable').length,
+        skippedComponents: allResults.filter(r => r.status === 'skipped').length,
+        failedAnalyses: allResults.filter(r => r.status === 'error').length,
         highConfidenceResults: filteredResults.length,
         categories: {
             AIARelevantFunction: 0,
@@ -1941,11 +1963,20 @@ function displayComprehensiveResults(results, threshold, stats) {
     const subtitle = document.getElementById('resultsSubtitle');
     
     // Update subtitle with detailed stats
-    const successRate = stats.totalComponents > 0 ? Math.round((stats.successfulAnalyses / stats.totalComponents) * 100) : 0;
+    const availableForAnalysis = stats.totalComponents - stats.unavailableAnalyses;
+    const successRate = availableForAnalysis > 0 ? Math.round((stats.successfulAnalyses / availableForAnalysis) * 100) : 0;
+    
+    let statusText = '';
+    if (stats.unavailableAnalyses > 0) {
+        statusText = `(<strong>${stats.successfulAnalyses}</strong> successful, <strong>${stats.unavailableAnalyses}</strong> unavailable)`;
+    } else {
+        statusText = `(<strong>${successRate}% success rate</strong>)`;
+    }
+    
     subtitle.innerHTML = `
         Found <strong>${results.length}</strong> high-confidence components (≥${threshold}%) from 
         <strong>${stats.analyzedComponents}/${stats.totalComponents}</strong> analyzed 
-        (<strong>${successRate}% success rate</strong>)
+        ${statusText}
     `;
     
     // Create summary cards with detailed statistics
@@ -1964,7 +1995,7 @@ function displayComprehensiveResults(results, threshold, stats) {
             <div class="summary-content">
                 <div class="summary-number">${stats.successfulAnalyses}</div>
                 <div class="summary-label">Successful Analyses</div>
-                <div class="summary-detail">${successRate}% success rate</div>
+                <div class="summary-detail">${stats.unavailableAnalyses > 0 ? 'LLM analysis unavailable' : successRate + '% success rate'}</div>
             </div>
         </div>
         
@@ -1996,6 +2027,20 @@ function displayComprehensiveResults(results, threshold, stats) {
                     <div class="summary-number">${stats.failedAnalyses + stats.skippedComponents}</div>
                     <div class="summary-label">Issues</div>
                     <div class="summary-detail">${stats.failedAnalyses} failed, ${stats.skippedComponents} skipped</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Show unavailable analyses if any
+    if (stats.unavailableAnalyses > 0) {
+        summaryContainer.innerHTML += `
+            <div class="summary-card unavailable">
+                <div class="summary-icon">❓</div>
+                <div class="summary-content">
+                    <div class="summary-number">${stats.unavailableAnalyses}</div>
+                    <div class="summary-label">Unavailable</div>
+                    <div class="summary-detail">LLM analysis not available</div>
                 </div>
             </div>
         `;
@@ -2702,6 +2747,58 @@ function generateHTMLReport(data) {
 function viewFullAnalysis(result) {
     const modal = document.createElement('div');
     modal.className = 'analysis-modal';
+    
+    // Extract LLM request/response data if available
+    let llmSection = '';
+    if (result.result.llm_request || result.result.llm_response) {
+        llmSection = `
+            <div class="llm-details">
+                <h5>🤖 LLM Analysis Details</h5>
+                ${result.result.llm_request ? `
+                    <details class="llm-request">
+                        <summary><strong>📝 System Prompt (${result.result.llm_request.system_prompt ? result.result.llm_request.system_prompt.length : 0} chars)</strong></summary>
+                        <div class="prompt-content">
+                            <pre><code>${result.result.llm_request.system_prompt || 'No system prompt available'}</code></pre>
+                        </div>
+                    </details>
+                    <details class="llm-request">
+                        <summary><strong>🔧 User Prompt (${result.result.llm_request.user_prompt ? result.result.llm_request.user_prompt.length : 0} chars)</strong></summary>
+                        <div class="prompt-content">
+                            <pre><code>${result.result.llm_request.user_prompt || 'No user prompt available'}</code></pre>
+                        </div>
+                    </details>
+                    ${result.result.llm_request.full_conversation ? `
+                        <details class="llm-conversation">
+                            <summary><strong>💬 Full Conversation (${result.result.llm_request.full_conversation.length} messages)</strong></summary>
+                            <div class="conversation-content">
+                                ${result.result.llm_request.full_conversation.map((msg, idx) => `
+                                    <div class="message message-${msg.role}">
+                                        <strong>${msg.role.toUpperCase()}:</strong>
+                                        <pre><code>${msg.content}</code></pre>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </details>
+                    ` : ''}
+                ` : ''}
+                ${result.result.llm_response ? `
+                    <details class="llm-response">
+                        <summary><strong>🎯 LLM Response (${result.result.llm_response.length} chars)</strong></summary>
+                        <div class="response-content">
+                            <pre><code>${result.result.llm_response}</code></pre>
+                        </div>
+                    </details>
+                ` : ''}
+                ${result.result.model_used ? `
+                    <p><strong>🧠 Model Used:</strong> ${result.result.model_used}</p>
+                ` : ''}
+                ${result.result.estimated_tokens ? `
+                    <p><strong>🎛️ Estimated Tokens:</strong> ${result.result.estimated_tokens}</p>
+                ` : ''}
+            </div>
+        `;
+    }
+    
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
@@ -2724,6 +2821,7 @@ function viewFullAnalysis(result) {
                     <h5>Complete Analysis:</h5>
                     <p>${result.result.analysis || 'Analysis not available'}</p>
                 </div>
+                ${llmSection}
                 ${result.component.code ? `
                     <div class="source-code">
                         <h5>Source Code:</h5>

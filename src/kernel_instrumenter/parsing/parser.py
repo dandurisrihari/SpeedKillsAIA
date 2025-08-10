@@ -60,7 +60,7 @@ class TreeSitterParser:
                 # Fall back to legacy API (tree-sitter < 0.20.0)
                 self.language = tree_sitter.Language(tsc.language(), "c")
                 self.parser = tree_sitter.Parser()
-                self.parser.set_language(self.language)
+                self.parser.language = self.language
                 print("✓ Using legacy tree-sitter API")
             except Exception as e:
                 raise RuntimeError(f"Failed to initialize tree-sitter parser: {e}")
@@ -114,7 +114,7 @@ class TreeSitterParser:
                 # Fall back to legacy API (tree-sitter < 0.20.0)
                 self.language = tree_sitter.Language(tsc.language(), "c")
                 self.parser = tree_sitter.Parser()
-                self.parser.set_language(self.language)
+                self.parser.language = self.language
                 print("✓ Using legacy tree-sitter API")
             except Exception as e:
                 raise RuntimeError(f"Failed to initialize tree-sitter parser: {e}")
