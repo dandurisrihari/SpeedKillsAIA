@@ -1,0 +1,782 @@
+diff --git a/neuron_cdev.c b/neuron_cdev.c
+index fe7a132..92e5cb2 100644
+--- a/neuron_cdev.c
++++ b/neuron_cdev.c
+@@ -83,6 +83,8 @@ static struct mem_chunk *ncdev_mem_handle_to_mem_chunk(struct neuron_device *nd,
+ 
+ 
+ static unsigned long neuron_copy_from_user(const char *const fname, void * to, const void __user * from, unsigned long n) {
++ printk(KERN_INFO "USER_COPY: About to call copy_from_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	const long ret = copy_from_user(to, from, n);
+ 	if (ret) {
+ 		pr_err("copy_from_user failed: %s\n", fname);
+@@ -119,6 +121,8 @@ static int ncdev_dma_engine_get_state(struct neuron_device *nd, void *param)
+ 	ret = ndmar_eng_get_state(nd, arg.eng_id, &state);
+ 	if (ret)
+ 		return ret;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(arg.state, &state, sizeof(state));
+ }
+ 
+@@ -309,9 +313,13 @@ static int ncdev_dma_queue_get_state(struct neuron_device *nd, void *param)
+ 	ret = ndmar_queue_get_state(nd, arg.eng_id, arg.qid, &tx, &rx);
+ 	if (ret)
+ 		return ret;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user(arg.tx, &tx, sizeof(tx));
+ 	if (ret)
+ 		return ret;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(arg.rx, &rx, sizeof(rx));
+ }
+ 
+@@ -401,6 +409,8 @@ static int ncdev_dma_descriptor_copyout(struct neuron_device *nd, void *param)
+ 		addr = mc->va + offset;
+ 	}
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user(arg.buffer, addr, total_size);
+ 	if (mc->mem_location == MEM_LOC_DEVICE)
+ 		kfree(addr);
+@@ -439,6 +449,8 @@ static int ncdev_mem_alloc(struct neuron_device *nd, void *param)
+ 	trace_ioctl_mem_alloc(nd, mc);
+ 
+ 	ret = ncdev_mem_chunk_to_mem_handle(nd, mc, &mh);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (!ret) {
+ 		ret = copy_to_user(mem_alloc_arg.mem_handle, &mh, sizeof(mc));
+ 	}
+@@ -534,6 +546,8 @@ static int ncdev_mem_alloc_libnrt(struct neuron_device *nd, unsigned int cmd, vo
+ 	trace_ioctl_mem_alloc(nd, mc);
+ 
+ 	ret = ncdev_mem_chunk_to_mem_handle(nd, mc, &mh);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (!ret) {
+ 		ret = copy_to_user(mem_handle, &mh, sizeof(mc));
+ 	}
+@@ -559,6 +573,8 @@ static int ncdev_mem_get_pa_deprecated(struct neuron_device *nd, void *param)
+ 	mc = ncdev_mem_handle_to_mem_chunk(nd, mem_get_pa_arg.mem_handle);
+ 	if (!mc)
+ 		return -EINVAL;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(mem_get_pa_arg.pa, &mc->pa, sizeof(u64));
+ }
+ 
+@@ -576,10 +592,14 @@ static int ncdev_mem_get_info_deprecated(struct neuron_device *nd, void *param)
+ 	mc = ncdev_mem_handle_to_mem_chunk(nd, arg.mem_handle);
+ 	if (!mc)
+ 		return -EINVAL;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user(arg.pa, &mc->pa, sizeof(u64));
+ 	if (ret)
+ 		return ret;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (arg.mmap_offset) {
+ 		mmap_offset = nmmap_offset(mc);
+ 		ret = copy_to_user(arg.mmap_offset, &mmap_offset, sizeof(mmap_offset));
+@@ -614,6 +634,8 @@ static int ncdev_mem_get_extended_info(struct neuron_device *nd, void *param)
+ 	local.mem_handle = (u64)mc;
+ 	local.pid = mc->pid;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &local, sizeof(local));
+ }
+ 
+@@ -631,6 +653,8 @@ static int ncdev_mem_get_mc_mmap_info(struct neuron_device *nd, unsigned int cmd
+ 	int ret;
+ 
+ 	// compatibility check
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (_IOC_SIZE(cmd) == sizeof(arg)) {
+ 		ret = neuron_copy_from_user(__func__, &arg, param, sizeof(arg));
+ 		if (ret)
+@@ -645,6 +669,8 @@ static int ncdev_mem_get_mc_mmap_info(struct neuron_device *nd, unsigned int cmd
+ 		arg.size = mc->size;
+ 
+ 		return copy_to_user(param, &arg, sizeof(arg));
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	} else if (_IOC_SIZE(cmd) == sizeof(arg_v2)) {
+ 		ret = neuron_copy_from_user(__func__, &arg_v2, param, sizeof(arg_v2));
+ 		if (ret)
+@@ -682,6 +708,8 @@ static int ncdev_get_dmabuf_fd(void *param)
+ 	if (ret)
+ 		return ret;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(arg.fd, &dmabuf_fd, sizeof(dmabuf_fd));
+ }
+ 
+@@ -891,6 +919,8 @@ static int ncdev_mem_copy_async(struct neuron_device *nd, unsigned int cmd, void
+ 	}
+ 
+ 	// return the new wait handle
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user((void *)param, &arg, arg_size);
+ 
+ 	trace_ioctl_mem_copy(nd, src_mc, dst_mc);
+@@ -1092,6 +1122,8 @@ static int ncdev_mem_buf_copy(struct neuron_device *nd, unsigned int cmd, void *
+ 	if (mc->mem_location == MEM_LOC_HOST) {
+ 		if (copy_to_mem_handle) {
+ 			ret = neuron_copy_from_user(__func__, mc->va + offset, buffer, size);
++  printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 		} else {
+ 			ret = copy_to_user(buffer, mc->va + offset, size);
+ 		}
+@@ -1120,6 +1152,8 @@ static int ncdev_mem_buf_copy(struct neuron_device *nd, unsigned int cmd, void *
+ 				if (ret) {
+ 					break;
+ 				}
++   printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 			} else {
+ 				ret = ndma_memcpy_buf_from_mc(nd, src_mc->va, 0, mc,
+ 							      offset + copy_offset, copy_size);
+@@ -1145,6 +1179,7 @@ static int ncdev_mem_buf_copy(struct neuron_device *nd, unsigned int cmd, void *
+ 
+ static long ncdev_semaphore_ioctl(struct neuron_device *nd, unsigned int cmd, void *param)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ncdev_semaphore_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	int ret;
+ 	struct neuron_ioctl_semaphore arg;
+ 
+@@ -1157,6 +1192,8 @@ static long ncdev_semaphore_ioctl(struct neuron_device *nd, unsigned int cmd, vo
+ 		return ret;
+ 	}
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (cmd == NEURON_IOCTL_SEMAPHORE_READ) {
+ 		ret = nc_semaphore_read(nd, arg.nc_id, arg.semaphore_index, &arg.value);
+ 		if (ret)
+@@ -1174,6 +1211,7 @@ static long ncdev_semaphore_ioctl(struct neuron_device *nd, unsigned int cmd, vo
+ 
+ static long ncdev_events_ioctl(struct neuron_device *nd, unsigned int cmd, void *param)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ncdev_events_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	int ret;
+ 	struct neuron_ioctl_event arg;
+ 
+@@ -1182,6 +1220,8 @@ static long ncdev_events_ioctl(struct neuron_device *nd, unsigned int cmd, void
+ 	if (ret)
+ 		return ret;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (cmd == NEURON_IOCTL_EVENT_GET) {
+ 		ret = nc_event_get(nd, arg.nc_id, arg.event_index, &arg.value);
+ 		if (ret)
+@@ -1199,6 +1239,8 @@ static long ncdev_bar_read(struct neuron_device *nd, u8 bar, u64 *reg_addresses,
+ 	int ret;
+ 	u64 data_size = data_count * sizeof(u32);
+ 	int i;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (bar == 0 || bar == 2) {
+ 		u32 *data = NULL;
+ 		data = kmalloc(data_size, GFP_KERNEL);
+@@ -1355,6 +1397,8 @@ static long ncdev_read_hw_counters(struct neuron_device *nd, void *param)
+ 	ret = fw_io_read_counters(nd->fw_io_ctx, reg_addresses, data, arg.count);
+ 	if (ret)
+ 		goto done;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user(arg.data, data, arg.count * sizeof(uint32_t));
+ done:
+ 	kfree(reg_addresses);
+@@ -1377,6 +1421,8 @@ static long ncdev_nc_reset(struct neuron_device *nd, void *param)
+ 	if (ret) {
+ 		return ret;
+ 	}
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1390,6 +1436,8 @@ static long ncdev_device_reset_deprecated(struct neuron_device *nd)
+ static long ncdev_device_reset_status_deprecated(struct neuron_device *nd, void *param)
+ {
+ 	u8 result = 1; // always return reset status as started.
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &result, 1);
+ }
+ 
+@@ -1405,6 +1453,8 @@ static long ncdev_nc_reset_ready(struct neuron_device *nd, void *param)
+ 
+ 	arg.result = nr_wait(nd, arg.request_id, false);
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1417,6 +1467,8 @@ static long ncdev_device_ready_deprecated(struct neuron_device *nd, void *param)
+ 	//
+ 	// deprecated api returns true (1) if success and false if failed
+ 	result = (nr_wait(nd, task_tgid_nr(current), true) == 0);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &result, 1);
+ }
+ 
+@@ -1430,6 +1482,8 @@ static long ncdev_device_basic_info(void *param)
+ {
+ 	struct neuron_ioctl_device_basic_info result;
+ 	narch_fill_device_basic_info(&result);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &result, sizeof(result));
+ }
+ 
+@@ -1439,6 +1493,8 @@ static long ncdev_device_bdf(struct neuron_device *nd, void *param)
+ 	result.bus_number = nd->pdev->bus->number;
+ 	result.slot = PCI_SLOT(nd->pdev->devfn);
+ 	result.func = PCI_FUNC(nd->pdev->devfn);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &result, sizeof(result));
+ }
+ 
+@@ -1476,6 +1532,8 @@ static long ncdev_device_bdf_ext(struct file *filep, void *param)
+ 	arg.bus_number = nd->pdev->bus->number;
+ 	arg.slot = PCI_SLOT(nd->pdev->devfn);
+ 	arg.func = PCI_FUNC(nd->pdev->devfn);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1517,6 +1575,8 @@ static long ncdev_device_info(struct neuron_device *nd, void *param)
+ 	result.bar_address[1] = (u64)nd->npdev.bar2;
+ 	result.bar_size[1] = nd->npdev.bar2_size;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user(param, &result, sizeof(result));
+ 
+ 	return ret;
+@@ -1543,6 +1603,8 @@ static long ncdev_driver_info(unsigned int cmd, void *param)
+ 	} else if (dir == _IOC_READ) {
+ 		// for forward/backward compatibility, there's two options (a) copy lesser of passed in size or struct size.
+ 		// (b) or any size > most recent version just gets version size.
++  printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 		if (size >= _IOC_SIZE(NEURON_IOCTL_DRIVER_INFO_GET)) {
+ 			driver_info.architecture = narch_get_arch();
+ 			driver_info.revision = narch_get_revision();
+@@ -1563,6 +1625,8 @@ static long ncdev_driver_info(unsigned int cmd, void *param)
+ 
+ static long ncdev_device_app_pid_deprecated(struct neuron_device *nd, void *param)
+ {
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &nd->attached_processes[0].pid, sizeof(int));
+ }
+ 
+@@ -1624,6 +1688,8 @@ static long ncdev_device_get_all_apps_info(struct neuron_device *nd, void *param
+ 		added_items_count++;
+ 	}
+ 	arg->size = added_items_count;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user(user_arg, arg, sizeof(struct neuron_ioctl_get_apps_info) +
+ 			   sizeof(struct neuron_app_info) * arg->size);
+ 	kfree(arg);
+@@ -1646,6 +1712,8 @@ static long ncdev_nc_nq_init_deprecated(struct neuron_device *nd, void *param)
+ 	if (ret)
+ 		return ret;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1677,6 +1745,8 @@ static long ncdev_nc_nq_init_libnrt(struct neuron_device *nd, void *param)
+ 	if (ret)
+ 		return ret;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1708,6 +1778,8 @@ static long ncdev_nc_nq_init_with_realloc_libnrt(struct neuron_device *nd, void
+ 	if (ret)
+ 		return ret;
+ 	
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1730,6 +1802,8 @@ static long ncdev_acquire_neuron_ds(struct neuron_device *nd, void *param)
+ 	arg.mmap_offset = nmmap_offset(mc);
+ 	arg.size = mc->size;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1800,6 +1874,7 @@ static long ncdev_crwl_writer_downgrade(struct neuron_device *nd, void *param)
+  */
+ static long ncdev_crwl_nc_range_mark(struct file *filep, unsigned int cmd, void *param)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ncdev_crwl_nc_range_mark called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ncdev *ncd;
+ 	struct neuron_device *nd;
+ 	struct neuron_ioctl_crwl_nc_map_ext arg = {0};
+@@ -1839,6 +1914,8 @@ static long ncdev_crwl_nc_range_mark(struct file *filep, unsigned int cmd, void
+ 				  &arg.max_nc_available, arg.bitmap);
+ 
+ 	bitmap_shift_right(arg.bitmap, arg.bitmap, offset, sizeof(arg.bitmap)*8);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (ret) {
+ 		int unused = copy_to_user(param, &arg, size);
+ 		unused = unused;
+@@ -1847,6 +1924,8 @@ static long ncdev_crwl_nc_range_mark(struct file *filep, unsigned int cmd, void
+ 		return ret;
+ 	}
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, size);
+ }
+ 
+@@ -1857,6 +1936,7 @@ static long ncdev_crwl_nc_range_mark(struct file *filep, unsigned int cmd, void
+  */
+ static long ncdev_crwl_nc_range_unmark(struct file *filep, unsigned int cmd, void *param)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ncdev_crwl_nc_range_unmark called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ncdev *ncd;
+ 	struct neuron_device *nd;
+ 	struct neuron_ioctl_crwl_nc_map_ext arg = {0};
+@@ -1905,6 +1985,8 @@ static long ncdev_cinit_set_state(struct neuron_device *nd, void *param)
+ 		return ret;
+ 
+ 	nci_set_state(nd, arg.nc_id, arg.state, &arg.new_state);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1923,6 +2005,8 @@ static long ncdev_nc_model_started_count(struct neuron_device *nd, void *param)
+ 	}
+ 
+ 	arg.started_count = nd->nc_model_started_count[arg.nc_id];
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1953,6 +2037,8 @@ static long ncdev_resource_mmap_info(struct neuron_device *nd, void *param)
+ 	arg.offset = offset;
+ 	arg.size = size;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -1960,6 +2046,8 @@ static long ncdev_compatible_version(void *param)
+ {
+ 	struct neuron_ioctl_compatible_version arg;
+ 	ndhal->ndhal_cdev.ncdev_compatible_version(&arg);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -2002,6 +2090,8 @@ static long ncdev_get_host_device_id(struct neuron_device *nd, void *param)
+ 	struct neuron_ioctl_host_device_id arg;
+ 
+ 	arg.host_device_id = nd->device_index;
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -2022,6 +2112,8 @@ static long ncdev_host_device_id_to_rid_map( unsigned int cmd, void * param)
+ 	memset(&arg, 0, sizeof(arg));
+ 
+ 	ndhal->ndhal_pci.neuron_pci_device_id_to_rid_map( &arg.count, arg.host_did_to_rid_map);
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -2048,10 +2140,14 @@ static long ncdev_dump_mem_chunks(struct neuron_device *nd, void *param)
+ 		goto done;
+ 
+ 	arg.num_entries_out = num_entries_out;		
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user(param, &arg, sizeof(arg));
+ 	if (ret)
+ 		goto done;
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	if (arg.num_entries_in >= num_entries_out) {
+ 		// caller allocated enough room for all entries
+ 		ret = copy_to_user(arg.data, data, num_entries_out * sizeof(struct neuron_ioctl_mem_chunk_info));
+@@ -2426,6 +2522,8 @@ static long ncdev_get_logical_to_physical_nc_map(void *param) {
+ 		goto done;
+ 	}
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	ret = copy_to_user(arg.map, nc_map, map_size);
+ 	if (ret != 0) {
+ 		goto done;
+@@ -2462,6 +2560,8 @@ static int ncdev_pod_info(unsigned int cmd, void *param)
+ 
+ 	ret = ndhal->ndhal_npe.npe_pod_info( &arg.pod_type, arg.pod_id, &arg.pod_sz);
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	return copy_to_user(param, &arg, sizeof(arg));
+ }
+ 
+@@ -2492,6 +2592,8 @@ static int ncdev_pod_status(unsigned int cmd, void *param)
+ 	ret = ndhal->ndhal_npe.npe_pod_status( &arg.state, &arg.node_id);
+ 	ndhal->ndhal_npe.npe_pod_info( &arg.pod_type, arg.pod_id, &arg.pod_sz);
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	cret = copy_to_user(param, &arg, sizeof(arg));
+ 	if (cret != 0) {
+ 		return cret;
+@@ -2532,6 +2634,8 @@ static int ncdev_pod_ctrl(unsigned int cmd, void *param)
+ 		
+ 	ret = ndhal->ndhal_npe.npe_pod_ctrl( pnd, arg.ctrl, arg.timeout, &arg.state);
+ 
++ printk(KERN_INFO "USER_COPY: About to call copy_to_user from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, current->comm);
+ 	cret = copy_to_user(param, &arg, sizeof(arg));
+ 	if (cret != 0) {
+ 		return cret;
+@@ -2540,6 +2644,7 @@ static int ncdev_pod_ctrl(unsigned int cmd, void *param)
+ }
+ 
+ inline static long ncdev_misc_ioctl(struct file *filep, unsigned int cmd, unsigned long param) {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ncdev_misc_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	if ((cmd == NEURON_IOCTL_CRWL_NC_RANGE_MARK) || (cmd == NEURON_IOCTL_CRWL_NC_RANGE_MARK_EXT0)) {
+ 		return ncdev_crwl_nc_range_mark(filep, cmd, (void *)param);
+ 	} else if ((cmd == NEURON_IOCTL_CRWL_NC_RANGE_UNMARK) || (cmd == NEURON_IOCTL_CRWL_NC_RANGE_UNMARK_EXT0)) {
+@@ -2580,6 +2685,7 @@ inline static long ncdev_misc_ioctl(struct file *filep, unsigned int cmd, unsign
+ 
+ static long ncdev_ioctl(struct file *filep, unsigned int cmd, unsigned long param)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ncdev_ioctl called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ncdev *ncd;
+ 	struct neuron_device *nd;
+ 
+@@ -2761,6 +2867,7 @@ static long ncdev_ioctl(struct file *filep, unsigned int cmd, unsigned long para
+ 
+ static int ncdev_open(struct inode *inode, struct file *filep)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ncdev_open called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ncdev *dev;
+ 	struct neuron_device *nd;
+ 
+@@ -2872,6 +2979,7 @@ static int ncdev_flush(struct file *filep, fl_owner_t id)
+ 
+ static int ncdev_release(struct inode *inode, struct file *filep)
+ {
++ printk(KERN_INFO "IOCTL_HANDLER: Function ncdev_release called at %s:%d\n", __FILE__, __LINE__);
+ 	struct ncdev *dev;
+ 	struct neuron_device *nd;
+ 
+diff --git a/neuron_dmabuf.c b/neuron_dmabuf.c
+index 02030d8..f185c4c 100644
+--- a/neuron_dmabuf.c
++++ b/neuron_dmabuf.c
+@@ -3,6 +3,14 @@
+  * Copyright 2023, Amazon.com, Inc. or its affiliates. All Rights Reserved
+  */
+ 
++
++/* MULTI_INSTRUMENT: Auto-added headers */
++#include <asm/stacktrace.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
++
+ #include "neuron_dmabuf.h"
+ #include "neuron_device.h"
+ #include "neuron_mmap.h"
+@@ -331,6 +339,10 @@ int ndmabuf_get_fd(u64 va, u64 size, int *dmabuf_fd)
+ 	exp_info.flags = O_CLOEXEC;
+ 	exp_info.priv = private_data;
+ 
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_export from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_export called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_export\n");
+ 	dmabuf = dma_buf_export(&exp_info);
+ 	if (IS_ERR(dmabuf)) {
+ 		ret = PTR_ERR(dmabuf);
+@@ -351,6 +363,10 @@ int ndmabuf_get_fd(u64 va, u64 size, int *dmabuf_fd)
+ 	return 0;
+ 
+ err_dma_buf_put:
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_put called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
+ 	dma_buf_put(dmabuf);
+ 
+ err_free_private_data:
+diff --git a/neuron_mempool.c b/neuron_mempool.c
+index 15eae4b..4bdf2e8 100644
+--- a/neuron_mempool.c
++++ b/neuron_mempool.c
+@@ -86,6 +86,7 @@ DECLARE_FAULT_ATTR(neuron_fail_mc_alloc);
+  */
+ static void mc_insert_node(struct rb_root *root, struct mem_chunk *mc)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_insert_node at %s:%d\n", __FILE__, __LINE__);
+ 	struct rb_node **link = &root->rb_node, *parent = NULL;
+ 	phys_addr_t pa = mc->pa;
+ 
+@@ -114,6 +115,7 @@ static void mc_insert_node(struct rb_root *root, struct mem_chunk *mc)
+  */
+ static void mc_remove_node(struct rb_root *root, struct mem_chunk *mc)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_remove_node at %s:%d\n", __FILE__, __LINE__);
+ 	rb_erase(&mc->node, root);
+ }
+ 
+@@ -134,6 +136,7 @@ static void mc_remove_node(struct rb_root *root, struct mem_chunk *mc)
+ static int mp_init_device_mem(struct mempool *mp, struct mempool_set *mpset,
+ 			      u64 start_addr, size_t pool_size,	u32 dram_channel, u32 dram_region)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mp_init_device_mem at %s:%d\n", __FILE__, __LINE__);
+ 	int ret;
+ 	ulong small_pool_size = mempool_small_pool_size;
+ 	size_t main_pool_size;
+@@ -203,6 +206,7 @@ static int mp_init_device_mem(struct mempool *mp, struct mempool_set *mpset,
+  */
+ static void mp_destroy_hrm_pool(struct mempool *mp)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mp_destroy_hrm_pool at %s:%d\n", __FILE__, __LINE__);
+ 	int i = 0;
+ 	if (mp->page_va_array == NULL)
+ 		return;
+@@ -211,6 +215,10 @@ static void mp_destroy_hrm_pool(struct mempool *mp)
+ 	for(i = 0; i < mp->page_count; i++) {
+ 		if (mp->page_va_array[i] == NULL)
+ 			break;
++  printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_free_coherent from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_free_coherent called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_free_coherent\n");
+ 		dma_free_coherent(mp->mpset->pdev, mp->page_size, mp->page_va_array[i],
+ 				  mp->page_pa_array[i]);
+ 		mp->page_va_array[i] = NULL;
+@@ -237,6 +245,7 @@ static void mp_destroy_hrm_pool(struct mempool *mp)
+ static int mp_init_hrm_pool(struct mempool *mp, struct mempool_set *mpset,
+ 			    u32 page_size, u32 page_count)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mp_init_hrm_pool at %s:%d\n", __FILE__, __LINE__);
+ 	int ret;
+ 	int i;
+ 
+@@ -256,6 +265,10 @@ static int mp_init_hrm_pool(struct mempool *mp, struct mempool_set *mpset,
+ 		goto fail;
+ 	mp->page_size = page_size;
+ 	for(i = 0; i < page_count; i++) {
++  printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_alloc_coherent from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_alloc_coherent called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_alloc_coherent\n");
+ 		mp->page_va_array[i] = dma_alloc_coherent(mp->mpset->pdev, page_size,
+ 							  &mp->page_pa_array[i],
+ 							  GFP_KERNEL | GFP_DMA32);
+@@ -263,6 +276,10 @@ static int mp_init_hrm_pool(struct mempool *mp, struct mempool_set *mpset,
+ 			break;
+ 		ret = gen_pool_add_virt(mp->gen_pool, (unsigned long)mp->page_va_array[i],
+ 					mp->page_pa_array[i], mp->page_size, -1);
++  printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_free_coherent from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_free_coherent called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_free_coherent\n");
+ 		if (ret) {
+ 			dma_free_coherent(mpset->pdev, mp->page_size,
+ 					  mp->page_va_array[i],
+@@ -297,6 +314,7 @@ fail:
+  */
+ static void mp_destroy_gen_pool(struct mempool *mp)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mp_destroy_gen_pool at %s:%d\n", __FILE__, __LINE__);
+ 	BUG_ON(mp == NULL);
+ 	if (!mp->initialized)
+ 		return;
+@@ -321,6 +339,7 @@ static void mp_destroy_gen_pool(struct mempool *mp)
+  */
+ static int mpset_init_device_pools(struct mempool_set *mpset, struct neuron_device *nd)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_init_device_pools at %s:%d\n", __FILE__, __LINE__);
+ 	int ret;
+ 	int channel = 0, region = 0;
+ 	u64 region_sz = 0;
+@@ -363,6 +382,7 @@ fail:
+  */
+ static int mpset_print_lifespan_list(const char *name, struct list_head *head)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_print_lifespan_list at %s:%d\n", __FILE__, __LINE__);
+ 	int count = 0;
+ 	struct list_head *this, *next;
+ 	if (list_empty(head->next))
+@@ -381,6 +401,7 @@ static int mpset_print_lifespan_list(const char *name, struct list_head *head)
+  */
+ static void mpset_verify_all_mc_freed(struct mempool_set *mpset)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_verify_all_mc_freed at %s:%d\n", __FILE__, __LINE__);
+ 	int i, count;
+ 	count = mpset_print_lifespan_list("LOCAL", &mpset->mc_lifespan_local_head);
+ 	for (i = 0; i < NEURON_MAX_PROCESS_PER_DEVICE; i++) {
+@@ -394,6 +415,7 @@ static void mpset_verify_all_mc_freed(struct mempool_set *mpset)
+ 
+ int mpset_constructor(struct mempool_set *mpset, void *pdev, struct neuron_device *nd)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_constructor at %s:%d\n", __FILE__, __LINE__);
+ 	int host_page_index;
+ 	u64 host_allocated_size = 0;
+ 	int i;
+@@ -442,6 +464,7 @@ static struct list_head * mpset_get_lifespan_head(struct mempool_set *mpset, enu
+ 
+ void mpset_destructor(struct mempool_set *mpset)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_destructor at %s:%d\n", __FILE__, __LINE__);
+ 	int i, channel, region;
+ 	struct list_head *head;
+ 	struct neuron_device *nd;
+@@ -475,6 +498,7 @@ void mpset_destructor(struct mempool_set *mpset)
+ 
+ struct mem_chunk *mpset_search_mc(struct mempool_set *mp, phys_addr_t pa)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_search_mc at %s:%d\n", __FILE__, __LINE__);
+ 	struct rb_node *node = mp->root.rb_node; /* top of the tree */
+ 
+ 	while (node) {
+@@ -493,6 +517,7 @@ struct mem_chunk *mpset_search_mc(struct mempool_set *mp, phys_addr_t pa)
+ 
+ static inline struct list_head * mpset_get_lifespan_head(struct mempool_set *mpset, enum mc_lifespan lifespan)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_get_lifespan_head at %s:%d\n", __FILE__, __LINE__);
+ 	struct list_head *head = NULL;
+ 	if (lifespan == MC_LIFESPAN_LOCAL) {
+ 		head = &mpset->mc_lifespan_local_head;
+@@ -510,6 +535,7 @@ static inline struct list_head * mpset_get_lifespan_head(struct mempool_set *mps
+ 
+ static void mc_add_to_lifespan_list(struct mem_chunk *mc)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_add_to_lifespan_list at %s:%d\n", __FILE__, __LINE__);
+ 	struct mempool_set *mpset = mc->mpset;
+ 	struct list_head *head;
+ 	head = mpset_get_lifespan_head(mpset, mc->lifespan);
+@@ -518,6 +544,7 @@ static void mc_add_to_lifespan_list(struct mem_chunk *mc)
+ 
+ static void mc_remove_from_lifespan_list(struct mem_chunk *mc)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_remove_from_lifespan_list at %s:%d\n", __FILE__, __LINE__);
+ 	list_del(&mc->lifespan_list);
+ }
+ 
+@@ -525,6 +552,7 @@ static void mc_remove_from_lifespan_list(struct mem_chunk *mc)
+  */
+ static void mpset_free_lifespan_list(struct list_head *head, struct list_head *new_head)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_free_lifespan_list at %s:%d\n", __FILE__, __LINE__);
+ 	struct list_head *this, *next;
+ 
+ 	if (list_empty(head->next))
+@@ -552,6 +580,7 @@ static void mpset_free_lifespan_list(struct list_head *head, struct list_head *n
+ 
+ void mpset_free_expired_mc(struct mempool_set *mpset, enum mc_lifespan lifespan)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mpset_free_expired_mc at %s:%d\n", __FILE__, __LINE__);
+ 	struct list_head *head, *next_head;
+ 	head = mpset_get_lifespan_head(mpset, lifespan);
+ 	next_head = mpset_get_lifespan_head(mpset, lifespan+1);
+@@ -562,6 +591,7 @@ static int mc_alloc_internal(struct neuron_device *nd, enum mc_lifespan lifespan
+ 	     enum mem_location location, u32 channel, u32 region, u32 nc_id, mem_alloc_category_t mem_type,
+ 	     struct mem_chunk **result)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_alloc_internal at %s:%d\n", __FILE__, __LINE__);
+ 	struct mem_chunk *mc;
+ 	struct mempool *mp = NULL;
+ 	struct mempool_set *mpset = &nd->mpset;
+@@ -603,6 +633,10 @@ static int mc_alloc_internal(struct neuron_device *nd, enum mc_lifespan lifespan
+ 	memset(mc, 0, sizeof(struct mem_chunk));
+ 
+ 	mutex_lock(&mpset->lock);
++ printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_alloc_coherent from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_alloc_coherent called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_alloc_coherent\n");
+ 	if (location == MEM_LOC_HOST) {
+ 		if (align) {
+ 			pr_err("Allocating aligned host memory not supported");
+@@ -762,11 +796,13 @@ exit:
+ int mc_alloc_align(struct neuron_device *nd, enum mc_lifespan lifespan, u64 size, u64 align,
+ 		   enum mem_location location, u32 channel, u32 region, u32 nc_id, mem_alloc_category_t mem_type,
+ 		   struct mem_chunk **result) {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_alloc_align at %s:%d\n", __FILE__, __LINE__);
+ 	return mc_alloc_internal(nd, lifespan, size, align, location, channel, region, nc_id, mem_type, result);
+ };
+ 
+ void mc_inc_refcount(struct mem_chunk *mc)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_inc_refcount at %s:%d\n", __FILE__, __LINE__);
+ 	struct mempool_set *mpset = mc->mpset;
+ 	mutex_lock(&mpset->lock);
+ 	mc->ref_count++;
+@@ -775,6 +811,7 @@ void mc_inc_refcount(struct mem_chunk *mc)
+ 
+ void mc_free(struct mem_chunk **mcp)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_free at %s:%d\n", __FILE__, __LINE__);
+ 	struct mempool_set *mpset;
+ 	struct mem_chunk *mc = *mcp;
+ 
+@@ -807,6 +844,10 @@ void mc_free(struct mem_chunk **mcp)
+ 		if (mc->mp) {
+ 			gen_pool_free(mc->gen_pool, (u64)mc->va, mc->size);
+ 			mc->mp->allocated_size -= mc->size;
++  printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_free_coherent from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
++printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_free_coherent called from %s\n", __func__);
++dump_stack();
++printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_free_coherent\n");
+ 		} else {
+ 			dma_free_coherent(mpset->pdev, mc->size, mc->va, mc->pa & ~ndhal->ndhal_address_map.pci_host_base);
+ 		}
+@@ -834,6 +875,7 @@ void mc_free(struct mem_chunk **mcp)
+ 
+ int mc_dump_all_chunks(struct neuron_device *nd, u32 channel, u32 num_entries_in, struct neuron_ioctl_mem_chunk_info *data, u32 *num_entries_out)
+ {
++    printk(KERN_INFO "FUNC_ENTRY: Entering function mc_dump_all_chunks at %s:%d\n", __FILE__, __LINE__);
+ 	struct mempool_set *mpset = &nd->mpset;
+ 	u32 cnt = 0;
+ 	struct rb_node *node;
