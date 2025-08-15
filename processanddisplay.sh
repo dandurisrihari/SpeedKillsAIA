@@ -6,7 +6,7 @@ trap 'echo "An error occurred at line $LINENO. Exiting."' ERR
 # Absolute path for the PID file to avoid confusion
 PID_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/webviewer_pids.txt"
 
-PLATFORMS=("nxp" "ti" "coral")
+PLATFORMS=("nxp" "ti" "coral" "aws")
 
 run_preprocess() {
   local platform=$1
@@ -57,6 +57,9 @@ do_start() {
   launch_viewer "python3 -m src.webviewer data/json_files/ti_dmesg.json --port 8083"
   launch_viewer "python3 -m src.webviewer data/json_files/coral_boot.json --port 8084"
   launch_viewer "python3 -m src.webviewer data/json_files/coral_dmesg.json --port 8085"
+
+  launch_viewer "python3 -m src.webviewer data/json_files/aws_dmesg.json --port 8086"
+  launch_viewer "python3 -m src.webviewer data/json_files/aws_dmesg.json --port 8087"
 
   echo "All web viewers launched in background."
   echo "Use '$0 stop' to kill them."
