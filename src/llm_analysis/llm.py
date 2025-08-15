@@ -148,12 +148,13 @@ class LLMAnalyzer:
         if len(text) <= max_length:
             return text
         
+        truncation_msg = "... Output truncated for web display"
         # Try to cut at a sentence boundary
-        cutoff = text[:max_length].rfind('.')
-        if cutoff > max_length * 0.8:  # If we find a sentence end near the limit
-            return text[:cutoff + 1] + "..."
+        cutoff = text[:max_length-len(truncation_msg)].rfind('.')
+        if cutoff > (max_length-len(truncation_msg)) * 0.8:  # If we find a sentence end near the limit
+            return text[:cutoff + 1] + truncation_msg
         else:
-            return text[:max_length] + "..."
+            return text[:max_length-len(truncation_msg)] + truncation_msg
     
     def _parse_confidence_scores(self, analysis_text: str) -> Dict[str, int]:
         """Parse confidence scores from LLM analysis text"""

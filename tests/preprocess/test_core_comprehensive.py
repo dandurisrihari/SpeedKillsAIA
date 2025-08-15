@@ -239,23 +239,6 @@ Invalid line without timestamp
         self.assertIsInstance(metadata['parsed_lines'], int)
         self.assertIsInstance(metadata['unique_entries'], int)
         self.assertIsInstance(metadata['log_file'], str)
-    
-    @unittest.skip("Progress callback testing skipped - implementation uses instance attributes")
-    def test_progress_callback(self, mock_callback):
-        """Test progress callback functionality"""
-        callback_log = self.temp_path / "callback_test.log"
-        
-        lines = []
-        for i in range(50):
-            lines.append(f"[{i}.000000] FUNC_ENTRY: Entering function func_{i} at /test/file.c:{i}")
-        
-        callback_log.write_text("\n".join(lines))
-        
-        # Parse with mocked callback
-        self.engine.parse_log_file(str(callback_log))
-        
-        # Verify callback was called
-        self.assertTrue(mock_callback.called)
 
 
 class TestModelsComprehensive(unittest.TestCase):

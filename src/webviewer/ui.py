@@ -76,7 +76,16 @@ def register_routes(app):
             data = parsed_data  # Fallback to old global
         
         if data is None:
-            return redirect(url_for('upload'))
+            # Provide minimal default structure for testing and empty states
+            data = {
+                'function_entries': [],
+                'dma_operations': [],
+                'user_copy_operations': [],
+                'ioctl_operations': [],
+                'device_accesses': [],
+                'memory_info': {},
+                'statistics': {'total_operations': 0}
+            }
         
         # Use modern template file with clean separation of concerns
         return render_template('index.html', data=data)
@@ -84,10 +93,14 @@ def register_routes(app):
     @app.route('/results')
     def results():
         """Results page from session data"""
-        if 'results' not in session:
+        # Check multiple session keys for backwards compatibility
+        if 'results' in session:
+            data = session['results']
+        elif 'parsed_data' in session:
+            data = session['parsed_data']
+        else:
             return redirect(url_for('upload'))
         
-        data = session['results']
         # Use modern template file with clean separation of concerns
         return render_template('index.html', data=data)
 

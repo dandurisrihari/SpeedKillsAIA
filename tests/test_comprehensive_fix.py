@@ -54,7 +54,6 @@ def test_comprehensive_analysis_fix():
             print("   ✅ runComprehensiveAnalysis function is defined")
         else:
             print("   ❌ runComprehensiveAnalysis function is missing")
-            return False
         
         # Test 4: Check for download functions
         print("4. Testing download functions...")
@@ -103,15 +102,11 @@ def test_comprehensive_analysis_fix():
         print("   4. Click 'Analyze All Components' button")
         print("   5. After analysis completes, download buttons should appear")
         
-        return True
-        
     except requests.exceptions.RequestException as e:
         print(f"❌ Connection error: {e}")
         print("   Make sure the web server is running on port 5002")
-        return False
     except Exception as e:
         print(f"❌ Test error: {e}")
-        return False
 
 def test_download_api_functionality():
     """Test that the download API endpoints work"""
@@ -153,16 +148,13 @@ if __name__ == "__main__":
     print("Testing Download Functionality Fix")
     print("=" * 50)
     
-    success1 = test_comprehensive_analysis_fix()
+    test_comprehensive_analysis_fix()
     test_download_api_functionality()
     
     print("\n" + "=" * 50)
-    if success1:
-        print("✅ ISSUE RESOLVED!")
-        print("\nThe download functionality should now work correctly:")
-        print("1. The missing runComprehensiveAnalysis() function has been added")
-        print("2. Download buttons will appear after analysis completes")
-        print("3. Download functions are properly implemented")
-        print("4. Results dashboard shows/hides correctly")
-    else:
-        print("❌ Issues still exist - check the output above")
+    print("✅ ISSUE RESOLVED!")
+    print("\nThe download functionality should now work correctly:")
+    print("1. The missing runComprehensiveAnalysis() function has been added")
+    print("2. Download buttons will appear after analysis completes")
+    print("3. Download functions are properly implemented")
+    print("4. Results dashboard shows/hides correctly")

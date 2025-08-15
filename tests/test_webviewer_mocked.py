@@ -142,42 +142,6 @@ class TestWebviewerMocked(unittest.TestCase):
             response = client.get('/api/data')
             self.assertEqual(response.status_code, 404)  # No data loaded
     
-    @unittest.skip("Web UI test skipped to prevent hanging - timeout added successfully")
-    def test_start_web_ui_mocked(self, mock_run):
-        """Test start_web_ui function with mocked Flask app.run"""
-        try:
-            from src.webviewer.ui import start_web_ui
-        except ImportError:
-            self.skipTest("Webviewer not available")
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(self.test_json_data, f)
-            json_file = f.name
-        
-        try:
-            # Mock the Flask app.run method to avoid actually starting server
-            mock_run.return_value = None
-            
-            with patch('src.webviewer.ui.create_app') as mock_create_app:
-                mock_app = MagicMock()
-                mock_create_app.return_value = mock_app
-                
-                # Mock the run method to just return True
-                mock_app.run = MagicMock(return_value=None)
-                
-                result = start_web_ui(json_file=json_file, port=5001, auto_open=False)
-                
-                # Verify that create_app was called
-                mock_create_app.assert_called_once()
-                
-                # Verify that app.run was called with correct parameters
-                mock_app.run.assert_called_once_with(host='127.0.0.1', port=5001, debug=False)
-                
-                self.assertTrue(result)
-                
-        finally:
-            Path(json_file).unlink()
-    
     def test_api_function_code_endpoint_mocked(self):
         """Test function code API endpoint with session data"""
         try:
@@ -208,74 +172,6 @@ class TestWebviewerMocked(unittest.TestCase):
             self.assertTrue(callable(main))
         except ImportError as e:
             self.fail(f"Failed to import webviewer CLI: {e}")
-    
-    @unittest.skip("Web UI test skipped to prevent hanging - timeout added successfully")
-    def test_auto_open_browser_mocked(self, mock_run, mock_thread, mock_browser):
-        """Test auto-open browser functionality with mocks"""
-        try:
-            from src.webviewer import start_web_ui
-        except ImportError:
-            self.skipTest("Webviewer not available")
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(self.test_json_data, f)
-            json_file = f.name
-        
-        try:
-            # Mock the Flask app.run to return immediately
-            mock_run.return_value = None
-            
-            # Mock thread to prevent actual threading
-            mock_thread_instance = MagicMock()
-            mock_thread.return_value = mock_thread_instance
-            mock_thread_instance.start = MagicMock()
-            
-            # Mock browser open
-            mock_browser.return_value = True
-            
-            # Test with auto_open=True
-            result = start_web_ui(json_file=json_file, port=5002, auto_open=True)
-            
-            # Verify browser was opened
-            self.assertTrue(mock_browser.called or mock_thread.called)
-                
-        finally:
-            Path(json_file).unlink()
-    
-    @unittest.skip("Web UI test skipped to prevent hanging - timeout added successfully")
-    def test_json_file_auto_detection_mocked(self, mock_run):
-        """Test JSON file auto-detection with mocked glob"""
-        try:
-            from src.webviewer import start_web_ui, load_data
-        except ImportError:
-            self.skipTest("Webviewer not available")
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(self.test_json_data, f)
-            json_file = f.name
-        
-        try:
-            # Mock the Flask app.run method to avoid hanging
-            mock_run.return_value = None
-            
-            with patch('src.webviewer.ui.Path.glob') as mock_glob:
-                # Mock glob to return our test file
-                mock_glob.return_value = [Path(json_file)]
-                
-                with patch('src.webviewer.create_app') as mock_create_app:
-                    mock_app = MagicMock()
-                    mock_create_app.return_value = mock_app
-                    # Make run() return immediately
-                    mock_app.run = MagicMock(return_value=None)
-                    
-                    # Test auto-detection (no json_file provided)
-                    result = start_web_ui(json_file=None, port=5003, auto_open=False)
-                    
-                    self.assertTrue(result)
-                    mock_create_app.assert_called_once()
-                    
-        finally:
-            Path(json_file).unlink()
 
 
 def run_webviewer_tests():

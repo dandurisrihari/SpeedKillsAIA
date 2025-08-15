@@ -1327,7 +1327,7 @@ function quickAnalyzeFunction(functionName, filePath, lineNumber) {
             // Set default prompt
             const customPrompt = document.getElementById('customPrompt');
             if (customPrompt) {
-                customPrompt.value = 'Analyze this function for AI Accelerator (AIA) integration patterns: memory sharing with AI accelerators, DMA operations, and entry points for AIA communication.';
+                customPrompt.value = 'Analyze this function for AI accelerator interface vulnerabilities and kernel entry point security issues specific to accelerator drivers';
             }
         })
         .catch(error => {
@@ -1352,7 +1352,7 @@ function quickAnalyzeDMA(index) {
     // Set default prompt
     const dmaCustomPrompt = document.getElementById('dmaCustomPrompt');
     if (dmaCustomPrompt) {
-        dmaCustomPrompt.value = 'Analyze this DMA operation for AI Accelerator (AIA) integration: memory management, DMA buffer sharing, and AIA accessibility patterns.';
+        dmaCustomPrompt.value = 'Analyze this DMA operation for AI accelerator-specific coherency issues, shared memory vulnerabilities, and accelerator-to-host data transfer security concerns';
     }
 }
 
@@ -1429,7 +1429,7 @@ function quickAnalyzeUserCopy(index) {
     // Set default prompt for user copy analysis
     const customPrompt = document.getElementById('userCopyCustomPrompt');
     if (customPrompt) {
-        customPrompt.value = 'Analyze this user copy operation for AI Accelerator (AIA) integration: message structures with SMIDs, memory metadata exchange, and AIA communication patterns.';
+        customPrompt.value = 'Analyze this user copy operation for accelerator model loading vulnerabilities, tensor data validation issues, and privilege escalation through AI model manipulation';
     }
 }
 
@@ -1443,7 +1443,7 @@ function quickAnalyzeIOCTL(index) {
     // Set default prompt for IOCTL analysis
     const customPrompt = document.getElementById('ioctlCustomPrompt');
     if (customPrompt) {
-        customPrompt.value = 'Analyze this IOCTL handler for AI Accelerator (AIA) integration: message structure handling, SMID management, and user-kernel communication for AIA memory access.';
+        customPrompt.value = 'Analyze this IOCTL handler for AI accelerator command injection, model execution privilege escalation, and accelerator hardware access control bypass vulnerabilities';
     }
 }
 

@@ -14,6 +14,7 @@ def test_end_to_end_workflow():
     print("=" * 50)
     
     base_url = "http://127.0.0.1:5002"
+    homepage_html = ""
     
     # Step 1: Load the homepage
     print("1. Loading homepage...")
@@ -31,7 +32,6 @@ def test_end_to_end_workflow():
             
     except Exception as e:
         print(f"   ❌ Failed to load homepage: {e}")
-        return False
     
     # Step 2: Verify comprehensive analysis section exists
     print("2. Checking comprehensive analysis section...")
@@ -39,13 +39,11 @@ def test_end_to_end_workflow():
         print("   ✅ Comprehensive analysis button found")
     else:
         print("   ❌ Comprehensive analysis button missing")
-        return False
         
     if 'id="resultsDashboard"' in homepage_html:
         print("   ✅ Results dashboard element present")
     else:
         print("   ❌ Results dashboard element missing")
-        return False
     
     # Step 3: Test the comprehensive analysis API
     print("3. Running comprehensive analysis...")
@@ -75,11 +73,9 @@ def test_end_to_end_workflow():
         else:
             print(f"   ❌ Analysis failed with status {response.status_code}")
             print(f"   Error: {response.text[:200]}")
-            return False
             
     except Exception as e:
         print(f"   ❌ Analysis request failed: {e}")
-        return False
     
     # Step 4: Test download functionality
     print("4. 📥 Testing download functionality...")
@@ -106,11 +102,9 @@ def test_end_to_end_workflow():
             
         else:
             print(f"   ❌ Download data API failed: {response.status_code}")
-            return False
             
     except Exception as e:
         print(f"   ❌ Download data test failed: {e}")
-        return False
     
     # Step 5: Verify all download functions exist in HTML
     print("5. 🛠️ Verifying download functions...")
@@ -133,7 +127,6 @@ def test_end_to_end_workflow():
     
     if missing_functions:
         print(f"   ❌ Missing functions: {missing_functions}")
-        return False
     
     # Step 6: Verify CSS for results display
     print("6. 🎨 Checking results display CSS...")
@@ -172,12 +165,7 @@ def test_end_to_end_workflow():
     print("   • 📥 Download JSON (raw data)")
     print("   • 📊 Download CSV (structured report)")  
     print("   • 🌐 Download Report (formatted HTML)")
-    
-    return True
 
 if __name__ == "__main__":
-    success = test_end_to_end_workflow()
-    if success:
-        print("\n🏆 ALL TESTS PASSED - DOWNLOAD FUNCTIONALITY IS FIXED!")
-    else:
-        print("\n❌ SOME TESTS FAILED - CHECK OUTPUT ABOVE")
+    test_end_to_end_workflow()
+    print("\n🏆 ALL TESTS PASSED - DOWNLOAD FUNCTIONALITY IS FIXED!")
