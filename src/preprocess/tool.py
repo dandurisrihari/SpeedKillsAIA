@@ -17,13 +17,6 @@ from typing import Optional
 
 from .core.engine import KernelLogParserEngine
 
-# Web UI availability flag
-try:
-    from ..webviewer import start_web_ui
-    WEB_UI_AVAILABLE = True
-except ImportError:
-    WEB_UI_AVAILABLE = False
-
 
 class KernelLogParserTool:
     """
@@ -118,24 +111,6 @@ class KernelLogParserTool:
                 print(f"Error processing {log_file}: {e}", file=sys.stderr)
                 continue
         return results
-    
-    def start_web_ui(self, results_file: Optional[str] = None, port: int = 5000, 
-                     host: str = "127.0.0.1", auto_open: bool = True):
-        """
-        Start web UI for viewing results
-        
-        Args:
-            results_file: Path to JSON results file
-            port: Port to run web server on
-            host: Host to bind to
-            auto_open: Whether to automatically open browser
-        """
-        try:
-            from ..webviewer import start_web_ui
-            return start_web_ui(json_file=results_file, port=port, host=host, auto_open=auto_open)
-        except ImportError:
-            print("Web UI not available. Install webviewer dependencies.", file=sys.stderr)
-            return False
 
 
 def main():
@@ -159,9 +134,6 @@ Examples:
   
   # Complete analysis with all options
   python -m src.preprocess --log kernel.log --strace-log strace.log --source-root /path/to/kernel -o results.json
-  
-  # To view results in web UI (separate module):
-  python -m src.webviewer results.json
         """
     )
     
@@ -248,11 +220,9 @@ Examples:
             
             if args.output:
                 print(f"\n💾 JSON output saved to: {args.output}")
-                print(f"💡 To view results in web UI: python -m src.webviewer {args.output}")
             else:
-                print(f"\n💡 To save JSON and view in web UI:")
+                print(f"\n💡 To save JSON output:")
                 print(f"   python -m src.preprocess --log {log_file} -o results.json")
-                print(f"   python -m src.webviewer results.json")
         else:
             sys.exit(1)
     

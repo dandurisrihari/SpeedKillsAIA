@@ -24,6 +24,8 @@ Usage:
     tool = KernelLogParserTool()
     results = tool.process_log("log.txt")
 """
+#import pdb
+#pdb.set_trace()
 
 from .core.engine import KernelLogParserEngine
 from .tool import KernelLogParserTool
@@ -45,12 +47,11 @@ except ImportError:
 
 # Configuration
 try:
-    from .config.settings import ParserSettings, WebUISettings, OutputSettings
+    from .config.settings import ParserSettings, OutputSettings
     CONFIG_AVAILABLE = True
 except ImportError:
     CONFIG_AVAILABLE = False
     ParserSettings = None
-    WebUISettings = None
     OutputSettings = None
 
 __version__ = "2.0.0"

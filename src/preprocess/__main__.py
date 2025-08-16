@@ -6,7 +6,7 @@ This allows running the tool as a module:
     python -m src.preprocess
 """
 
-from .tool import main
+from .cli import cli_main
 
 if __name__ == "__main__":
-    main()
+    cli_main()
