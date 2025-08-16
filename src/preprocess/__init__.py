@@ -24,8 +24,8 @@ Usage:
     tool = KernelLogParserTool()
     results = tool.process_log("log.txt")
 """
-#import pdb
-#pdb.set_trace()
+import pdb
+pdb.set_trace()
 
 from .core.engine import KernelLogParserEngine
 from .tool import KernelLogParserTool
