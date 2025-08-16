@@ -13,9 +13,8 @@ from pathlib import Path
 import glob
 
 from ..core.engine import KernelLogParserEngine
-from ..config.settings import ParserSettings, WebUISettings
+from ..config.settings import ParserSettings
 from ..interfaces.batch import BatchProcessor
-from ..web.ui import start_web_ui
 
 
 class InteractiveInterface:
@@ -28,7 +27,6 @@ class InteractiveInterface:
     
     def __init__(self):
         self.config = ParserSettings()
-        self.web_config = WebUISettings()
         self.results = None
         self.last_output_file = None
     
@@ -47,10 +45,8 @@ class InteractiveInterface:
                 elif choice == '3':
                     self._configure_settings()
                 elif choice == '4':
-                    self._start_web_interface()
-                elif choice == '5':
                     self._view_last_results()
-                elif choice == '6':
+                elif choice == '5':
                     self._show_help()
                 elif choice == '0':
                     print("\n👋 Thank you for using the Kernel Log Parser!")
@@ -82,9 +78,8 @@ class InteractiveInterface:
         print("1. 📄 Parse Single Log File")
         print("2. 📁 Parse Multiple Log Files (Batch)")
         print("3. ⚙️  Configure Settings")
-        print("4. 🌐 Start Web Interface")
-        print("5. 📊 View Last Results")
-        print("6. ❓ Help & Documentation")
+        print("4. 📊 View Last Results")
+        print("5. ❓ Help & Documentation")
         print("0. 🚪 Exit")
         print("─"*40)
         
@@ -249,45 +244,6 @@ class InteractiveInterface:
                 self.web_config.host = self._get_host()
             else:
                 print("❌ Invalid choice.")
-    
-    def _start_web_interface(self) -> None:
-        """Start the web interface"""
-        print("\n" + "─"*40)
-        print("START WEB INTERFACE")
-        print("─"*40)
-        
-        # Check if we have results to display
-        json_file = None
-        if self.last_output_file and Path(self.last_output_file).exists():
-            print(f"📊 Found recent results: {self.last_output_file}")
-            if input("Use these results? (Y/n): ").strip().lower() != 'n':
-                json_file = self.last_output_file
-        
-        if not json_file:
-            json_file = input("Enter JSON results file (or press Enter for empty UI): ").strip()
-            if not json_file:
-                json_file = None
-        
-        print(f"\n🌐 Starting web interface...")
-        print(f"  Host: {self.web_config.host}")
-        print(f"  Port: {self.web_config.port}")
-        print(f"  Results: {json_file or 'None'}")
-        print(f"\n💡 The web interface will open automatically.")
-        print(f"💡 Use Ctrl+C to stop the server.")
-        
-        try:
-            start_web_ui(
-                json_file=json_file,
-                port=self.web_config.port,
-                host=self.web_config.host,
-                auto_open=self.web_config.auto_open_browser
-            )
-        except KeyboardInterrupt:
-            print("\n🛑 Web interface stopped.")
-        except Exception as e:
-            print(f"❌ Failed to start web interface: {e}")
-            
-        input("\nPress Enter to continue...")
     
     def _view_last_results(self) -> None:
         """Display summary of last parsing results"""

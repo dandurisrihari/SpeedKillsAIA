@@ -78,7 +78,7 @@ class TestCLIWithIOCTL(unittest.TestCase):
             original_argv = sys.argv[:]
             sys.argv = [
                 'preprocess_cli.py',
-                log_file,
+                '--log', log_file,
                 '--output', output_file,
                 '--source-root', '/kernel/sources'
             ]

@@ -53,49 +53,6 @@ class ParserSettings:
         return True
 
 
-@dataclass 
-class WebUISettings:
-    """
-    Settings for the web user interface
-    
-    Controls web server behavior, styling, and feature availability.
-    """
-    
-    # Server configuration
-    host: str = '127.0.0.1'
-    port: int = 5000
-    debug: bool = False
-    auto_open_browser: bool = True
-    
-    # UI behavior
-    enable_search: bool = True
-    enable_filtering: bool = True
-    show_function_code: bool = True
-    show_stack_traces: bool = True
-    
-    # Display limits
-    max_items_per_page: int = 1000
-    max_search_results: int = 100
-    max_function_code_lines: int = 500  # Limit function code display
-    enable_lazy_loading: bool = True    # Enable lazy loading for function code
-    
-    def validate(self) -> bool:
-        """Validate web UI settings"""
-        if not (1 <= self.port <= 65535):
-            raise ValueError(f"Port must be between 1 and 65535, got {self.port}")
-            
-        if self.max_items_per_page <= 0:
-            raise ValueError("Max items per page must be positive")
-            
-        if self.max_search_results <= 0:
-            raise ValueError("Max search results must be positive")
-            
-        if self.max_function_code_lines <= 0:
-            raise ValueError("Max function code lines must be positive")
-            
-        return True
-
-
 @dataclass
 class OutputSettings:
     """
@@ -143,14 +100,12 @@ class ConfigurationManager:
     
     def __init__(self):
         self.parser = ParserSettings()
-        self.web_ui = WebUISettings()
         self.output = OutputSettings()
     
     def validate_all(self) -> bool:
         """Validate all configuration settings"""
         return (
             self.parser.validate() and
-            self.web_ui.validate() and
             self.output.validate()
         )
     
@@ -161,11 +116,6 @@ class ConfigurationManager:
                 if hasattr(self.parser, key):
                     setattr(self.parser, key, value)
         
-        if 'web_ui' in config_dict:
-            for key, value in config_dict['web_ui'].items():
-                if hasattr(self.web_ui, key):
-                    setattr(self.web_ui, key, value)
-        
         if 'output' in config_dict:
             for key, value in config_dict['output'].items():
                 if hasattr(self.output, key):
@@ -175,7 +125,6 @@ class ConfigurationManager:
         """Export configuration to dictionary"""
         return {
             'parser': self.parser.__dict__,
-            'web_ui': self.web_ui.__dict__,
             'output': self.output.__dict__
         }
 
