@@ -7,7 +7,7 @@ import argparse
 import sys
 import json
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Optional
 
 from .analyzer import CStructureAnalyzer
 from .output import OutputFormatter, OutputManager
@@ -33,6 +33,9 @@ Examples:
   
   # List all structures in a file
   python3 -m src.structanalyzer file.c --list-structures
+  
+  # List all structures with unlimited results
+  python3 -m src.structanalyzer file.c --list-structures --max-results 0
   
   # Analyze with custom primitives
   python3 -m src.structanalyzer file.c StructName --primitives "my_int,my_ptr"
@@ -70,6 +73,11 @@ Examples:
                        action='store_true',
                        help='List all structures/unions found in the file')
     
+    parser.add_argument('--max-results',
+                       type=int,
+                       default=1000,
+                       help='Maximum number of structures to list (default: 1000, 0 for unlimited)')
+    
     # Primitive type customization
     parser.add_argument('--primitives',
                        help='Additional primitive types (comma-separated list)')
@@ -77,20 +85,32 @@ Examples:
     return parser
 
 
-def list_structures(analyzer: CStructureAnalyzer, max_results: int = 100) -> None:
+def list_structures(analyzer: CStructureAnalyzer, max_results: Optional[int] = 1000) -> None:
     """List all structures found in the file"""
     
     print("Scanning for structures and unions...")
-    structures = analyzer.list_all_structures(max_results)
     
-    if not structures:
+    # Get all structure names first to get accurate count
+    all_structures = analyzer.parser.get_all_structure_names()
+    total_count = len(all_structures)
+    
+    if not all_structures:
         print("ERROR: No structures or unions found in the file")
         return
     
-    print(f"\nFound {len(structures)} structures/unions:")
+    # Determine how many to show
+    if max_results is None or max_results == 0:
+        show_count = total_count
+        structures_to_show = all_structures
+        print(f"\nFound {total_count} structures/unions:")
+    else:
+        show_count = min(max_results, total_count)
+        structures_to_show = all_structures[:show_count]
+        print(f"\nFound {total_count} structures/unions (showing first {show_count}):")
+    
     print("-" * 50)
     
-    for i, struct_name in enumerate(structures, 1):
+    for i, struct_name in enumerate(structures_to_show, 1):
         try:
             # Quick check to see if it's a struct or union
             struct_info = analyzer.find_structure(struct_name, verbose=False)
@@ -102,12 +122,12 @@ def list_structures(analyzer: CStructureAnalyzer, max_results: int = 100) -> Non
                 print(f"{i:3d}. {'unknown':6} {struct_name:30} (not found)")
         except Exception:
             print(f"{i:3d}. {'error':6} {struct_name:30} (parse error)")
-        
-        if i >= max_results:
-            remaining = len(structures) - max_results
-            if remaining > 0:
-                print(f"     ... and {remaining} more structures")
-            break
+    
+    # Show remaining count if truncated
+    if max_results is not None and max_results > 0 and total_count > max_results:
+        remaining = total_count - max_results
+        print(f"     ... and {remaining} more structures")
+        print(f"\nTip: Use --max-results 0 to show all {total_count} structures")
 
 
 def show_typedef_summary(analyzer: CStructureAnalyzer) -> None:
@@ -225,7 +245,8 @@ def main() -> int:
     
     # Handle special modes
     if args.list_structures:
-        list_structures(analyzer, 100)
+        max_results = args.max_results if args.max_results > 0 else None
+        list_structures(analyzer, max_results)
         return 0
     
     # Run comprehensive analysis (always enabled by default)

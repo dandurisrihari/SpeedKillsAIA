@@ -167,16 +167,19 @@ class PrimitiveTypeManager:
         if not type_name:
             return False
         
-        # Common enum prefixes in graphics/driver code
-        enum_prefixes = ['gce', 'gc', 'gct', 'VK_', 'GL_', 'CL_']
+        # Common enum prefixes in graphics/driver code (but not struct prefixes)
+        enum_prefixes = ['gce', 'gct', 'VK_', 'GL_', 'CL_']
         
         for prefix in enum_prefixes:
             if type_name.startswith(prefix):
                 return True
         
-        # Check for ALL_CAPS pattern (common for enums)
+        # Check for ALL_CAPS pattern (common for enums) but exclude common struct patterns
         if type_name.isupper() and '_' in type_name:
-            return True
+            # Exclude common struct prefixes that might be in all caps
+            struct_patterns = ['gcsHAL_', 'gcoOS_', 'gcsSURF_', 'gcs_']
+            if not any(type_name.startswith(pattern.upper()) for pattern in struct_patterns):
+                return True
         
         return False
     

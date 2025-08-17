@@ -87,6 +87,30 @@ class StructureInfo:
 
 
 @dataclass
+class EnumInfo:
+    """Information about an enum definition"""
+    name: str
+    values: List[str]
+    found: bool = False
+    start_line: int = 0
+    end_line: int = 0
+    definition: Optional[str] = None  # Full enum definition as text
+    error: Optional[str] = None
+
+
+@dataclass
+class TypedefInfo:
+    """Information about a typedef definition"""
+    name: str
+    underlying_type: str
+    found: bool = True
+    start_line: int = 0
+    end_line: int = 0
+    definition: Optional[str] = None  # Full typedef definition as text
+    is_primitive: bool = False  # Whether it resolves to a primitive type
+
+
+@dataclass
 @dataclass
 class AnalysisResult:
     """Result of structure analysis"""
@@ -96,6 +120,8 @@ class AnalysisResult:
     analysis_complete: bool
     timestamp: float
     structures: Dict[str, StructureInfo]
+    enums: Dict[str, EnumInfo] = None  # Add enum information
+    typedefs: Dict[str, TypedefInfo] = None  # Add typedef information
     total_structures: int = 0
     analysis_time: float = 0.0
     errors: List[str] = None
@@ -109,6 +135,10 @@ class AnalysisResult:
             self.errors = []
         if self.warnings is None:
             self.warnings = []
+        if self.enums is None:
+            self.enums = {}
+        if self.typedefs is None:
+            self.typedefs = {}
         if self.total_structures == 0:
             self.total_structures = len(self.structures)
     

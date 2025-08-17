@@ -4,7 +4,7 @@ Main C Structure Analyzer class with comprehensive union support
 
 import time
 from typing import Dict, List, Any, Optional, Set
-from .types import StructureInfo, AnalysisResult, FieldType
+from .types import StructureInfo, AnalysisResult, FieldType, EnumInfo, TypedefInfo, FieldInfo
 from .parser import TreeSitterParser
 from .primitives import PrimitiveTypeManager
 
@@ -18,6 +18,7 @@ class CStructureAnalyzer:
         self.primitive_manager = PrimitiveTypeManager(custom_primitives)
         self.parser = TreeSitterParser(file_path, self.primitive_manager)
         self.analysis_cache: Dict[str, StructureInfo] = {}
+        self.cache_max_depth: int = 0
     
     @property  
     def tree(self):
@@ -27,6 +28,13 @@ class CStructureAnalyzer:
     def analyze_structure(self, structure_name: str, max_depth: int = 3, 
                          verbose: bool = False) -> AnalysisResult:
         """Analyze a structure/union and its nested components up to max_depth"""
+        
+        # Clear cache if max_depth changed to ensure proper deep analysis
+        if max_depth > self.cache_max_depth:
+            if verbose:
+                print(f"🔄 Clearing cache for deeper analysis (depth {max_depth} > cached {self.cache_max_depth})")
+            self.analysis_cache.clear()
+            self.cache_max_depth = max_depth
         
         if verbose:
             print(f"🔍 Analyzing: {structure_name} (max depth: {max_depth})")
@@ -45,6 +53,12 @@ class CStructureAnalyzer:
         
         analysis_time = time.time() - start_time
         
+        # Collect enum definitions for fields that use enum types
+        enums = self._collect_enum_definitions(structures, verbose)
+        
+        # Collect typedef definitions for types used in structures
+        typedefs = self._collect_typedef_definitions(structures, verbose)
+        
         return AnalysisResult(
             structure_name=structure_name,
             file_path=self.file_path,
@@ -52,6 +66,8 @@ class CStructureAnalyzer:
             analysis_complete=True,
             timestamp=start_time,
             structures=structures,
+            enums=enums,
+            typedefs=typedefs,
             total_structures=len(structures),
             analysis_time=analysis_time,
             errors=errors
@@ -244,7 +260,7 @@ class CStructureAnalyzer:
         """Get all primitive types"""
         return self.primitive_manager.get_all_primitives()
     
-    def list_all_structures(self, max_results: int = 100) -> List[str]:
+    def list_all_structures(self, max_results: int = 10000) -> List[str]:
         """List all structure and union names found in the file"""
         return self.parser.list_all_structures(max_results)
     
@@ -315,3 +331,135 @@ class CStructureAnalyzer:
                 dependencies[struct_name] = deps
         
         return dependencies
+    
+    def _collect_enum_definitions(self, structures: Dict[str, StructureInfo], verbose: bool = False) -> Dict[str, 'EnumInfo']:
+        """Collect enum definitions for fields that use enum types"""
+        from .types import EnumInfo
+        
+        enums = {}
+        enum_types_needed = set()
+        
+        # Collect all enum type names used in structures
+        for struct_info in structures.values():
+            if not struct_info.found:
+                continue
+            for field in struct_info.fields:
+                if field.field_type == FieldType.ENUM or self._looks_like_enum_type(field.type_name):
+                    enum_types_needed.add(field.type_name)
+        
+        # Find and extract enum definitions
+        for enum_name in enum_types_needed:
+            if verbose:
+                print(f"🔍 Looking for enum: {enum_name}")
+            
+            try:
+                enum_info = self.parser.find_enum_definition(enum_name)
+                if enum_info and enum_info.found:
+                    enums[enum_name] = enum_info
+                    if verbose:
+                        print(f"✅ Found enum: {enum_name} ({len(enum_info.values)} values)")
+                else:
+                    # Create a placeholder for missing enum
+                    enums[enum_name] = EnumInfo(
+                        name=enum_name,
+                        values=[],
+                        found=False,
+                        error=f"Enum '{enum_name}' definition not found"
+                    )
+                    if verbose:
+                        print(f"❌ Enum not found: {enum_name}")
+            except Exception as e:
+                if verbose:
+                    print(f"❌ Error finding enum {enum_name}: {e}")
+                enums[enum_name] = EnumInfo(
+                    name=enum_name,
+                    values=[],
+                    found=False,
+                    error=f"Error finding enum: {str(e)}"
+                )
+        
+        return enums
+    
+    def _collect_typedef_definitions(self, structures: Dict[str, StructureInfo], verbose: bool = False) -> Dict[str, TypedefInfo]:
+        """Collect typedef definitions for types used in structures"""
+        
+        typedefs = {}
+        typedef_types_needed = set()
+        
+        # Collect all type names used in structures
+        for struct_info in structures.values():
+            if not struct_info.found:
+                continue
+            for field in struct_info.fields:
+                # Add the field's type name
+                if field.type_name:
+                    typedef_types_needed.add(field.type_name)
+                # Also add the resolved type if different
+                if field.resolved_type and field.resolved_type != field.type_name:
+                    typedef_types_needed.add(field.resolved_type)
+        
+        # Get all available typedefs from the parser
+        all_typedefs = self.parser.extract_typedefs()
+        
+        # Filter to only include typedefs that are actually used
+        for typedef_name in typedef_types_needed:
+            if typedef_name in all_typedefs:
+                underlying_type = all_typedefs[typedef_name]
+                is_primitive = self.primitive_manager.is_primitive(underlying_type)
+                
+                typedefs[typedef_name] = TypedefInfo(
+                    name=typedef_name,
+                    underlying_type=underlying_type,
+                    found=True,
+                    definition=f"typedef {underlying_type} {typedef_name};",
+                    is_primitive=is_primitive
+                )
+                
+                if verbose:
+                    print(f"✅ Found typedef: {typedef_name} -> {underlying_type}")
+        
+        # Also include typedefs for commonly used types like gctUINT32, gctBOOL, etc.
+        gpu_types = ['gctUINT', 'gctUINT8', 'gctUINT16', 'gctUINT32', 'gctUINT64', 
+                     'gctINT', 'gctINT8', 'gctINT16', 'gctINT32', 'gctINT64',
+                     'gctBOOL', 'gctFLOAT', 'gctSIZE_T', 'gctPHYS_ADDR_T', 'gctADDRESS']
+        
+        for gpu_type in gpu_types:
+            if gpu_type in all_typedefs and gpu_type not in typedefs:
+                underlying_type = all_typedefs[gpu_type]
+                is_primitive = self.primitive_manager.is_primitive(underlying_type)
+                
+                typedefs[gpu_type] = TypedefInfo(
+                    name=gpu_type,
+                    underlying_type=underlying_type,
+                    found=True,
+                    definition=f"typedef {underlying_type} {gpu_type};",
+                    is_primitive=is_primitive
+                )
+                
+                if verbose:
+                    print(f"✅ Added common typedef: {gpu_type} -> {underlying_type}")
+        
+        return typedefs
+    
+    def _looks_like_enum_type(self, type_name: str) -> bool:
+        """Check if a type name looks like it could be an enum"""
+        # Remove common prefixes/suffixes
+        clean_name = type_name.strip()
+        
+        # Check for common enum naming patterns
+        enum_patterns = [
+            'gce',  # Common in graphics drivers
+            'gct',  # Common in graphics drivers  
+            '_CODE',
+            '_MODE',
+            '_TYPE',
+            '_STATUS',
+            '_STATE',
+            '_FLAG'
+        ]
+        
+        for pattern in enum_patterns:
+            if pattern in clean_name:
+                return True
+                
+        return False
