@@ -6,7 +6,7 @@ import re
 import os
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Set, Tuple
-from .types import FieldInfo, StructureInfo, FieldType
+from .types import FieldInfo, StructureInfo, FieldType, EnumInfo
 from .primitives import PrimitiveTypeManager
 
 # Tree-sitter imports with fallback
@@ -16,7 +16,9 @@ try:
     TREE_SITTER_AVAILABLE = True
 except ImportError:
     TREE_SITTER_AVAILABLE = False
-    Node = None
+    Node = Any  # Fallback type
+    Language = Any
+    Parser = Any
 
 
 class TreeSitterParser:
@@ -234,6 +236,67 @@ class TreeSitterParser:
             if child.type == 'type_identifier':
                 return self._get_node_text(child)
         return None
+    
+    def find_enum_definition(self, enum_name: str) -> Optional[EnumInfo]:
+        """Find and extract a specific enum definition by name"""
+        
+        def traverse_node(node):
+            # Look for typedef enum patterns: typedef enum _NAME { ... } NAME;
+            if node.type == 'type_definition':
+                typedef_name = None
+                enum_node = None
+                
+                for child in node.children:
+                    if child.type == 'type_identifier':
+                        typedef_name = self._get_node_text(child)
+                    elif child.type == 'enum_specifier':
+                        enum_node = child
+                
+                if typedef_name == enum_name and enum_node:
+                    return self._extract_enum_definition(enum_node, typedef_name)
+            
+            # Look for direct enum definitions: enum NAME { ... };
+            elif node.type == 'enum_specifier':
+                name = self._extract_enum_name(node)
+                if name == enum_name:
+                    return self._extract_enum_definition(node, name)
+            
+            # Recursively search children
+            for child in node.children:
+                result = traverse_node(child)
+                if result:
+                    return result
+            return None
+        
+        return traverse_node(self.ast_root)
+    
+    def _extract_enum_definition(self, enum_node, name: str) -> EnumInfo:
+        """Extract enum definition details from an enum_specifier node"""
+        
+        values = []
+        
+        # Get the full text of the enum
+        enum_text = self._get_node_text(enum_node)
+        
+        # Extract enum values
+        for child in enum_node.children:
+            if child.type == 'enumerator_list':
+                for enumerator in child.children:
+                    if enumerator.type == 'enumerator':
+                        # Extract the enumerator name
+                        for grandchild in enumerator.children:
+                            if grandchild.type == 'identifier':
+                                values.append(self._get_node_text(grandchild))
+                                break
+        
+        return EnumInfo(
+            name=name,
+            values=values,
+            found=True,
+            start_line=enum_node.start_point[0] + 1,
+            end_line=enum_node.end_point[0] + 1,
+            definition=enum_text
+        )
     
     def _extract_field_from_declaration(self, field_decl_node) -> List[Dict]:
         """Extract field information from field declaration node"""
@@ -798,12 +861,12 @@ class TreeSitterParser:
         """Get line number for a byte offset"""
         return self.source_bytes[:byte_offset].count(b'\n') + 1
     
-    def list_all_structures(self, max_results: int = 100) -> List[str]:
+    def list_all_structures(self, max_results: int = 10000) -> List[str]:
         """List all structure and union names in the file"""
         structures = set()
         
-        def traverse_node(node: Node):
-            if len(structures) >= max_results:
+        def traverse_node(node):
+            if max_results > 0 and len(structures) >= max_results:
                 return
             
             if node.type in ['struct_specifier', 'union_specifier']:
@@ -831,8 +894,43 @@ class TreeSitterParser:
             
             # Recursively traverse children
             for child in node.children:
-                if len(structures) >= max_results:
+                if max_results > 0 and len(structures) >= max_results:
                     break
+                traverse_node(child)
+        
+        traverse_node(self.ast_root)
+        return sorted(list(structures))
+    
+    def get_all_structure_names(self) -> List[str]:
+        """Get all structure and union names without any limit"""
+        structures = set()
+        
+        def traverse_node(node):
+            if node.type in ['struct_specifier', 'union_specifier']:
+                # Look for named structures
+                for child in node.children:
+                    if child.type == 'type_identifier':
+                        name = self._get_node_text(child)
+                        if name:
+                            structures.add(name)
+                        break
+            
+            elif node.type == 'type_definition':
+                # Look for typedef structures
+                typedef_name = None
+                has_struct_union = False
+                
+                for child in node.children:
+                    if child.type == 'type_identifier':
+                        typedef_name = self._get_node_text(child)
+                    elif child.type in ['struct_specifier', 'union_specifier']:
+                        has_struct_union = True
+                
+                if typedef_name and has_struct_union:
+                    structures.add(typedef_name)
+            
+            # Recursively traverse children
+            for child in node.children:
                 traverse_node(child)
         
         traverse_node(self.ast_root)

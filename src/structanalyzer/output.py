@@ -275,6 +275,17 @@ class OutputFormatter:
         
         # Add typedef declarations first
         typedefs_added = set()
+        
+        # Add typedef definitions for basic types
+        if result.typedefs:
+            lines.append("/* Basic type definitions */")
+            for typedef_name, typedef_info in result.typedefs.items():
+                if typedef_info.found and typedef_info.definition:
+                    lines.append(typedef_info.definition)
+                    typedefs_added.add(typedef_name)
+            lines.append("")
+        
+        # Add additional typedef declarations from field types
         for struct_name, struct_info in result.structures.items():
             if not struct_info.found:
                 continue
@@ -284,8 +295,25 @@ class OutputFormatter:
                     if field.type_name not in typedefs_added and not field.is_primitive:
                         lines.append(f"typedef {field.resolved_type} {field.type_name};")
                         typedefs_added.add(field.type_name)
-        
+
         if typedefs_added:
+            lines.append("")        # Add enum definitions
+        if result.enums:
+            lines.append("/* Enum definitions */")
+            for enum_name, enum_info in result.enums.items():
+                if enum_info.found and enum_info.definition:
+                    # Add the full enum definition
+                    lines.append(f"typedef {enum_info.definition} {enum_name};")
+                elif enum_info.found and enum_info.values:
+                    # Reconstruct enum from values
+                    lines.append(f"typedef enum _{enum_name} {{")
+                    for i, value in enumerate(enum_info.values):
+                        comma = "," if i < len(enum_info.values) - 1 else ""
+                        lines.append(f"    {value}{comma}")
+                    lines.append(f"}} {enum_name};")
+                else:
+                    # Add a placeholder comment for missing enum
+                    lines.append(f"/* enum {enum_name} - definition not found */")
             lines.append("")
         
         # Forward declarations
@@ -410,8 +438,6 @@ class OutputManager:
                    output_path: Optional[str] = None) -> str:
         """Save analysis result (compatibility method)"""
         return self.save_analysis(result, output_path, format_type)
-        
-        return str(output_file)
     
     def _generate_output_path(self, result: AnalysisResult, format_type: str) -> str:
         """Generate output file path"""
