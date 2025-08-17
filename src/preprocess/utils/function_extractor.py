@@ -48,7 +48,7 @@ class FunctionCodeExtractor:
             line_number: Line number within the function
             
         Returns:
-            Tuple of (function_name, function_code, start_line, end_line, preprocessed_code) or None if not found
+            Tuple of (function_name, function_code, start_line, end_line, preprocessed_code, preprocessed_file_code) or None if not found
         """
         if not TREE_SITTER_AVAILABLE:
             return None
@@ -86,7 +86,10 @@ class FunctionCodeExtractor:
                 # Extract preprocessed code from corresponding .i file
                 preprocessed_code = self._extract_preprocessed_function(file_path, function_name, start_line, end_line)
                 
-                return function_name, function_code, start_line, end_line, preprocessed_code
+                # Extract entire .i file content
+                preprocessed_file_code = self._extract_entire_preprocessed_file(file_path)
+                
+                return function_name, function_code, start_line, end_line, preprocessed_code, preprocessed_file_code
             
         except Exception as e:
             print(f"Error extracting function from {full_path}: {e}")
@@ -176,7 +179,7 @@ class FunctionCodeExtractor:
         """
         result = self.extract_function_at_line(file_path, line_number)
         if result:
-            extracted_name, code, start_line, end_line, preprocessed_code = result
+            extracted_name, code, start_line, end_line, preprocessed_code, preprocessed_file_code = result
             # Verify the function name matches (case-insensitive)
             if extracted_name.lower() == function_name.lower():
                 return code
@@ -293,5 +296,34 @@ class FunctionCodeExtractor:
             result = self._find_function_by_name(child, function_name, source_bytes)
             if result:
                 return result
+                
+        return None
+        
+    def _extract_entire_preprocessed_file(self, file_path: str) -> Optional[str]:
+        """
+        Extract entire content of the corresponding .i (preprocessed) file
+        
+        Args:
+            file_path: Original C file path
+            
+        Returns:
+            Entire preprocessed file content or None if not found
+        """
+        if not self.source_root_path:
+            return None
+            
+        try:
+            # Find corresponding .i file
+            preprocessed_path = self._find_preprocessed_file(file_path)
+            if not preprocessed_path or not preprocessed_path.exists():
+                return None
+            
+            # Read the entire preprocessed file
+            with open(preprocessed_path, 'r', encoding='utf-8', errors='ignore') as f:
+                return f.read()
+            
+        except Exception as e:
+            # Silently fail - preprocessed code is optional
+            pass
         
         return None

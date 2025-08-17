@@ -21,6 +21,7 @@ class FunctionEntry:
     entry_type: str = "function_entry"
     function_code: Optional[str] = None  # Will contain extracted function source code
     preprocessed_code: Optional[str] = None  # Will contain extracted .i file content
+    preprocessed_file_code: Optional[str] = None  # Will contain entire .i file content
     call_count: int = 1  # Number of times this function was called
 
 
@@ -43,6 +44,7 @@ class DMAOperation:
     stack_trace: List[str] = field(default_factory=list)
     function_code: Optional[str] = None  # Will contain extracted function source code
     preprocessed_code: Optional[str] = None  # Will contain extracted .i file content
+    preprocessed_file_code: Optional[str] = None  # Will contain entire .i file content
     call_count: int = 1  # Number of times this DMA operation was called
 
 
@@ -58,6 +60,7 @@ class UserCopyOperation:
     process_info: Optional[ProcessInfo] = None
     function_code: Optional[str] = None  # Will contain extracted function source code
     preprocessed_code: Optional[str] = None  # Will contain extracted .i file content
+    preprocessed_file_code: Optional[str] = None  # Will contain entire .i file content
     call_count: int = 1  # Number of times this user copy operation was called
 
 
@@ -71,6 +74,7 @@ class IOCTLOperation:
     first_seen_time_str: str  # Human-readable timestamp format
     function_code: Optional[str] = None  # Will contain extracted function source code
     preprocessed_code: Optional[str] = None  # Will contain extracted .i file content
+    preprocessed_file_code: Optional[str] = None  # Will contain entire .i file content
     call_count: int = 1  # Number of times this IOCTL operation was called
     
     def to_dict(self) -> Dict:
@@ -83,6 +87,7 @@ class IOCTLOperation:
             'first_seen_time_str': self.first_seen_time_str,
             'function_code': self.function_code,
             'preprocessed_code': self.preprocessed_code,
+            'preprocessed_file_code': self.preprocessed_file_code,
             'call_count': self.call_count
         }
 
@@ -242,8 +247,6 @@ class ParseResults:
     statistics: ParseStatistics
     memory_info: Optional[MemoryInfo] = None
     device_info: Optional[DeviceInfo] = None
-    # Newly added: extracted C struct/union definitions from preprocessed .i files
-    struct_definitions: Optional[List[Dict]] = None
 
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization"""
@@ -272,6 +275,7 @@ class ParseResults:
                     'entry_type': func.entry_type,
                     'function_code': func.function_code,
                     'preprocessed_code': func.preprocessed_code,
+                    'preprocessed_file_code': func.preprocessed_file_code,
                     'call_count': func.call_count
                 }
                 for func in functions
@@ -290,6 +294,7 @@ class ParseResults:
                 'stack_trace': dma.stack_trace,
                 'function_code': dma.function_code,
                 'preprocessed_code': dma.preprocessed_code,
+                'preprocessed_file_code': dma.preprocessed_file_code,
                 'call_count': dma.call_count
             }
             for dma in self.dma_operations
@@ -305,6 +310,7 @@ class ParseResults:
                 'first_seen_time_str': copy_op.first_seen_time_str,
                 'function_code': copy_op.function_code,
                 'preprocessed_code': copy_op.preprocessed_code,
+                'preprocessed_file_code': copy_op.preprocessed_file_code,
                 'call_count': copy_op.call_count,
                 'process_info': {
                     'pid': copy_op.process_info.pid,
@@ -323,6 +329,7 @@ class ParseResults:
                 'first_seen_time_str': ioctl_op.first_seen_time_str,
                 'function_code': ioctl_op.function_code,
                 'preprocessed_code': ioctl_op.preprocessed_code,
+                'preprocessed_file_code': ioctl_op.preprocessed_file_code,
                 'call_count': ioctl_op.call_count
             }
             for ioctl_op in self.ioctl_operations
@@ -358,13 +365,11 @@ class ParseResults:
                 'parsed_lines': self.metadata.parsed_lines,
                 'unique_entries': self.metadata.unique_entries
             },
-            'function_entries': function_entries,
             'functions_by_file': functions_by_file_dict,
             'dma_operations': dma_ops,
             'user_copy_operations': user_copy_ops,
             'ioctl_operations': ioctl_ops,
             'statistics': stats_dict,
             'memory_info': self.memory_info.to_dict() if self.memory_info else None,
-            'device_info': self.device_info.to_dict() if self.device_info else None,
-            'struct_definitions': self.struct_definitions if self.struct_definitions else []
+            'device_info': self.device_info.to_dict() if self.device_info else None
         }

@@ -342,9 +342,9 @@ class TestMemoryIntegration:
             assert len(memory_info['memory_nodes']) >= 1
             
             # Check function entries
-            assert 'function_entries' in result_dict
-            function_entries = result_dict['function_entries']
-            assert len(function_entries) >= 1
+            assert 'functions_by_file' in result_dict
+            total_functions = sum(len(funcs) for funcs in result_dict['functions_by_file'].values())
+            assert total_functions >= 1
             
             # Check DMA operations
             assert 'dma_operations' in result_dict

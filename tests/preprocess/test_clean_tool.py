@@ -13,6 +13,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
 # Add src to path
@@ -87,15 +88,35 @@ void test_function(void) {
         self.assertEqual(tool.source_root_path, str(self.source_dir))
     
     def test_process_log_basic(self):
-        """Test basic log processing without output file"""
-        tool = KernelLogParserTool()
-        results = tool.process_log(str(self.test_log))
-        
-        self.assertIsNotNone(results)
-        self.assertIsInstance(results, dict)
-        self.assertIn('function_entries', results)
-        self.assertIn('dma_operations', results)
-        self.assertIn('user_copy_operations', results)
+        """Test basic log processing without source root."""
+        with TemporaryDirectory() as temp_dir:
+            log_file = Path(temp_dir) / "test_kernel.log"
+            log_file.write_text("""
+[123.456] funcEntry: test_func drivers/test/file.c:100
+[123.457] DMA instrument: dma_alloc, test_func, drivers/test/file.c:100
+[123.458] DMA instrument: dma_free, test_func, drivers/test/file.c:100
+[123.459] UserCopy: copy_from_user, test_func, drivers/test/file.c:100
+[123.460] Invalid log line that should be ignored
+""".strip())
+            
+            tool = KernelLogParserTool()
+            results = tool.process_log(str(log_file))
+            
+            # Test basic structure
+            self.assertIsInstance(results, dict)
+            self.assertIn('metadata', results)
+            self.assertIn('functions_by_file', results)
+            self.assertIn('dma_operations', results)
+            self.assertIn('user_copy_operations', results)
+            self.assertIn('statistics', results)
+            
+            # Test metadata
+            metadata = results['metadata']
+            self.assertEqual(metadata['log_file'], str(log_file))
+            self.assertGreater(metadata['total_lines'], 0)
+            
+            # Test parsing results - functions by file is used for verification
+            self.assertIn('functions_by_file', results)
     
     def test_process_log_with_output(self):
         """Test log processing with JSON output"""
@@ -123,8 +144,8 @@ void test_function(void) {
         )
         
         self.assertIsNotNone(results)
-        # Should have function entries since we have source files
-        self.assertIn('function_entries', results)
+        # Should have functions organized by file since we have source files
+        self.assertIn('functions_by_file', results)
     
     def test_process_log_with_strace(self):
         """Test log processing with strace log for device access analysis"""
@@ -174,7 +195,7 @@ void test_function(void) {
         
         for result in results:
             self.assertIsInstance(result, dict)
-            self.assertIn('function_entries', result)
+            self.assertIn('functions_by_file', result)
 
 
 class TestCleanMainFunction(unittest.TestCase):
@@ -224,7 +245,7 @@ class TestCleanMainFunction(unittest.TestCase):
             results = json.load(f)
         
         self.assertIsInstance(results, dict)
-        self.assertIn('function_entries', results)
+        self.assertIn('functions_by_file', results)
     
     @patch('sys.argv')
     def test_main_missing_log_file(self, mock_argv):

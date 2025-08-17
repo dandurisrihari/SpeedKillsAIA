@@ -189,7 +189,7 @@ static inline int inline_function(int x) {
         result = self.extractor.extract_function_at_line(complex_file, 17)
         self.assertIsNotNone(result)
         if result:
-            function_name, code, start_line, end_line, preprocessed_code = result
+            function_name, code, start_line, end_line, preprocessed_code, preprocessed_file_code = result
             self.assertIn("static ssize_t", code)
             self.assertIn("struct device *dev", code)
     

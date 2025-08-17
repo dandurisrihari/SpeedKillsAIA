@@ -63,7 +63,8 @@ class TestIOCTLIntegration(unittest.TestCase):
             self.assertEqual(ioctl2['first_seen_timestamp'], 49.789012)
             
             # Should also have other operations
-            self.assertEqual(len(results['function_entries']), 1)
+            total_functions = sum(len(funcs) for funcs in results['functions_by_file'].values())
+            self.assertEqual(total_functions, 1)
             self.assertEqual(len(results['dma_operations']), 1)
             
         finally:
@@ -193,7 +194,8 @@ static int device_open(struct inode *inode, struct file *file) {
             results = self.engine.parse_log_file(log_file)
             
             # Should have all operation types
-            self.assertEqual(len(results['function_entries']), 1)
+            total_functions = sum(len(funcs) for funcs in results['functions_by_file'].values())
+            self.assertEqual(total_functions, 1)
             self.assertEqual(len(results['dma_operations']), 1)
             self.assertEqual(len(results['user_copy_operations']), 1)
             self.assertEqual(len(results['ioctl_operations']), 2)  # Two different line numbers
