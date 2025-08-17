@@ -246,7 +246,7 @@ int another_function(void) {
             result = self.extractor.extract_function_at_line(temp_file, 4)
             
             self.assertIsNotNone(result)
-            function_name, function_code, start_line, end_line, preprocessed_code = result
+            function_name, function_code, start_line, end_line, preprocessed_code, preprocessed_file_code = result
             self.assertEqual(function_name, "simple_function")
             self.assertIn("return x * 2", function_code)
             self.assertNotIn("another_function", function_code)
@@ -279,7 +279,7 @@ int driver_ioctl(unsigned int cmd, unsigned long arg) {
             result = extractor.extract_function_at_line(relative_path, 2)
             
             self.assertIsNotNone(result)
-            function_name, function_code, start_line, end_line, preprocessed_code = result
+            function_name, function_code, start_line, end_line, preprocessed_code, preprocessed_file_code = result
             self.assertEqual(function_name, "driver_ioctl")
             self.assertIn("return -1", function_code)
     

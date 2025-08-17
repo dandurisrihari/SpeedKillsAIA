@@ -50,14 +50,16 @@ def test_function_code_extraction_with_ui():
         print("RESULTS SUMMARY:")
         print("=" * 40)
         
-        # Function entries
-        print(f"\nFUNCTION ENTRIES: {len(results['function_entries'])}")
-        for func in results['function_entries']:
-            print(f"  • {func['function_name']} (called {func['call_count']} times)")
-            if func.get('function_code'):
-                print(f"    ✅ Function code extracted ({len(func['function_code'])} characters)")
-            else:
-                print(f"    ❌ No function code extracted")
+        # Function entries from functions_by_file
+        total_functions = sum(len(funcs) for funcs in results['functions_by_file'].values())
+        print(f"\nFUNCTION ENTRIES: {total_functions}")
+        for file_path, functions in results['functions_by_file'].items():
+            for func in functions:
+                print(f"  • {func['function_name']} (called {func['call_count']} times)")
+                if func.get('function_code'):
+                    print(f"    ✅ Function code extracted ({len(func['function_code'])} characters)")
+                else:
+                    print(f"    ❌ No function code extracted")
         
         # DMA operations
         print(f"\nDMA OPERATIONS: {len(results['dma_operations'])}")

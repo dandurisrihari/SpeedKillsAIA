@@ -46,15 +46,17 @@ class TestFunctionCodeExtraction(unittest.TestCase):
         """Test that function code extraction works for all operation types"""
         results = self.engine.parse_log_file(str(self.test_log_path))
         
-        # Test function entries
-        self.assertGreater(len(results['function_entries']), 0, 
+        # Test function entries from functions_by_file
+        total_functions = sum(len(funcs) for funcs in results['functions_by_file'].values())
+        self.assertGreater(total_functions, 0, 
                           "Should have function entries")
         
-        for func in results['function_entries']:
-            self.assertIn('call_count', func, "Should have call_count")
-            self.assertGreater(func['call_count'], 0, "Call count should be > 0")
-            # Function code may or may not be extracted depending on file existence
-            self.assertIn('function_code', func, "Should have function_code field")
+        for file_path, functions in results['functions_by_file'].items():
+            for func in functions:
+                self.assertIn('call_count', func, "Should have call_count")
+                self.assertGreater(func['call_count'], 0, "Call count should be > 0")
+                # Function code may or may not be extracted depending on file existence
+                self.assertIn('function_code', func, "Should have function_code field")
         
         # Test DMA operations
         self.assertGreater(len(results['dma_operations']), 0, 
@@ -90,9 +92,13 @@ class TestFunctionCodeExtraction(unittest.TestCase):
         # Check that duplicates are properly counted
         # We have 2x simple_function, 2x dma_alloc_coherent, 2x copy_from_user, 2x device_ioctl
         
-        # Find the simple_function entries
-        simple_funcs = [f for f in results['function_entries'] 
-                       if f['function_name'] == 'simple_function']
+        # Find the simple_function entries from functions_by_file
+        simple_funcs = []
+        for file_path, functions in results['functions_by_file'].items():
+            for f in functions:
+                if f['function_name'] == 'simple_function':
+                    simple_funcs.append(f)
+        
         if simple_funcs:
             self.assertEqual(simple_funcs[0]['call_count'], 2, 
                            "simple_function should be called 2 times")
@@ -125,7 +131,8 @@ class TestFunctionCodeExtraction(unittest.TestCase):
         # Verify that we have unique entries, not duplicates
         # Each type should have only 1 unique entry despite having 2 calls
         
-        self.assertEqual(len(results['function_entries']), 2, 
+        total_unique_functions = sum(len(funcs) for funcs in results['functions_by_file'].values())
+        self.assertEqual(total_unique_functions, 2, 
                         "Should have 2 unique function entries")
         
         self.assertEqual(len(results['dma_operations']), 1, 

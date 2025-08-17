@@ -163,9 +163,12 @@ Invalid line without timestamp
         self.assertEqual(results['statistics']['unique_dma_operations'], 1)
         self.assertEqual(results['statistics']['total_dma_operations_found'], 2)
         
-        # Check call counts in actual entries
-        if results['function_entries']:
-            self.assertEqual(results['function_entries'][0]['call_count'], 3)
+        # Check call counts in actual entries using functions_by_file
+        if results['functions_by_file']:
+            # Get first file's functions
+            file_functions = list(results['functions_by_file'].values())[0]
+            if file_functions:
+                self.assertEqual(file_functions[0]['call_count'], 3)
         if results['dma_operations']:
             self.assertEqual(results['dma_operations'][0]['call_count'], 2)
     
@@ -194,7 +197,7 @@ Invalid line without timestamp
         self.assertIn('metadata', loaded_results)
         
         # Verify JSON structure matches expected format
-        required_keys = ['metadata', 'function_entries', 'dma_operations', 
+        required_keys = ['metadata', 'functions_by_file', 'dma_operations', 
                         'user_copy_operations', 'ioctl_operations', 'statistics']
         for key in required_keys:
             self.assertIn(key, loaded_results)

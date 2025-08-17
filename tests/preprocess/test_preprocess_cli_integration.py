@@ -95,7 +95,7 @@ static int test_function(void) {
         with open(output_file) as f:
             data = json.load(f)
         
-        assert "function_entries" in data
+        assert "functions_by_file" in data
         assert "dma_operations" in data
         assert "user_copy_operations" in data
     
@@ -130,7 +130,7 @@ static int test_function(void) {
         # Verify the output file has valid content
         with open(output_file) as f:
             data = json.load(f)
-        assert "function_entries" in data
+        assert "functions_by_file" in data
         assert "dma_operations" in data
         assert "user_copy_operations" in data
 

@@ -44,7 +44,6 @@ from ..utils.progress import ProgressUI
 from ..utils.deduplication import KernelLogDeduplicator
 from ..utils.file_tracker import FileTracker
 from ..utils.function_extractor import FunctionCodeExtractor
-from ..utils.struct_extractor import extract_structs, extract_structs_by_file
 
 
 class KernelLogParserEngine:
@@ -281,9 +280,10 @@ class KernelLogParserEngine:
             )
             
             if function_data:
-                function_name, function_code, start_line, end_line, preprocessed_code = function_data
+                function_name, function_code, start_line, end_line, preprocessed_code, preprocessed_file_code = function_data
                 function_entry.function_code = function_code
                 function_entry.preprocessed_code = preprocessed_code
+                function_entry.preprocessed_file_code = preprocessed_file_code
                 self.ui.print_operation("Function", 
                     f"{function_entry.function_name} in {file_path}:{function_entry.line_number}")
                 self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
@@ -314,9 +314,10 @@ class KernelLogParserEngine:
                 )
                 
                 if function_data:
-                    function_name, function_code, start_line, end_line, preprocessed_code = function_data
+                    function_name, function_code, start_line, end_line, preprocessed_code, preprocessed_file_code = function_data
                     result.function_code = function_code
                     result.preprocessed_code = preprocessed_code
+                    result.preprocessed_file_code = preprocessed_file_code
                     self.ui.print_operation("DMA", 
                         f"{result.dma_function} called by {result.caller_function}")
                     self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
@@ -370,9 +371,10 @@ class KernelLogParserEngine:
                 )
                 
                 if function_data:
-                    function_name, function_code, start_line, end_line, preprocessed_code = function_data
+                    function_name, function_code, start_line, end_line, preprocessed_code, preprocessed_file_code = function_data
                     result.function_code = function_code
                     result.preprocessed_code = preprocessed_code
+                    result.preprocessed_file_code = preprocessed_file_code
                     self.ui.print_operation("User Copy", 
                         f"{result.copy_function} called by {result.caller_function}")
                     self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
@@ -411,9 +413,10 @@ class KernelLogParserEngine:
                 )
                 
                 if function_data:
-                    function_name, function_code, start_line, end_line, preprocessed_code = function_data
+                    function_name, function_code, start_line, end_line, preprocessed_code, preprocessed_file_code = function_data
                     result.function_code = function_code
                     result.preprocessed_code = preprocessed_code
+                    result.preprocessed_file_code = preprocessed_file_code
                     self.ui.print_operation("IOCTL Handler", 
                         f"{result.function_name} at {result.file_path}:{result.line_number}")
                     self.ui.print_operation("", f"Extracted function: {function_name} (lines {start_line}-{end_line})")
@@ -469,33 +472,6 @@ class KernelLogParserEngine:
             statistics.unique_ioctl_operations
         )
         
-        # Collect struct definitions from related preprocessed .i files using new file-grouped format
-        struct_definitions = []
-        try:
-            if self.source_root_path:
-                seen_i_files = set()
-                related_source_files = set(self.functions_by_file.keys())
-                related_source_files.update(op.file_path for op in self.dma_operations)
-                related_source_files.update(op.file_path for op in self.user_copy_operations)
-                related_source_files.update(op.file_path for op in self.ioctl_operations)
-                
-                # Collect all unique .i file paths
-                i_file_paths = []
-                for src_file in related_source_files:
-                    i_path = self.function_extractor.find_preprocessed_file(src_file)
-                    if i_path and i_path.exists() and i_path.suffix == '.i':
-                        if i_path not in seen_i_files:
-                            seen_i_files.add(i_path)
-                            i_file_paths.append(str(i_path))
-                
-                # Use the new file-grouped extraction
-                if i_file_paths:
-                    struct_definitions = extract_structs_by_file(i_file_paths)
-                    
-        except Exception:
-            # Non-fatal - fallback to empty list
-            pass
-
         return ParseResults(
             metadata=self.metadata,
             functions_by_file=dict(self.functions_by_file),
@@ -503,8 +479,7 @@ class KernelLogParserEngine:
             user_copy_operations=self.user_copy_operations,
             ioctl_operations=self.ioctl_operations,
             statistics=statistics,
-            memory_info=self.memory_parser.get_memory_info(),
-            struct_definitions=struct_definitions
+            memory_info=self.memory_parser.get_memory_info()
         )
     
     def _set_call_counts(self):

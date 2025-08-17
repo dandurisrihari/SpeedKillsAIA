@@ -145,13 +145,16 @@ static int device_close(struct inode *inode, struct file *file) {
         self.assertIsInstance(results_dict, dict)
         
         # Check for expected categories
-        self.assertIn('function_entries', results_dict)
+        self.assertNotIn('function_entries', results_dict)  # This field was removed
+        self.assertIn('functions_by_file', results_dict)
         self.assertIn('dma_operations', results_dict)
         self.assertIn('user_copy_operations', results_dict)
         
         # Verify we found the expected entries
-        function_entries = results_dict['function_entries']
-        self.assertGreater(len(function_entries), 0)
+        # Check functions through functions_by_file instead of function_entries
+        functions_by_file = results_dict['functions_by_file']
+        total_functions = sum(len(funcs) for funcs in functions_by_file.values())
+        self.assertGreater(total_functions, 0)
         
         dma_operations = results_dict['dma_operations']
         self.assertGreater(len(dma_operations), 0)
@@ -174,7 +177,8 @@ static int device_close(struct inode *inode, struct file *file) {
             saved_results = json.load(f)
         
         self.assertIsInstance(saved_results, dict)
-        self.assertIn('function_entries', saved_results)
+        self.assertNotIn('function_entries', saved_results)  # This field was removed
+        self.assertIn('functions_by_file', saved_results)
     
     def test_parse_strace_log(self):
         """Test strace log parsing for device access analysis"""
@@ -212,13 +216,19 @@ static int device_close(struct inode *inode, struct file *file) {
             results_dict = results
         
         # Should have function entries with source code
-        function_entries = results_dict['function_entries']
-        self.assertGreater(len(function_entries), 0)
+        functions_by_file = results_dict['functions_by_file']
+        
+        # Convert functions_by_file to flat list for checking
+        all_function_entries = []
+        for file_functions in functions_by_file.values():
+            all_function_entries.extend(file_functions)
+        
+        self.assertGreater(len(all_function_entries), 0)
         
         # Look for a function entry that should have source code
         found_source_code = False
-        for entry in function_entries:
-            if 'source_code' in entry and entry['source_code']:
+        for entry in all_function_entries:
+            if 'function_code' in entry and entry['function_code']:
                 found_source_code = True
                 break
         
@@ -242,7 +252,8 @@ static int device_close(struct inode *inode, struct file *file) {
             results_dict = results
         
         # Should have empty lists but proper structure
-        self.assertIn('function_entries', results_dict)
+        self.assertNotIn('function_entries', results_dict)  # This field was removed
+        self.assertIn('functions_by_file', results_dict)
         self.assertIn('dma_operations', results_dict)
         self.assertIn('user_copy_operations', results_dict)
     
@@ -270,7 +281,11 @@ Another invalid line without proper format
             results_dict = results
         
         # Should find the valid entries
-        self.assertGreater(len(results_dict['function_entries']), 0)
+        all_function_entries = []
+        for file_functions in results_dict['functions_by_file'].values():
+            all_function_entries.extend(file_functions)
+        
+        self.assertGreater(len(all_function_entries), 0)
         self.assertGreater(len(results_dict['dma_operations']), 0)
         self.assertGreater(len(results_dict['user_copy_operations']), 0)
     
@@ -286,9 +301,12 @@ Another invalid line without proper format
             results_dict = results
         
         # Check top-level structure
-        expected_keys = ['function_entries', 'dma_operations', 'user_copy_operations', 'metadata', 'statistics']
+        expected_keys = ['functions_by_file', 'dma_operations', 'user_copy_operations', 'metadata', 'statistics']
         for key in expected_keys:
             self.assertIn(key, results_dict, f"Missing key: {key}")
+        
+        # Should NOT have function_entries (removed field)
+        self.assertNotIn('function_entries', results_dict)
         
         # Check metadata structure
         metadata = results_dict['metadata']
