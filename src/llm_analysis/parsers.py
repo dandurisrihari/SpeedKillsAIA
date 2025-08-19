@@ -79,6 +79,7 @@ class JSONParser:
             file_path=file_path or entry.get('file_path', 'Unknown'),
             function_code=entry.get('function_code', ''),
             preprocessed_code=entry.get('preprocessed_code', ''),
+            preprocessed_file_path=entry.get('preprocessed_file_code', ''),  # Extract from JSON
             line_number=entry.get('line_number', 0)
         )
     
@@ -89,11 +90,14 @@ class JSONParser:
         if 'dma_operations' in data:
             self._log_verbose("Found dma_operations section")
             for entry in data['dma_operations']:
+                # Use caller_function as the function name for DMA operations
+                function_name = entry.get('caller_function', entry.get('function_name', 'Unknown'))
                 dma_ops.append(DMAOperation(
-                    function_name=entry.get('function_name', 'Unknown'),
+                    function_name=function_name,
                     function_code=entry.get('function_code', ''),
                     stack_trace=entry.get('stack_trace', ''),
-                    preprocessed_code=entry.get('preprocessed_code', '')
+                    preprocessed_code=entry.get('preprocessed_code', ''),
+                    preprocessed_file_path=entry.get('preprocessed_file_code', '')
                 ))
             self._log_verbose(f"Processing {len(dma_ops)} DMA operation entries")
         
@@ -106,10 +110,13 @@ class JSONParser:
         if 'user_copy_operations' in data:
             self._log_verbose("Found user_copy_operations section")
             for entry in data['user_copy_operations']:
+                # Use caller_function as the function name for user copy operations
+                function_name = entry.get('caller_function', entry.get('function_name', 'Unknown'))
                 copy_ops.append(UserCopyOperation(
-                    function_name=entry.get('function_name', 'Unknown'),
+                    function_name=function_name,
                     function_code=entry.get('function_code', ''),
                     preprocessed_code=entry.get('preprocessed_code', ''),
+                    preprocessed_file_path=entry.get('preprocessed_file_code', ''),
                     operation=entry.get('operation', ''),
                     source=entry.get('source', ''),
                     destination=entry.get('destination', '')
@@ -129,6 +136,7 @@ class JSONParser:
                     function_name=entry.get('function_name', 'Unknown'),
                     function_code=entry.get('function_code', ''),
                     preprocessed_code=entry.get('preprocessed_code', ''),
+                    preprocessed_file_path=entry.get('preprocessed_file_code', ''),
                     ioctl_cmd=entry.get('ioctl_cmd', ''),
                     handler=entry.get('handler', '')
                 ))

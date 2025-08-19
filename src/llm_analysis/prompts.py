@@ -6,7 +6,7 @@ Prompt templates for OpenAI analysis
 from typing import Optional
 
 
-def create_analysis_prompt(function_code: str, stack_trace: Optional[str] = None, operation_type: str = "") -> str:
+def create_analysis_prompt(function_code: str, stack_trace: Optional[str] = None, operation_type: str = "", preprocessed_file_path: Optional[str] = None) -> str:
     """Create the analysis prompt for OpenAI"""
     
     base_prompt = """You are an expert in Linux Kernel Driver (KD) development with specialization in AI Accelerator (AIA) integration. Analyze the given kernel source code and assign confidence scores (0-100%) across three categories.
@@ -64,6 +64,11 @@ Reasoning:
 """
     
     prompt = base_prompt + f"\nOperation Type: {operation_type}\n"
+    
+    if preprocessed_file_path:
+        prompt += f"\nPreprocessed File Path (for struct analysis): {preprocessed_file_path}\n"
+        prompt += "You can use the analyze_struct_definition tool to examine any struct/union/enum definitions you encounter in the code.\n"
+    
     prompt += f"\nFunction Code to analyze:\n```c\n{function_code}\n```\n"
     
     if stack_trace:

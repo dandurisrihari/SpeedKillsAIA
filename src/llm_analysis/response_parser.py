@@ -4,6 +4,7 @@ Response parser for OpenAI API responses
 """
 
 import yaml
+import json
 import re
 from typing import Optional
 
@@ -21,18 +22,43 @@ class ResponseParser:
         if self.verbose:
             print(f"[VERBOSE] {message}")
     
-    def parse_response(self, response_text: str) -> AnalysisResult:
-        """Parse YAML response from OpenAI into AnalysisResult"""
+    def parse_response(self, response_text: str, function_name_override: Optional[str] = None) -> AnalysisResult:
+        """Parse structured text response from OpenAI into AnalysisResult"""
         try:
-            # Extract YAML content from response
-            yaml_start = response_text.find("```yaml")
-            yaml_end = response_text.find("```", yaml_start + 7)
+            # First try the new structured text format (most reliable)
+            if "Function/Code_Block_Name:" in response_text:
+                self._log_verbose("Attempting structured text parsing")
+                result = self._parse_structured_text(response_text)
+                # Override function name if provided
+                if function_name_override:
+                    result.function_name = function_name_override
+                return result
             
-            if yaml_start == -1 or yaml_end == -1:
+            # Fallback to JSON parsing 
+            json_start = response_text.find("```json")
+            json_end = response_text.find("```", json_start + 7) if json_start != -1 else -1
+            
+            if json_start != -1 and json_end != -1:
+                json_content = response_text[json_start + 7:json_end].strip()
+                self._log_verbose("Attempting JSON parsing")
+                data = json.loads(json_content)
+                result = self._extract_analysis_result_from_json(data)
+                # Override function name if provided
+                if function_name_override:
+                    result.function_name = function_name_override
+                return result
+            
+            # Fallback to YAML parsing
+            yaml_start = response_text.find("```yaml")
+            yaml_end = response_text.find("```", yaml_start + 7) if yaml_start != -1 else -1
+            
+            if yaml_start != -1 and yaml_end != -1:
+                yaml_content = response_text[yaml_start + 7:yaml_end].strip()
+                self._log_verbose("Attempting YAML parsing")
+            else:
                 # Try without code blocks
                 yaml_content = response_text
-            else:
-                yaml_content = response_text[yaml_start + 7:yaml_end].strip()
+                self._log_verbose("Attempting YAML parsing without code blocks")
             
             # Clean up common YAML formatting issues from OpenAI responses
             yaml_content = self._clean_yaml_content(yaml_content)
@@ -43,15 +69,30 @@ class ResponseParser:
             if not data or not isinstance(data, dict):
                 raise ValueError("Invalid YAML structure returned")
             
-            return self._extract_analysis_result(data)
+            result = self._extract_analysis_result(data)
+            # Override function name if provided
+            if function_name_override:
+                result.function_name = function_name_override
+            return result
             
+        except json.JSONDecodeError as e:
+            self._log_verbose(f"JSON parsing error: {e}")
+            result = self._fallback_parse(response_text)
+            if function_name_override:
+                result.function_name = function_name_override
+            return result
         except yaml.YAMLError as e:
             self._log_verbose(f"YAML parsing error: {e}")
-            # Try to extract basic information even if YAML is malformed
-            return self._fallback_parse(response_text)
+            result = self._fallback_parse(response_text)
+            if function_name_override:
+                result.function_name = function_name_override
+            return result
         except Exception as e:
-            self._log_verbose(f"Error parsing YAML response: {e}")
-            return self._fallback_parse(response_text)
+            self._log_verbose(f"Error parsing response: {e}")
+            result = self._fallback_parse(response_text)
+            if function_name_override:
+                result.function_name = function_name_override
+            return result
     
     def _clean_yaml_content(self, yaml_content: str) -> str:
         """Clean up common YAML formatting issues from OpenAI responses"""
@@ -61,6 +102,11 @@ class ResponseParser:
         
         for line in lines:
             stripped_line = line.strip()
+            
+            # Skip empty lines
+            if not stripped_line:
+                cleaned_lines.append(line)
+                continue
             
             # Detect start of Reasoning section
             if stripped_line.startswith('Reasoning:'):
@@ -72,15 +118,160 @@ class ResponseParser:
             if in_reasoning_section and ':' in stripped_line and not stripped_line.startswith('-'):
                 in_reasoning_section = False
             
-            # Fix reasoning section formatting
-            if in_reasoning_section and stripped_line.startswith('- '):
-                # Convert '- text' to proper YAML list item
-                indent = len(line) - len(line.lstrip())
-                cleaned_lines.append(' ' * (indent + 2) + stripped_line)
+            # Clean markdown formatting that causes YAML parse errors
+            cleaned_line = line
+            if in_reasoning_section:
+                # Remove markdown bold/italic formatting
+                cleaned_line = re.sub(r'\*\*(.*?)\*\*', r'\1', cleaned_line)  # **bold** -> bold
+                cleaned_line = re.sub(r'\*(.*?)\*', r'\1', cleaned_line)      # *italic* -> italic
+                cleaned_line = re.sub(r'`(.*?)`', r'\1', cleaned_line)        # `code` -> code
+                
+                # Fix reasoning section formatting
+                stripped_cleaned = cleaned_line.strip()
+                if stripped_cleaned.startswith('- '):
+                    # Get the base indentation from the Reasoning: line
+                    content = stripped_cleaned[2:]  # Remove '- ' prefix
+                    
+                    # Escape content that might cause YAML issues
+                    # Quote the entire content if it contains problematic characters
+                    if any(char in content for char in [': ', '%', '&', '*', '!', '|', '>', '@', '`', '"', "'"]):
+                        # Escape internal quotes and wrap in quotes
+                        content = content.replace('"', '\\"')
+                        content = f'"{content}"'
+                    
+                    # Use consistent indentation for YAML list items
+                    cleaned_lines.append(f'  - {content}')
+                elif stripped_cleaned and not stripped_cleaned.startswith(' '):
+                    # This might be continuation of previous item - treat as quoted content
+                    content = stripped_cleaned.replace('"', '\\"')
+                    cleaned_lines.append(f'    "{content}"')
+                else:
+                    cleaned_lines.append(cleaned_line)
             else:
-                cleaned_lines.append(line)
+                cleaned_lines.append(cleaned_line)
         
         return '\n'.join(cleaned_lines)
+    
+    def _parse_structured_text(self, response_text: str) -> AnalysisResult:
+        """Parse the structured text format that matches your required output"""
+        lines = response_text.split('\n')
+        
+        # Initialize default values
+        function_name = "Unknown"
+        aia_relevant = 0
+        kd_entry_point = 0
+        msg_handling = 0
+        message_structures = []
+        smids = []
+        reasoning = []
+        
+        # Track parsing state
+        in_reasoning = False
+        
+        for line in lines:
+            line = line.strip()
+            
+            # Parse function name
+            if line.startswith("Function/Code_Block_Name:"):
+                function_name = line.split(":", 1)[1].strip()
+            
+            # Parse scores
+            elif line.startswith("AIARelevantFunction:"):
+                try:
+                    score_str = line.split(":", 1)[1].strip().rstrip('%')
+                    aia_relevant = int(score_str)
+                except (ValueError, IndexError):
+                    pass
+            
+            elif line.startswith("Relevant_KD_Entry_Point:"):
+                try:
+                    score_str = line.split(":", 1)[1].strip().rstrip('%')
+                    kd_entry_point = int(score_str)
+                except (ValueError, IndexError):
+                    pass
+            
+            elif line.startswith("Message_Structure_Handling:"):
+                try:
+                    score_str = line.split(":", 1)[1].strip().rstrip('%')
+                    msg_handling = int(score_str)
+                except (ValueError, IndexError):
+                    pass
+            
+            # Parse Message Structures
+            elif line.startswith("Message_Structures identified:"):
+                msg_struct_str = line.split(":", 1)[1].strip()
+                if msg_struct_str and msg_struct_str.lower() not in ["none identified", "none", ""]:
+                    # Handle comma-separated message structures
+                    message_structures = [s.strip() for s in msg_struct_str.split(",") if s.strip()]
+            
+            # Parse SMIDs
+            elif line.startswith("SMID's identified:"):
+                smid_str = line.split(":", 1)[1].strip()
+                if smid_str and smid_str.lower() not in ["none identified", "none", ""]:
+                    # Handle comma-separated SMIDs
+                    smids = [s.strip() for s in smid_str.split(",") if s.strip()]
+            
+            # Parse reasoning section
+            elif line.startswith("Reasoning:"):
+                in_reasoning = True
+            elif in_reasoning:
+                if line.startswith("-") or line.startswith("•"):
+                    # New reasoning point
+                    reasoning.append(line[1:].strip())
+                elif line and reasoning:
+                    # Continuation of previous reasoning point
+                    reasoning[-1] += " " + line
+        
+        return AnalysisResult(
+            function_name=function_name,
+            aia_relevant_function=aia_relevant,
+            relevant_kd_entry_point=kd_entry_point,
+            message_structure_handling=msg_handling,
+            message_structures_identified=message_structures,
+            smids_identified=smids,
+            reasoning=reasoning
+        )
+    
+    def _extract_analysis_result_from_json(self, data: dict) -> AnalysisResult:
+        """Extract AnalysisResult from parsed JSON data"""
+        # Extract values with defaults - JSON format is cleaner
+        function_name = data.get('function_name', 'Unknown')
+        
+        # Handle values (should already be integers in JSON)
+        aia_relevant = int(data.get('aia_relevant_function', 0))
+        kd_entry_point = int(data.get('relevant_kd_entry_point', 0))
+        msg_handling = int(data.get('message_structure_handling', 0))
+        
+        # Handle Message Structures
+        message_structures = data.get('message_structures_identified', [])
+        if isinstance(message_structures, str):
+            message_structures = [message_structures] if message_structures else []
+        elif message_structures is None:
+            message_structures = []
+        
+        # Handle SMIDs
+        smids = data.get('smids_identified', [])
+        if isinstance(smids, str):
+            smids = [smids] if smids else []
+        elif smids is None:
+            smids = []
+        
+        # Handle reasoning
+        reasoning = data.get('reasoning', [])
+        if isinstance(reasoning, str):
+            reasoning = [reasoning]
+        elif reasoning is None:
+            reasoning = []
+        
+        return AnalysisResult(
+            function_name=function_name,
+            aia_relevant_function=aia_relevant,
+            relevant_kd_entry_point=kd_entry_point,
+            message_structure_handling=msg_handling,
+            message_structures_identified=message_structures,
+            smids_identified=smids,
+            reasoning=reasoning
+        )
     
     def _extract_analysis_result(self, data: dict) -> AnalysisResult:
         """Extract AnalysisResult from parsed YAML data"""
@@ -99,6 +290,13 @@ class ResponseParser:
         aia_relevant = parse_percentage(data.get('AIARelevantFunction', 0))
         kd_entry_point = parse_percentage(data.get('Relevant_KD_Entry_Point', 0))
         msg_handling = parse_percentage(data.get('Message_Structure_Handling', 0))
+        
+        # Handle Message Structures
+        message_structures = data.get("Message_Structures identified", [])
+        if isinstance(message_structures, str):
+            message_structures = [message_structures] if message_structures else []
+        elif message_structures is None:
+            message_structures = []
         
         # Handle SMIDs
         smids = data.get("SMID's identified", [])
@@ -131,6 +329,7 @@ class ResponseParser:
             aia_relevant_function=aia_relevant,
             relevant_kd_entry_point=kd_entry_point,
             message_structure_handling=msg_handling,
+            message_structures_identified=message_structures,
             smids_identified=smids,
             reasoning=reasoning
         )
@@ -142,32 +341,79 @@ class ResponseParser:
         aia_relevant = 0
         kd_entry_point = 0
         msg_handling = 0
+        message_structures = []
         smids = []
-        reasoning = [f"Failed to parse YAML response. Raw response: {response_text[:200]}..."]
+        reasoning = []
         
         # Try to extract function name
-        func_match = re.search(r'Function[/_]Code[/_]Block[/_]Name:\s*(.+)', response_text)
-        if func_match:
-            function_name = func_match.group(1).strip()
+        func_patterns = [
+            r'Function[/_]Code[/_]Block[/_]Name:\s*(.+)',
+            r'Function:\s*(.+)',
+            r'analyzing function[:\s]+(\w+)',
+            r'function\s+(\w+)\s*\('
+        ]
+        for pattern in func_patterns:
+            func_match = re.search(pattern, response_text, re.IGNORECASE)
+            if func_match:
+                function_name = func_match.group(1).strip()
+                break
         
-        # Try to extract percentages
-        aia_match = re.search(r'AIARelevantFunction:\s*(\d+)', response_text)
-        if aia_match:
-            aia_relevant = int(aia_match.group(1))
+        # Try to extract percentages with multiple patterns
+        aia_patterns = [
+            r'AIARelevantFunction[:\s]*(\d+)%?',
+            r'AIA[:\s]*(\d+)%?',
+            r'AI Accelerator[:\s]*(\d+)%?'
+        ]
+        for pattern in aia_patterns:
+            aia_match = re.search(pattern, response_text, re.IGNORECASE)
+            if aia_match:
+                aia_relevant = int(aia_match.group(1))
+                break
         
-        kd_match = re.search(r'Relevant[/_]KD[/_]Entry[/_]Point:\s*(\d+)', response_text)
-        if kd_match:
-            kd_entry_point = int(kd_match.group(1))
+        kd_patterns = [
+            r'Relevant[/_]KD[/_]Entry[/_]Point[:\s]*(\d+)%?',
+            r'Entry[/_]Point[:\s]*(\d+)%?',
+            r'KD Entry[:\s]*(\d+)%?'
+        ]
+        for pattern in kd_patterns:
+            kd_match = re.search(pattern, response_text, re.IGNORECASE)
+            if kd_match:
+                kd_entry_point = int(kd_match.group(1))
+                break
         
-        msg_match = re.search(r'Message[/_]Structure[/_]Handling:\s*(\d+)', response_text)
-        if msg_match:
-            msg_handling = int(msg_match.group(1))
+        msg_patterns = [
+            r'Message[/_]Structure[/_]Handling[:\s]*(\d+)%?',
+            r'Message[:\s]*(\d+)%?',
+            r'Structure Handling[:\s]*(\d+)%?'
+        ]
+        for pattern in msg_patterns:
+            msg_match = re.search(pattern, response_text, re.IGNORECASE)
+            if msg_match:
+                msg_handling = int(msg_match.group(1))
+                break
+        
+        # Try to extract reasoning points
+        reasoning_patterns = [
+            r'[-•]\s*(.+?)(?=[-•]|\n\n|\Z)',  # Bullet points
+            r'(\d+\.)\s*(.+?)(?=\d+\.|\n\n|\Z)',  # Numbered lists
+        ]
+        for pattern in reasoning_patterns:
+            reasoning_matches = re.findall(pattern, response_text, re.DOTALL)
+            if reasoning_matches:
+                reasoning = [match[1].strip() if isinstance(match, tuple) else match.strip() 
+                           for match in reasoning_matches]
+                break
+        
+        # If no reasoning found, add the parsing error info
+        if not reasoning:
+            reasoning = [f"YAML parsing failed. Response contained: {response_text[:100]}..."]
         
         return AnalysisResult(
             function_name=function_name,
             aia_relevant_function=aia_relevant,
             relevant_kd_entry_point=kd_entry_point,
             message_structure_handling=msg_handling,
+            message_structures_identified=message_structures,
             smids_identified=smids,
             reasoning=reasoning
         )
