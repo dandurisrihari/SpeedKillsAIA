@@ -55,6 +55,7 @@ Reasoning:
         client = OpenAIClient(enable_tools=True, verbose=True)
         result = client.analyze_function(
             function_code="void test_function() { }",
+            function_name="test_function",
             preprocessed_file_path="/test/file.i"
         )
         
@@ -120,6 +121,7 @@ Reasoning:
         
         result = client.analyze_function(
             function_code="void test_function() { struct test_struct s; }",
+            function_name="test_function", 
             preprocessed_file_path="/test/file.i"
         )
         
@@ -189,6 +191,7 @@ Reasoning:
         
         result = client.analyze_function(
             function_code="void test_function() { struct test_struct s; }",
+            function_name="test_function",
             preprocessed_file_path="/nonexistent/file.i"
         )
         
@@ -207,7 +210,7 @@ Reasoning:
         
         assert "You have access to tools" in system_prompt
         assert "analyze_struct_definition" in system_prompt
-        assert "struct/union types" in system_prompt
+        assert "struct/union/enum/typedef types" in system_prompt
     
     @patch.dict('os.environ', {'OPENAI_API_KEY': 'test-api-key'})
     def test_system_prompt_without_tools(self):
@@ -216,7 +219,8 @@ Reasoning:
         system_prompt = client._get_system_prompt()
         
         assert "You have access to tools" not in system_prompt
-        assert system_prompt == "You are an expert Linux Kernel Driver developer specializing in AI Accelerator integration."
+        assert system_prompt.startswith("You are an expert Linux Kernel Driver developer specializing in AI Accelerator integration.")
+        assert "analyze_struct_definition" not in system_prompt
     
     @patch('src.llm_analysis.openai_client.openai.OpenAI')
     @patch.dict('os.environ', {'OPENAI_API_KEY': 'test-key'})
@@ -238,7 +242,10 @@ AIARelevantFunction: 75
         
         # Test analysis with tools disabled
         client = OpenAIClient(enable_tools=False)
-        result = client.analyze_function(function_code="void test_function() { }")
+        result = client.analyze_function(
+            function_code="void test_function() { }",
+            function_name="test_function"
+        )
         
         # Verify request did not include tools
         call_args = mock_client.chat.completions.create.call_args

@@ -27,6 +27,7 @@ class TestOutputFormatter:
             aia_relevant_function=85,
             relevant_kd_entry_point=60,
             message_structure_handling=70,
+            message_structures_identified=["gcsHAL_INTERFACE", "user_data_struct"],
             smids_identified=["SMID_GPU_MEM", "SMID_DMA_BUF"],
             reasoning=["Function manages GPU memory allocation", "Uses DMA mapping APIs"]
         )

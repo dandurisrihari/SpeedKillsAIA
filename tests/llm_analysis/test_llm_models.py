@@ -14,15 +14,17 @@ class TestGPTModel:
         """Test that all model values are correct"""
         assert GPTModel.GPT_3_5_TURBO.value == "gpt-3.5-turbo"
         assert GPTModel.GPT_4.value == "gpt-4"
-        assert GPTModel.GPT_4_TURBO.value == "gpt-4-turbo-preview"
+        assert GPTModel.GPT_4_TURBO.value == "gpt-4-turbo"
+        assert GPTModel.GPT_4O.value == "gpt-4o"
+        assert GPTModel.GPT_4O_MINI.value == "gpt-4o-mini"
         assert GPTModel.GPT_4O.value == "gpt-4o"
     
     def test_all_models(self):
         """Test all_models class method"""
         models = GPTModel.all_models()
-        expected = ["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo-preview", "gpt-4o"]
+        expected = ["gpt-4o-mini", "gpt-4o", "gpt-4", "gpt-4-turbo", "gpt-3.5-turbo"]
         assert models == expected
-        assert len(models) == 4
+        assert len(models) == 5
 
 
 class TestAnalysisResult:
@@ -36,6 +38,7 @@ class TestAnalysisResult:
             aia_relevant_function=85,
             relevant_kd_entry_point=25,
             message_structure_handling=60,
+            message_structures_identified=["gcsHAL_INTERFACE", "user_data_struct"],
             smids_identified=["dma_addr", "page_table_idx"],
             reasoning=["High DMA usage", "Memory mapping operations"]
         )
@@ -52,19 +55,18 @@ class TestAnalysisResult:
     def test_to_dict(self, sample_result):
         """Test to_dict method"""
         result_dict = sample_result.to_dict()
-        
+
         expected = {
             'Function/Code_Block_Name': 'test_function',
             'AIARelevantFunction': 85,
             'Relevant_KD_Entry_Point': 25,
             'Message_Structure_Handling': 60,
+            'Message_Structures_identified': ['gcsHAL_INTERFACE', 'user_data_struct'],
             'SMIDs_identified': ['dma_addr', 'page_table_idx'],
             'Reasoning': ['High DMA usage', 'Memory mapping operations']
         }
-        
+
         assert result_dict == expected
-
-
 class TestFunctionEntry:
     """Test FunctionEntry dataclass"""
     

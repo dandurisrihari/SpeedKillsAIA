@@ -162,7 +162,7 @@ Reasoning:
     
     def analyze_function(self, function_code: str, function_name: str, 
                        preprocessed_file_path: Optional[str] = None,
-                       enable_tools: bool = False) -> AnalysisResult:
+                       enable_tools: Optional[bool] = None) -> AnalysisResult:
         """
         Analyze a function using OpenAI's API with optional tool calling support.
         
@@ -177,6 +177,10 @@ Reasoning:
         """
         import time
         start_time = time.time()
+        
+        # Use client's enable_tools setting if not explicitly provided
+        if enable_tools is None:
+            enable_tools = self.enable_tools
         
         # Log analysis start
         self.logger.log_function_analysis_start(
@@ -370,6 +374,7 @@ Reasoning:
 You have access to tools that can help you analyze code more effectively:
 
 1. analyze_struct_definition: Use this tool when you encounter struct/union/enum/typedef types that you need to understand better. 
+you can use this tool while analyzing AIARelevantFunction, Relevant KD Entry Point, Message Structure Handling: (SMID's and relevant structure identification). Use it generously.
 
 IMPORTANT: You MUST provide struct_name when calling this tool.
 
