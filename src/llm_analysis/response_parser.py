@@ -25,16 +25,7 @@ class ResponseParser:
     def parse_response(self, response_text: str, function_name_override: Optional[str] = None) -> AnalysisResult:
         """Parse structured text response from OpenAI into AnalysisResult"""
         try:
-            # First try the new structured text format (most reliable)
-            if "Function/Code_Block_Name:" in response_text:
-                self._log_verbose("Attempting structured text parsing")
-                result = self._parse_structured_text(response_text)
-                # Override function name if provided
-                if function_name_override:
-                    result.function_name = function_name_override
-                return result
-            
-            # Fallback to JSON parsing 
+            # First try JSON parsing if present
             json_start = response_text.find("```json")
             json_end = response_text.find("```", json_start + 7) if json_start != -1 else -1
             
@@ -48,17 +39,41 @@ class ResponseParser:
                     result.function_name = function_name_override
                 return result
             
-            # Fallback to YAML parsing
+            # Check for YAML code blocks first (priority over structured text)
             yaml_start = response_text.find("```yaml")
             yaml_end = response_text.find("```", yaml_start + 7) if yaml_start != -1 else -1
             
             if yaml_start != -1 and yaml_end != -1:
                 yaml_content = response_text[yaml_start + 7:yaml_end].strip()
-                self._log_verbose("Attempting YAML parsing")
-            else:
-                # Try without code blocks
-                yaml_content = response_text
-                self._log_verbose("Attempting YAML parsing without code blocks")
+                self._log_verbose("Attempting YAML parsing with code blocks")
+                
+                # Clean up common YAML formatting issues from OpenAI responses
+                yaml_content = self._clean_yaml_content(yaml_content)
+                
+                # Parse YAML
+                data = yaml.safe_load(yaml_content)
+                
+                if not data or not isinstance(data, dict):
+                    raise ValueError("Invalid YAML structure returned")
+                
+                result = self._extract_analysis_result(data)
+                # Override function name if provided
+                if function_name_override:
+                    result.function_name = function_name_override
+                return result
+            
+            # Try structured text parsing for simple formats
+            if "Function/Code_Block_Name:" in response_text:
+                self._log_verbose("Attempting structured text parsing")
+                result = self._parse_structured_text(response_text)
+                # Override function name if provided
+                if function_name_override:
+                    result.function_name = function_name_override
+                return result
+            
+            # Fallback to YAML parsing without code blocks
+            yaml_content = response_text
+            self._log_verbose("Attempting YAML parsing without code blocks")
             
             # Clean up common YAML formatting issues from OpenAI responses
             yaml_content = self._clean_yaml_content(yaml_content)
@@ -167,13 +182,22 @@ class ResponseParser:
         
         # Track parsing state
         in_reasoning = False
+        in_message_structures = False
+        in_smids = False
         
         for line in lines:
             line = line.strip()
             
+            # Skip empty lines
+            if not line:
+                continue
+            
             # Parse function name
             if line.startswith("Function/Code_Block_Name:"):
                 function_name = line.split(":", 1)[1].strip()
+                in_message_structures = False
+                in_smids = False
+                in_reasoning = False
             
             # Parse scores
             elif line.startswith("AIARelevantFunction:"):
@@ -182,6 +206,9 @@ class ResponseParser:
                     aia_relevant = int(score_str)
                 except (ValueError, IndexError):
                     pass
+                in_message_structures = False
+                in_smids = False
+                in_reasoning = False
             
             elif line.startswith("Relevant_KD_Entry_Point:"):
                 try:
@@ -189,6 +216,9 @@ class ResponseParser:
                     kd_entry_point = int(score_str)
                 except (ValueError, IndexError):
                     pass
+                in_message_structures = False
+                in_smids = False
+                in_reasoning = False
             
             elif line.startswith("Message_Structure_Handling:"):
                 try:
@@ -196,31 +226,90 @@ class ResponseParser:
                     msg_handling = int(score_str)
                 except (ValueError, IndexError):
                     pass
+                in_message_structures = False
+                in_smids = False
+                in_reasoning = False
             
             # Parse Message Structures
             elif line.startswith("Message_Structures identified:"):
                 msg_struct_str = line.split(":", 1)[1].strip()
                 if msg_struct_str and msg_struct_str.lower() not in ["none identified", "none", ""]:
-                    # Handle comma-separated message structures
-                    message_structures = [s.strip() for s in msg_struct_str.split(",") if s.strip()]
+                    # Handle JSON-style list format like ["struct1", "struct2"]
+                    if msg_struct_str.startswith('[') and msg_struct_str.endswith(']'):
+                        try:
+                            import ast
+                            message_structures = ast.literal_eval(msg_struct_str)
+                            if not isinstance(message_structures, list):
+                                message_structures = [str(message_structures)]
+                        except (ValueError, SyntaxError):
+                            # Fallback to comma-separated parsing
+                            message_structures = [s.strip() for s in msg_struct_str.split(",") if s.strip()]
+                    else:
+                        # Handle comma-separated message structures
+                        message_structures = [s.strip() for s in msg_struct_str.split(",") if s.strip()]
+                    in_message_structures = False
+                else:
+                    # Empty or none - expect YAML-style list items on following lines
+                    in_message_structures = True
+                in_smids = False
+                in_reasoning = False
             
             # Parse SMIDs
             elif line.startswith("SMID's identified:"):
                 smid_str = line.split(":", 1)[1].strip()
                 if smid_str and smid_str.lower() not in ["none identified", "none", ""]:
-                    # Handle comma-separated SMIDs
-                    smids = [s.strip() for s in smid_str.split(",") if s.strip()]
+                    # Handle JSON-style list format like ["SMID1", "SMID2"]
+                    if smid_str.startswith('[') and smid_str.endswith(']'):
+                        try:
+                            import ast
+                            smids = ast.literal_eval(smid_str)
+                            if not isinstance(smids, list):
+                                smids = [str(smids)]
+                        except (ValueError, SyntaxError):
+                            # Fallback to comma-separated parsing
+                            smids = [s.strip() for s in smid_str.split(",") if s.strip()]
+                    else:
+                        # Handle comma-separated SMIDs
+                        smids = [s.strip() for s in smid_str.split(",") if s.strip()]
+                    in_smids = False
+                else:
+                    # Empty or none - expect YAML-style list items on following lines
+                    in_smids = True
+                in_message_structures = False
+                in_reasoning = False
             
             # Parse reasoning section
             elif line.startswith("Reasoning:"):
                 in_reasoning = True
-            elif in_reasoning:
-                if line.startswith("-") or line.startswith("•"):
-                    # New reasoning point
-                    reasoning.append(line[1:].strip())
-                elif line and reasoning:
-                    # Continuation of previous reasoning point
-                    reasoning[-1] += " " + line
+                in_message_structures = False
+                in_smids = False
+            
+            # Handle list items (YAML style with dashes)
+            elif line.startswith("-") or line.startswith("•"):
+                item = line[1:].strip()
+                if in_reasoning:
+                    reasoning.append(item)
+                elif in_message_structures:
+                    message_structures.append(item)
+                elif in_smids:
+                    smids.append(item)
+            
+            # Handle continuation lines or reset state
+            elif in_reasoning and line and reasoning:
+                # Continuation of previous reasoning point
+                reasoning[-1] += " " + line
+            elif line.startswith(" ") and (in_message_structures or in_smids):
+                # Indented line might be a list item without dash
+                item = line.strip()
+                if in_message_structures:
+                    message_structures.append(item)
+                elif in_smids:
+                    smids.append(item)
+            else:
+                # Reset states when we encounter a new field
+                in_reasoning = False
+                in_message_structures = False
+                in_smids = False
         
         return AnalysisResult(
             function_name=function_name,

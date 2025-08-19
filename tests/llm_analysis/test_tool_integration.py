@@ -8,12 +8,14 @@ import sys
 import unittest
 from unittest.mock import Mock, patch
 
+from src.llm_analysis.models import AnalysisResult
+
 # Add the src directory to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from llm_analysis.tools import StructAnalyzerTool, ToolManager
-from llm_analysis.openai_client import OpenAIClient
-from llm_analysis.processors import process_function_with_llm
+from src.llm_analysis.tools import StructAnalyzerTool, ToolManager
+from src.llm_analysis.openai_client import OpenAIClient
+from src.llm_analysis.processors import process_function_with_llm
 
 
 class TestToolIntegration(unittest.TestCase):
@@ -66,16 +68,17 @@ class TestToolIntegration(unittest.TestCase):
         preprocessed_file = "data/structanalyzerpreprocessedfiles/dma-buf-phys.i"
         
         if os.path.exists(preprocessed_file):
+            # Set the preprocessed file path
+            manager.set_preprocessed_file_path(preprocessed_file)
+            
             result = manager.call_tool("analyze_struct_definition", {
-                "file_path": preprocessed_file,
-                "list_structures": True,
-                "max_results": 5
+                "struct_name": "dma_buf_phys_data"
             })
             
             self.assertTrue(result.success)
             self.assertIn("dma_buf_phys_data", result.output)
     
-    @patch('llm_analysis.openai_client.OpenAI')
+    @patch('openai.OpenAI')
     def test_openai_client_with_tools(self, mock_openai):
         """Test OpenAI client with tool calling enabled"""
         # Mock the OpenAI response with tool calls
@@ -115,7 +118,8 @@ class TestToolIntegration(unittest.TestCase):
         )
         
         # Verify that the client attempted to make tool calls
-        self.assertIn("struct analysis", result.lower() if result else "")
+        self.assertIsInstance(result, AnalysisResult)
+        self.assertEqual(result.function_name, "process_dma_data")
         
         # Verify OpenAI was called with tools
         calls = mock_openai.return_value.chat.completions.create.call_args_list
@@ -127,7 +131,7 @@ class TestToolIntegration(unittest.TestCase):
         self.assertGreater(len(first_call_kwargs['tools']), 0)
         self.assertEqual(first_call_kwargs['tools'][0]['function']['name'], 'analyze_struct_definition')
     
-    @patch('llm_analysis.openai_client.OpenAI')
+    @patch('openai.OpenAI')
     def test_processor_with_tools(self, mock_openai):
         """Test processor with tool calling functionality"""
         # Mock simple response without tool calls
