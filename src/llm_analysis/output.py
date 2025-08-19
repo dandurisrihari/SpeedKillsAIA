@@ -4,6 +4,7 @@ Output utilities for analysis results
 """
 
 import yaml
+from collections import OrderedDict
 from typing import Dict, List
 from .models import AnalysisResult
 
@@ -26,8 +27,11 @@ class OutputFormatter:
         for operation_type, analysis_results in results.items():
             output_data[operation_type] = [result.to_dict() for result in analysis_results]
         
+        # Configure YAML to preserve order
+        yaml.add_representer(OrderedDict, lambda dumper, data: dumper.represent_mapping('tag:yaml.org,2002:map', data.items()))
+        
         with open(output_file, 'w') as f:
-            yaml.dump(output_data, f, default_flow_style=False, indent=2)
+            yaml.dump(output_data, f, default_flow_style=False, indent=2, sort_keys=False)
         
         self._log_verbose(f"Results exported to: {output_file}")
     

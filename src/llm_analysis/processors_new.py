@@ -4,9 +4,8 @@ Processors for different types of analysis data
 """
 
 from typing import List, Dict, Any
-from .models import AnalysisResult, FunctionEntry, DMAOperation, IOCTLOperation
+from .models import AnalysisResult, FunctionEntry, DMAOperation
 from .openai_client import OpenAIClient
-from .response_parser import ResponseParser
 
 
 def process_function_with_llm(function_data: Dict[str, Any], 
@@ -63,15 +62,16 @@ def process_function_with_llm(function_data: Dict[str, Any],
 class BaseProcessor:
     """Base class for all processors"""
     
-    def __init__(self, client: OpenAIClient):
+    def __init__(self, client: OpenAIClient, verbose: bool = False, enable_tools: bool = False):
+        """Initialize processor with client and options"""
         self.client = client
-        self.response_parser = ResponseParser(verbose=client.verbose)
-        self.enable_tools = client.enable_tools
+        self.verbose = verbose
+        self.enable_tools = enable_tools
     
     def _log_verbose(self, message: str):
-        """Log verbose messages if verbose mode is enabled"""
-        if self.client.verbose:
-            print(f"[VERBOSE] {message}")
+        """Log message if verbose mode is enabled"""
+        if self.verbose:
+            print(f"[Processor] {message}")
 
 
 class FunctionProcessor(BaseProcessor):
@@ -93,16 +93,19 @@ class FunctionProcessor(BaseProcessor):
             
             self._log_verbose(f"Analyzing function {i+1}/{len(functions)}: {function_name}")
             
-            # Use new function signature - this now returns AnalysisResult directly
-            result = self.client.analyze_function(
+            # Use new function signature
+            analysis_text = self.client.analyze_function(
                 function_code=function_code,
                 function_name=function_name,
                 preprocessed_file_path=func_entry.preprocessed_file_path,
                 enable_tools=self.enable_tools
             )
             
-            # Update function name to include file path
-            result.function_name = function_name
+            result = AnalysisResult(
+                function_name=function_name,
+                analysis=analysis_text,
+                operation_type="functions_by_file"
+            )
             results.append(result)
         
         return results
@@ -118,7 +121,7 @@ class DMAProcessor(BaseProcessor):
         self._log_verbose(f"Processing {len(dma_ops)} DMA operation entries")
         
         for i, dma_op in enumerate(dma_ops):
-            function_name = dma_op.function_name  # Use just the function name
+            function_name = f"{dma_op.file_path}:{dma_op.function_name}"
             function_code = dma_op.get_code()
             
             if not function_code:
@@ -127,16 +130,19 @@ class DMAProcessor(BaseProcessor):
             
             self._log_verbose(f"Analyzing DMA operation {i+1}/{len(dma_ops)}: {function_name}")
             
-            # Use new function signature - this now returns AnalysisResult directly
-            result = self.client.analyze_function(
+            # Use new function signature  
+            analysis_text = self.client.analyze_function(
                 function_code=function_code,
                 function_name=function_name,
                 preprocessed_file_path=dma_op.preprocessed_file_path,
                 enable_tools=self.enable_tools
             )
             
-            # Update function name to include file path
-            result.function_name = function_name
+            result = AnalysisResult(
+                function_name=function_name,
+                analysis=analysis_text,
+                operation_type="dma_operations"
+            )
             results.append(result)
         
         return results
@@ -145,16 +151,16 @@ class DMAProcessor(BaseProcessor):
 class IOCTLProcessor(BaseProcessor):
     """Processor for IOCTL operations"""
     
-    def process(self, ioctls: List[IOCTLOperation]) -> List[AnalysisResult]:
+    def process(self, ioctls: List[Dict[str, Any]]) -> List[AnalysisResult]:
         """Process IOCTL operations"""
         results = []
         
         self._log_verbose(f"Processing {len(ioctls)} IOCTL entries")
         
         for i, ioctl in enumerate(ioctls):
-            function_name = ioctl.function_name  # Use just the function name
-            function_code = ioctl.get_code()
-            preprocessed_file_path = getattr(ioctl, 'preprocessed_file_path', None)
+            function_name = ioctl.get('function_name', f'ioctl_{i}')
+            function_code = ioctl.get('function_code', '')
+            preprocessed_file_path = ioctl.get('preprocessed_file_path')
             
             if not function_code:
                 self._log_verbose(f"Skipping IOCTL {i+1}/{len(ioctls)}: {function_name} (no code)")
@@ -162,22 +168,26 @@ class IOCTLProcessor(BaseProcessor):
             
             self._log_verbose(f"Analyzing IOCTL {i+1}/{len(ioctls)}: {function_name}")
             
-            # Use new function signature - this now returns AnalysisResult directly
-            result = self.client.analyze_function(
+            # Use new function signature
+            analysis_text = self.client.analyze_function(
                 function_code=function_code,
                 function_name=function_name,
                 preprocessed_file_path=preprocessed_file_path,
                 enable_tools=self.enable_tools
             )
             
-            # Update function name if needed
-            result.function_name = function_name
+            result = AnalysisResult(
+                function_name=function_name,
+                analysis=analysis_text,
+                operation_type="ioctl_operations"
+            )
             results.append(result)
         
         return results
 
 
-def create_processor(operation_type: str, client: OpenAIClient) -> BaseProcessor:
+def create_processor(operation_type: str, client: OpenAIClient, 
+                    verbose: bool = False, enable_tools: bool = False) -> BaseProcessor:
     """Factory function to create appropriate processor"""
     
     processors = {
@@ -187,4 +197,4 @@ def create_processor(operation_type: str, client: OpenAIClient) -> BaseProcessor
     }
     
     processor_class = processors.get(operation_type, FunctionProcessor)
-    return processor_class(client)
+    return processor_class(client, verbose=verbose, enable_tools=enable_tools)

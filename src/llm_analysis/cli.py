@@ -22,26 +22,28 @@ def create_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Analyze with default GPT-3.5-turbo model
+  # Analyze with default GPT-4o-mini model and tools enabled
   python -m llm_analysis.cli data/json_files/coral_boot.json
   
-  # Use GPT-4 model with verbose output
+  # Use GPT-4 model with verbose output and auto-generated log file
   python -m llm_analysis.cli data/json_files/coral_boot.json --model gpt-4 --verbose
   
-  # Save results to specific output file
-  python -m llm_analysis.cli data/json_files/coral_boot.json -o analysis_results.yaml
+  # Specify custom verbose log file location
+  python -m llm_analysis.cli data/json_files/coral_boot.json --verbose --verbose-log my_analysis.log
   
-  # Analyze multiple files
-  python -m llm_analysis.cli data/json_files/*.json --verbose
+  # Disable struct analyzer tools for faster processing
+  python -m llm_analysis.cli data/json_files/coral_boot.json --disable-tools
 
-Available GPT Models:
-  - gpt-3.5-turbo (default, fastest and most cost-effective)
-  - gpt-4 (higher quality analysis)
-  - gpt-4-turbo-preview (latest GPT-4 variant)
-  - gpt-4o (optimized model)
-
-Note: Make sure to set OPENAI_API_KEY in your .env file before running.
-        """
+Tool Calling:
+  By default, the LLM can call the struct analyzer tool to analyze C structures
+  from preprocessed files. This allows the LLM to understand struct layouts,
+  field types, and dependencies when analyzing functions that use those structs.
+  
+  The tool analyzes structures like:
+    python3 -m src.structanalyzer file.i struct_name --format c --depth 3
+  
+  And feeds the generated C header content to the LLM for better analysis.
+"""
     )
     
     parser.add_argument(
@@ -53,8 +55,8 @@ Note: Make sure to set OPENAI_API_KEY in your .env file before running.
     parser.add_argument(
         '--model', '-m',
         choices=GPTModel.all_models(),
-        default=GPTModel.GPT_3_5_TURBO.value,
-        help='OpenAI GPT model to use for analysis (default: gpt-3.5-turbo)'
+        default=GPTModel.GPT_4O_MINI.value,
+        help='OpenAI GPT model to use for analysis (default: gpt-4o-mini)'
     )
     
     parser.add_argument(
@@ -69,9 +71,22 @@ Note: Make sure to set OPENAI_API_KEY in your .env file before running.
     )
     
     parser.add_argument(
+        '--verbose-log', '-l',
+        type=str,
+        default=None,
+        help='Verbose log file path. If not provided and --verbose is enabled, auto-generate in the same directory as the output YAML file'
+    )
+    
+    parser.add_argument(
         '--no-summary',
         action='store_true',
         help='Skip printing summary to console'
+    )
+    
+    parser.add_argument(
+        '--disable-tools',
+        action='store_true',
+        help='Disable function calling tools (struct analyzer integration) - tools are enabled by default to allow LLM to analyze C structures from preprocessed files'
     )
     
     return parser
@@ -108,6 +123,13 @@ def generate_output_filename(input_file: str, output_dir: Optional[str] = None) 
         return str(input_path.parent / output_name)
 
 
+def generate_log_filename(yaml_output_file: str) -> str:
+    """Generate log filename based on YAML output file path"""
+    yaml_path = Path(yaml_output_file)
+    log_name = f"{yaml_path.stem}_verbose.log"
+    return str(yaml_path.parent / log_name)
+
+
 def main():
     """Main CLI entry point"""
     parser = create_parser()
@@ -116,9 +138,28 @@ def main():
     # Validate input files
     json_files = validate_input_files(args.json_files)
     
+    # Determine verbose log file path if verbose is enabled
+    verbose_log_file = None
+    if args.verbose:
+        if args.verbose_log:
+            # Use user-specified log file path
+            verbose_log_file = args.verbose_log
+        else:
+            # Auto-generate based on first output file
+            if args.output and len(json_files) == 1:
+                first_output = args.output
+            else:
+                first_output = generate_output_filename(json_files[0])
+            verbose_log_file = generate_log_filename(first_output)
+    
     # Initialize analyzer
     try:
-        analyzer = JSONAnalyzer(model=args.model, verbose=args.verbose)
+        analyzer = JSONAnalyzer(
+            model=args.model, 
+            verbose=args.verbose,
+            enable_tools=not args.disable_tools,
+            verbose_log_file=verbose_log_file
+        )
         
         if args.verbose:
             print(f"Initialized JSON Analyzer with model: {args.model}")
