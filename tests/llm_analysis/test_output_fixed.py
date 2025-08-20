@@ -48,7 +48,7 @@ class TestOutputFormatter:
             formatter = OutputFormatter(verbose=True)
             formatter._log_verbose("test message")
             
-            mock_print.assert_called_once_with("[OUTPUT_FORMATTER] test message")
+            mock_print.assert_called_once_with("[VERBOSE] test message")
     
     def test_log_verbose_disabled(self):
         """Test verbose logging when disabled."""
@@ -241,7 +241,7 @@ class TestOutputFormatter:
                 
                 # Check that verbose logging occurred
                 verbose_calls = [call for call in mock_print.call_args_list 
-                               if "[OUTPUT_FORMATTER]" in str(call)]
+                               if "[VERBOSE]" in str(call)]
                 assert len(verbose_calls) > 0
                 
                 os.unlink(tmp_file.name)
