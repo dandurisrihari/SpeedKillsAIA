@@ -58,7 +58,7 @@ class StructAnalyzerTool:
             
             # Extract parameters - file_path comes from the context set by ToolManager
             struct_name = arguments.get("struct_name")
-            depth = 1  # Fixed depth to limit analysis complexity
+            depth = arguments.get("depth", 1)  # Use provided depth or default to 1
             
             # Validate struct_name is provided
             if not struct_name:
@@ -98,8 +98,8 @@ class StructAnalyzerTool:
             # Add format parameter (always use C format to generate .h files)
             cmd.extend(["--format", "c"])
             
-            # Add depth parameter (fixed to 1)
-            cmd.extend(["--depth", "1"])
+            # Add depth parameter (use the provided depth)
+            cmd.extend(["--depth", str(depth)])
             
             # Add verbose flag
             cmd.extend(["-v"])
@@ -120,11 +120,42 @@ class StructAnalyzerTool:
             
             if result.returncode != 0:
                 Path(temp_output).unlink(missing_ok=True)
-                return ToolCallResult(
-                    success=False,
-                    output=None,
-                    error_message=f"Command failed: {result.stderr}"
-                )
+                
+                # Check for common error patterns
+                stderr_output = result.stderr.strip()
+                stdout_output = result.stdout.strip()
+                
+                # Look for "Structure not found" error
+                if "Structure not found" in stderr_output or "Structure not found" in stdout_output:
+                    return ToolCallResult(
+                        success=False,
+                        output=None,
+                        error_message=f"Structure '{struct_name}' not found in the preprocessed file. This may not be a valid structure name or it might not be defined in the current scope."
+                    )
+                elif "ERROR: Structure not found" in stdout_output:
+                    return ToolCallResult(
+                        success=False,
+                        output=None,
+                        error_message=f"Structure '{struct_name}' not found in the preprocessed file. This may not be a valid structure name or it might not be defined in the current scope."
+                    )
+                else:
+                    # Generic error with both stderr and stdout for debugging
+                    error_details = []
+                    if stderr_output:
+                        error_details.append(f"STDERR: {stderr_output}")
+                    if stdout_output:
+                        error_details.append(f"STDOUT: {stdout_output}")
+                    
+                    if error_details:
+                        error_message = f"Command failed. {' | '.join(error_details)}"
+                    else:
+                        error_message = f"Command failed with return code {result.returncode} but no error output was captured."
+                    
+                    return ToolCallResult(
+                        success=False,
+                        output=None,
+                        error_message=error_message
+                    )
             
             # Read the generated .h file content
             try:
@@ -159,8 +190,9 @@ class StructAnalyzerTool:
 class ToolManager:
     """Manager for all available tools"""
     
-    def __init__(self, verbose: bool = False):
+    def __init__(self, verbose: bool = False, default_depth: int = 5):
         self.verbose = verbose
+        self.default_depth = default_depth
         self.tools = {}
         self.current_preprocessed_file_content = None  # Store current preprocessed file content
         self.temp_input_file_path = None  # Reusable temp file for current function analysis
@@ -225,8 +257,31 @@ class ToolManager:
         self.tools["analyze_struct_definition"] = StructAnalyzerTool(verbose=self.verbose)
     
     def get_tool_definitions(self) -> List[Dict[str, Any]]:
-        """Get all tool definitions for OpenAI function calling"""
-        return [tool.get_tool_definition() for tool in self.tools.values()]
+        """Get OpenAI-compatible tool definitions"""
+        return [
+            {
+                "type": "function",
+                "function": {
+                    "name": "analyze_struct_definition",
+                    "description": f"Analyze C struct/union/enum/typedef definitions from preprocessed files. Default depth is {self.default_depth}.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "struct_name": {
+                                "type": "string",
+                                "description": "The name of the struct/union/enum/typedef to analyze (REQUIRED)"
+                            },
+                            "depth": {
+                                "type": "integer",
+                                "description": f"Maximum depth to traverse nested structures (default: {self.default_depth})",
+                                "default": self.default_depth
+                            }
+                        },
+                        "required": ["struct_name"]
+                    }
+                }
+            }
+        ]
     
     def call_tool(self, function_name: str, arguments: Dict[str, Any]) -> ToolCallResult:
         """Call a specific tool by name"""
@@ -239,6 +294,10 @@ class ToolManager:
         
         # Automatically inject the current preprocessed file content for struct analysis
         if function_name == "analyze_struct_definition":
+            # Apply default depth if not specified
+            if "depth" not in arguments:
+                arguments["depth"] = self.default_depth
+            
             if self.current_preprocessed_file_content:
                 # Use the pre-created temp file path if available, otherwise use original content/path
                 file_to_use = self.temp_input_file_path or self.current_preprocessed_file_content

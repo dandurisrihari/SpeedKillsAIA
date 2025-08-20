@@ -82,7 +82,6 @@ Reasoning:
         mock_tool_call.id = "call_123"
         mock_tool_call.function.name = "analyze_struct_definition"
         mock_tool_call.function.arguments = json.dumps({
-            "file_path": "/test/file.i",
             "struct_name": "test_struct"
         })
         
@@ -100,11 +99,13 @@ Function/Code_Block_Name: test_function
 AIARelevantFunction: 90
 Relevant_KD_Entry_Point: 60
 Message_Structure_Handling: 80
+Message_Structures identified: [test_struct]
 SMIDs identified: [struct_smid]
 Reasoning:
   - Function uses test_struct which contains SMID fields
   - Enhanced analysis with struct definition
 """
+        mock_final_response.choices[0].message.tool_calls = None
         
         # Configure mock to return different responses
         mock_client.chat.completions.create.side_effect = [mock_first_response, mock_final_response]
@@ -115,7 +116,7 @@ Reasoning:
         # Mock the tool manager
         mock_tool_result = ToolCallResult(
             success=True,
-            output={"struct_name": "test_struct", "fields": [{"name": "smid", "type": "int"}]}
+            output="struct test_struct { int smid; };"  # Return string instead of dict
         )
         client.tool_manager.call_tool = Mock(return_value=mock_tool_result)
         
@@ -128,7 +129,7 @@ Reasoning:
         # Verify tool was called
         client.tool_manager.call_tool.assert_called_once_with(
             "analyze_struct_definition",
-            {"file_path": "/test/file.i", "struct_name": "test_struct"}
+            {"struct_name": "test_struct"}
         )
         
         # Verify two API calls were made
@@ -151,7 +152,6 @@ Reasoning:
         mock_tool_call.id = "call_123"
         mock_tool_call.function.name = "analyze_struct_definition"
         mock_tool_call.function.arguments = json.dumps({
-            "file_path": "/nonexistent/file.i",
             "struct_name": "test_struct"
         })
         
@@ -169,11 +169,13 @@ Function/Code_Block_Name: test_function
 AIARelevantFunction: 70
 Relevant_KD_Entry_Point: 40
 Message_Structure_Handling: 30
+Message_Structures identified: []
 SMIDs identified: []
 Reasoning:
   - Could not analyze struct definition due to tool error
   - Analysis based on available code only
 """
+        mock_final_response.choices[0].message.tool_calls = None
         
         # Configure mock to return different responses
         mock_client.chat.completions.create.side_effect = [mock_first_response, mock_final_response]
