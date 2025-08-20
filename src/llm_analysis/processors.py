@@ -91,6 +91,14 @@ class FunctionProcessor(BaseProcessor):
                 self._log_verbose(f"Skipping function {i+1}/{len(functions)}: {function_name} (no code)")
                 continue
             
+            # Show progress for each function
+            progress_msg = f"[{i+1}/{len(functions)}] Analyzing: {function_name}"
+            if len(progress_msg) > 100:
+                # Truncate long function names
+                display_name = function_name[:90] + "..."
+                progress_msg = f"[{i+1}/{len(functions)}] Analyzing: {display_name}"
+            print(progress_msg)
+            
             self._log_verbose(f"Analyzing function {i+1}/{len(functions)}: {function_name}")
             
             # Use new function signature - this now returns AnalysisResult directly
@@ -124,6 +132,14 @@ class DMAProcessor(BaseProcessor):
             if not function_code:
                 self._log_verbose(f"Skipping DMA operation {i+1}/{len(dma_ops)}: {function_name} (no code)")
                 continue
+            
+            # Show progress for each DMA operation
+            progress_msg = f"[{i+1}/{len(dma_ops)}] Analyzing DMA operation: {function_name}"
+            if len(progress_msg) > 100:
+                # Truncate long function names
+                display_name = function_name[:75] + "..."
+                progress_msg = f"[{i+1}/{len(dma_ops)}] Analyzing DMA operation: {display_name}"
+            print(progress_msg)
             
             self._log_verbose(f"Analyzing DMA operation {i+1}/{len(dma_ops)}: {function_name}")
             
@@ -159,6 +175,14 @@ class IOCTLProcessor(BaseProcessor):
             if not function_code:
                 self._log_verbose(f"Skipping IOCTL {i+1}/{len(ioctls)}: {function_name} (no code)")
                 continue
+            
+            # Show progress for each IOCTL operation
+            progress_msg = f"[{i+1}/{len(ioctls)}] Analyzing IOCTL: {function_name}"
+            if len(progress_msg) > 100:
+                # Truncate long function names
+                display_name = function_name[:80] + "..."
+                progress_msg = f"[{i+1}/{len(ioctls)}] Analyzing IOCTL: {display_name}"
+            print(progress_msg)
             
             self._log_verbose(f"Analyzing IOCTL {i+1}/{len(ioctls)}: {function_name}")
             

@@ -23,16 +23,23 @@ class OutputFormatter:
     
     def export_to_yaml(self, results: Dict[str, List[AnalysisResult]], output_file: str):
         """Export analysis results to YAML file with top analysis"""
+        print(f"[PROGRESS] Starting YAML export to: {output_file}")
         self._log_verbose(f"Starting YAML export to: {output_file}")
         
         output_data = OrderedDict()
         
         # Add regular analysis results
+        total_results = sum(len(analysis_results) for analysis_results in results.values())
+        processed_results = 0
+        
         for operation_type, analysis_results in results.items():
+            print(f"[PROGRESS] Processing {len(analysis_results)} results for {operation_type}")
             self._log_verbose(f"Processing {len(analysis_results)} results for {operation_type}")
             output_data[operation_type] = [result.to_dict() for result in analysis_results]
+            processed_results += len(analysis_results)
         
         # Generate and add top analysis
+        print(f"[PROGRESS] Generating top analysis for YAML export")
         self._log_verbose("Generating top analysis for YAML export")
         top_analyzer = TopAnalyzer(verbose=self.verbose)
         top_analysis = top_analyzer.generate_top_analysis(results)
@@ -41,9 +48,11 @@ class OutputFormatter:
         # Configure YAML to preserve order
         yaml.add_representer(OrderedDict, lambda dumper, data: dumper.represent_mapping('tag:yaml.org,2002:map', data.items()))
         
+        print(f"[PROGRESS] Writing YAML file with {processed_results} results...")
         with open(output_file, 'w') as f:
             yaml.dump(output_data, f, default_flow_style=False, indent=2, sort_keys=False)
         
+        print(f"[PROGRESS] ✅ Results exported to: {output_file}")
         self._log_verbose(f"Results exported to: {output_file}")
     
     def print_summary(self, results: Dict[str, List[AnalysisResult]]):
