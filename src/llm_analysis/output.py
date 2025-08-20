@@ -7,6 +7,7 @@ import yaml
 from collections import OrderedDict
 from typing import Dict, List
 from .models import AnalysisResult
+from .top_analysis import TopAnalyzer
 
 
 class OutputFormatter:
@@ -21,14 +22,21 @@ class OutputFormatter:
             print(f"[VERBOSE] {message}")
     
     def export_to_yaml(self, results: Dict[str, List[AnalysisResult]], output_file: str):
-        """Export analysis results to YAML file"""
+        """Export analysis results to YAML file with top analysis"""
         self._log_verbose(f"Starting YAML export to: {output_file}")
         
-        output_data = {}
+        output_data = OrderedDict()
         
+        # Add regular analysis results
         for operation_type, analysis_results in results.items():
             self._log_verbose(f"Processing {len(analysis_results)} results for {operation_type}")
             output_data[operation_type] = [result.to_dict() for result in analysis_results]
+        
+        # Generate and add top analysis
+        self._log_verbose("Generating top analysis for YAML export")
+        top_analyzer = TopAnalyzer(verbose=self.verbose)
+        top_analysis = top_analyzer.generate_top_analysis(results)
+        output_data['Top_Analysis'] = top_analysis
         
         # Configure YAML to preserve order
         yaml.add_representer(OrderedDict, lambda dumper, data: dumper.represent_mapping('tag:yaml.org,2002:map', data.items()))
