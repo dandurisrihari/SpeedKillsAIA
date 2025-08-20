@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 from .models import AnalysisResult
 from .tools import ToolManager
-from .prompts import create_analysis_prompt
 from .response_parser import ResponseParser
 from .llm_logger import get_logger
 
@@ -137,7 +136,7 @@ class OpenAIClient:
 
 1. AIARelevantFunction: The given function or code block is involved in sharing shared memory (SMem) with an AI Accelerator (AIA). Such functions often: Pin user pages to memory (get_user_pages, pin_user_pages), Iterate over scatter gather userpages, Obtain physical or DMA addresses of user pages. Program these addresses into: AIA device page tables (for memory mapping inside the AIA), AIA MMIO (Memory Mapped I/O) registers to notify AIA of accessible memory, Manage DMA buffers for communication between CPU and AIA. These functions are typically critical for giving the AIA access to host memory regions. 
 
-2. Relevant KD Entry Point: The code block represents an entry point from user space to kernel, commonly through ioctl() functions. These:Act as dispatch points in a switch-case or if/else over ioctl codes, Handle user commands and trigger deeper kernel logic leading to AIARelevantFunction Identify which ioctl code is being handled (e.g., IOCTL_AIA_ALLOC_SMEM, IOCTL_AIA_SEND_MSG) include this in your reasoning. Basically this is entry point which leads to AIARelevantFunction execution.
+2. Relevant KD Entry Point: The code block represents an entry point from user space to kernel, commonly through ioctl() functions. These:Act as dispatch points in a switch-case or if/else over ioctl codes, Handle user commands and trigger deeper kernel logic leading to AIARelevantFunction Identify which ioctl code is being handled (e.g., IOCTL_AIA_ALLOC_SMEM, IOCTL_AIA_SEND_MSG). You need to include this ioctl command code in your reasoning. Basically this is entry point which leads to AIARelevantFunction execution.
 
 3. Message Structure Handling: The code block handles message structures exchanged between user space and kernel, These contain copy_from_user() / copy_to_user() calls and passes structures involving Shared Memory Identifiers (SMIDs). SMID (Shared Memory Identifier) are a way of kernel letting userspace know it's user virtual address pages are accessed by AIA using this SMID These are usually part of the structure that is passed in copy_from_user() / copy_to_user(). In your reasoning you need to mention what structs are used as arguments in copy_from_user() / copy_to_user() calls, analyze the feilds in the structures that qualify under SMID's. Some examples of SMID (shared memory identifier) are: Device virtual address, physical address, DMA address, AIA virtualaddresses, file descriptors(fd). Metadata like Memory size, flags, or similar ranges, helps you to identify the structure of interest. You need to identify SMID's and also message structure. Its ok if there are false positives, try to be more inclusive in your analysis for both Message_Structures and SMID's identification.
 

@@ -16,6 +16,7 @@ from .openai_client import OpenAIClient
 from .processors import FunctionProcessor, DMAProcessor, IOCTLProcessor
 from .output import OutputFormatter
 from .llm_logger import get_logger
+from .top_analysis import TopAnalyzer
 
 
 class JSONAnalyzer:
@@ -94,6 +95,32 @@ class JSONAnalyzer:
         # Log session summary
         session_time = time.time() - session_start_time
         self.logger.log_session_summary(total_functions, session_time)
+        
+        # Generate and log top analysis if verbose logging is enabled
+        if self.verbose and hasattr(self.logger, 'log_file') and self.logger.log_file:
+            self._append_top_analysis_to_log(results)
+        
+        return results
+    
+    def _append_top_analysis_to_log(self, results: Dict[str, List[AnalysisResult]]):
+        """Append top analysis to the verbose log file"""
+        try:
+            top_analyzer = TopAnalyzer(verbose=self.verbose)
+            top_analysis = top_analyzer.generate_top_analysis(results)
+            formatted_log = top_analyzer.format_for_verbose_log(top_analysis)
+            
+            # Append to the verbose log file
+            with open(self.logger.log_file, 'a', encoding='utf-8') as f:
+                f.write('\n\n')
+                f.write(formatted_log)
+                f.write('\n')
+                
+            if self.verbose:
+                print(f"[JSONAnalyzer] Top analysis appended to verbose log: {self.logger.log_file}")
+                
+        except Exception as e:
+            if self.verbose:
+                print(f"[JSONAnalyzer] Error appending top analysis to log: {e}")
         
         return results
     
