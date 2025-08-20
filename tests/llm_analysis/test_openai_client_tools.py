@@ -126,10 +126,10 @@ Reasoning:
             preprocessed_file_path="/test/file.i"
         )
         
-        # Verify tool was called
+        # Verify tool was called with default depth
         client.tool_manager.call_tool.assert_called_once_with(
             "analyze_struct_definition",
-            {"struct_name": "test_struct"}
+            {"struct_name": "test_struct", "depth": 5}
         )
         
         # Verify two API calls were made

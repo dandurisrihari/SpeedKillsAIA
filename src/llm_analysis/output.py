@@ -22,9 +22,12 @@ class OutputFormatter:
     
     def export_to_yaml(self, results: Dict[str, List[AnalysisResult]], output_file: str):
         """Export analysis results to YAML file"""
+        self._log_verbose(f"Starting YAML export to: {output_file}")
+        
         output_data = {}
         
         for operation_type, analysis_results in results.items():
+            self._log_verbose(f"Processing {len(analysis_results)} results for {operation_type}")
             output_data[operation_type] = [result.to_dict() for result in analysis_results]
         
         # Configure YAML to preserve order
