@@ -5,6 +5,7 @@ OpenAI API client for LLM analysis
 
 import os
 import json
+import time
 import logging
 from typing import Optional, List, Dict, Any
 import openai
@@ -30,13 +31,14 @@ class OpenAIClient:
         self.enable_tools = enable_tools
         self.max_tokens = 800  # Reduced max tokens to leave room for context
         self.temperature = 0.7  # Default temperature
+        self.default_struct_depth = 5  # Default depth for struct analysis
         self._load_environment()
         self._setup_client()
         self._setup_tokenizer()
         
         # Initialize tool manager if tools are enabled
         if self.enable_tools:
-            self.tool_manager = ToolManager(verbose=verbose)
+            self.tool_manager = ToolManager(verbose=verbose, default_depth=self.default_struct_depth)
         else:
             self.tool_manager = None
             
@@ -160,6 +162,217 @@ Reasoning:
 {function_code}
 ```"""
     
+    def _get_system_prompt(self) -> str:
+        """Get the system prompt with tool information and analysis instructions"""
+        base_prompt = "You are an expert Linux Kernel Driver developer specializing in AI Accelerator integration."
+        
+        # Add analysis instructions
+        analysis_instructions = self._get_analysis_instructions()
+        
+        if self.enable_tools and self.tool_manager:
+            tool_prompt = f"""
+
+You have access to tools that can help you analyze code more effectively:
+
+1. analyze_struct_definition: Use this tool to analyze struct/union/enum/typedef types encountered in the code.
+
+IMPORTANT ANALYSIS WORKFLOW:
+- **PROACTIVELY REQUEST STRUCTURE DEFINITIONS**: For EVERY struct, union, enum, or typedef you encounter in the function code, you MUST call analyze_struct_definition to get its full definition.
+- **DEFAULT DEPTH**: Always use depth={self.default_struct_depth} unless you have a specific reason to use a different depth.
+- **COMPREHENSIVE ANALYSIS**: Before providing your analysis scores, ensure you have requested definitions for ALL structures mentioned in:
+  - Function parameters
+  - Local variables
+  - copy_from_user/copy_to_user calls
+  - Any structure fields accessed in the code
+  - Return types
+  - Cast operations
+
+TOOL USAGE EXAMPLES:
+- {{"struct_name": "gcsHAL_INTERFACE", "depth": {self.default_struct_depth}}} - Analyze with default depth
+- {{"struct_name": "gasket_dev", "depth": {self.default_struct_depth}}} - Get full structure definition
+- {{"struct_name": "dma_buf", "depth": {self.default_struct_depth}}} - Analyze DMA buffer structures
+
+ANALYSIS APPROACH:
+1. First pass: Identify ALL structures, unions, enums, and typedefs in the code
+2. Request definitions for each identified type using analyze_struct_definition
+3. With complete structure information, analyze for:
+   - AIARelevantFunction patterns
+   - KD Entry Points
+   - Message Structure Handling and SMID identification
+4. Provide comprehensive analysis based on both the function code AND the structure definitions
+
+Remember: The quality of your analysis depends on understanding the complete structure definitions. Always request them BEFORE scoring."""
+            
+            return f"{base_prompt}\n\n{analysis_instructions}{tool_prompt}"
+        
+        return f"{base_prompt}\n\n{analysis_instructions}"
+    
+    def _handle_function_calls(self, messages: List[Dict[str, Any]], response) -> str:
+        """Handle function calls and return final response content"""
+        # Add assistant message with tool calls
+        assistant_message = {
+            "role": "assistant",
+            "content": response.choices[0].message.content,
+            "tool_calls": response.choices[0].message.tool_calls
+        }
+        messages.append(assistant_message)
+        
+        accumulated_structure_info = []  # Accumulate all structure definitions
+        
+        # Process each tool call and add tool response messages
+        for tool_call in response.choices[0].message.tool_calls:
+            # Execute the function
+            function_name = tool_call.function.name
+            try:
+                arguments = json.loads(tool_call.function.arguments)
+                
+                # Set default depth if not provided
+                if function_name == "analyze_struct_definition" and "depth" not in arguments:
+                    arguments["depth"] = self.default_struct_depth
+                    self._log_verbose(f"Setting default depth={self.default_struct_depth} for struct analysis")
+                
+                self._log_verbose(f"Executing function: {function_name} with args: {arguments}")
+                
+                result = self.tool_manager.call_tool(function_name, arguments)
+                
+                if result.success:
+                    # Log successful tool execution
+                    if hasattr(self.logger, 'log_tool_execution'):
+                        self.logger.log_tool_execution(
+                            tool_name=function_name,
+                            arguments=arguments,
+                            result_success=True,
+                            result_output=result.output
+                        )
+                    
+                    # Accumulate structure information for final analysis
+                    struct_name = arguments.get('struct_name', 'unknown')
+                    depth = arguments.get('depth', self.default_struct_depth)
+                    structure_info = f"\n=== Structure Definition: {struct_name} (depth={depth}) ===\n{result.output}\n"
+                    accumulated_structure_info.append(structure_info)
+                    
+                    response_content = f"Successfully analyzed structure {struct_name} with depth {depth}. Definition included in analysis context."
+                    self._log_verbose(f"Function executed successfully, accumulated structure info for {struct_name}")
+                else:
+                    # Log failed tool execution with detailed error
+                    if hasattr(self.logger, 'log_tool_execution'):
+                        self.logger.log_tool_execution(
+                            tool_name=function_name,
+                            arguments=arguments,
+                            result_success=False,
+                            error_message=result.error_message
+                        )
+                    
+                    # Include failed analysis info for LLM context
+                    struct_name = arguments.get('struct_name', 'unknown')
+                    failed_info = f"\n=== Failed Structure Analysis: {struct_name} ===\nError: {result.error_message}\nNote: Continue analysis without this structure definition.\n"
+                    accumulated_structure_info.append(failed_info)
+                    
+                    response_content = f"Failed to analyze structure: {result.error_message}"
+                    self._log_verbose(f"Function execution failed: {result.error_message}")
+                
+            except Exception as e:
+                error_msg = f"Error parsing tool call arguments: {str(e)}"
+                
+                # Log tool execution error
+                if hasattr(self.logger, 'log_tool_execution'):
+                    self.logger.log_tool_execution(
+                        tool_name=function_name,
+                        arguments={"error": "Failed to parse arguments"},
+                        result_success=False,
+                        error_message=error_msg
+                    )
+                
+                # Include parsing error info for LLM context  
+                parsing_error_info = f"\n=== Tool Call Error ===\nFunction: {function_name}\nError: {error_msg}\n"
+                accumulated_structure_info.append(parsing_error_info)
+                
+                response_content = f"Error: {error_msg}"
+                self._log_verbose(error_msg)
+            
+            # Add function result to messages
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tool_call.id,
+                "content": response_content
+            })
+        
+        # Create final comprehensive prompt with all accumulated structure information
+        if accumulated_structure_info:
+            self._log_verbose(f"Accumulated {len(accumulated_structure_info)} structure definitions for final analysis")
+            
+            # Create enhanced prompt with all structure definitions
+            structure_context = "\n".join(accumulated_structure_info)
+            enhanced_prompt = f"""Now that you have analyzed the necessary structures, provide your comprehensive analysis of the function.
+
+STRUCTURE DEFINITIONS CONTEXT:
+{structure_context}
+
+ANALYSIS REQUIREMENTS:
+1. Use the structure definitions above to understand:
+   - Field types and their purposes
+   - Potential SMID fields (addresses, handles, descriptors)
+   - Message structure layouts
+   - Memory management patterns
+
+2. Provide your analysis in the EXACT format specified:
+   - Function/Code_Block_Name
+   - AIARelevantFunction score (0-100)
+   - Relevant_KD_Entry_Point score (0-100)
+   - Message_Structure_Handling score (0-100)
+   - Message_Structures identified
+   - SMID's identified
+   - Detailed reasoning
+
+3. Base your scores on BOTH the function code AND the structure definitions provided above."""
+
+            # Add the enhanced prompt as a user message
+            messages.append({
+                "role": "user",
+                "content": enhanced_prompt
+            })
+        
+        # Make final request with function results
+        final_tokens = 0
+        for msg in messages:
+            content = msg.get("content", "")
+            if content and isinstance(content, str):
+                try:
+                    final_tokens += self._estimate_tokens(content)
+                except Exception as e:
+                    self._log_verbose(f"Error in token counting: {e}, falling back to character estimation")
+                    final_tokens += len(content) // 4
+        
+        # Log follow-up request
+        self.logger.log_prompt_sent(
+            model=self.model,
+            messages=messages,
+            tools=None,  # No more tools needed for final analysis
+            token_count=final_tokens,
+            context_limit=self._get_model_context_size(),
+            is_follow_up=True
+        )
+        
+        # Make the final call with increased max_tokens for comprehensive analysis
+        final_response = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            max_tokens=4000,  # Increased for detailed analysis with structures
+            temperature=0.1  # Lower temperature for more consistent analysis
+        )
+        
+        # Log final LLM response
+        final_content = final_response.choices[0].message.content
+        self.logger.log_llm_response(
+            response_content=final_content or "",
+            tool_calls=None
+        )
+        
+        if accumulated_structure_info:
+            self._log_verbose("Final analysis completed with structure context")
+        
+        return final_content
+    
     def analyze_function(self, function_code: str, function_name: str, 
                        preprocessed_file_path: Optional[str] = None,
                        enable_tools: Optional[bool] = None) -> AnalysisResult:
@@ -195,9 +408,9 @@ Reasoning:
             model_context_limit = self._get_model_context_size()
             
             # Reserve tokens for tools, response, and safety margin
-            tools_tokens = 300 if enable_tools else 0
+            tools_tokens = 500 if enable_tools else 0  # Increased for tool definitions
             response_tokens = self.max_tokens
-            safety_margin = 1000  # Increased safety margin for larger models
+            safety_margin = 1500  # Increased safety margin for tool calls
             
             # Calculate system message tokens
             system_prompt = self._get_system_prompt()
@@ -229,28 +442,19 @@ Reasoning:
             
             # Log token estimation and message content
             if self.verbose:
-                total_message_tokens = sum(self._estimate_tokens(msg["content"]) for msg in messages)
+                total_message_tokens = 0
+                for msg in messages:
+                    content = msg.get("content", "")
+                    if content and isinstance(content, str):
+                        try:
+                            total_message_tokens += self._estimate_tokens(content)
+                        except Exception as e:
+                            self._log_verbose(f"Error in token counting: {e}, falling back to character estimation")
+                            total_message_tokens += len(content) // 4
+                
                 self._log_verbose(f"Model: {self.model}, Context limit: {model_context_limit}")
                 self._log_verbose(f"Estimated tokens - Messages: {total_message_tokens}, Tools: {tools_tokens}")
                 self._log_verbose(f"Available tokens: {available_tokens}, Max chars: {max_chars}")
-                self._log_verbose(f"System message tokens: {self._estimate_tokens(messages[0]['content'])}")
-                self._log_verbose(f"User message tokens: {self._estimate_tokens(messages[1]['content'])}")
-            
-            # Debug: Print the actual messages being sent
-            print(f"=== MESSAGES BEING SENT TO OPENAI ===")
-            print(f"Model: {self.model}")
-            print(f"System message length: {len(messages[0]['content'])} characters")
-            print(f"User message length: {len(messages[1]['content'])} characters")
-            total_tokens = sum(self._estimate_tokens(msg["content"]) for msg in messages)
-            print(f"Total token count: {total_tokens}")
-            print(f"Context limit: {model_context_limit} tokens")
-            print(f"System message first 500 characters:")
-            print(messages[0]['content'][:500])
-            print(f"User message first 1000 characters:")
-            print(messages[1]['content'][:1000])
-            print(f"User message last 500 characters:")
-            print(messages[1]['content'][-500:])
-            print(f"=== END MESSAGE DEBUG ===")
             
             # Prepare tools if enabled
             tools = None
@@ -260,7 +464,16 @@ Reasoning:
                 tools = self.tool_manager.get_tool_definitions()
             
             # Log prompt being sent
-            total_tokens = sum(self._estimate_tokens(msg["content"]) for msg in messages)
+            total_tokens = 0
+            for msg in messages:
+                content = msg.get("content", "")
+                if content and isinstance(content, str):
+                    try:
+                        total_tokens += self._estimate_tokens(content)
+                    except Exception as e:
+                        self._log_verbose(f"Error in token counting: {e}, falling back to character estimation")
+                        total_tokens += len(content) // 4
+            
             self.logger.log_prompt_sent(
                 model=self.model,
                 messages=messages,
@@ -269,13 +482,13 @@ Reasoning:
                 context_limit=model_context_limit
             )
             
-            # Make the API call
+            # Make the API call with tool_choice to encourage tool usage
             if tools:
                 response = self.client.chat.completions.create(
                     model=self.model,
                     messages=messages,
                     tools=tools,
-                    tool_choice="auto",
+                    tool_choice="auto",  # Let the model decide when to use tools
                     max_tokens=self.max_tokens,
                     temperature=self.temperature
                 )
@@ -288,10 +501,9 @@ Reasoning:
                 
                 # Handle tool calls
                 if response.choices[0].message.tool_calls:
-                    final_messages, final_response = self._handle_function_calls(messages, response)
+                    final_content = self._handle_function_calls(messages, response)
                     
                     # Log final response after tool calls
-                    final_content = final_response.choices[0].message.content
                     self.logger.log_final_llm_response(final_content)
                     
                     # Parse and log results
@@ -323,10 +535,20 @@ Reasoning:
                 return result
                 
         except Exception as e:
-            print(f"Error in analyze_function: {e}")
+            error_msg = f"Error in analyze_function: {e}"
+            self._log_verbose(error_msg)
+            print(error_msg)
             print(f"Function: {function_name}")
             
-            # Log error
+            # Log comprehensive error details
+            if hasattr(self.logger, 'log_error'):
+                self.logger.log_error(
+                    error_type="FUNCTION_ANALYSIS_ERROR",
+                    error_message=str(e),
+                    context=f"Function: {function_name}, Model: {self.model}, Tools: {enable_tools}"
+                )
+            
+            # Log analysis completion with error
             self.logger.log_analysis_complete(function_name, time.time() - start_time)
             
             # Return default analysis result on error
@@ -337,7 +559,7 @@ Reasoning:
                 message_structure_handling=0,
                 message_structures_identified=[],
                 smids_identified=[],
-                reasoning=[]
+                reasoning=[f"Analysis failed due to error: {str(e)}"]
             )
         finally:
             # Clean up any temporary files created during this function analysis
@@ -390,129 +612,3 @@ This is especially useful when you see struct types like gcsHAL_INTERFACE, gaske
             return f"{base_prompt}\n\n{analysis_instructions}{tool_prompt}"
         
         return f"{base_prompt}\n\n{analysis_instructions}"
-    
-    def _handle_function_calls(self, messages: List[Dict[str, Any]], response) -> tuple:
-        """Handle function calls and return updated messages and final response"""
-        # Add the assistant's message with function calls to conversation
-        assistant_message = {
-            "role": "assistant",
-            "content": response.choices[0].message.content,
-            "tool_calls": []
-        }
-        
-        # Build the assistant message with all tool calls
-        for tool_call in response.choices[0].message.tool_calls:
-            assistant_message["tool_calls"].append({
-                "id": tool_call.id,
-                "type": "function",
-                "function": {
-                    "name": tool_call.function.name,
-                    "arguments": tool_call.function.arguments
-                }
-            })
-        
-        # Add assistant message once with all tool calls
-        messages.append(assistant_message)
-        
-        # Process each tool call and add tool response messages
-        for tool_call in response.choices[0].message.tool_calls:
-            # Execute the function
-            function_name = tool_call.function.name
-            try:
-                arguments = json.loads(tool_call.function.arguments)
-                self._log_verbose(f"Executing function: {function_name} with args: {arguments}")
-                
-                # Log tool execution start
-                self.logger.log_tool_execution(
-                    tool_name=function_name,
-                    arguments=arguments,
-                    result_success=False  # Will update after execution
-                )
-                
-                result = self.tool_manager.call_tool(function_name, arguments)
-                
-                if result.success:
-                    function_result = {"result": result.output}
-                    self._log_verbose(f"Function executed successfully")
-                    
-                    # Log successful tool execution
-                    self.logger.log_tool_execution(
-                        tool_name=function_name,
-                        arguments=arguments,
-                        result_success=True,
-                        result_output=result.output
-                    )
-                else:
-                    function_result = {"error": result.error_message}
-                    self._log_verbose(f"Function execution failed: {result.error_message}")
-                    
-                    # Log failed tool execution
-                    self.logger.log_tool_execution(
-                        tool_name=function_name,
-                        arguments=arguments,
-                        result_success=False,
-                        error_message=result.error_message
-                    )
-                
-            except json.JSONDecodeError as e:
-                function_result = {"error": f"Invalid JSON arguments: {e}"}
-                self._log_verbose(f"JSON decode error: {e}")
-                
-                # Log JSON decode error
-                self.logger.log_tool_execution(
-                    tool_name=function_name,
-                    arguments={"error": "JSON decode failed"},
-                    result_success=False,
-                    error_message=f"Invalid JSON arguments: {e}"
-                )
-            except Exception as e:
-                function_result = {"error": f"Function execution error: {e}"}
-                self._log_verbose(f"Function execution error: {e}")
-                
-                # Log execution error
-                self.logger.log_tool_execution(
-                    tool_name=function_name,
-                    arguments={"error": "Execution failed"},
-                    result_success=False,
-                    error_message=f"Function execution error: {e}"
-                )
-            
-            # Log tool response being sent back to LLM
-            response_content = json.dumps(function_result)
-            self.logger.log_tool_response_to_llm(tool_call.id, response_content)
-            
-            # Add function result to messages
-            messages.append({
-                "role": "tool",
-                "tool_call_id": tool_call.id,
-                "content": response_content
-            })
-        
-        # Make follow-up request with function results
-        # Log the complete conversation history being sent for follow-up
-        follow_up_tokens = 0
-        for msg in messages:
-            content = msg.get("content") or ""
-            if isinstance(content, str):
-                follow_up_tokens += self._estimate_tokens(content)
-            # Add estimation for tool calls if present
-            if "tool_calls" in msg:
-                follow_up_tokens += 100  # Rough estimate for tool call overhead
-                
-        self.logger.log_prompt_sent(
-            model=self.model,
-            messages=messages,
-            tools=None,  # No tools needed in follow-up
-            token_count=follow_up_tokens,
-            context_limit=self._get_model_context_size(),
-            is_follow_up=True
-        )
-        
-        follow_up_response = self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            max_tokens=2000,
-            temperature=0.1
-        )
-        
-        return messages, follow_up_response

@@ -384,6 +384,17 @@ _logger_instance = None
 def get_logger(verbose: bool = False, custom_log_file: Optional[str] = None) -> LLMLogger:
     """Get the global logger instance"""
     global _logger_instance
+    
+    # Import enhanced logger for detailed verbose logging
+    try:
+        from .llm_logger_enhanced import get_enhanced_logger
+        if verbose:
+            # Use enhanced logger for verbose mode with colors and detailed formatting
+            return get_enhanced_logger(verbose=verbose, custom_log_file=custom_log_file)
+    except ImportError:
+        pass
+    
+    # Fallback to original logger
     if (_logger_instance is None or 
         _logger_instance.verbose != verbose or 
         _logger_instance.custom_log_file != custom_log_file):
