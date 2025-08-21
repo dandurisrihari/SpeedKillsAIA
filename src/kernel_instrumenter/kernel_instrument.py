@@ -392,9 +392,211 @@ class KernelInstrumenter:
             'files_processed': self.stats['files_processed'],
             'files_modified': self.stats['files_modified'],
             'total_instrumentations': self.stats['total_instrumentations'],
+            'instrumentations_by_type': self.stats['instrumentations_by_type'],
             'results': results,
             'errors': errors
         }
+
+    def generate_summary_stats(self, directory: Union[str, Path], results: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Generate comprehensive statistics summary
+        
+        Args:
+            directory: The directory that was processed
+            results: List of file processing results
+            
+        Returns:
+            Dictionary containing detailed statistics
+        """
+        # Convert to Path object if string
+        if isinstance(directory, str):
+            directory = Path(directory)
+        
+        # Count total source code functions by analyzing each file
+        total_functions_in_source = 0
+        source_files_analyzed = 0
+        total_source_files = 0
+        
+        # Count all C files in directory
+        all_c_files = list(directory.rglob('*.c'))
+        total_source_files = len(all_c_files)
+        
+        # Analyze functions in processed files
+        for result_entry in results:
+            if result_entry['result']['success']:
+                source_files_analyzed += 1
+                file_path = result_entry['file']
+                try:
+                    # Read the file and count functions using our parser
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        source_code = f.read()
+                    
+                    # Count functions by traversing the AST
+                    tree = self.parser.parse(source_code)
+                    
+                    def count_functions(node):
+                        """Recursively count function definitions"""
+                        count = 0
+                        if node.type == 'function_definition':
+                            count = 1
+                        for child in node.children:
+                            count += count_functions(child)
+                        return count
+                    
+                    function_count = count_functions(tree.root_node)
+                    total_functions_in_source += function_count
+                    
+                except Exception as e:
+                    # If we can't analyze a file, skip it for function counting
+                    if self.verbose:
+                        print(f"Warning: Could not count functions in {file_path}: {e}")
+        
+        # Calculate instrumentation efficiency
+        instrumentation_rate = {}
+        for inst_type, count in self.stats['instrumentations_by_type'].items():
+            if inst_type == 'functions' or inst_type == 'dma_present_files_functions':
+                # For function-based instrumentation, compare to total functions
+                if total_functions_in_source > 0:
+                    instrumentation_rate[inst_type] = (count / total_functions_in_source) * 100
+                else:
+                    instrumentation_rate[inst_type] = 0
+            else:
+                # For API-based instrumentation (dma, user_copy, ioctl), just show count
+                instrumentation_rate[inst_type] = count
+        
+        # Categorize files by modification status
+        files_with_instrumentations = sum(1 for r in results if r['result'].get('modified', False))
+        files_without_instrumentations = self.stats['files_processed'] - files_with_instrumentations
+        files_with_errors = sum(1 for r in results if not r['result']['success'])
+        files_skipped = total_source_files - self.stats['files_processed']
+        
+        return {
+            'processing_summary': {
+                'total_source_files_in_directory': total_source_files,
+                'files_processed': self.stats['files_processed'],
+                'files_skipped': files_skipped,
+                'files_successfully_analyzed': source_files_analyzed,
+                'files_with_errors': files_with_errors
+            },
+            'instrumentation_summary': {
+                'files_modified': files_with_instrumentations,
+                'files_without_instrumentations': files_without_instrumentations,
+                'total_instrumentations_added': self.stats['total_instrumentations'],
+                'dry_run_mode': self.dry_run
+            },
+            'function_analysis': {
+                'total_functions_in_source_code': total_functions_in_source,
+                'functions_instrumented': self.stats['instrumentations_by_type'].get('functions', 0) + 
+                                        self.stats['instrumentations_by_type'].get('dma_present_files_functions', 0),
+                'function_instrumentation_rate_percent': instrumentation_rate.get('functions', 0) + 
+                                                       instrumentation_rate.get('dma_present_files_functions', 0)
+            },
+            'instrumentation_by_type': self.stats['instrumentations_by_type'],
+            'instrumentation_rates': instrumentation_rate,
+            'enabled_types': list(self.enabled_types),
+            'directory_processed': str(directory),
+            'configuration': {
+                'dry_run': self.dry_run,
+                'verbose': self.verbose,
+                'enabled_instrumentation_types': list(self.enabled_types)
+            }
+        }
+
+    def save_summary_to_file(self, summary_stats: Dict[str, Any], filename: str) -> None:
+        """
+        Save detailed statistics summary to a text file
+        
+        Args:
+            summary_stats: Statistics dictionary from generate_summary_stats
+            filename: Output filename for the summary
+        """
+        import datetime
+        
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write("="*70 + "\n")
+            f.write("             KERNEL INSTRUMENTATION SUMMARY REPORT\n")
+            f.write("="*70 + "\n")
+            f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"Directory processed: {summary_stats['directory_processed']}\n")
+            f.write(f"Mode: {'DRY RUN' if summary_stats['configuration']['dry_run'] else 'LIVE INSTRUMENTATION'}\n")
+            f.write("-"*70 + "\n\n")
+            
+            # Processing Overview
+            f.write("📁 FILE PROCESSING OVERVIEW\n")
+            f.write("-"*30 + "\n")
+            proc = summary_stats['processing_summary']
+            f.write(f"Total C files in directory:     {proc['total_source_files_in_directory']}\n")
+            f.write(f"Files processed:                {proc['files_processed']}\n")
+            f.write(f"Files skipped:                  {proc['files_skipped']}\n")
+            f.write(f"Files successfully analyzed:    {proc['files_successfully_analyzed']}\n")
+            f.write(f"Files with errors:              {proc['files_with_errors']}\n")
+            
+            # Processing rate
+            if proc['total_source_files_in_directory'] > 0:
+                processing_rate = (proc['files_processed'] / proc['total_source_files_in_directory']) * 100
+                f.write(f"Processing coverage:            {processing_rate:.1f}%\n")
+            f.write("\n")
+            
+            # Instrumentation Overview
+            f.write("🔧 INSTRUMENTATION OVERVIEW\n")
+            f.write("-"*30 + "\n")
+            inst = summary_stats['instrumentation_summary']
+            f.write(f"Files modified:                 {inst['files_modified']}\n")
+            f.write(f"Files without instrumentations: {inst['files_without_instrumentations']}\n")
+            f.write(f"Total instrumentations added:   {inst['total_instrumentations_added']}\n")
+            f.write(f"Dry run mode:                   {'Yes' if inst['dry_run_mode'] else 'No'}\n")
+            
+            # Modification rate
+            if proc['files_processed'] > 0:
+                modification_rate = (inst['files_modified'] / proc['files_processed']) * 100
+                f.write(f"File modification rate:         {modification_rate:.1f}%\n")
+            f.write("\n")
+            
+            # Function Analysis
+            f.write("⚙️  FUNCTION ANALYSIS\n")
+            f.write("-"*30 + "\n")
+            func = summary_stats['function_analysis']
+            f.write(f"Total functions in source code: {func['total_functions_in_source_code']}\n")
+            f.write(f"Functions instrumented:         {func['functions_instrumented']}\n")
+            if func['total_functions_in_source_code'] > 0:
+                f.write(f"Function instrumentation rate:  {func['function_instrumentation_rate_percent']:.1f}%\n")
+            f.write("\n")
+            
+            # Instrumentation by Type
+            f.write("📊 INSTRUMENTATION BREAKDOWN BY TYPE\n")
+            f.write("-"*40 + "\n")
+            for inst_type, count in summary_stats['instrumentation_by_type'].items():
+                type_name = inst_type.replace('_', ' ').title()
+                f.write(f"{type_name:<30} {count:>8}\n")
+            f.write("\n")
+            
+            # Configuration Details
+            f.write("⚙️  CONFIGURATION DETAILS\n")
+            f.write("-"*30 + "\n")
+            config = summary_stats['configuration']
+            f.write(f"Enabled instrumentation types:\n")
+            for inst_type in config['enabled_instrumentation_types']:
+                type_desc = {
+                    'dma': 'DMA API calls (dma_alloc_*, dma_free_*, etc.)',
+                    'user_copy': 'User space copy operations (copy_to_user, copy_from_user)',
+                    'functions': 'All function entry points',
+                    'dma_present_files_functions': 'Function entries in DMA-containing files',
+                    'ioctl': 'IOCTL handler functions'
+                }.get(inst_type, inst_type)
+                f.write(f"  • {inst_type}: {type_desc}\n")
+            f.write(f"\nVerbose mode: {'Enabled' if config['verbose'] else 'Disabled'}\n")
+            f.write(f"Dry run mode: {'Enabled' if config['dry_run'] else 'Disabled'}\n")
+            f.write("\n")
+            
+            # Summary footer
+            f.write("="*70 + "\n")
+            if inst['total_instrumentations_added'] > 0:
+                f.write("✅ SUCCESS: Instrumentation completed with modifications\n")
+            else:
+                f.write("ℹ️  INFO: No instrumentations were needed or added\n")
+            if proc['files_with_errors'] > 0:
+                f.write(f"⚠️  WARNING: {proc['files_with_errors']} files had processing errors\n")
+            f.write("="*70 + "\n")
 
     def instrument_code(self, source_code: str, instrumentation_type: str) -> str:
         """
@@ -498,6 +700,15 @@ def main():
         help='Limit processing to first N files (for testing)'
     )
     
+    parser.add_argument(
+        '--summary',
+        nargs='?',
+        const='summary.txt',
+        default=None,
+        metavar='FILE',
+        help='Generate detailed statistics summary and save to file (default: summary.txt if no filename specified)'
+    )
+    
     args = parser.parse_args()
     
     # Determine enabled types
@@ -519,6 +730,18 @@ def main():
             directory=args.directory,
             file_limit=args.test_limit
         )
+        
+        # Generate and save summary if requested
+        if args.summary:
+            try:
+                summary_stats = instrumenter.generate_summary_stats(
+                    directory=args.directory,
+                    results=result.get('results', [])
+                )
+                instrumenter.save_summary_to_file(summary_stats, args.summary)
+                print(f"📊 Detailed summary saved to: {args.summary}")
+            except Exception as e:
+                print(f"⚠️  Warning: Could not save summary file: {e}")
         
         if result['success']:
             print("\n✅ Instrumentation completed successfully!")
