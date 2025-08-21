@@ -221,7 +221,7 @@ Reasoning:
         system_prompt = client._get_system_prompt()
         
         assert "You have access to tools" not in system_prompt
-        assert system_prompt.startswith("You are an expert Linux Kernel Driver developer specializing in AI Accelerator integration.")
+        assert system_prompt.startswith("You are an expert Linux Kernel Driver developer and also have security specializiation in AI Accelerator integration.")
         assert "analyze_struct_definition" not in system_prompt
     
     @patch('src.llm_analysis.openai_client.openai.OpenAI')

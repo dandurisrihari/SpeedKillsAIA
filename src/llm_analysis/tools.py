@@ -22,8 +22,9 @@ class ToolCallResult:
 class StructAnalyzerTool:
     """Tool for analyzing C structures using the structanalyzer module"""
     
-    def __init__(self, verbose: bool = False):
+    def __init__(self, verbose: bool = False, default_depth: int = 5):
         self.verbose = verbose
+        self.default_depth = default_depth
         self.tool_definition = {
             "type": "function",
             "function": {
@@ -35,6 +36,11 @@ class StructAnalyzerTool:
                         "struct_name": {
                             "type": "string",
                             "description": "Name of the structure/union/enum to analyze (e.g., 'gcsHAL_INTERFACE', 'gasket_dev'). REQUIRED."
+                        },
+                        "depth": {
+                            "type": "integer",
+                            "description": f"Maximum depth to traverse nested structures. Use 0 for UNLIMITED depth (shows ALL nested structures completely), 1 for immediate fields only, 2-10 for specific nesting levels. Default: {self.default_depth} (good balance). For SMID analysis, prefer depth=0 or higher values to see all nested address/handle fields.",
+                            "default": self.default_depth
                         }
                     },
                     "required": ["struct_name"]
@@ -58,7 +64,7 @@ class StructAnalyzerTool:
             
             # Extract parameters - file_path comes from the context set by ToolManager
             struct_name = arguments.get("struct_name")
-            depth = arguments.get("depth", 1)  # Use provided depth or default to 1
+            depth = arguments.get("depth", 5)  # Use provided depth or default to 5 (ToolManager should have set this)
             
             # Validate struct_name is provided
             if not struct_name:
@@ -254,33 +260,12 @@ class ToolManager:
     
     def _register_tools(self):
         """Register all available tools"""
-        self.tools["analyze_struct_definition"] = StructAnalyzerTool(verbose=self.verbose)
+        self.tools["analyze_struct_definition"] = StructAnalyzerTool(verbose=self.verbose, default_depth=self.default_depth)
     
     def get_tool_definitions(self) -> List[Dict[str, Any]]:
         """Get OpenAI-compatible tool definitions"""
         return [
-            {
-                "type": "function",
-                "function": {
-                    "name": "analyze_struct_definition",
-                    "description": f"Analyze C struct/union/enum/typedef definitions from preprocessed files. Default depth is {self.default_depth}.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "struct_name": {
-                                "type": "string",
-                                "description": "The name of the struct/union/enum/typedef to analyze (REQUIRED)"
-                            },
-                            "depth": {
-                                "type": "integer",
-                                "description": f"Maximum depth to traverse nested structures (default: {self.default_depth})",
-                                "default": self.default_depth
-                            }
-                        },
-                        "required": ["struct_name"]
-                    }
-                }
-            }
+            self.tools["analyze_struct_definition"].get_tool_definition()
         ]
     
     def call_tool(self, function_name: str, arguments: Dict[str, Any]) -> ToolCallResult:
