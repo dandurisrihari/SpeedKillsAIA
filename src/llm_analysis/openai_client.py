@@ -136,9 +136,9 @@ class OpenAIClient:
 
 1. AIARelevantFunction: The given function or code block is involved in sharing shared memory (SMem) with an AI Accelerator (AIA). Such functions often: Pin user pages to memory (get_user_pages, pin_user_pages), Iterate over scatter gather userpages, Obtain physical or DMA addresses of user pages. Program these addresses into: AIA device page tables (for memory mapping inside the AIA), AIA MMIO (Memory Mapped I/O) registers to notify AIA of accessible memory, Manage DMA buffers for communication between CPU and AIA. These functions are typically critical for giving the AIA access to host memory regions. 
 
-2. Relevant KD Entry Point: The code block represents an entry point from user space to kernel, commonly through ioctl() functions. These:Act as dispatch points in a switch-case or if/else over ioctl codes, Handle user commands and trigger deeper kernel logic leading to AIARelevantFunction Identify which ioctl code is being handled (e.g., IOCTL_AIA_ALLOC_SMEM, IOCTL_AIA_SEND_MSG). You need to include this ioctl command code in your reasoning. Basically this is entry point which leads to AIARelevantFunction execution.
+2. Relevant KD Entry Point: The code block represents an entry point from user space to kernel, commonly through ioctl() functions. These:Act as dispatch points in a switch-case or if/else over ioctl codes, Handle user commands and trigger deeper kernel logic leading to execution of AIARelevantFunction. Identify which ioctl code is being handled (e.g., IOCTL_AIA_ALLOC_MEM, IOCTL_AIA_GET_PHYSICAL_ADDRESS, IOCTL_AIA_COPY_MEM, IOCTL_AIA_USER_SHARED_MEM). You need to include this ioctl command code in your reasoning. Basically this is entry point which leads to AIARelevantFunction execution.
 
-3. Message Structure Handling: The code block handles message structures exchanged between user space and kernel, These contain copy_from_user() / copy_to_user() calls and passes structures involving Shared Memory Identifiers (SMIDs). SMID (Shared Memory Identifier) are a way of kernel letting userspace know it's user virtual address pages are accessed by AIA using this SMID These are usually part of the structure that is passed in copy_from_user() / copy_to_user(). In your reasoning you need to mention what structs are used as arguments in copy_from_user() / copy_to_user() calls, analyze the feilds in the structures that qualify under SMID's. Some examples of SMID (shared memory identifier) are: Device virtual address, physical address, DMA address, AIA virtualaddresses, file descriptors(fd). Metadata like Memory size, flags, or similar ranges, helps you to identify the structure of interest. You need to identify SMID's and also message structure. Its ok if there are false positives, try to be more inclusive in your analysis for both Message_Structures and SMID's identification.
+3. Message Structure Handling: The code block handles message structures exchanged between user space and kernel, These contain copy_from_user() / copy_to_user() calls and passes structures involving Shared Memory Identifiers (SMIDs). SMID (Shared Memory Identifier) are a way of kernel letting userspace know it's user virtual address pages are accessed by AIA using this SMID These are usually part of the structure that is passed in copy_from_user() / copy_to_user(). In your reasoning you need to mention what structs are used as arguments in copy_from_user() / copy_to_user() calls, analyze the feilds in the structures that qualify under SMID's. Some examples of SMID (shared memory identifier) are: Device virtual address, physical address, DMA address, AIA virtualaddresses, file descriptors(fd). Metadata like Memory size, flags, or similar ranges, helps you to identify the structure of interest. While Metadata are not SMID's they help you to identify Message_Structures. You need to identify SMID's and also message structure. Its ok if there are few false positives, try to be reasonably inclusive in your analysis for both Message_Structures and SMID's identification.
 
 Please respond in EXACTLY this format:
 Function/Code_Block_Name: <function_name_or_description>
@@ -151,8 +151,8 @@ Message_Structure_Handling: <0–100>
 Reasoning:
 - Describe the rationale behind each confidence score
 - Reference specific APIs used (e.g., get_user_pages, dma_map_page, copy_from_user)
-- Mention any relevant ioctl code, e.g., IOCTL_AIA_ALLOC_SMEM
-- Mention any relevant message structures and its fields (e.g., smid, phys_addr) Which can be potential SMID's"""
+- Mention any relevant ioctl code, e.g., IOCTL_AIA_ALLOC_SMEM, IOCTL_AIA_GET_PHYSICAL_ADDRESS, IOCTL_AIA_COPY_MEM, IOCTL_AIA_USER_SHARED_MEM etc
+- Mention any relevant message structures and its fields (e.g., struct memory_descriptor, dev address, phys_addr) Which can be potential SMID's"""
 
     def _create_user_message(self, function_code: str) -> str:
         """Create the user message with function code to analyze"""
@@ -163,7 +163,7 @@ Reasoning:
     
     def _get_system_prompt(self) -> str:
         """Get the system prompt with tool information and analysis instructions"""
-        base_prompt = "You are an expert Linux Kernel Driver developer specializing in AI Accelerator integration."
+        base_prompt = "You are an expert Linux Kernel Driver developer and also have security specializiation in AI Accelerator integration."
         
         # Add analysis instructions
         analysis_instructions = self._get_analysis_instructions()
@@ -176,8 +176,12 @@ You have access to tools that can help you analyze code more effectively:
 1. analyze_struct_definition: Use this tool to analyze struct/union/enum/typedef types encountered in the code.
 
 IMPORTANT ANALYSIS WORKFLOW:
-- **PROACTIVELY REQUEST STRUCTURE DEFINITIONS**: For EVERY struct, union, enum, or typedef you encounter in the function code, you MUST call analyze_struct_definition to get its full definition.
-- **DEFAULT DEPTH**: Always use depth={self.default_struct_depth} unless you have a specific reason to use a different depth.
+- **PROACTIVELY REQUEST STRUCTURE DEFINITIONS**: For EVERY struct, union, enum, or typedef you encounter in the function code, if you think you need its definition, you MUST call analyze_struct_definition to get its full definition.
+- **DEPTH STRATEGY**: 
+  * Use depth={self.default_struct_depth} as default (good balance of detail vs. readability and context size)
+  * Use depth=0 for CRITICAL structures when you need COMPLETE nested definitions of all fields till basic primitive types (int char etc.)
+  * Use depth=1-2 for simple structures or when you only need immediate fields
+  * For SMID analysis, prefer higher depth (0 or {self.default_struct_depth}) to see all nested address/handle fields
 - **COMPREHENSIVE ANALYSIS**: Before providing your analysis scores, ensure you have requested definitions for ALL structures mentioned in:
   - Function parameters
   - Local variables
@@ -187,9 +191,16 @@ IMPORTANT ANALYSIS WORKFLOW:
   - Cast operations
 
 TOOL USAGE EXAMPLES:
-- {{"struct_name": "gcsHAL_INTERFACE", "depth": {self.default_struct_depth}}} - Analyze with default depth
-- {{"struct_name": "gasket_dev", "depth": {self.default_struct_depth}}} - Get full structure definition
-- {{"struct_name": "dma_buf", "depth": {self.default_struct_depth}}} - Analyze DMA buffer structures
+- {{"struct_name": "gcsHAL_INTERFACE", "depth": {self.default_struct_depth}}} - Analyze with default depth ({self.default_struct_depth} levels)
+- {{"struct_name": "gasket_dev", "depth": 0}} - Get COMPLETE structure definition (depth=0 means unlimited, shows ALL nested structures)
+- {{"struct_name": "dma_buf", "depth": 3}} - Analyze with specific depth (3 levels of nested structures)
+- {{"struct_name": "user_buffer", "depth": 1}} - Shallow analysis (only immediate fields, no nested expansion)
+
+DEPTH PARAMETER EXPLANATION:
+- depth=0: UNLIMITED depth - expands ALL nested structures completely (use for comprehensive analysis)
+- depth=1: Only immediate fields (no nested struct expansion)
+- depth=2-5: Specific levels of nesting (depth=5 is default, good balance)
+- Higher depth values show more nested structure details but may be verbose
 
 ANALYSIS APPROACH:
 1. First pass: Identify ALL structures, unions, enums, and typedefs in the code
@@ -581,33 +592,3 @@ ANALYSIS REQUIREMENTS:
         
         elapsed_time = time.time() - start_time
         self.logger.log_analysis_complete(result.function_name, elapsed_time)
-    
-    def _get_system_prompt(self) -> str:
-        """Get the system prompt with tool information and analysis instructions"""
-        base_prompt = "You are an expert Linux Kernel Driver developer specializing in AI Accelerator integration."
-        
-        # Add analysis instructions
-        analysis_instructions = self._get_analysis_instructions()
-        
-        if self.enable_tools and self.tool_manager:
-            tool_prompt = """
-
-You have access to tools that can help you analyze code more effectively:
-
-1. analyze_struct_definition: Use this tool when you encounter struct/union/enum/typedef types that you need to understand better. 
-you can use this tool while analyzing AIARelevantFunction, Relevant KD Entry Point, Message Structure Handling: (SMID's and relevant structure identification). Use it generously.
-
-IMPORTANT: You MUST provide struct_name when calling this tool.
-
-Usage examples:
-- {"struct_name": "gcsHAL_INTERFACE"} - Analyze a specific structure
-- {"struct_name": "gasket_dev"} - Analyze with limited depth for focus
-
-Required parameters:
-- struct_name: The name of the structure you want to analyze (REQUIRED)
-
-This is especially useful when you see struct types like gcsHAL_INTERFACE, gasket_dev, etc. and need to understand their fields for better SMID identification and message structure analysis."""
-            
-            return f"{base_prompt}\n\n{analysis_instructions}{tool_prompt}"
-        
-        return f"{base_prompt}\n\n{analysis_instructions}"
