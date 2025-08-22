@@ -6,24 +6,28 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction Score (0%)**: The function `gasket_init` does not perform
-    any operations related to shared memory (SMem) sharing with an AI Accelerator
-    (AIA). It mainly initializes mutexes and sets up driver descriptors, which are
-    not related to memory management or DMA operations.'
+  - '**AIARelevantFunction Score (0%)**: The `gasket_init` function does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    initializes mutexes and sets up driver descriptors, which are not directly related
+    to memory management or DMA operations that would typically be associated with
+    AIA interactions.'
   - '**Relevant KD Entry Point Score (0%)**: This function does not serve as an entry
-    point from user space to the kernel, nor does it handle any ioctl command. It''s
-    a kernel initialization function, which typically runs during module loading rather
-    than responding to user commands.'
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a kernel initialization function that
+    runs during the module''s loading phase, which does not interact with user space.'
   - '**Message Structure Handling Score (0%)**: There are no message structures being
-    handled in this code. There are no `copy_from_user()` or `copy_to_user()` calls,
-    nor any structures involving Shared Memory Identifiers (SMIDs). The function focuses
-    solely on initializing internal data structures.'
-  - '**Message Structures identified**: None identified as the function does not manage
-    any message structures.'
-  - '**SMID''s identified**: None identified as there are no references to shared
-    memory identifiers or related structures in the function. Overall, the `gasket_init`
-    function is primarily concerned with initializing the driver framework and does
-    not interact with an AI Accelerator or manage shared memory in any way.'
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). The operations performed are purely internal to the
+    kernel module.'
+  - '**Message Structures identified**: None identified. There are no structures being
+    passed or manipulated that would qualify as message structures in the context
+    of shared memory or AIA interactions.'
+  - '**SMID''s identified**: None identified. Since there are no relevant structures
+    or memory management operations, there are no shared memory identifiers present
+    in this function. Overall, the `gasket_init` function is focused on initializing
+    internal data structures and does not engage in any operations that would be relevant
+    to AIA memory sharing, user space interactions, or message structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_register_device
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -31,30 +35,30 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction Score (0%)**: The function `gasket_register_device` does
-    not involve any operations related to shared memory management or direct interaction
-    with an AI Accelerator (AIA). It primarily focuses on registering a device driver,
-    checking for duplicates, and managing device classes and character device regions.
-    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
-    DMA-related operations that would typically be associated with AIA integration.'
-  - '**Relevant_KD_Entry_Point Score (0%)**: This function does not serve as an entry
-    point for user space interactions through ioctl commands. It is a part of the
-    driver initialization process and does not handle any user commands or ioctl codes
-    that would lead to deeper kernel logic related to AIA operations.'
-  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
-    handled in this function. The function does not utilize `copy_from_user()` or
-    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
-    Memory Identifiers (SMIDs). The focus is on internal driver management rather
-    than communication with user space or handling shared memory.'
-  - '**Message Structures identified**: None identified. The function does not define
-    or manipulate any message structures that would be relevant for AIA operations.'
-  - '**SMID''s identified**: None identified. There are no fields in the function
-    that correspond to shared memory identifiers or any relevant memory management
-    patterns that would indicate interaction with shared memory for an AIA. In summary,
-    the `gasket_register_device` function is primarily concerned with driver registration
-    and does not engage in any operations that would be relevant to shared memory
-    management or AI Accelerator integration. Therefore, all confidence scores are
-    assigned as 0%.'
+  - '**AIARelevantFunction Score (0)**: The function `gasket_register_device` does
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on registering a device driver, checking for duplicates,
+    and managing driver descriptors. There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any DMA-related operations that would typically be associated
+    with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space, such as through `ioctl()` calls. It is
+    a part of the driver initialization process and does not handle any user commands
+    or ioctl codes. Therefore, it does not qualify as a relevant kernel driver entry
+    point.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the code, nor are there any structures that
+    would typically be involved in such operations. The function is focused on internal
+    driver management rather than communication with user space.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    (SMIDs) present in the function, as it does not deal with memory management or
+    shared memory operations. In summary, the function `gasket_register_device` is
+    primarily concerned with registering a device driver and does not engage in any
+    operations relevant to AI Accelerator integration, user space communication, or
+    shared memory management. Therefore, all confidence scores are assigned as zero.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_pci_add_device
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -63,27 +67,29 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0)**: The function `gasket_pci_add_device` does
-    not directly interact with shared memory or AI Accelerator (AIA) functionalities.
-    It primarily focuses on adding a PCI device and setting up its associated structures.
-    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
-    DMA-related operations that would typically be associated with AIA memory management.'
-  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
-    point from user space to kernel space. It is a helper function that is likely
-    called from another part of the driver code, but there are no `ioctl()` or similar
-    user-space interaction mechanisms present in this function. Therefore, it does
-    not handle any user commands or ioctl codes.'
-  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
-    structures exchanged between user space and kernel space. There are no `copy_from_user()`
-    or `copy_to_user()` calls, nor any structures that would qualify as message structures
-    or contain Shared Memory Identifiers (SMIDs). The function is focused on device
-    initialization and does not involve communication with user space.'
-  - '**Message Structures identified**: None identified. The function does not define
-    or manipulate any structures that would be used for message passing.'
-  - '**SMID''s identified**: None identified. There are no fields or structures that
-    represent shared memory identifiers or similar constructs. In summary, the `gasket_pci_add_device`
-    function is primarily concerned with the initialization and setup of a PCI device
-    and does not engage in any operations related to shared memory management or user-space
-    communication, which are critical for AIA integration.'
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on adding a PCI device, setting up device structures, and
+    creating sysfs links. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any DMA-related operations that would typically be associated with AIA memory
+    management.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an `ioctl()` function.
+    It is a standard device initialization function that is called during the PCI
+    device setup process, which does not involve handling user commands or ioctl codes.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
+    Memory Identifiers (SMIDs). The focus is on internal device management rather
+    than communication with user space.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any user-defined message structures or data that would typically be exchanged
+    between user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that correspond to SMIDs, which are typically used for identifying
+    shared memory regions accessible by an AIA. In summary, the function `gasket_pci_add_device`
+    is focused on PCI device management and does not engage in any operations related
+    to AI Accelerator integration, user space communication, or shared memory management.
+    Therefore, all confidence scores are assigned as zero.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:lookup_pci_internal_desc
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -92,30 +98,28 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0)**: The function `lookup_pci_internal_desc` does
-    not interact with shared memory or AI Accelerator (AIA) functionalities. It primarily
-    focuses on looking up a PCI device descriptor based on the provided `pci_dev`
-    structure. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
-    or any memory management functions that would typically be associated with AIA
-    integration.'
-  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    not interact with any AI Accelerator (AIA) relevant operations. It is primarily
+    focused on looking up a PCI device descriptor based on the provided `pci_dev`
+    structure. There are no indications of memory management, DMA operations, or any
+    interactions with shared memory that would be relevant to AIA operations.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not serve as an entry
     point from user space to kernel space. It does not handle any ioctl commands or
-    user commands that would trigger deeper kernel logic leading to AIA-related functions.
-    The function is purely a lookup function and does not facilitate communication
-    between user space and kernel space.'
-  - '**Message_Structure_Handling Score (0)**: There are no message structures being
-    handled in this function. It does not utilize `copy_from_user()` or `copy_to_user()`
-    calls, nor does it pass any structures that would involve Shared Memory Identifiers
-    (SMIDs). The function is focused on retrieving a descriptor from an internal array
-    based on a PCI device match.'
+    user commands that would typically trigger deeper kernel logic leading to AIA
+    relevant functions. The function is purely a lookup function and does not involve
+    any user interaction.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). The function simply iterates over an array of `gasket_internal_desc`
+    structures to find a matching PCI device descriptor.'
   - '**Message Structures identified**: None identified. The function does not deal
-    with any message structures that would typically be exchanged between user space
-    and kernel space.'
-  - '**SMID''s identified**: None identified. There are no fields or structures in
-    this function that correspond to SMIDs, as it does not involve any memory management
-    or shared memory identifiers. In summary, the function `lookup_pci_internal_desc`
-    is a straightforward lookup function that does not engage with AIA functionalities,
-    user space interactions, or message structures, leading to a score of 0 across
-    all categories.'
+    with any structures that would be exchanged between user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    involved that qualify as shared memory identifiers, as the function does not interact
+    with shared memory or memory mapping relevant to AIA. In summary, the function
+    `lookup_pci_internal_desc` is a straightforward lookup function for PCI device
+    descriptors and does not engage in any operations relevant to AI Accelerator integration,
+    user-space interactions, or message structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_alloc_dev
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -124,28 +128,29 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0%)**: The function `gasket_alloc_dev` does not
-    directly involve any operations related to shared memory (SMem) management or
-    interactions with an AI Accelerator (AIA). It primarily focuses on allocating
-    and initializing a Gasket device structure (`gasket_dev`). There are no calls
-    to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related operations
-    that would typically be associated with AIA memory management.'
-  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
-    point from user space to kernel space, as it does not handle any ioctl commands
-    or user commands. It is a helper function that is likely called from other parts
-    of the driver code but does not itself process any user commands or ioctl codes.'
-  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
-    handled in this function. The function does not utilize `copy_from_user()` or
-    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
-    Memory Identifiers (SMIDs). The focus is on device allocation and initialization
-    rather than message exchange between user space and kernel space.'
-  - '**Message Structures identified**: None identified. The function does not interact
-    with any message structures that would typically be exchanged with user space.'
-  - '**SMID''s identified**: None identified. There are no fields or structures in
-    this function that correspond to SMIDs, which are typically used to identify shared
-    memory regions or descriptors. Overall, the function `gasket_alloc_dev` is primarily
-    concerned with device management and does not engage in any operations relevant
-    to shared memory management or communication with an AI Accelerator, leading to
-    low confidence scores across all categories.'
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on allocating and initializing a Gasket device structure,
+    which does not include pinning user pages, obtaining physical addresses, or managing
+    DMA buffers. Therefore, it does not meet the criteria for AIA relevant functions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. There are no
+    ioctl codes being processed or dispatched within this function. It is a standard
+    device allocation function and does not interact with user commands or trigger
+    deeper kernel logic related to AIA.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that involve Shared
+    Memory Identifiers (SMIDs). The function is focused on device allocation and initialization,
+    which does not involve message handling.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would typically be exchanged between user
+    space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    used within this function that qualify as SMIDs, as the function does not deal
+    with shared memory identifiers or any related memory management patterns. In summary,
+    the `gasket_alloc_dev` function is primarily concerned with device allocation
+    and initialization, lacking any direct relevance to AIA operations, kernel entry
+    points, or message structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_find_dev_slot
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -154,26 +159,28 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0)**: The function `gasket_find_dev_slot` does not
-    interact with any AI Accelerator (AIA) relevant operations such as memory management,
-    DMA, or shared memory handling. It primarily focuses on finding a device slot
-    within the `gasket_internal_desc` structure, which is not directly related to
-    AIA functionalities.'
-  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
-    point for user space interactions, such as through ioctl commands. It is a utility
-    function that operates internally within the driver to manage device slots, thus
-    it does not handle any user commands or ioctl codes.'
-  - '**Message_Structure_Handling Score (0)**: There are no message structures being
-    handled in this function. It does not involve any `copy_from_user()` or `copy_to_user()`
-    calls, nor does it manipulate any structures that would qualify as message structures
-    exchanged between user space and kernel space.'
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on finding a device slot within the `gasket_internal_desc`
+    structure and does not perform any actions such as pinning user pages, obtaining
+    physical addresses, or managing DMA buffers, which are typical characteristics
+    of AIA relevant functions.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a utility function that operates on
+    the internal state of the driver and does not interact with user space directly.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it deal with any structures that would
+    qualify as message structures or contain Shared Memory Identifiers (SMIDs). The
+    function is purely focused on internal device management.'
   - '**Message Structures identified**: None identified. The function does not utilize
-    any structures that would be exchanged with user space or that contain shared
-    memory identifiers.'
-  - '**SMID''s identified**: None identified. The function does not deal with any
-    identifiers or addresses that would be relevant for shared memory or DMA operations.
-    In summary, the function `gasket_find_dev_slot` is focused on managing device
-    slots within the driver and does not engage in any operations that would be relevant
-    to AI Accelerator integration, user space interactions, or message structure handling.'
+    any specific message structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers in
+    the function that would qualify as Shared Memory Identifiers (SMIDs) related to
+    memory management or device communication. In summary, the function `gasket_find_dev_slot`
+    is focused on managing device slots within the driver and does not engage in any
+    operations relevant to AI Accelerator integration, user space interactions, or
+    message structure handling. Therefore, all confidence scores are assigned as 0%.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_setup_pci
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -181,20 +188,31 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - The function `gasket_setup_pci` is primarily concerned with setting up PCI devices
-    and mapping PCI Base Address Registers (BARs). It does not involve any operations
-    that pertain to shared memory management, user page pinning, or DMA address management,
-    which are typically associated with AI Accelerator integration. Therefore, the
-    confidence score for AIARelevantFunction is 0%.
-  - There is no indication that this function serves as an entry point from user space
-    to the kernel. It does not handle any ioctl commands or dispatch user commands.
-    Consequently, the confidence score for Relevant_KD_Entry_Point is also 0%.
-  - The function does not deal with message structures exchanged between user space
-    and the kernel, nor does it involve `copy_from_user()` or `copy_to_user()` calls,
-    which are crucial for identifying message structure handling. As a result, the
-    score for Message_Structure_Handling is 0%.
-  - Given these points, there are no identified message structures or SMIDs relevant
-    to shared memory identifiers.
+  - '**AIARelevantFunction Score (0)**: The function `gasket_setup_pci` does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    focuses on setting up PCI device mappings and does not include any memory management
+    patterns that would be relevant for AIA integration, such as pinning user pages,
+    obtaining physical addresses, or programming DMA buffers.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a setup function that is likely called
+    during the initialization phase of a PCI device, rather than being invoked directly
+    by user space applications.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The function is focused on mapping PCI bars and does
+    not interact with user space data structures.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that qualify as SMIDs, as it does not deal with shared memory identifiers
+    or any relevant memory management operations. In summary, the `gasket_setup_pci`
+    function is primarily concerned with PCI device setup and does not engage in any
+    operations that would be relevant for AIA integration, user space interaction,
+    or message structure handling. Therefore, all confidence scores are assigned as
+    0%.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_map_pci_bar
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -202,23 +220,29 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction**: The function `gasket_map_pci_bar` does not engage in
-    activities relevant to sharing memory with an AI Accelerator. It primarily deals
-    with mapping a PCI BAR (Base Address Register) and does not involve pinning user
-    pages, managing DMA buffers, or programming AIA MMIO registers, which are key
-    characteristics of AIA relevant functions. Thus, the confidence score is 0%.'
-  - '**Relevant KD Entry Point**: This function does not appear to be an entry point
-    from user space to kernel space, as it does not handle any `ioctl()` commands
-    or operate as a dispatching function for user commands. It is a helper function
-    for PCI device management, and therefore, the confidence score is 0%.'
-  - '**Message Structure Handling**: The function does not handle any message structures
-    exchanged between user space and kernel space. It does not utilize `copy_from_user()`
-    or `copy_to_user()` functions, nor does it involve any structures that could contain
-    Shared Memory Identifiers (SMIDs). As such, no relevant structures or SMIDs are
-    identified, leading to a confidence score of 0%. In summary, the function focuses
-    on PCI device management without interacting with AI Accelerator functionalities,
-    user-space commands, or shared memory structures. Therefore, all confidence scores
-    are 0%.'
+  - '**AIARelevantFunction Score (0)**: The function `gasket_map_pci_bar` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily deals with mapping PCI BARs (Base Address Registers) and does not
+    include any functions like `get_user_pages`, `pin_user_pages`, or any DMA buffer
+    management that would be relevant for AIA memory access. Therefore, the confidence
+    score is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space. There are no ioctl commands being handled
+    within this function, nor does it serve as a dispatch point for user commands.
+    The function is more focused on hardware resource management rather than user-space
+    interaction, leading to a score of 0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would typically
+    be involved in such operations. Consequently, the score is 0%.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any user-defined message structures.'
+  - '**SMID''s identified**: None identified. The function does not utilize any shared
+    memory identifiers (SMIDs) such as device virtual addresses, physical addresses,
+    or DMA addresses that would typically be relevant in the context of shared memory
+    with an AIA. In summary, the function `gasket_map_pci_bar` is focused on PCI resource
+    management and does not engage in any operations that would be relevant to AI
+    Accelerator integration, user-space interaction, or message structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_wait_with_reschedule
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -226,31 +250,29 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction Score (0%)**: The function `gasket_wait_with_reschedule`
-    does not interact with shared memory or AI Accelerator (AIA) functionalities.
-    It primarily reads a value from a device register using `gasket_dev_read_64`,
-    checks it against a mask and value, and implements a retry mechanism with delays.
-    There are no operations related to pinning user pages, DMA addresses, or memory
-    mapping that would be relevant to an AIA context.'
-  - '**Relevant KD Entry Point Score (0%)**: This function does not serve as an entry
-    point from user space to kernel space. It does not handle any ioctl commands or
-    user commands that would typically lead to deeper kernel logic or AIA-related
-    functions. The function is a utility for waiting on a condition related to device
-    register values, not an interface for user commands.'
-  - '**Message Structure Handling Score (0%)**: There are no message structures being
-    handled in this function. It does not utilize `copy_from_user()` or `copy_to_user()`
-    calls, nor does it pass any structures that would involve Shared Memory Identifiers
-    (SMIDs). The function is focused on internal device state management rather than
-    communication with user space.'
-  - '**Message Structures identified**: None identified. The function does not define
-    or manipulate any message structures that would be exchanged between user space
-    and kernel space.'
+  - '**AIARelevantFunction Score (0)**: The function `gasket_wait_with_reschedule`
+    does not interact with any AI Accelerator (AIA) relevant functions such as pinning
+    user pages, obtaining physical addresses, or managing DMA buffers. It primarily
+    reads a value from a device register and waits for a condition to be met, which
+    is not directly related to shared memory management or AIA integration.'
+  - '**Relevant KD Entry Point Score (0)**: There are no indications that this function
+    serves as an entry point from user space to kernel space. It does not handle any
+    ioctl commands or user commands that would typically lead to deeper kernel logic
+    involving AIA. The function appears to be a utility function for waiting on a
+    device register condition rather than an interface for user-space interactions.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it deal with any structures that would
+    qualify as message structures or contain Shared Memory Identifiers (SMIDs). The
+    function operates solely on local variables and device register values.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
   - '**SMID''s identified**: None identified. There are no fields or identifiers in
-    the function that correspond to shared memory identifiers or any relevant memory
-    management patterns. In summary, the function `gasket_wait_with_reschedule` is
-    primarily concerned with device register polling and does not engage in any operations
-    that would be relevant to AIA integration, user space interaction, or message
-    structure handling. Therefore, all confidence scores are assigned as 0%.'
+    the function that relate to shared memory or memory management patterns relevant
+    to AIA. In summary, the function `gasket_wait_with_reschedule` is focused on device
+    register polling and does not engage with any aspects of shared memory management,
+    user-space interactions, or message structures that would be relevant to AI Accelerator
+    integration. Thus, all confidence scores are assigned as zero.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_enable_device
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -258,33 +280,31 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction Score (0%)**: The function `gasket_enable_device` does
-    not directly involve sharing shared memory with an AI Accelerator (AIA). It primarily
-    focuses on enabling a device, initializing interrupts, and setting up page tables.
-    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
-    memory management functions that would typically be associated with AIA memory
-    access. Therefore, the score is 0%.'
-  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
-    point from user space to kernel space. It does not handle any ioctl commands or
-    user commands that would trigger deeper kernel logic leading to an AIA relevant
-    function. The function is more of an internal device management routine rather
-    than a user-facing interface. Thus, the score is 0%.'
-  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+  - '**AIARelevantFunction Score (0)**: The function `gasket_enable_device` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on enabling a device, initializing page tables, and handling
+    interrupts. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any DMA-related operations that would typically be associated with AIA memory
+    management.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` function. It does
+    not handle any user commands or ioctl codes that would trigger deeper kernel logic
+    leading to AIA-related functions. The function is more of an internal device management
+    routine rather than a user-facing interface.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
     handled in this function. The function does not utilize `copy_from_user()` or
     `copy_to_user()` calls, nor does it pass any structures that would involve Shared
-    Memory Identifiers (SMIDs). The function is focused on device initialization and
-    does not interact with user-space messages or structures. Therefore, the score
-    is 0%.'
-  - '**Message Structures identified**: None identified. The function does not define
-    or manipulate any message structures that would be exchanged between user space
-    and kernel space.'
+    Memory Identifiers (SMIDs). The operations performed are strictly related to device
+    initialization and do not involve communication with user space.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any user-defined message structures or data that would typically be exchanged
+    between user space and kernel space.'
   - '**SMID''s identified**: None identified. There are no fields or structures in
-    the function that correspond to shared memory identifiers or any relevant memory
-    management patterns that would indicate the presence of SMIDs. In summary, the
-    function `gasket_enable_device` is primarily concerned with device initialization
-    and does not engage in any operations that would be relevant to shared memory
-    management with an AI Accelerator, user-space interactions, or message structure
-    handling.'
+    the function that qualify as Shared Memory Identifiers (SMIDs), such as device
+    virtual addresses, physical addresses, or DMA addresses. In summary, the `gasket_enable_device`
+    function is focused on device initialization and does not engage in any operations
+    relevant to AI Accelerator integration, user space interactions, or message structure
+    handling. Therefore, all confidence scores are assigned as zero.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_get_driver_desc
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -293,29 +313,31 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0)**: The function `gasket_get_driver_desc` does
-    not interact with shared memory or perform any operations related to an AI Accelerator
-    (AIA). It simply retrieves the driver descriptor from the `gasket_dev` structure.
-    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
-    DMA-related operations that would typically be associated with AIA memory management.'
+    not involve any operations related to shared memory management, DMA, or interactions
+    with an AI Accelerator. It simply retrieves the driver descriptor from the internal
+    structure of a `gasket_dev` instance. There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any other memory management functions that would typically
+    be associated with AIA relevant functions.'
   - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
-    point for user space interactions with the kernel. It does not handle any ioctl
-    commands or user commands that would lead to deeper kernel logic. It is a straightforward
-    accessor function without any user-space interface.'
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a straightforward accessor function
+    that returns a pointer to the driver descriptor, which does not involve any user
+    interaction or command processing.'
   - '**Message_Structure_Handling Score (0)**: The function does not handle any message
-    structures or perform operations involving `copy_from_user()` or `copy_to_user()`.
-    There are no structures being passed that would qualify as message structures
-    or contain Shared Memory Identifiers (SMIDs). The function merely accesses a pointer
-    to the driver descriptor without any data transfer between user space and kernel
-    space.'
-  - '**Message Structures identified**: None identified. The function does not involve
-    any message structures that would typically be exchanged between user space and
-    kernel.'
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor any structures that would typically contain
+    shared memory identifiers (SMIDs). The function merely accesses a field in the
+    `gasket_dev` structure and returns a pointer to another structure.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would be relevant for shared memory or communication
+    with an AI Accelerator.'
   - '**SMID''s identified**: None identified. There are no fields in the structures
-    accessed that would qualify as SMIDs, such as physical addresses, DMA addresses,
-    or any identifiers related to shared memory. In summary, the function `gasket_get_driver_desc`
-    is a simple accessor function that does not engage in any operations relevant
-    to shared memory management, user-space interactions, or message structure handling,
-    leading to a score of 0 across all categories.'
+    involved that qualify as shared memory identifiers (SMIDs) since the function
+    does not deal with memory management or shared memory communication. In summary,
+    the function `gasket_get_driver_desc` is a simple accessor that does not engage
+    in any operations relevant to AI Accelerator integration, kernel entry points,
+    or message structure handling. Therefore, all confidence scores are assigned as
+    0%.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:check_and_invoke_callback
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -323,21 +345,31 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction (0%)**: This function does not interact with shared memory
-    or an AI Accelerator directly. It simply checks if a callback function is provided
-    and invokes it while managing a mutex lock around the operation. There are no
-    operations related to pinning user pages, obtaining DMA addresses, or managing
-    memory for an AI Accelerator.'
-  - '**Relevant KD Entry Point (0%)**: The function does not act as an entry point
-    from user space to kernel space. It does not handle any ioctl commands or user
-    space requests. The function is purely a utility for calling a provided callback
-    function in a thread-safe manner.'
-  - '**Message Structure Handling (0%)**: There are no message structures or shared
-    memory identifiers being handled within this function. It does not perform any
-    operations related to `copy_from_user()` or `copy_to_user()`, nor does it involve
-    any structures that would qualify as SMIDs. Overall, the function is primarily
-    focused on callback invocation within the context of a mutex lock and does not
-    pertain to AI Accelerator integration or shared memory interactions.'
+  - '**AIARelevantFunction Score (0)**: The function `check_and_invoke_callback` does
+    not interact with any AI Accelerator (AIA) relevant functions or memory management
+    patterns associated with shared memory (SMem) or DMA operations. It simply checks
+    if a callback function is provided and invokes it while holding a mutex lock on
+    the `gasket_dev` structure. There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any other AIA-related memory management functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would typically lead to deeper kernel logic or AIA-related
+    functionality. The function is purely a utility function for invoking a callback
+    and does not interact with user space.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
+    Memory Identifiers (SMIDs). The `gasket_dev` structure is used, but it does not
+    involve any message structures or fields that would qualify as SMIDs.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would be exchanged between user space and kernel
+    space.'
+  - '**SMID''s identified**: None identified. There are no fields in the `gasket_dev`
+    structure or any other structures involved in this function that represent shared
+    memory identifiers or relevant addresses. In summary, the function `check_and_invoke_callback`
+    is a simple utility function that does not engage with any AIA-related functionality,
+    user space interactions, or message structures, leading to a score of 0 across
+    all categories.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_get_hw_status
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -346,27 +378,28 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0)**: The function `gasket_get_hw_status` does not
-    involve any operations related to shared memory management or interactions with
-    an AI Accelerator (AIA). It primarily checks the hardware status and page table
-    status of the device, which does not align with the typical operations that would
-    involve shared memory or DMA management. Therefore, the confidence score is 0%.'
-  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
-    point from user space to kernel space. It does not handle any ioctl commands or
-    user commands that would trigger deeper kernel logic leading to an AIA relevant
-    function. As such, the score is also 0%.'
-  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily checks the hardware status and does not perform any memory management
+    tasks such as pinning user pages, obtaining physical addresses, or programming
+    DMA addresses. Therefore, the confidence score for AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. It does not handle
+    any user commands or invoke deeper kernel logic that would lead to executing an
+    AIA relevant function. Thus, the score for relevant kernel entry point is also
+    0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
     structures exchanged between user space and kernel space. There are no `copy_from_user()`
-    or `copy_to_user()` calls present, nor does it deal with any structures that would
-    qualify as message structures or contain shared memory identifiers (SMIDs). Therefore,
-    the score is 0%.'
+    or `copy_to_user()` calls present, nor does it deal with structures that would
+    typically contain Shared Memory Identifiers (SMIDs). Therefore, the score for
+    message structure handling is 0%.'
   - '**Message Structures identified**: None identified. The function does not interact
-    with any message structures that would typically be exchanged with user space.'
+    with any structures that would qualify as message structures.'
   - '**SMID''s identified**: None identified. There are no fields in the function
-    that correspond to shared memory identifiers or any relevant addresses that would
-    indicate shared memory management. In summary, the function `gasket_get_hw_status`
-    is focused on checking the status of hardware components and does not engage in
-    any operations related to shared memory or AI Accelerator integration, leading
-    to a score of 0 across all categories.'
+    that correspond to SMIDs, such as device virtual addresses, physical addresses,
+    or DMA addresses. In summary, the function `gasket_get_hw_status` is focused on
+    checking the status of hardware components and does not engage in any operations
+    that would be relevant to AI Accelerator integration, user-space communication,
+    or message structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_check_and_invoke_callback_nolock
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -374,22 +407,29 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction**: The function `gasket_check_and_invoke_callback_nolock`
-    does not involve any operations related to shared memory (SMem) or AI Accelerator
-    (AIA). It simply checks if a callback function is provided and invokes it. There
-    are no calls to functions like `get_user_pages`, `pin_user_pages`, or any operations
-    that would grant the AIA access to host memory regions. Therefore, I assigned
-    a score of 0%.'
-  - '**Relevant_KD_Entry_Point**: This function does not serve as a kernel entry point
-    from user space, such as through ioctl() functions. It is an internal utility
-    function meant for invoking callbacks within the kernel space. Thus, I assigned
-    a score of 0%.'
-  - '**Message_Structure_Handling**: There are no message structures being handled
-    in this function, nor are there any `copy_from_user()` or `copy_to_user()` calls.
-    The function does not deal with shared memory identifiers (SMIDs) or any structures
-    that would qualify as such. Consequently, I assigned a score of 0%. Overall, this
-    function does not meet the criteria for any of the categories relevant to AIA
-    integration, and hence, the confidence scores are all at 0%.'
+  - '**AIARelevantFunction Score (0)**: The function `gasket_check_and_invoke_callback_nolock`
+    does not involve any operations related to shared memory management or interactions
+    with an AI Accelerator (AIA). It simply checks if a callback function is provided
+    and invokes it with a `gasket_dev` structure. There are no calls to functions
+    like `get_user_pages`, `pin_user_pages`, or any other memory management functions
+    that would be relevant to AIA operations.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a utility function that is likely called
+    from other parts of the driver code but does not directly interact with user space.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls, nor any structures that would qualify as message structures
+    or contain Shared Memory Identifiers (SMIDs). The `gasket_dev` structure is used
+    as a parameter, but it does not involve any fields that would indicate shared
+    memory or communication with an AIA.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures.'
+  - '**SMID''s identified**: None identified. There are no fields in the `gasket_dev`
+    structure or any other structures involved in this function that would qualify
+    as SMIDs. In summary, the function is a simple callback invoker and does not engage
+    in any operations relevant to shared memory, AIA interactions, or user-kernel
+    communication, leading to a score of 0 across all categories.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_core.c:gasket_add_cdev
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -397,31 +437,29 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction Score (0)**: The function `gasket_add_cdev` is primarily
-    focused on adding a character device to the kernel''s device model. It initializes
-    a `cdev` structure and adds it to the system, which does not involve any operations
-    related to shared memory management or AI Accelerator integration. There are no
-    calls to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related
-    operations that would typically be associated with AIA relevant functions.'
-  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
-    point for user-space interactions, such as through `ioctl` commands. It is a helper
-    function that is likely called from another part of the driver code, but it does
-    not directly handle any user commands or ioctl codes. Therefore, it does not qualify
-    as a relevant kernel driver entry point.'
-  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
-    structures exchanged between user space and kernel space. There are no `copy_from_user()`
-    or `copy_to_user()` calls present, nor does it deal with any structures that would
-    typically contain shared memory identifiers (SMIDs). The focus is solely on device
-    management.'
-  - '**Message Structures identified**: None identified. The function does not interact
-    with any message structures that would be relevant for shared memory or communication
-    with an AI Accelerator.'
-  - '**SMID''s identified**: None identified. There are no fields or structures in
-    the function that correspond to shared memory identifiers or any relevant memory
-    management patterns that would be associated with an AI Accelerator. In summary,
-    the `gasket_add_cdev` function is focused on character device management and does
-    not engage in any operations that would be relevant to shared memory management
-    or AI Accelerator integration, leading to a score of 0 across all categories.'
+  - '**AIARelevantFunction Score (0)**: The function `gasket_add_cdev` does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    focuses on initializing and adding a character device to the system. There are
+    no calls to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related
+    operations that would typically be associated with AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is purely internal and does not interact with user space.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The function is focused on device management rather
+    than memory management or communication with user space.'
+  - '**Message Structures identified**: None identified. The function does not deal
+    with any structures that would qualify as message structures exchanged between
+    user space and kernel.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    involved that represent shared memory identifiers or any relevant memory addresses.
+    In summary, the `gasket_add_cdev` function is focused on character device management
+    and does not engage in any operations related to AI Accelerator integration, user
+    space interaction, or message structure handling. Therefore, all confidence scores
+    are assigned as zero.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_page_table_init
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -429,31 +467,33 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_init` does
-    not directly involve sharing shared memory with an AI Accelerator (AIA). It primarily
-    initializes a page table structure for managing memory addresses, which is more
-    related to memory management than to direct interaction with an AI Accelerator.
-    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
-    DMA-related operations that would typically be associated with AIA memory access.'
-  - '**Relevant KD Entry Point Score (0%)**: This function does not serve as an entry
-    point from user space to kernel space. It does not handle any ioctl commands or
-    user commands that would trigger deeper kernel logic leading to an AIA relevant
-    function. The function is purely an internal initialization routine and does not
-    interact with user space.'
-  - '**Message Structure Handling Score (0%)**: There are no message structures being
-    handled in this function. The function does not utilize `copy_from_user()` or
-    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
-    Memory Identifiers (SMIDs). The focus is on initializing the `gasket_page_table`
-    structure and its associated configurations, rather than exchanging messages with
-    user space.'
-  - '**Message Structures identified**: None identified. The function does not define
-    or manipulate any structures that would qualify as message structures for communication
-    with user space.'
+  - '**AIARelevantFunction Score (0)**: The function `gasket_page_table_init` does
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on initializing a page table structure, allocating memory
+    for it, and setting up its configuration. There are no calls to functions like
+    `get_user_pages`, `pin_user_pages`, or any DMA-related operations that would typically
+    be associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. There are no ioctl commands being handled
+    within this function. It is a utility function that is likely called from another
+    part of the driver code, but it does not directly interact with user commands
+    or ioctl codes.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the code. The function is focused on internal
+    memory management and initialization of the `gasket_page_table` structure, without
+    any interaction with user-defined structures or shared memory identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would qualify as message structures for communication between
+    user space and kernel space.'
   - '**SMID''s identified**: None identified. There are no fields in the structures
-    being manipulated that would serve as SMIDs, such as device virtual addresses,
-    physical addresses, or DMA addresses. Overall, the function is focused on setting
-    up a page table for memory management and does not engage in any operations that
-    would be relevant to AI Accelerator integration or user-kernel communication.'
+    that would serve as shared memory identifiers (SMIDs) relevant to AIA operations.
+    The fields in the `gasket_page_table`, `gasket_page_table_config`, and `gasket_bar_data`
+    structures are primarily concerned with configuration and management of the page
+    table rather than facilitating shared memory access. In summary, the `gasket_page_table_init`
+    function is focused on initializing a page table for memory management within
+    the driver and does not engage in any operations that would be relevant to AI
+    Accelerator integration or user-kernel communication.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_page_table_reset
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -461,17 +501,32 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - The function `gasket_page_table_reset` does not appear to directly interact with
-    shared memory (SMem) for an AI Accelerator (AIA). It mainly handles a page table
-    reset operation which involves mutex locking, unmapping operations, and writing
-    to a register.
-  - There are no indications of user space to kernel communication through ioctl()
-    calls, meaning there is no relevant kernel entry point.
-  - The function does not involve any message structures exchanged between user space
-    and kernel, nor does it handle any shared memory identifiers (SMIDs).
-  - The operations within the function are primarily focused on managing a page table's
-    state rather than interfacing with an AI Accelerator or managing shared memory,
-    which leads to a confidence score of 0% across all categories.
+  - '**AIARelevantFunction Score (0)**: The function `gasket_page_table_reset` does
+    not involve any operations that directly relate to sharing memory with an AI Accelerator
+    (AIA). It primarily focuses on resetting a page table by unmapping all entries
+    and writing the total number of entries to a register. There are no indications
+    of pinning user pages, obtaining physical addresses, or managing DMA buffers,
+    which are typical characteristics of functions that would score higher in this
+    category.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic. The function is a utility
+    that operates on a `gasket_page_table` structure and does not interact with user
+    space directly.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The operations performed are internal to the kernel
+    and do not involve communication with user space.'
+  - '**Message Structures identified**: None identified. The function does not deal
+    with any structures that would be exchanged between user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the `gasket_page_table`
+    structure or any other structures involved in this function that qualify as SMIDs,
+    such as device virtual addresses, physical addresses, or DMA addresses. In summary,
+    the function `gasket_page_table_reset` is focused on internal management of a
+    page table and does not engage in any operations relevant to AI Accelerator integration,
+    user space interactions, or message structure handling. Therefore, all confidence
+    scores are assigned as 0.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_page_table_unmap_all_nolock
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -479,28 +534,30 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_unmap_all_nolock`
-    is primarily focused on unmapping pages from a page table and does not involve
-    any operations that directly relate to sharing memory with an AI Accelerator (AIA).
-    It does not utilize functions like `get_user_pages`, `pin_user_pages`, or any
-    DMA-related operations that would typically be associated with AIA memory management.
-    Therefore, the confidence score is 0%.'
-  - '**Relevant KD Entry Point Score (0%)**: This function does not serve as an entry
-    point for user space interactions with the kernel, such as through `ioctl()` calls.
-    It is a utility function that operates on the internal structures of the driver
-    and does not handle any user commands or ioctl codes. Thus, the score is also
-    0%.'
-  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+  - '**AIARelevantFunction Score (0)**: The function `gasket_page_table_unmap_all_nolock`
+    does not involve any operations related to sharing memory with an AI Accelerator
+    (AIA). It primarily focuses on unmapping pages from a page table, which is not
+    directly related to the operations typically associated with AIA memory management,
+    such as pinning user pages, obtaining physical addresses, or managing DMA buffers.'
+  - '**Relevant_KD_Entry_Point Score (0)**: There are no indications that this function
+    serves as an entry point from user space to kernel space, such as through an ioctl()
+    interface. The function does not handle any user commands or ioctl codes, which
+    are essential for it to be considered a relevant kernel driver entry point.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
     structures exchanged between user space and kernel space. There are no `copy_from_user()`
-    or `copy_to_user()` calls present in the function, nor does it deal with any structures
-    that would qualify as message structures or contain Shared Memory Identifiers
-    (SMIDs). Consequently, the score is 0%.'
+    or `copy_to_user()` calls present, nor does it manipulate any structures that
+    would qualify as message structures or contain Shared Memory Identifiers (SMIDs).
+    The operations performed are strictly internal to the kernel''s memory management
+    for page tables.'
   - '**Message Structures identified**: None identified. The function does not interact
-    with any message structures.'
-  - '**SMID''s identified**: None identified. The function does not reference any
-    fields or structures that would qualify as SMIDs. In summary, the function `gasket_page_table_unmap_all_nolock`
-    is focused on internal memory management and does not engage with the AIA or user-space
-    interactions, leading to low confidence scores across all categories.'
+    with any structures that would be considered message structures for communication
+    with user space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that represent Shared Memory Identifiers (SMIDs) such as device virtual
+    addresses, physical addresses, or DMA addresses. In summary, the function is focused
+    on internal memory management tasks and does not engage in any operations that
+    would be relevant to AI Accelerator integration, user space interactions, or message
+    structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_page_table_detach_dmabuf_nolock
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -509,28 +566,31 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_detach_dmabuf_nolock`
-    does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
-    It primarily deals with detaching and unmapping DMA buffers from a page table,
-    which is more related to memory management and buffer handling rather than providing
-    access to shared memory for an AIA.'
-  - '**Relevant_KD_Entry_Point Score (0%)**: This function does not represent an entry
-    point from user space to kernel space. It does not handle any ioctl commands or
-    user commands that would typically lead to deeper kernel logic involving an AIA.
-    The function is a utility that operates on internal structures without any user-space
-    interaction.'
-  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
-    structures exchanged between user space and kernel. There are no `copy_from_user()`
-    or `copy_to_user()` calls present, nor does it involve any structures that would
-    typically contain Shared Memory Identifiers (SMIDs) or similar metadata. The function
-    focuses on managing DMA buffers and their mappings.'
-  - '**Message Structures identified**: None identified. The function does not utilize
-    any message structures that would be exchanged with user space.'
-  - '**SMID''s identified**: None identified. There are no fields in the function
-    that correspond to SMIDs, as it does not deal with shared memory identifiers or
-    any relevant addresses that would indicate shared memory usage. In summary, the
-    function is primarily focused on managing DMA buffer detachments and does not
-    engage with the AIA, user-space interactions, or message structures that would
-    be relevant for shared memory management.'
+    does not interact with an AI Accelerator (AIA) or perform any operations related
+    to shared memory management for an AIA. It primarily deals with detaching and
+    releasing DMA buffers associated with a page table. There are no calls to functions
+    like `get_user_pages`, `pin_user_pages`, or any other AIA-specific memory management
+    functions. Therefore, the confidence score for AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0%)**: This function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` function. It is a
+    static function that operates within the kernel and does not handle any user commands
+    or ioctl codes. As such, it does not serve as a dispatch point for user commands
+    leading to AIA-related functionality. Hence, the score for relevant kernel entry
+    point is also 0%.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it deal with structures
+    that would typically contain shared memory identifiers (SMIDs). The function focuses
+    solely on managing DMA buffer detachments and does not involve any communication
+    with user space or the management of shared memory identifiers. Therefore, the
+    score for message structure handling is 0%.'
+  - '**Message Structures Identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMIDs Identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not interact with user space or manage shared
+    memory regions. In summary, the function is primarily concerned with the management
+    of DMA buffers and does not engage in any operations relevant to AI Accelerator
+    integration, user space interactions, or message structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_components_to_dev_address
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -539,26 +599,28 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0)**: The function `gasket_components_to_dev_address`
-    does not interact with shared memory or AI Accelerator components directly. It
-    simply computes a device address based on the provided `page_index` and `offset`,
-    and it does not involve any operations related to memory management or DMA buffers
-    that would typically be associated with AIA integration.'
+    does not involve any operations related to sharing memory with an AI Accelerator
+    (AIA). It simply computes a device address based on the provided `page_index`
+    and `offset`, and it does not interact with user pages, DMA addresses, or any
+    memory mapping that would be relevant for AIA integration. Therefore, the confidence
+    score is 0%.'
   - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
-    point from user space to kernel space. It does not handle any ioctl commands or
-    user commands that would trigger deeper kernel logic leading to AIA relevant functions.
-    It is a utility function that computes an address and does not facilitate communication
-    between user space and kernel space.'
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a utility function that computes an
+    address and does not trigger deeper kernel logic or handle user commands. Thus,
+    the score is also 0%.'
   - '**Message_Structure_Handling Score (0)**: The function does not handle any message
-    structures exchanged between user space and kernel. There are no `copy_from_user()`
-    or `copy_to_user()` calls present, nor does it deal with any structures that would
-    typically contain Shared Memory Identifiers (SMIDs) or other relevant metadata.'
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    typically contain Shared Memory Identifiers (SMIDs). As such, there are no message
+    structures identified, leading to a score of 0%.'
   - '**Message Structures identified**: None identified. The function does not utilize
-    any message structures that would be relevant for communication with an AI Accelerator.'
-  - '**SMID''s identified**: None identified. There are no fields in the function
-    that correspond to SMIDs, as it does not deal with any identifiers or addresses
-    that would be used to manage shared memory or DMA operations. Overall, the function
-    is a straightforward address computation utility and does not engage with the
-    AI Accelerator integration, making it irrelevant for the specified categories.'
+    any structures that would qualify as message structures.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that represent Shared Memory Identifiers. In summary, the function
+    `gasket_components_to_dev_address` is a straightforward address computation function
+    that does not engage in any operations relevant to AIA integration, user space
+    interactions, or message structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_unmap_simple_pages
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -569,26 +631,27 @@ functions_by_file:
   - '**AIARelevantFunction Score (0)**: The function `gasket_unmap_simple_pages` does
     not involve any operations related to sharing memory with an AI Accelerator (AIA).
     It primarily focuses on unmapping pages from a page table, which is not directly
-    related to the memory management patterns typically associated with AIA integration,
+    related to the memory management patterns typically associated with AIA interactions,
     such as pinning user pages or managing DMA buffers.'
-  - '**Relevant KD Entry Point Score (0)**: This function does not represent an entry
-    point from user space to kernel space. There are no ioctl() calls or user commands
-    being handled within this function. It is a utility function that operates on
-    an internal data structure (`gasket_page_table`), and thus does not serve as a
-    gateway for user-space interactions.'
-  - '**Message Structure Handling Score (0)**: The function does not handle any message
-    structures exchanged between user space and kernel. There are no `copy_from_user()`
-    or `copy_to_user()` calls present, nor are there any structures that contain Shared
-    Memory Identifiers (SMIDs) being processed. The function is strictly concerned
-    with the internal management of page tables.'
+  - '**Relevant_KD_Entry_Point Score (0)**: There is no indication that this function
+    serves as an entry point from user space to kernel space. It does not handle any
+    ioctl commands or user commands that would typically trigger deeper kernel logic
+    leading to AIA-related functions. The function is a static utility that operates
+    on a `gasket_page_table` structure without any user interaction.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it manipulate any structures that
+    would qualify as message structures containing Shared Memory Identifiers (SMIDs).
+    The function''s operations are limited to internal data manipulation of the `gasket_page_table`.'
   - '**Message Structures identified**: None identified. The function does not interact
-    with any message structures that would typically be exchanged with user space.'
-  - '**SMID''s identified**: None identified. There are no fields or structures in
-    the function that correspond to SMIDs, which are typically used to identify shared
-    memory regions between the kernel and user space. In summary, the `gasket_unmap_simple_pages`
-    function is focused on unmapping pages from a page table and does not engage in
-    any operations relevant to AIA memory management, user-space interactions, or
-    message structure handling. Therefore, all confidence scores are assigned as 0%.'
+    with any structures that would be considered message structures in the context
+    of shared memory or AIA operations.'
+  - '**SMID''s identified**: None identified. The function does not utilize any fields
+    or identifiers that would qualify as Shared Memory Identifiers (SMIDs) related
+    to memory addresses or descriptors. In summary, the function `gasket_unmap_simple_pages`
+    is focused on unmapping pages from a page table and does not engage in any operations
+    relevant to AI Accelerator integration, user space interactions, or message structure
+    handling. Therefore, all confidence scores are assigned as 0%.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_simple_page_idx
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -596,112 +659,127 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction**: The function `gasket_simple_page_idx` does not involve
-    sharing shared memory with an AI Accelerator, nor does it perform any actions
-    related to pinning user pages, iterating over scatter-gather user pages, or programming
-    addresses into AIA device page tables. It simply calculates an index based on
-    the device address and the total entries in the page table configuration.'
-  - '**Relevant KD Entry Point**: The function does not serve as an entry point from
-    user space to kernel. It does not handle any ioctl commands or user inputs, as
-    it does not contain any mechanism for user command handling or dispatching.'
-  - '**Message Structure Handling**: There are no message structures exchanged between
-    user space and kernel within this function. It lacks any calls to `copy_from_user()`
-    or `copy_to_user()`, and does not deal with structures that involve Shared Memory
-    Identifiers (SMIDs). In summary, the function is primarily focused on computing
-    an index related to page tables and lacks any connection to the relevant categories
-    concerning AI Accelerator integration or user/kernel space communication.'
-- Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
-  AIARelevantFunction: 20
-  Relevant_KD_Entry_Point: 0
-  Message_Structure_Handling: 40
-  Message_Structures_identified: []
-  SMIDs_identified:
-  - dma_addr
-  Reasoning:
-  - '**AIARelevantFunction Score (20)**: The function `gasket_perform_unmapping` is
-    primarily focused on unmapping pages from a device''s address translation table
-    and releasing resources. While it does involve DMA operations (specifically `dma_unmap_page`),
-    it does not directly handle the mapping of shared memory or the setup of memory
-    for an AI Accelerator. Therefore, the confidence score is low, as it does not
-    fulfill the typical criteria for AIA relevant functions that manage memory access
-    for AI accelerators.'
-  - '**Relevant KD Entry Point Score (0)**: This function does not represent an entry
-    point from user space to kernel space. It is a utility function that is likely
-    called from other parts of the driver code, but it does not handle any ioctl commands
-    or user commands directly. Thus, the score is zero.'
-  - '**Message Structure Handling Score (40)**: The function does not explicitly handle
-    message structures exchanged between user space and kernel space. However, it
-    does interact with `gasket_page_table_entry`, which contains a `dma_addr` field
-    that could be considered a potential SMID. The presence of `copy_from_user()`
-    or `copy_to_user()` calls is absent, which typically indicates message structure
-    handling. Therefore, the score reflects a moderate level of relevance due to the
-    presence of the `dma_addr` field.'
-  - '**Message Structures identified**: None identified. The function does not directly
-    handle any message structures that would typically be exchanged with user space.'
-  - '**SMID''s identified**: The `dma_addr` field in the `gasket_page_table_entry`
-    structure is identified as a potential SMID. This field represents the DMA address
-    used for mapping pages, which is relevant for memory management in the context
-    of DMA operations. In summary, while the function performs important operations
-    related to memory management and DMA unmapping, it does not directly engage with
-    the AIA or user-space interactions, leading to lower confidence scores in the
-    relevant categories.'
-- Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_unmap_extended_pages
-  AIARelevantFunction: 70
-  Relevant_KD_Entry_Point: 0
-  Message_Structure_Handling: 0
-  Message_Structures_identified: []
-  SMIDs_identified: []
-  Reasoning:
-  - '**AIARelevantFunction (70%)**: The function `gasket_unmap_extended_pages` is
-    involved in managing memory mappings for a device, specifically unmapping pages
-    that are associated with a DMA operation. It utilizes the `dma_sync_single_for_device`
-    function, which is critical for ensuring that the device has a coherent view of
-    the memory. However, it does not directly handle user pages or shared memory identifiers
-    (SMIDs) as it focuses on unmapping and synchronization rather than mapping or
-    pinning user memory. Therefore, while it is relevant to AIA operations, it does
-    not fully meet the criteria for AIARelevantFunction.'
-  - '**Relevant_KD_Entry_Point (0%)**: This function does not represent an entry point
-    from user space to kernel space. There are no ioctl commands or user commands
+  - '**AIARelevantFunction Score (0)**: The function `gasket_simple_page_idx` does
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It simply calculates an index based on a device address (`dev_addr`) and the total
+    entries defined in the `gasket_page_table_config` structure. There are no calls
+    to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related operations
+    that would typically be associated with AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
     being handled within this function. It is a utility function that operates on
-    the internal structures of the driver and does not interact with user space directly.'
-  - '**Message_Structure_Handling (0%)**: The function does not handle any message
+    the `gasket_page_table` structure and does not interact with user space directly.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
     structures exchanged between user space and kernel space. There are no `copy_from_user()`
-    or `copy_to_user()` calls present, nor are there any structures being passed that
-    would qualify as message structures. The function primarily deals with internal
-    data structures (`gasket_page_table` and `gasket_page_table_entry`) and does not
-    involve user-defined message formats.'
-  - '**Message Structures identified**: None identified. The function does not interact
-    with any user-defined message structures.'
-  - '**SMID''s identified**: None identified. The function does not utilize any shared
-    memory identifiers or similar constructs that would indicate communication with
-    user space or an AI Accelerator. In summary, while the function is important for
-    managing DMA mappings and ensuring memory coherence, it does not directly interact
-    with user space or handle message structures, which limits its relevance to the
-    specified categories.'
-- Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl1_page_idx
-  AIARelevantFunction: 10
+    or `copy_to_user()` calls, nor are there any structures that contain Shared Memory
+    Identifiers (SMIDs) being processed. The function operates solely on the `gasket_page_table`
+    structure and its configuration.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    that correspond to Shared Memory Identifiers (SMIDs) such as device virtual addresses,
+    physical addresses, or DMA addresses. In summary, the function `gasket_simple_page_idx`
+    is a straightforward utility function that calculates an index based on a device
+    address and does not engage in any operations related to AIA memory management,
+    user space interactions, or message structure handling. Therefore, all confidence
+    scores are assigned as zero.'
+- Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
+  AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
   Message_Structure_Handling: 0
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - 'AIARelevantFunction: The function `gasket_extended_lvl1_page_idx` has a very
-    low confidence score in this category (10%) because it merely calculates an index
-    based on a device address and does not exhibit any actions that are directly related
-    to sharing memory with an AI Accelerator. It does not involve pinning user pages,
-    iterating over scatter-gather user pages, or managing DMA buffers.'
-  - 'Relevant KD Entry Point: The confidence score for this category is 0% because
-    the given function does not represent an entry point from user space to the kernel.
-    It does not relate to any ioctl calls or handle user commands that would trigger
-    deeper kernel logic related to the AI Accelerator.'
-  - 'Message Structure Handling: The confidence score is also 0% in this category
-    as the function does not handle any message structures exchanged between user
-    space and kernel. There are no calls to `copy_from_user()` or `copy_to_user()`,
-    nor are there any structures passed that contain shared memory identifiers (SMIDs).
-    In summary, the function is a utility for calculating a page index based on a
-    device address but lacks the necessary components that would associate it with
-    shared memory management, user-kernel communication, or message structure handling
-    in the context of an AI Accelerator integration.'
+  - '**AIARelevantFunction Score (0)**: The function `gasket_perform_unmapping` does
+    not directly involve sharing memory with an AI Accelerator (AIA). Instead, it
+    focuses on unmapping pages from a device''s address translation table and releasing
+    resources. There are no operations related to pinning user pages, obtaining physical
+    addresses, or programming AIA device page tables. Therefore, the confidence score
+    for AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through ioctl() calls. It is a
+    utility function that operates on page table entries and does not handle user
+    commands or dispatch ioctl codes. As a result, the score for relevant kernel entry
+    point is also 0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls, nor are there any structures that contain Shared Memory
+    Identifiers (SMIDs) being passed. The function primarily deals with internal data
+    structures (`gasket_page_table` and `gasket_page_table_entry`) without any interaction
+    with user space. Thus, the score for message structure handling is 0%.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any user-defined message structures or perform operations that would involve
+    transferring data between user space and kernel space.'
+  - '**SMID''s identified**: None identified. The function does not utilize any fields
+    that would qualify as Shared Memory Identifiers (SMIDs) such as device virtual
+    addresses, physical addresses, or DMA addresses in the context of user space interaction.
+    In summary, the function `gasket_perform_unmapping` is focused on internal memory
+    management and does not engage in any operations that would be relevant to AI
+    Accelerator integration, kernel entry points, or message structure handling.'
+- Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_unmap_extended_pages
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `gasket_unmap_extended_pages`
+    does not interact with an AI Accelerator (AIA) or shared memory (SMem) in a way
+    that would qualify it as relevant to AIA operations. The function primarily deals
+    with unmapping pages from a page table and synchronizing DMA memory, which is
+    not directly related to the functions typically associated with AIA memory management,
+    such as pinning user pages or managing DMA buffers for communication with an AIA.'
+  - '**Relevant KD Entry Point Score (0)**: There are no ioctl commands or user-space
+    entry points in this function. The function does not serve as a dispatch point
+    for user commands or handle any ioctl codes that would lead to AIA-related operations.
+    It operates purely within the kernel''s memory management context without any
+    user-space interaction.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures containing Shared Memory Identifiers (SMIDs). The function
+    focuses on internal operations related to page table management and DMA synchronization.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space or contain relevant metadata
+    for shared memory operations.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    fields or structures that would qualify as SMIDs, such as device virtual addresses,
+    physical addresses, or DMA addresses that are typically used in the context of
+    shared memory management with an AIA. In summary, the function `gasket_unmap_extended_pages`
+    is focused on unmapping pages and synchronizing DMA memory, which does not align
+    with the criteria for AIA relevance, KD entry points, or message structure handling.
+    Therefore, all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl1_page_idx
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gasket_extended_lvl1_page_idx`
+    does not involve any operations related to sharing memory with an AI Accelerator
+    (AIA). It simply computes an index based on the provided device address (`dev_addr`)
+    and does not interact with user pages, DMA addresses, or any memory mapping that
+    would be relevant for AIA operations. There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any other AIA-related memory management functions.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a utility function that computes an
+    index and does not serve as a dispatch point for user commands or trigger deeper
+    kernel logic.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    typically contain Shared Memory Identifiers (SMIDs). The function operates solely
+    on the `dev_addr` parameter and does not interact with any user-defined structures.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would be exchanged between user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures that
+    qualify as Shared Memory Identifiers (SMIDs) in the context of this function.
+    In summary, the function `gasket_extended_lvl1_page_idx` is a straightforward
+    utility function that computes an index based on a device address and does not
+    engage in any operations relevant to AIA memory sharing, kernel entry points,
+    or message structure handling.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl0_page_idx
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -709,20 +787,31 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - For the AIARelevantFunction score, I assigned a 0% because the function `gasket_extended_lvl0_page_idx`
-    does not involve any operations related to sharing shared memory with an AI Accelerator.
-    It merely calculates an index based on device address and a page table configuration,
-    but it does not interact with user pages, memory mapping, or DMA operations.
-  - The Relevant KD Entry Point score is also 0% as this function does not represent
-    an entry point from user space to kernel space. It does not involve any ioctl()
-    commands or dispatching logic that would lead to deeper kernel functions.
-  - The Message Structure Handling score is 0% because there are no message structures
-    exchanged between user space and kernel space in this code block. There are no
-    `copy_from_user()` or `copy_to_user()` calls, nor any structures that would serve
-    as Shared Memory Identifiers (SMIDs).
-  - In summary, this function is a simple utility for calculating an index and does
-    not contribute to any of the specified categories related to AIA integration,
-    KD entry points, or message structure handling.
+  - '**AIARelevantFunction Score (0)**: The function `gasket_extended_lvl0_page_idx`
+    does not involve any operations related to sharing memory with an AI Accelerator
+    (AIA). It simply calculates an index based on the device address and the total
+    entries in the page table configuration. There are no calls to functions like
+    `get_user_pages`, `pin_user_pages`, or any DMA-related operations, which are typically
+    associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a utility function that operates purely
+    on the parameters passed to it and does not interact with user space or trigger
+    deeper kernel logic.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it deal with any structures that would
+    typically be involved in such operations. The `gasket_page_table` structure is
+    used as a parameter, but it does not facilitate any message passing or shared
+    memory identifiers.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    (SMIDs) present in the function, as it does not interact with memory management
+    or shared memory mechanisms. In summary, the function is a straightforward utility
+    that computes an index based on a device address and the configuration of a page
+    table. It lacks any interaction with AIA, user space, or message structures, leading
+    to low confidence scores across all categories.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_page_table_system_status
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -730,31 +819,33 @@ functions_by_file:
   Message_Structures_identified: []
   SMIDs_identified: []
   Reasoning:
-  - '**AIARelevantFunction Score (0)**: The function `gasket_page_table_system_status`
-    does not involve any operations related to shared memory management or AI Accelerator
-    integration. It primarily checks the status of a `gasket_page_table` structure
-    and returns a status code based on the validity of the input. There are no calls
-    to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related operations,
-    which are typically associated with AIA relevant functions.'
-  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
-    point from user space to kernel space. There are no ioctl() calls or any mechanism
-    that would indicate it is handling user commands or dispatching to deeper kernel
-    logic. It is a utility function that checks the state of a page table.'
-  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
-    structures exchanged between user space and kernel space. There are no `copy_from_user()`
-    or `copy_to_user()` calls, nor does it involve any structures that would qualify
-    as message structures or contain Shared Memory Identifiers (SMIDs). The function
-    simply checks the `gasket_page_table` structure and does not interact with user
-    space data.'
-  - '**Message Structures identified**: None identified. The function does not involve
-    any message structures.'
+  - '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_system_status`
+    does not interact with any AI Accelerator (AIA) relevant memory management functions
+    such as pinning user pages, obtaining physical addresses, or managing DMA buffers.
+    It primarily checks the status of a page table and returns a status code based
+    on the number of entries in the page table. There are no operations related to
+    shared memory or AIA integration present in this function.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would typically lead to deeper kernel logic or execution of
+    AIA relevant functions. There are no ioctl codes referenced in the function, which
+    further supports a score of 0%.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no calls to
+    `copy_from_user()` or `copy_to_user()`, nor does it involve any structures that
+    would typically contain Shared Memory Identifiers (SMIDs). The function operates
+    solely on the `gasket_page_table` structure without any interaction with user-space
+    data.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would be relevant for communication between user space
+    and kernel space.'
   - '**SMID''s identified**: None identified. There are no fields in the `gasket_page_table`
-    structure that would qualify as SMIDs, such as device virtual addresses, physical
-    addresses, or DMA addresses. The function does not interact with any shared memory
-    identifiers. In summary, the function `gasket_page_table_system_status` is a simple
-    status-checking function that does not engage in any operations relevant to AI
-    Accelerator integration, user space interaction, or message structure handling.
-    Therefore, all confidence scores are assigned as 0%.'
+    structure that qualify as SMIDs, as the function does not deal with shared memory
+    identifiers or any relevant memory management patterns. In summary, the function
+    `gasket_page_table_system_status` is focused on checking the status of a page
+    table and does not engage in any operations that would be relevant to AI Accelerator
+    integration, kernel entry points, or message structure handling. Thus, all scores
+    are assigned as 0%.'
 - Function/Code_Block_Name: gasket-driver/src/gasket_page_table.c:gasket_page_table_num_entries
   AIARelevantFunction: 0
   Relevant_KD_Entry_Point: 0
@@ -763,108 +854,103 @@ functions_by_file:
   SMIDs_identified: []
   Reasoning:
   - '**AIARelevantFunction Score (0)**: The function `gasket_page_table_num_entries`
-    does not interact with any AI Accelerator (AIA) relevant operations. It simply
-    calculates the total number of entries in a `gasket_page_table` structure by summing
-    `num_simple_entries` and `num_extended_entries`. There are no operations related
-    to shared memory, DMA addresses, or memory mapping that would qualify this function
-    as relevant to AIA integration.'
+    does not involve any operations related to sharing memory with an AI Accelerator
+    (AIA). It simply calculates the total number of entries in a `gasket_page_table`
+    structure by summing `num_simple_entries` and `num_extended_entries`. There are
+    no interactions with user pages, DMA addresses, or memory mapping that would be
+    relevant to AIA operations.'
   - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
     point from user space to kernel space. It does not handle any ioctl commands or
-    user commands that would typically lead to deeper kernel logic or AIA relevant
-    functions. It is a utility function that operates solely on the `gasket_page_table`
-    structure.'
+    user commands that would trigger deeper kernel logic. It is a utility function
+    that operates solely on the `gasket_page_table` structure, which is likely used
+    internally within the driver.'
   - '**Message_Structure_Handling Score (0)**: The function does not handle any message
     structures exchanged between user space and kernel space. There are no `copy_from_user()`
-    or `copy_to_user()` calls, nor does it deal with any structures that would contain
-    Shared Memory Identifiers (SMIDs). The function is purely computational and does
-    not involve any data transfer or message handling.'
+    or `copy_to_user()` calls present in the function, nor does it deal with any structures
+    that would qualify as message structures or contain Shared Memory Identifiers
+    (SMIDs). The `gasket_page_table` structure itself does not contain fields that
+    would be classified as SMIDs, such as device virtual addresses or physical addresses.'
   - '**Message Structures identified**: None identified. The function does not interact
     with any message structures.'
-  - '**SMID''s identified**: None identified. There are no fields in the `gasket_page_table`
-    structure that qualify as SMIDs, as the function does not deal with memory addresses
-    or identifiers relevant to shared memory. In summary, the function is a simple
-    accessor for the `gasket_page_table` structure and does not engage in any operations
-    that would be relevant to AI Accelerator integration, kernel entry points, or
-    message structure handling.'
+  - '**SMID''s identified**: None identified. The function does not utilize any fields
+    that would qualify as SMIDs. In summary, the function `gasket_page_table_num_entries`
+    is a straightforward utility function that does not engage in any operations relevant
+    to AI Accelerator integration, kernel entry points, or message structure handling.
+    Therefore, all confidence scores are assigned as zero.'
 Top_Analysis:
   AIARelevantFunction:
     description: Top 10 functions ranked by AIARelevantFunction score
     functions:
     - rank: 1
-      function_name: gasket-driver/src/gasket_page_table.c:gasket_unmap_extended_pages
-      operation_type: functions_by_file
-      score: 70
-      reasoning: The function `gasket_unmap_extended_pages` is involved in managing
-        memory mappings for a device, specifically unmapping pages that are associated
-        with a DMA operation. It utilizes the `dma_sync_single_for_device` function,
-        which is critical for ensuring that the device has a coherent view of the
-        memory. However, it does not directly handle user pages or shared memory identifiers
-        (SMIDs) as it focuses on unmapping and synchronization rather than mapping
-        or pinning user memory. Therefore, while it is relevant to AIA operations,
-        it does not fully meet the criteria for AIARelevantFunction.
-    - rank: 2
-      function_name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
-      operation_type: functions_by_file
-      score: 20
-      reasoning: '**AIARelevantFunction Score (20)**: The function `gasket_perform_unmapping`
-        is primarily focused on unmapping pages from a device''s address translation
-        table and releasing resources. While it does inv...'
-    - rank: 3
-      function_name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl1_page_idx
-      operation_type: functions_by_file
-      score: 10
-      reasoning: 'AIARelevantFunction: The function `gasket_extended_lvl1_page_idx`
-        has a very low confidence score in this category (10%) because it merely calculates
-        an index based on a device address and does not ex...'
-    - rank: 4
       function_name: gasket-driver/src/gasket_core.c:gasket_init
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_init` does
-        not perform any operations related to shared memory (SMem) sharing with an
-        AI Accelerator (AIA). It mainly initializes mutexes and s...'
-    - rank: 5
+      reasoning: '**AIARelevantFunction Score (0%)**: The `gasket_init` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes mutexes and sets up driv...'
+    - rank: 2
       function_name: gasket-driver/src/gasket_core.c:gasket_register_device
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_register_device`
-        does not involve any operations related to shared memory management or direct
-        interaction with an AI Accelerator (AIA). It pri...'
-    - rank: 6
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_register_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on registering a d...'
+    - rank: 3
       function_name: gasket-driver/src/gasket_core.c:gasket_pci_add_device
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_pci_add_device`
-        does not directly interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on adding a PCI devi...'
-    - rank: 7
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on adding a PCI dev...'
+    - rank: 4
       function_name: gasket-driver/src/gasket_core.c:lookup_pci_internal_desc
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `lookup_pci_internal_desc`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on looking up a PCI device...'
-    - rank: 8
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily focused on looking up a PCI device descr...'
+    - rank: 5
       function_name: gasket-driver/src/gasket_core.c:gasket_alloc_dev
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_alloc_dev`
-        does not directly involve any operations related to shared memory (SMem) management
-        or interactions with an AI Accelerator (AIA). It...'
-    - rank: 9
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initi...'
+    - rank: 6
       function_name: gasket-driver/src/gasket_core.c:gasket_find_dev_slot
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_find_dev_slot`
-        does not interact with any AI Accelerator (AIA) relevant operations such as
-        memory management, DMA, or shared memory handling. It...'
-    - rank: 10
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on finding a device ...'
+    - rank: 7
       function_name: gasket-driver/src/gasket_core.c:gasket_setup_pci
       operation_type: functions_by_file
       score: 0
-      reasoning: The function `gasket_setup_pci` is primarily concerned with setting
-        up PCI devices and mapping PCI Base Address Registers (BARs). It does not
-        involve any operations that pertain to shared memory manag...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_setup_pci`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on setting up PCI device...'
+    - rank: 8
+      function_name: gasket-driver/src/gasket_core.c:gasket_map_pci_bar
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_map_pci_bar`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with mapping PCI BARs (B...'
+    - rank: 9
+      function_name: gasket-driver/src/gasket_core.c:gasket_wait_with_reschedule
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_wait_with_reschedule`
+        does not interact with any AI Accelerator (AIA) relevant functions such as
+        pinning user pages, obtaining physical addresse...'
+    - rank: 10
+      function_name: gasket-driver/src/gasket_core.c:gasket_enable_device
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_enable_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on enabling a device...'
   Relevant_KD_Entry_Point:
     description: Top 10 functions ranked by Relevant_KD_Entry_Point score
     functions:
@@ -872,264 +958,221 @@ Top_Analysis:
       function_name: gasket-driver/src/gasket_core.c:gasket_init
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_init` does
-        not perform any operations related to shared memory (SMem) sharing with an
-        AI Accelerator (AIA). It mainly initializes mutexes and s...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The `gasket_init` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes mutexes and sets up driv...'
     - rank: 2
       function_name: gasket-driver/src/gasket_core.c:gasket_register_device
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_register_device`
-        does not involve any operations related to shared memory management or direct
-        interaction with an AI Accelerator (AIA). It pri...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_register_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on registering a d...'
     - rank: 3
       function_name: gasket-driver/src/gasket_core.c:gasket_pci_add_device
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_pci_add_device`
-        does not directly interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on adding a PCI devi...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on adding a PCI dev...'
     - rank: 4
       function_name: gasket-driver/src/gasket_core.c:lookup_pci_internal_desc
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `lookup_pci_internal_desc`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on looking up a PCI device...'
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily focused on looking up a PCI device descr...'
     - rank: 5
       function_name: gasket-driver/src/gasket_core.c:gasket_alloc_dev
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_alloc_dev`
-        does not directly involve any operations related to shared memory (SMem) management
-        or interactions with an AI Accelerator (AIA). It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initi...'
     - rank: 6
       function_name: gasket-driver/src/gasket_core.c:gasket_find_dev_slot
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_find_dev_slot`
-        does not interact with any AI Accelerator (AIA) relevant operations such as
-        memory management, DMA, or shared memory handling. It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on finding a device ...'
     - rank: 7
       function_name: gasket-driver/src/gasket_core.c:gasket_setup_pci
       operation_type: functions_by_file
       score: 0
-      reasoning: The function `gasket_setup_pci` is primarily concerned with setting
-        up PCI devices and mapping PCI Base Address Registers (BARs). It does not
-        involve any operations that pertain to shared memory manag...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_setup_pci`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on setting up PCI device...'
     - rank: 8
       function_name: gasket-driver/src/gasket_core.c:gasket_map_pci_bar
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_map_pci_bar` does
-        not engage in activities relevant to sharing memory with an AI Accelerator.
-        It primarily deals with mapping a PCI BAR (Base Address Regi...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_map_pci_bar`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with mapping PCI BARs (B...'
     - rank: 9
       function_name: gasket-driver/src/gasket_core.c:gasket_wait_with_reschedule
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_wait_with_reschedule`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily reads a value from a device re...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_wait_with_reschedule`
+        does not interact with any AI Accelerator (AIA) relevant functions such as
+        pinning user pages, obtaining physical addresse...'
     - rank: 10
       function_name: gasket-driver/src/gasket_core.c:gasket_enable_device
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_enable_device`
-        does not directly involve sharing shared memory with an AI Accelerator (AIA).
-        It primarily focuses on enabling a device, initial...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_enable_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on enabling a device...'
   Message_Structure_Handling:
     description: Top 10 functions ranked by Message_Structure_Handling score
     functions:
     - rank: 1
-      function_name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
-      operation_type: functions_by_file
-      score: 40
-      reasoning: '**AIARelevantFunction Score (20)**: The function `gasket_perform_unmapping`
-        is primarily focused on unmapping pages from a device''s address translation
-        table and releasing resources. While it does inv...'
-      message_structures_identified: []
-      smids_identified:
-      - dma_addr
-    - rank: 2
       function_name: gasket-driver/src/gasket_core.c:gasket_init
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_init` does
-        not perform any operations related to shared memory (SMem) sharing with an
-        AI Accelerator (AIA). It mainly initializes mutexes and s...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The `gasket_init` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes mutexes and sets up driv...'
       message_structures_identified: []
       smids_identified: []
-    - rank: 3
+    - rank: 2
       function_name: gasket-driver/src/gasket_core.c:gasket_register_device
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_register_device`
-        does not involve any operations related to shared memory management or direct
-        interaction with an AI Accelerator (AIA). It pri...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_register_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on registering a d...'
       message_structures_identified: []
       smids_identified: []
-    - rank: 4
+    - rank: 3
       function_name: gasket-driver/src/gasket_core.c:gasket_pci_add_device
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_pci_add_device`
-        does not directly interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on adding a PCI devi...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on adding a PCI dev...'
       message_structures_identified: []
       smids_identified: []
-    - rank: 5
+    - rank: 4
       function_name: gasket-driver/src/gasket_core.c:lookup_pci_internal_desc
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `lookup_pci_internal_desc`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on looking up a PCI device...'
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily focused on looking up a PCI device descr...'
       message_structures_identified: []
       smids_identified: []
-    - rank: 6
+    - rank: 5
       function_name: gasket-driver/src/gasket_core.c:gasket_alloc_dev
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_alloc_dev`
-        does not directly involve any operations related to shared memory (SMem) management
-        or interactions with an AI Accelerator (AIA). It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initi...'
       message_structures_identified: []
       smids_identified: []
-    - rank: 7
+    - rank: 6
       function_name: gasket-driver/src/gasket_core.c:gasket_find_dev_slot
       operation_type: functions_by_file
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_find_dev_slot`
-        does not interact with any AI Accelerator (AIA) relevant operations such as
-        memory management, DMA, or shared memory handling. It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on finding a device ...'
       message_structures_identified: []
       smids_identified: []
-    - rank: 8
+    - rank: 7
       function_name: gasket-driver/src/gasket_core.c:gasket_setup_pci
       operation_type: functions_by_file
       score: 0
-      reasoning: The function `gasket_setup_pci` is primarily concerned with setting
-        up PCI devices and mapping PCI Base Address Registers (BARs). It does not
-        involve any operations that pertain to shared memory manag...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_setup_pci`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on setting up PCI device...'
       message_structures_identified: []
       smids_identified: []
-    - rank: 9
+    - rank: 8
       function_name: gasket-driver/src/gasket_core.c:gasket_map_pci_bar
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_map_pci_bar` does
-        not engage in activities relevant to sharing memory with an AI Accelerator.
-        It primarily deals with mapping a PCI BAR (Base Address Regi...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_map_pci_bar`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with mapping PCI BARs (B...'
       message_structures_identified: []
       smids_identified: []
-    - rank: 10
+    - rank: 9
       function_name: gasket-driver/src/gasket_core.c:gasket_wait_with_reschedule
       operation_type: functions_by_file
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_wait_with_reschedule`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily reads a value from a device re...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_wait_with_reschedule`
+        does not interact with any AI Accelerator (AIA) relevant functions such as
+        pinning user pages, obtaining physical addresse...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 10
+      function_name: gasket-driver/src/gasket_core.c:gasket_enable_device
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_enable_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on enabling a device...'
       message_structures_identified: []
       smids_identified: []
   Overall_Top_Scores:
     description: All function scores sorted from highest to lowest across all categories
     total_entries: 84
     entries:
-    - function_name: gasket-driver/src/gasket_page_table.c:gasket_unmap_extended_pages
-      operation_type: functions_by_file
-      category: AIARelevantFunction
-      score: 70
-      reasoning: The function `gasket_unmap_extended_pages` is involved in managing
-        memory mappings for a device, specifically unmapping pages that are associated
-        with a DMA operation. It utilizes the `dma_sync_single_for_device` function,
-        which is critical for ensuring that the device has a coherent view of the
-        memory. However, it does not directly handle user pages or shared memory identifiers
-        (SMIDs) as it focuses on unmapping and synchronization rather than mapping
-        or pinning user memory. Therefore, while it is relevant to AIA operations,
-        it does not fully meet the criteria for AIARelevantFunction.
-      message_structures: []
-      smids: []
-    - function_name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
-      operation_type: functions_by_file
-      category: Message_Structure_Handling
-      score: 40
-      reasoning: '**AIARelevantFunction Score (20)**: The function `gasket_perform_unmapping`
-        is primarily focused on unmapping pages from a device''s address translation
-        table and releasing resources. While it does inv...'
-      message_structures: []
-      smids:
-      - dma_addr
-    - function_name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
-      operation_type: functions_by_file
-      category: AIARelevantFunction
-      score: 20
-      reasoning: '**AIARelevantFunction Score (20)**: The function `gasket_perform_unmapping`
-        is primarily focused on unmapping pages from a device''s address translation
-        table and releasing resources. While it does inv...'
-      message_structures: []
-      smids: []
-    - function_name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl1_page_idx
-      operation_type: functions_by_file
-      category: AIARelevantFunction
-      score: 10
-      reasoning: 'AIARelevantFunction: The function `gasket_extended_lvl1_page_idx`
-        has a very low confidence score in this category (10%) because it merely calculates
-        an index based on a device address and does not ex...'
-      message_structures: []
-      smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_init
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_init` does
-        not perform any operations related to shared memory (SMem) sharing with an
-        AI Accelerator (AIA). It mainly initializes mutexes and s...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The `gasket_init` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes mutexes and sets up driv...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_init
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_init` does
-        not perform any operations related to shared memory (SMem) sharing with an
-        AI Accelerator (AIA). It mainly initializes mutexes and s...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The `gasket_init` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes mutexes and sets up driv...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_init
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_init` does
-        not perform any operations related to shared memory (SMem) sharing with an
-        AI Accelerator (AIA). It mainly initializes mutexes and s...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The `gasket_init` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes mutexes and sets up driv...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_register_device
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_register_device`
-        does not involve any operations related to shared memory management or direct
-        interaction with an AI Accelerator (AIA). It pri...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_register_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on registering a d...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_register_device
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_register_device`
-        does not involve any operations related to shared memory management or direct
-        interaction with an AI Accelerator (AIA). It pri...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_register_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on registering a d...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_register_device
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_register_device`
-        does not involve any operations related to shared memory management or direct
-        interaction with an AI Accelerator (AIA). It pri...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_register_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on registering a d...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_pci_add_device
@@ -1137,8 +1180,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_pci_add_device`
-        does not directly interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on adding a PCI devi...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on adding a PCI dev...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_pci_add_device
@@ -1146,8 +1189,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_pci_add_device`
-        does not directly interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on adding a PCI devi...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on adding a PCI dev...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_pci_add_device
@@ -1155,8 +1198,8 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_pci_add_device`
-        does not directly interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on adding a PCI devi...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on adding a PCI dev...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:lookup_pci_internal_desc
@@ -1164,8 +1207,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `lookup_pci_internal_desc`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on looking up a PCI device...'
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily focused on looking up a PCI device descr...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:lookup_pci_internal_desc
@@ -1173,8 +1216,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `lookup_pci_internal_desc`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on looking up a PCI device...'
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily focused on looking up a PCI device descr...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:lookup_pci_internal_desc
@@ -1182,8 +1225,8 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `lookup_pci_internal_desc`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily focuses on looking up a PCI device...'
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily focused on looking up a PCI device descr...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_alloc_dev
@@ -1191,8 +1234,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_alloc_dev`
-        does not directly involve any operations related to shared memory (SMem) management
-        or interactions with an AI Accelerator (AIA). It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initi...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_alloc_dev
@@ -1200,8 +1243,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_alloc_dev`
-        does not directly involve any operations related to shared memory (SMem) management
-        or interactions with an AI Accelerator (AIA). It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initi...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_alloc_dev
@@ -1209,8 +1252,8 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_alloc_dev`
-        does not directly involve any operations related to shared memory (SMem) management
-        or interactions with an AI Accelerator (AIA). It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initi...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_find_dev_slot
@@ -1218,8 +1261,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_find_dev_slot`
-        does not interact with any AI Accelerator (AIA) relevant operations such as
-        memory management, DMA, or shared memory handling. It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on finding a device ...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_find_dev_slot
@@ -1227,8 +1270,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_find_dev_slot`
-        does not interact with any AI Accelerator (AIA) relevant operations such as
-        memory management, DMA, or shared memory handling. It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on finding a device ...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_find_dev_slot
@@ -1236,116 +1279,116 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_find_dev_slot`
-        does not interact with any AI Accelerator (AIA) relevant operations such as
-        memory management, DMA, or shared memory handling. It...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on finding a device ...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_setup_pci
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: The function `gasket_setup_pci` is primarily concerned with setting
-        up PCI devices and mapping PCI Base Address Registers (BARs). It does not
-        involve any operations that pertain to shared memory manag...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_setup_pci`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on setting up PCI device...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_setup_pci
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: The function `gasket_setup_pci` is primarily concerned with setting
-        up PCI devices and mapping PCI Base Address Registers (BARs). It does not
-        involve any operations that pertain to shared memory manag...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_setup_pci`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on setting up PCI device...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_setup_pci
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: The function `gasket_setup_pci` is primarily concerned with setting
-        up PCI devices and mapping PCI Base Address Registers (BARs). It does not
-        involve any operations that pertain to shared memory manag...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_setup_pci`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on setting up PCI device...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_map_pci_bar
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_map_pci_bar` does
-        not engage in activities relevant to sharing memory with an AI Accelerator.
-        It primarily deals with mapping a PCI BAR (Base Address Regi...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_map_pci_bar`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with mapping PCI BARs (B...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_map_pci_bar
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_map_pci_bar` does
-        not engage in activities relevant to sharing memory with an AI Accelerator.
-        It primarily deals with mapping a PCI BAR (Base Address Regi...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_map_pci_bar`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with mapping PCI BARs (B...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_map_pci_bar
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_map_pci_bar` does
-        not engage in activities relevant to sharing memory with an AI Accelerator.
-        It primarily deals with mapping a PCI BAR (Base Address Regi...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_map_pci_bar`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with mapping PCI BARs (B...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_wait_with_reschedule
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_wait_with_reschedule`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily reads a value from a device re...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_wait_with_reschedule`
+        does not interact with any AI Accelerator (AIA) relevant functions such as
+        pinning user pages, obtaining physical addresse...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_wait_with_reschedule
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_wait_with_reschedule`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily reads a value from a device re...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_wait_with_reschedule`
+        does not interact with any AI Accelerator (AIA) relevant functions such as
+        pinning user pages, obtaining physical addresse...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_wait_with_reschedule
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_wait_with_reschedule`
-        does not interact with shared memory or AI Accelerator (AIA) functionalities.
-        It primarily reads a value from a device re...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_wait_with_reschedule`
+        does not interact with any AI Accelerator (AIA) relevant functions such as
+        pinning user pages, obtaining physical addresse...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_enable_device
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_enable_device`
-        does not directly involve sharing shared memory with an AI Accelerator (AIA).
-        It primarily focuses on enabling a device, initial...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_enable_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on enabling a device...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_enable_device
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_enable_device`
-        does not directly involve sharing shared memory with an AI Accelerator (AIA).
-        It primarily focuses on enabling a device, initial...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_enable_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on enabling a device...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_enable_device
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_enable_device`
-        does not directly involve sharing shared memory with an AI Accelerator (AIA).
-        It primarily focuses on enabling a device, initial...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_enable_device`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on enabling a device...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_get_driver_desc
@@ -1353,8 +1396,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_get_driver_desc`
-        does not interact with shared memory or perform any operations related to
-        an AI Accelerator (AIA). It simply retrieves the driv...'
+        does not involve any operations related to shared memory management, DMA,
+        or interactions with an AI Accelerator. It simply ret...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_get_driver_desc
@@ -1362,8 +1405,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_get_driver_desc`
-        does not interact with shared memory or perform any operations related to
-        an AI Accelerator (AIA). It simply retrieves the driv...'
+        does not involve any operations related to shared memory management, DMA,
+        or interactions with an AI Accelerator. It simply ret...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_get_driver_desc
@@ -1371,41 +1414,35 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_get_driver_desc`
-        does not interact with shared memory or perform any operations related to
-        an AI Accelerator (AIA). It simply retrieves the driv...'
+        does not involve any operations related to shared memory management, DMA,
+        or interactions with an AI Accelerator. It simply ret...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:check_and_invoke_callback
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: This function does not interact with shared memory or an AI Accelerator
-        directly. It simply checks if a callback function is provided and invokes
-        it while managing a mutex lock around the operation. There are no operations
-        related to pinning user pages, obtaining DMA addresses, or managing memory
-        for an AI Accelerator.
+      reasoning: '**AIARelevantFunction Score (0)**: The function `check_and_invoke_callback`
+        does not interact with any AI Accelerator (AIA) relevant functions or memory
+        management patterns associated with shared memo...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:check_and_invoke_callback
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: The function does not act as an entry point from user space to kernel
-        space. It does not handle any ioctl commands or user space requests. The function
-        is purely a utility for calling a provided callback function in a thread-safe
-        manner.
+      reasoning: '**AIARelevantFunction Score (0)**: The function `check_and_invoke_callback`
+        does not interact with any AI Accelerator (AIA) relevant functions or memory
+        management patterns associated with shared memo...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:check_and_invoke_callback
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: There are no message structures or shared memory identifiers being
-        handled within this function. It does not perform any operations related to
-        `copy_from_user()` or `copy_to_user()`, nor does it involve any structures
-        that would qualify as SMIDs. Overall, the function is primarily focused on
-        callback invocation within the context of a mutex lock and does not pertain
-        to AI Accelerator integration or shared memory interactions.
+      reasoning: '**AIARelevantFunction Score (0)**: The function `check_and_invoke_callback`
+        does not interact with any AI Accelerator (AIA) relevant functions or memory
+        management patterns associated with shared memo...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_get_hw_status
@@ -1413,8 +1450,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_get_hw_status`
-        does not involve any operations related to shared memory management or interactions
-        with an AI Accelerator (AIA). It primarily ch...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily checks the hardware status a...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_get_hw_status
@@ -1422,8 +1459,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_get_hw_status`
-        does not involve any operations related to shared memory management or interactions
-        with an AI Accelerator (AIA). It primarily ch...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily checks the hardware status a...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_get_hw_status
@@ -1431,35 +1468,35 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_get_hw_status`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily checks the hardware status a...'
+      message_structures: []
+      smids: []
+    - function_name: gasket-driver/src/gasket_core.c:gasket_check_and_invoke_callback_nolock
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_check_and_invoke_callback_nolock`
         does not involve any operations related to shared memory management or interactions
-        with an AI Accelerator (AIA). It primarily ch...'
-      message_structures: []
-      smids: []
-    - function_name: gasket-driver/src/gasket_core.c:gasket_check_and_invoke_callback_nolock
-      operation_type: functions_by_file
-      category: AIARelevantFunction
-      score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_check_and_invoke_callback_nolock`
-        does not involve any operations related to shared memory (SMem) or AI Accelerator
-        (AIA). It simply checks if a callback ...'
+        with an AI Accelerator (AI...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_check_and_invoke_callback_nolock
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_check_and_invoke_callback_nolock`
-        does not involve any operations related to shared memory (SMem) or AI Accelerator
-        (AIA). It simply checks if a callback ...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_check_and_invoke_callback_nolock`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AI...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_check_and_invoke_callback_nolock
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_check_and_invoke_callback_nolock`
-        does not involve any operations related to shared memory (SMem) or AI Accelerator
-        (AIA). It simply checks if a callback ...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_check_and_invoke_callback_nolock`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AI...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_add_cdev
@@ -1467,8 +1504,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_add_cdev`
-        is primarily focused on adding a character device to the kernel''s device
-        model. It initializes a `cdev` structure and adds it to the s...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing and addin...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_add_cdev
@@ -1476,8 +1513,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_add_cdev`
-        is primarily focused on adding a character device to the kernel''s device
-        model. It initializes a `cdev` structure and adds it to the s...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing and addin...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_core.c:gasket_add_cdev
@@ -1485,89 +1522,89 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_add_cdev`
-        is primarily focused on adding a character device to the kernel''s device
-        model. It initializes a `cdev` structure and adds it to the s...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing and addin...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_init
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_init`
-        does not directly involve sharing shared memory with an AI Accelerator (AIA).
-        It primarily initializes a page table structure ...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_init`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a ...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_init
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_init`
-        does not directly involve sharing shared memory with an AI Accelerator (AIA).
-        It primarily initializes a page table structure ...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_init`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a ...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_init
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_init`
-        does not directly involve sharing shared memory with an AI Accelerator (AIA).
-        It primarily initializes a page table structure ...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_init`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a ...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_reset
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: The function `gasket_page_table_reset` does not appear to directly
-        interact with shared memory (SMem) for an AI Accelerator (AIA). It mainly
-        handles a page table reset operation which involves mutex l...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_reset`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily focuses on r...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_reset
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: The function `gasket_page_table_reset` does not appear to directly
-        interact with shared memory (SMem) for an AI Accelerator (AIA). It mainly
-        handles a page table reset operation which involves mutex l...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_reset`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily focuses on r...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_reset
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: The function `gasket_page_table_reset` does not appear to directly
-        interact with shared memory (SMem) for an AI Accelerator (AIA). It mainly
-        handles a page table reset operation which involves mutex l...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_reset`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily focuses on r...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_unmap_all_nolock
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_unmap_all_nolock`
-        is primarily focused on unmapping pages from a page table and does not involve
-        any operations that directly relate...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_unmap_all_nolock`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on unm...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_unmap_all_nolock
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_unmap_all_nolock`
-        is primarily focused on unmapping pages from a page table and does not involve
-        any operations that directly relate...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_unmap_all_nolock`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on unm...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_unmap_all_nolock
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_unmap_all_nolock`
-        is primarily focused on unmapping pages from a page table and does not involve
-        any operations that directly relate...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_unmap_all_nolock`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on unm...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_detach_dmabuf_nolock
@@ -1575,8 +1612,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_detach_dmabuf_nolock`
-        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
-        It primarily deals with detac...'
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management f...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_detach_dmabuf_nolock
@@ -1584,8 +1621,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_detach_dmabuf_nolock`
-        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
-        It primarily deals with detac...'
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management f...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_detach_dmabuf_nolock
@@ -1593,8 +1630,8 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_detach_dmabuf_nolock`
-        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
-        It primarily deals with detac...'
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management f...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_components_to_dev_address
@@ -1602,8 +1639,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_components_to_dev_address`
-        does not interact with shared memory or AI Accelerator components directly.
-        It simply computes a device address based...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply computes a device a...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_components_to_dev_address
@@ -1611,8 +1648,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_components_to_dev_address`
-        does not interact with shared memory or AI Accelerator components directly.
-        It simply computes a device address based...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply computes a device a...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_components_to_dev_address
@@ -1620,8 +1657,8 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_components_to_dev_address`
-        does not interact with shared memory or AI Accelerator components directly.
-        It simply computes a device address based...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply computes a device a...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_unmap_simple_pages
@@ -1655,130 +1692,162 @@ Top_Analysis:
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_simple_page_idx` does
-        not involve sharing shared memory with an AI Accelerator, nor does it perform
-        any actions related to pinning user pages, iterating o...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_simple_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates an index based on ...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_simple_page_idx
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_simple_page_idx` does
-        not involve sharing shared memory with an AI Accelerator, nor does it perform
-        any actions related to pinning user pages, iterating o...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_simple_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates an index based on ...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_simple_page_idx
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction**: The function `gasket_simple_page_idx` does
-        not involve sharing shared memory with an AI Accelerator, nor does it perform
-        any actions related to pinning user pages, iterating o...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_simple_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates an index based on ...'
+      message_structures: []
+      smids: []
+    - function_name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_perform_unmapping`
+        does not directly involve sharing memory with an AI Accelerator (AIA). Instead,
+        it focuses on unmapping pages from a device''s...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction Score (20)**: The function `gasket_perform_unmapping`
-        is primarily focused on unmapping pages from a device''s address translation
-        table and releasing resources. While it does inv...'
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_perform_unmapping`
+        does not directly involve sharing memory with an AI Accelerator (AIA). Instead,
+        it focuses on unmapping pages from a device''s...'
+      message_structures: []
+      smids: []
+    - function_name: gasket-driver/src/gasket_page_table.c:gasket_perform_unmapping
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_perform_unmapping`
+        does not directly involve sharing memory with an AI Accelerator (AIA). Instead,
+        it focuses on unmapping pages from a device''s...'
+      message_structures: []
+      smids: []
+    - function_name: gasket-driver/src/gasket_page_table.c:gasket_unmap_extended_pages
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_unmap_extended_pages`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that would qualify it as relevant to AIA o...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_unmap_extended_pages
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: This function does not represent an entry point from user space to
-        kernel space. There are no ioctl commands or user commands being handled within
-        this function. It is a utility function that operates on the internal structures
-        of the driver and does not interact with user space directly.
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_unmap_extended_pages`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that would qualify it as relevant to AIA o...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_unmap_extended_pages
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: The function does not handle any message structures exchanged between
-        user space and kernel space. There are no `copy_from_user()` or `copy_to_user()`
-        calls present, nor are there any structures being passed that would qualify
-        as message structures. The function primarily deals with internal data structures
-        (`gasket_page_table` and `gasket_page_table_entry`) and does not involve user-defined
-        message formats.
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_unmap_extended_pages`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that would qualify it as relevant to AIA o...'
+      message_structures: []
+      smids: []
+    - function_name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl1_page_idx
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_extended_lvl1_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply computes an index bas...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl1_page_idx
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: 'AIARelevantFunction: The function `gasket_extended_lvl1_page_idx`
-        has a very low confidence score in this category (10%) because it merely calculates
-        an index based on a device address and does not ex...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_extended_lvl1_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply computes an index bas...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl1_page_idx
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: 'AIARelevantFunction: The function `gasket_extended_lvl1_page_idx`
-        has a very low confidence score in this category (10%) because it merely calculates
-        an index based on a device address and does not ex...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_extended_lvl1_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply computes an index bas...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl0_page_idx
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: For the AIARelevantFunction score, I assigned a 0% because the function
-        `gasket_extended_lvl0_page_idx` does not involve any operations related to
-        sharing shared memory with an AI Accelerator. It mere...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_extended_lvl0_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates an index ba...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl0_page_idx
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: For the AIARelevantFunction score, I assigned a 0% because the function
-        `gasket_extended_lvl0_page_idx` does not involve any operations related to
-        sharing shared memory with an AI Accelerator. It mere...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_extended_lvl0_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates an index ba...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_extended_lvl0_page_idx
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: For the AIARelevantFunction score, I assigned a 0% because the function
-        `gasket_extended_lvl0_page_idx` does not involve any operations related to
-        sharing shared memory with an AI Accelerator. It mere...
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_extended_lvl0_page_idx`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates an index ba...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_system_status
       operation_type: functions_by_file
       category: AIARelevantFunction
       score: 0
-      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_system_status`
-        does not involve any operations related to shared memory management or AI
-        Accelerator integration. It primarily checks...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_system_status`
+        does not interact with any AI Accelerator (AIA) relevant memory management
+        functions such as pinning user pages, obta...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_system_status
       operation_type: functions_by_file
       category: Relevant_KD_Entry_Point
       score: 0
-      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_system_status`
-        does not involve any operations related to shared memory management or AI
-        Accelerator integration. It primarily checks...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_system_status`
+        does not interact with any AI Accelerator (AIA) relevant memory management
+        functions such as pinning user pages, obta...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_system_status
       operation_type: functions_by_file
       category: Message_Structure_Handling
       score: 0
-      reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_system_status`
-        does not involve any operations related to shared memory management or AI
-        Accelerator integration. It primarily checks...'
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gasket_page_table_system_status`
+        does not interact with any AI Accelerator (AIA) relevant memory management
+        functions such as pinning user pages, obta...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_num_entries
@@ -1786,8 +1855,8 @@ Top_Analysis:
       category: AIARelevantFunction
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_num_entries`
-        does not interact with any AI Accelerator (AIA) relevant operations. It simply
-        calculates the total number of entries in...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates the total n...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_num_entries
@@ -1795,8 +1864,8 @@ Top_Analysis:
       category: Relevant_KD_Entry_Point
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_num_entries`
-        does not interact with any AI Accelerator (AIA) relevant operations. It simply
-        calculates the total number of entries in...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates the total n...'
       message_structures: []
       smids: []
     - function_name: gasket-driver/src/gasket_page_table.c:gasket_page_table_num_entries
@@ -1804,7 +1873,7 @@ Top_Analysis:
       category: Message_Structure_Handling
       score: 0
       reasoning: '**AIARelevantFunction Score (0)**: The function `gasket_page_table_num_entries`
-        does not interact with any AI Accelerator (AIA) relevant operations. It simply
-        calculates the total number of entries in...'
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It simply calculates the total n...'
       message_structures: []
       smids: []

@@ -183,6 +183,10 @@ class JSONAnalyzer:
         """Export analysis results to YAML file"""
         self.output_formatter.export_to_yaml(results, output_file)
     
+    def export_results_to_csv(self, results: Dict[str, List[AnalysisResult]], output_file: str):
+        """Export analysis results to CSV file with rankings by category"""
+        self.output_formatter.export_to_csv(results, output_file)
+    
     def print_results_summary(self, results: Dict[str, List[AnalysisResult]]):
         """Print a summary of analysis results"""
         self.output_formatter.print_summary(results)
