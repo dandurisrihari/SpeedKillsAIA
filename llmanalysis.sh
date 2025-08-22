@@ -21,7 +21,7 @@ for PLATFORM in "${PLATFORMS[@]}"; do
             echo "Launching analysis for $PLATFORM ($TYPE)..."
             python3 -m src.llm_analysis "$INPUT_FILE" \
                 --output "$OUTPUT_FILE" \
-                -v --verbose-log "$LOG_FILE" &
+                -v --verbose-log "$LOG_FILE" --csv-export &
         else
             echo "Skipping: $INPUT_FILE not found"
         fi

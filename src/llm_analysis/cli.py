@@ -33,6 +33,9 @@ Examples:
   
   # Disable struct analyzer tools for faster processing
   python -m llm_analysis.cli data/json_files/coral_boot.json --disable-tools
+  
+  # Export results in both YAML and CSV formats
+  python -m llm_analysis.cli data/json_files/coral_boot.json --csv-export
 
 Tool Calling:
   By default, the LLM can call the struct analyzer tool to analyze C structures
@@ -87,6 +90,12 @@ Tool Calling:
         '--disable-tools',
         action='store_true',
         help='Disable function calling tools (struct analyzer integration) - tools are enabled by default to allow LLM to analyze C structures from preprocessed files'
+    )
+    
+    parser.add_argument(
+        '--csv-export',
+        action='store_true',
+        help='Export analysis results to CSV format with rankings by category (AIARelevantFunction, Relevant_KD_Entry_Point, Message_Structure_Handling)'
     )
     
     return parser
@@ -198,6 +207,12 @@ def main():
             # Export results
             analyzer.export_results_to_yaml(results, output_file)
             print(f"Results saved to: {output_file}")
+            
+            # Export CSV if requested
+            if args.csv_export:
+                csv_file = output_file.replace('.yaml', '.csv').replace('.yml', '.csv')
+                analyzer.export_results_to_csv(results, csv_file)
+                print(f"CSV results saved to: {csv_file}")
             
             # Print summary unless disabled
             if not args.no_summary:
