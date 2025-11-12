@@ -4,7 +4,7 @@
 
 SpeedKillsAIA (DeputyHunt) is a framework designed to detect and analyze confused deputy attacks targeting AI accelerator systems.
 
-## 📋 Overview
+## Overview
 
 The framework consists of four main components:
 
@@ -13,7 +13,7 @@ The framework consists of four main components:
 - **`src/llm_analysis`** → Takes in gathered information (JSON format) and produces CSV, YAML, log files containing analysis
 - **`src/structanalyzer`** → Helps LLM do structure analysis, can be used independently as module as well
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Environment Setup
 ```bash
