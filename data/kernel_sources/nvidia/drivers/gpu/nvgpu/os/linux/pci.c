@@ -844,7 +844,6 @@ static struct pci_driver nvgpu_pci_driver = {
 int __init nvgpu_pci_init(void)
 {
 	int ret;
-	printk(KERN_ERR "[Debug Sri] testing initialization\n");
 
 	ret = pci_register_driver(&nvgpu_pci_driver);
 	if (ret)

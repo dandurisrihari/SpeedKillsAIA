@@ -955,7 +955,9 @@ printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, c
 
 #ifdef CONFIG_NVGPU_DEBUGGER
 	nvgpu_mutex_acquire(&g->dbg_sessions_lock);
-	if (g->dbg_powergating_disabled_refcount == 0) {
+	if (g->dbg_powergating_disabled_refcount == 0 &&
+		cmd != NVGPU_PROFILER_IOCTL_BIND_CONTEXT &&
+		cmd != NVGPU_PROFILER_IOCTL_UNBIND_CONTEXT) {
 		nvgpu_err(g, "powergate is not disabled");
 	}
 	nvgpu_mutex_release(&g->dbg_sessions_lock);

@@ -2298,7 +2298,7 @@ printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
 }
 
 long gk20a_ctrl_dev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
-{	
+{
  printk(KERN_INFO "IOCTL_HANDLER: Function gk20a_ctrl_dev_ioctl called at %s:%d\n", __FILE__, __LINE__);
 	struct gk20a_ctrl_priv *priv = filp->private_data;
 	struct gk20a *g = priv->g;
@@ -2342,8 +2342,6 @@ printk(KERN_INFO "USER_COPY_CONTEXT: Process PID=%d, COMM=%s\n", current->pid, c
 
 		gk20a_idle(g);
 	}
-
-	printk(KERN_ERR "[Debug Sri] testing\n");
 
 	gpu_instance_id = nvgpu_get_gpu_instance_id_from_cdev(g, priv->cdev);
 	nvgpu_assert(gpu_instance_id < g->mig.num_gpu_instances);

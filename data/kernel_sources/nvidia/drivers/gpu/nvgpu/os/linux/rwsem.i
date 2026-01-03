@@ -1,8 +1,8 @@
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/rwsem.c"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel_out//"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/rwsem.c"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel_out//"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kconfig.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kconfig.h" 1
 
 
 
@@ -10,18 +10,18 @@
 
 
 # 1 "./include/generated/autoconf.h" 1
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kconfig.h" 2
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kconfig.h" 2
 # 1 "<command-line>" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 1
-# 65 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_attributes.h" 1
-# 66 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 2
-# 74 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler-gcc.h" 1
-# 75 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 2
-# 88 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/compiler.h" 1
-# 89 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 1
+# 65 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_attributes.h" 1
+# 66 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 2
+# 74 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler-gcc.h" 1
+# 75 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 2
+# 88 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/compiler.h" 1
+# 89 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 2
 
 
 struct ftrace_branch_data {
@@ -46,76 +46,76 @@ struct ftrace_likely_data {
  unsigned long constant;
 };
 # 1 "<command-line>" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/rwsem.c"
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/rwsem.c"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h" 1
-# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/linux/rwsem.h" 1
-# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/linux/rwsem.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/rwsem.c"
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/rwsem.c"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h" 1
+# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/linux/rwsem.h" 1
+# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/linux/rwsem.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/stringify.h" 1
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h" 1
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler_types.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/stringify.h" 1
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h" 1
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h"
 extern struct module __this_module;
-# 43 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler.h" 1
-# 232 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler.h"
+# 43 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler.h" 1
+# 232 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void *offset_to_ptr(const int *off)
 {
  return (void *)((unsigned long)off + *off);
 }
-# 248 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler.h"
+# 248 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler.h"
 # 1 "./arch/arm64/include/generated/asm/rwonce.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h" 1
-# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kasan-checks.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h" 1
+# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kasan-checks.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h" 1
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h" 1
 
 
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/types.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/types.h" 1
 
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/int-ll64.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/int-ll64.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/int-ll64.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/int-ll64.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/bitsperlong.h" 1
-# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/bitsperlong.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitsperlong.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/int-ll64.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/int-ll64.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/int-ll64.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/int-ll64.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/bitsperlong.h" 1
+# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/bitsperlong.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitsperlong.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/bitsperlong.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitsperlong.h" 2
-# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/bitsperlong.h" 2
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/int-ll64.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/bitsperlong.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitsperlong.h" 2
+# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/bitsperlong.h" 2
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/int-ll64.h" 2
 
 
 
@@ -135,7 +135,7 @@ typedef unsigned int __u32;
 
 __extension__ typedef __signed__ long long __s64;
 __extension__ typedef unsigned long long __u64;
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/int-ll64.h" 2
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/int-ll64.h" 2
 
 
 
@@ -148,22 +148,22 @@ typedef __s32 s32;
 typedef __u32 u32;
 typedef __s64 s64;
 typedef __u64 u64;
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/types.h" 2
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/types.h" 2
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h" 2
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/posix_types.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h" 2
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/posix_types.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/stddef.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/stddef.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/stddef.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/stddef.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/stddef.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/stddef.h" 2
 
 
 
@@ -172,8 +172,8 @@ enum {
  false = 0,
  true = 1
 };
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/posix_types.h" 2
-# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/posix_types.h"
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/posix_types.h" 2
+# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/posix_types.h"
 typedef struct {
  unsigned long fds_bits[1024 / (8 * sizeof(long))];
 } __kernel_fd_set;
@@ -185,7 +185,7 @@ typedef void (*__kernel_sighandler_t)(int);
 typedef int __kernel_key_t;
 typedef int __kernel_mqd_t;
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/posix_types.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/posix_types.h" 1
 
 
 
@@ -194,8 +194,8 @@ typedef unsigned short __kernel_old_uid_t;
 typedef unsigned short __kernel_old_gid_t;
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/posix_types.h" 1
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/posix_types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/posix_types.h" 1
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/posix_types.h"
 typedef long __kernel_long_t;
 typedef unsigned long __kernel_ulong_t;
 
@@ -232,9 +232,9 @@ typedef int __kernel_daddr_t;
 
 typedef unsigned int __kernel_uid32_t;
 typedef unsigned int __kernel_gid32_t;
-# 59 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/posix_types.h"
+# 59 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/posix_types.h"
 typedef unsigned int __kernel_old_dev_t;
-# 72 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/posix_types.h"
+# 72 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/posix_types.h"
 typedef __kernel_ulong_t __kernel_size_t;
 typedef __kernel_long_t __kernel_ssize_t;
 typedef __kernel_long_t __kernel_ptrdiff_t;
@@ -263,10 +263,10 @@ typedef int __kernel_clockid_t;
 typedef char * __kernel_caddr_t;
 typedef unsigned short __kernel_uid16_t;
 typedef unsigned short __kernel_gid16_t;
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/posix_types.h" 2
-# 37 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/posix_types.h" 2
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h" 2
-# 29 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h"
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/posix_types.h" 2
+# 37 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/posix_types.h" 2
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h" 2
+# 29 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h"
 typedef __u16 __le16;
 typedef __u16 __be16;
 typedef __u32 __le32;
@@ -276,9 +276,9 @@ typedef __u64 __be64;
 
 typedef __u16 __sum16;
 typedef __u32 __wsum;
-# 52 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h"
+# 52 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/types.h"
 typedef unsigned __poll_t;
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h" 2
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h" 2
 
 
 
@@ -319,7 +319,7 @@ typedef __kernel_old_gid_t old_gid_t;
 
 
 typedef __kernel_loff_t loff_t;
-# 55 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h"
+# 55 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h"
 typedef __kernel_size_t size_t;
 
 
@@ -375,10 +375,10 @@ typedef u32 uint32_t;
 typedef u64 uint64_t;
 typedef u64 u_int64_t;
 typedef s64 int64_t;
-# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h"
+# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h"
 typedef u64 sector_t;
 typedef u64 blkcnt_t;
-# 143 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h"
+# 143 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h"
 typedef u64 dma_addr_t;
 
 
@@ -432,7 +432,7 @@ struct ustat {
  char f_fname[6];
  char f_fpack[6];
 };
-# 216 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h"
+# 216 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/types.h"
 struct callback_head {
  struct callback_head *next;
  void (*func)(struct callback_head *head);
@@ -446,8 +446,8 @@ typedef void (*swap_func_t)(void *a, void *b, int size);
 
 typedef int (*cmp_r_func_t)(const void *a, const void *b, const void *priv);
 typedef int (*cmp_func_t)(const void *a, const void *b);
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kasan-checks.h" 2
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kasan-checks.h"
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kasan-checks.h" 2
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kasan-checks.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool __kasan_check_read(const volatile void *p, unsigned int size)
 {
  return true;
@@ -456,7 +456,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return true;
 }
-# 34 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kasan-checks.h"
+# 34 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kasan-checks.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool kasan_check_read(const volatile void *p, unsigned int size)
 {
  return true;
@@ -465,9 +465,9 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return true;
 }
-# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kcsan-checks.h" 1
-# 142 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kcsan-checks.h"
+# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kcsan-checks.h" 1
+# 142 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kcsan-checks.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __kcsan_check_access(const volatile void *ptr, size_t size,
      int type) { }
 
@@ -487,19 +487,19 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 kcsan_begin_scoped_access(const volatile void *ptr, size_t size, int type,
      struct kcsan_scoped_access *sa) { return sa; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void kcsan_end_scoped_access(struct kcsan_scoped_access *sa) { }
-# 178 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kcsan-checks.h"
+# 178 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kcsan-checks.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void kcsan_check_access(const volatile void *ptr, size_t size,
           int type) { }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __kcsan_enable_current(void) { }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __kcsan_disable_current(void) { }
-# 28 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h" 2
-# 64 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h"
+# 28 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h" 2
+# 64 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__))
 unsigned long __read_once_word_nocheck(const void *addr)
 {
  return (*(const volatile typeof( _Generic((*(unsigned long *)addr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(unsigned long *)addr))) *)&(*(unsigned long *)addr));
 }
-# 82 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h"
+# 82 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/rwonce.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__))
 unsigned long read_word_at_a_time(const void *addr)
 {
@@ -507,21 +507,21 @@ unsigned long read_word_at_a_time(const void *addr)
  return *(unsigned long *)addr;
 }
 # 1 "./arch/arm64/include/generated/asm/rwonce.h" 2
-# 249 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler.h" 2
-# 44 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h" 2
-# 60 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h"
+# 249 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/compiler.h" 2
+# 44 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h" 2
+# 60 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/export.h"
 struct kernel_symbol {
  int value_offset;
  int name_offset;
  int namespace_offset;
 };
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/linkage.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 2
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/linkage.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/linkage.h" 2
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 1
 
 
 
@@ -534,55 +534,55 @@ struct kernel_symbol {
 typedef __builtin_va_list __gnuc_va_list;
 # 99 "/usr/lib/gcc/aarch64-linux-gnu/9/include/stdarg.h" 3 4
 typedef __gnuc_va_list va_list;
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/limits.h" 1
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/limits.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/limits.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/limits.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/limits.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/limits.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/limits.h" 1
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/limits.h" 2
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
-
-
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/limits.h" 1
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/limits.h" 2
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h" 1
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h" 1
 
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 5 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h" 1
+# 5 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/const.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/const.h" 1
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/const.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/const.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/const.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/const.h" 2
-# 5 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/const.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/bits.h" 1
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h" 2
-# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/build_bug.h" 1
-# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h" 2
-# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/const.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/const.h" 2
+# 5 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/const.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/bits.h" 1
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h" 2
+# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/build_bug.h" 1
+# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bits.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h" 2
+# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
 
-# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
+# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
 extern unsigned int __sw_hweight8(unsigned int w);
 extern unsigned int __sw_hweight16(unsigned int w);
 extern unsigned int __sw_hweight32(unsigned int w);
@@ -592,79 +592,79 @@ extern unsigned long __sw_hweight64(__u64 w);
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 1
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-__ffs.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-__ffs.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-__ffs.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-__ffs.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __ffs(unsigned long word)
 {
  return __builtin_ctzl(word);
 }
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-ffs.h" 1
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-ffs.h"
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-ffs.h" 1
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-ffs.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int ffs(int x)
 {
  return __builtin_ffs(x);
 }
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-__fls.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-__fls.h"
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-__fls.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-__fls.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __fls(unsigned long word)
 {
  return (sizeof(word) * 8) - 1 - __builtin_clzl(word);
 }
-# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-fls.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-fls.h"
+# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-fls.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/builtin-fls.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int fls(unsigned int x)
 {
  return x ? sizeof(x) * 8 - __builtin_clz(x) : 0;
 }
-# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/ffz.h" 1
-# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/fls64.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/ffz.h" 1
+# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/fls64.h" 1
 
 
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/fls64.h" 2
-# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/fls64.h"
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/fls64.h" 2
+# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/fls64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int fls64(__u64 x)
 {
  if (x == 0)
   return 0;
  return __fls(x) + 1;
 }
-# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h" 1
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h"
+# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h" 1
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h"
 extern unsigned long find_next_bit(const unsigned long *addr, unsigned long
   size, unsigned long offset);
-# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h"
+# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h"
 extern unsigned long find_next_and_bit(const unsigned long *addr1,
   const unsigned long *addr2, unsigned long size,
   unsigned long offset);
-# 45 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h"
+# 45 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h"
 extern unsigned long find_next_zero_bit(const unsigned long *addr, unsigned
   long size, unsigned long offset);
-# 93 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h"
+# 93 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/find.h"
 extern unsigned long find_next_clump8(unsigned long *clump,
           const unsigned long *addr,
           unsigned long size, unsigned long offset);
-# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/sched.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/sched.h" 1
 
 
 
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/sched.h" 2
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/sched.h" 2
 
 
 
@@ -677,21 +677,21 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  if (b[0])
   return __ffs(b[0]);
  return __ffs(b[1]) + 64;
-# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/sched.h"
+# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/sched.h"
 }
-# 24 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/hweight.h" 1
+# 24 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/hweight.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/arch_hweight.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/arch_hweight.h" 1
 
 
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/arch_hweight.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/arch_hweight.h" 2
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned int __arch_hweight32(unsigned int w)
 {
@@ -712,27 +712,27 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return __sw_hweight64(w);
 }
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/hweight.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/const_hweight.h" 1
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/hweight.h" 2
-# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/hweight.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/const_hweight.h" 1
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/hweight.h" 2
+# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/atomic.h" 1
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/atomic.h" 1
 
 
 
 
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 1
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h" 1
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/barrier.h" 1
-# 57 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/barrier.h"
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h" 1
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/barrier.h" 1
+# 57 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/barrier.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long array_index_mask_nospec(unsigned long idx,
           unsigned long sz)
 {
@@ -748,47 +748,47 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  asm volatile("hint #20" : : : "memory");
  return mask;
 }
-# 188 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/barrier.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/barrier.h" 1
-# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/barrier.h"
+# 188 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/barrier.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/barrier.h" 1
+# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/barrier.h"
 # 1 "./arch/arm64/include/generated/asm/rwonce.h" 1
-# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/barrier.h" 2
-# 189 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/barrier.h" 2
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h" 1
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 1
+# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/barrier.h" 2
+# 189 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/barrier.h" 2
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h" 1
-# 111 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_add(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_add_return(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "_return" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	st" "l" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_add_return_relaxed(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "_return" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	st" "" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_add_return_acquire(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "_return" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "a" "xr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	st" "" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_add_return_release(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "_return" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	st" "l" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_add(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "add" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "add" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_add_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "add" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "add" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_add_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "add" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "add" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_add_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "add" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "add" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_sub(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_sub_return(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "_return" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	st" "l" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_sub_return_relaxed(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "_return" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	st" "" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_sub_return_acquire(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "_return" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "a" "xr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	st" "" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_sub_return_release(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "_return" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	st" "l" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_sub(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "sub" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "sub" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_sub_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "sub" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "sub" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_sub_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "sub" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "sub" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_sub_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "sub" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "sub" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; }
-# 122 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_and(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "and" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "and" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_and(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "and" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "and" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_and_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "and" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "and" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_and_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "and" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "and" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_and_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "and" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "and" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_or(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "or" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "orr" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_or(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "or" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "orr" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_or_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "or" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "orr" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_or_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "or" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "orr" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_or_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "or" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "orr" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_xor(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "xor" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "eor" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_xor(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "xor" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "eor" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_xor_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "xor" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "eor" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_xor_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "xor" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "eor" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_xor_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "xor" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "eor" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; }
-
-
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_andnot(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "andnot" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "bic" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_andnot(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "andnot" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "bic" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_andnot_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "andnot" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "bic" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_andnot_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "andnot" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "bic" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_andnot_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "andnot" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "bic" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; }
-# 210 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_add(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_add_return(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "_return" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	st" "l" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_add_return_relaxed(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "_return" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	st" "" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_add_return_acquire(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "_return" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "a" "xr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	st" "" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_add_return_release(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "_return" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	st" "l" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_add(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "add" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "add" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_add_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "add" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "add" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_add_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "add" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "add" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_add_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "add" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "add" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_sub(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_sub_return(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "_return" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	st" "l" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_sub_return_relaxed(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "_return" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	st" "" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_sub_return_acquire(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "_return" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "a" "xr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	st" "" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_sub_return_release(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "_return" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	st" "l" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_sub(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "sub" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "sub" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_sub_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "sub" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "sub" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_sub_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "sub" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "sub" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_sub_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "sub" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "sub" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; }
-# 221 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_and(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "and" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "and" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_and(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "and" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "and" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_and_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "and" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "and" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_and_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "and" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "and" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_and_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "and" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "and" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_or(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "or" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "orr" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_or(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "or" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "orr" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_or_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "or" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "orr" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_or_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "or" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "orr" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_or_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "or" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "orr" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_xor(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "xor" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "eor" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_xor(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "xor" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "eor" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_xor_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "xor" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "eor" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_xor_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "xor" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "eor" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_xor_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "xor" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "eor" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; }
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h" 1
+# 95 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_add(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_add_return(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "_return" "" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	st" "l" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_add_return_relaxed(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "_return" "_relaxed" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	st" "" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_add_return_acquire(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "_return" "_acquire" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "a" "xr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	st" "" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_add_return_release(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "add" "_return" "_release" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "add" "	%w0, %w0, %w3\n" "	st" "l" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_add(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "add" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "add" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_add_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "add" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "add" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_add_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "add" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "add" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_add_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "add" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "add" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_sub(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_sub_return(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "_return" "" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	st" "l" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_sub_return_relaxed(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "_return" "_relaxed" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	st" "" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_sub_return_acquire(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "_return" "_acquire" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "a" "xr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	st" "" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_sub_return_release(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "sub" "_return" "_release" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%w0, %2\n" "	" "sub" "	%w0, %w0, %w3\n" "	st" "l" "xr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_sub(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "sub" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "sub" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_sub_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "sub" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "sub" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_sub_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "sub" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "sub" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_sub_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "sub" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "sub" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; }
+# 106 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_and(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "and" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "and" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_and(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "and" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "and" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_and_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "and" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "and" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_and_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "and" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "and" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_and_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "and" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "and" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_or(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "or" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "orr" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_or(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "or" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "orr" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_or_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "or" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "orr" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_or_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "or" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "orr" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_or_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "or" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "orr" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_xor(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "xor" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "eor" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_xor(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "xor" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "eor" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_xor_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "xor" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "eor" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_xor_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "xor" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "eor" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_xor_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "xor" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "eor" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "K" "r" (i) : "memory"); return result; }
 
 
 
 
 
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_andnot(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "andnot" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "bic" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_andnot(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "andnot" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "bic" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_andnot_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "andnot" "_relaxed" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "bic" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_andnot_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "andnot" "_acquire" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "bic" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_andnot_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "andnot" "_release" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "bic" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic_andnot(int i, atomic_t *v) { unsigned long tmp; int result; asm volatile("// atomic_" "andnot" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%w0, %2\n" "	" "bic" "	%w0, %w0, %w3\n" "	stxr	%w1, %w0, %2\n" "	cbnz	%w1, 1b\n" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_andnot(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "andnot" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "bic" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_andnot_relaxed(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "andnot" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "bic" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_andnot_acquire(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "andnot" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%w0, %3\n" "	" "bic" "	%w1, %w0, %w4\n" "	st" "" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __ll_sc_atomic_fetch_andnot_release(int i, atomic_t *v) { unsigned long tmp; int val, result; asm volatile("// atomic_fetch_" "andnot" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%w0, %3\n" "	" "bic" "	%w1, %w0, %w4\n" "	st" "l" "xr	%w2, %w1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; }
+# 191 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_add(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_add_return(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "_return" "" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	st" "l" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_add_return_relaxed(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "_return" "_relaxed" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	st" "" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_add_return_acquire(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "_return" "_acquire" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "a" "xr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	st" "" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_add_return_release(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "add" "_return" "_release" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "add" "	%0, %0, %3\n" "	st" "l" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_add(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "add" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "add" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_add_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "add" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "add" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_add_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "add" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "add" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_add_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "add" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "add" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "I" "r" (i) : "memory"); return result; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_sub(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_sub_return(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "_return" "" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	st" "l" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_sub_return_relaxed(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "_return" "_relaxed" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	st" "" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_sub_return_acquire(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "_return" "_acquire" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "a" "xr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	st" "" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_sub_return_release(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "sub" "_return" "_release" "\n" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr	%0, %2\n" "	" "sub" "	%0, %0, %3\n" "	st" "l" "xr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	" "" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_sub(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "sub" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "sub" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_sub_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "sub" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "sub" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_sub_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "sub" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "sub" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_sub_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "sub" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "sub" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "J" "r" (i) : "memory"); return result; }
+# 202 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_and(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "and" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "and" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_and(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "and" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "and" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_and_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "and" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "and" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_and_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "and" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "and" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_and_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "and" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "and" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_or(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "or" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "orr" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_or(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "or" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "orr" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_or_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "or" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "orr" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_or_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "or" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "orr" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_or_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "or" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "orr" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_xor(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "xor" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "eor" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_xor(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "xor" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "eor" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_xor_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "xor" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "eor" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_xor_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "xor" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "eor" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_xor_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "xor" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "eor" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "L" "r" (i) : "memory"); return result; }
+
+
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __ll_sc_atomic64_andnot(s64 i, atomic64_t *v) { s64 result; unsigned long tmp; asm volatile("// atomic64_" "andnot" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	" "bic" "	%0, %0, %3\n" "	stxr	%w1, %0, %2\n" "	cbnz	%w1, 1b" : "=&r" (result), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i)); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_andnot(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "andnot" "" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "bic" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "dmb ish" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_andnot_relaxed(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "andnot" "_relaxed" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "bic" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : ); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_andnot_acquire(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "andnot" "_acquire" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "a" "xr	%0, %3\n" "	" "bic" "	%1, %0, %4\n" "	st" "" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc_atomic64_fetch_andnot_release(s64 i, atomic64_t *v) { s64 result, val; unsigned long tmp; asm volatile("// atomic64_fetch_" "andnot" "_release" "\n" "	prfm	pstl1strm, %3\n" "1:	ld" "" "xr	%0, %3\n" "	" "bic" "	%1, %0, %4\n" "	st" "l" "xr	%w2, %1, %3\n" "	cbnz	%w2, 1b\n" "	" "" : "=&r" (result), "=&r" (val), "=&r" (tmp), "+Q" (v->counter) : "" "r" (i) : "memory"); return result; }
 
 
 
@@ -802,35 +802,41 @@ __ll_sc_atomic64_dec_if_positive(atomic64_t *v)
  unsigned long tmp;
 
  asm volatile("// atomic64_dec_if_positive\n"
- "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxr	%0, %2\n" "	subs	%0, %0, #1\n" "	b.lt	2f\n" "	stlxr	%w1, %0, %2\n" "	cbnz	%w1, 1b\n" "	dmb	ish\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n"
-# 252 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
+ "	prfm	pstl1strm, %2\n"
+ "1:	ldxr	%0, %2\n"
+ "	subs	%0, %0, #1\n"
+ "	b.lt	2f\n"
+ "	stlxr	%w1, %0, %2\n"
+ "	cbnz	%w1, 1b\n"
+ "	dmb	ish\n"
+ "2:"
  : "=&r" (result), "=&r" (tmp), "+Q" (v->counter)
  :
  : "cc", "memory");
 
  return result;
 }
-# 299 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __ll_sc__cmpxchg_case_8(volatile void *ptr, unsigned long old, u8 new) { unsigned long tmp; u8 oldval; if (8 < 32) old = (u8)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "b" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "b" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u8 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : ); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __ll_sc__cmpxchg_case_16(volatile void *ptr, unsigned long old, u16 new) { unsigned long tmp; u16 oldval; if (16 < 32) old = (u16)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "h" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "h" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u16 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : ); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __ll_sc__cmpxchg_case_32(volatile void *ptr, unsigned long old, u32 new) { unsigned long tmp; u32 oldval; if (32 < 32) old = (u32)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u32 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : ); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __ll_sc__cmpxchg_case_64(volatile void *ptr, unsigned long old, u64 new) { unsigned long tmp; u64 oldval; if (64 < 32) old = (u64)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "" "[oldval], %[v]\n" "	eor	%" "" "[tmp], %" "" "[oldval], %" "" "[old]\n" "	cbnz	%" "" "[tmp], 2f\n" "	st" "" "xr" "" "\t%w[tmp], %" "" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u64 *)ptr) : [old] "L" "r" (old), [new] "r" (new) : ); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __ll_sc__cmpxchg_case_acq_8(volatile void *ptr, unsigned long old, u8 new) { unsigned long tmp; u8 oldval; if (8 < 32) old = (u8)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "a" "xr" "b" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "b" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u8 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __ll_sc__cmpxchg_case_acq_16(volatile void *ptr, unsigned long old, u16 new) { unsigned long tmp; u16 oldval; if (16 < 32) old = (u16)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "a" "xr" "h" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "h" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u16 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __ll_sc__cmpxchg_case_acq_32(volatile void *ptr, unsigned long old, u32 new) { unsigned long tmp; u32 oldval; if (32 < 32) old = (u32)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "a" "xr" "" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u32 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __ll_sc__cmpxchg_case_acq_64(volatile void *ptr, unsigned long old, u64 new) { unsigned long tmp; u64 oldval; if (64 < 32) old = (u64)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "a" "xr" "" "\t%" "" "[oldval], %[v]\n" "	eor	%" "" "[tmp], %" "" "[oldval], %" "" "[old]\n" "	cbnz	%" "" "[tmp], 2f\n" "	st" "" "xr" "" "\t%w[tmp], %" "" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u64 *)ptr) : [old] "L" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __ll_sc__cmpxchg_case_rel_8(volatile void *ptr, unsigned long old, u8 new) { unsigned long tmp; u8 oldval; if (8 < 32) old = (u8)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "b" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "b" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u8 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __ll_sc__cmpxchg_case_rel_16(volatile void *ptr, unsigned long old, u16 new) { unsigned long tmp; u16 oldval; if (16 < 32) old = (u16)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "h" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "h" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u16 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __ll_sc__cmpxchg_case_rel_32(volatile void *ptr, unsigned long old, u32 new) { unsigned long tmp; u32 oldval; if (32 < 32) old = (u32)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u32 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __ll_sc__cmpxchg_case_rel_64(volatile void *ptr, unsigned long old, u64 new) { unsigned long tmp; u64 oldval; if (64 < 32) old = (u64)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "" "[oldval], %[v]\n" "	eor	%" "" "[tmp], %" "" "[oldval], %" "" "[old]\n" "	cbnz	%" "" "[tmp], 2f\n" "	st" "l" "xr" "" "\t%w[tmp], %" "" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u64 *)ptr) : [old] "L" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __ll_sc__cmpxchg_case_mb_8(volatile void *ptr, unsigned long old, u8 new) { unsigned long tmp; u8 oldval; if (8 < 32) old = (u8)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "b" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "b" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "dmb ish" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u8 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __ll_sc__cmpxchg_case_mb_16(volatile void *ptr, unsigned long old, u16 new) { unsigned long tmp; u16 oldval; if (16 < 32) old = (u16)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "h" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "h" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "dmb ish" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u16 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __ll_sc__cmpxchg_case_mb_32(volatile void *ptr, unsigned long old, u32 new) { unsigned long tmp; u32 oldval; if (32 < 32) old = (u32)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "dmb ish" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u32 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __ll_sc__cmpxchg_case_mb_64(volatile void *ptr, unsigned long old, u64 new) { unsigned long tmp; u64 oldval; if (64 < 32) old = (u64)old; asm volatile( "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "" "[oldval], %[v]\n" "	eor	%" "" "[tmp], %" "" "[oldval], %" "" "[old]\n" "	cbnz	%" "" "[tmp], 2f\n" "	st" "l" "xr" "" "\t%w[tmp], %" "" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "dmb ish" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u64 *)ptr) : [old] "L" "r" (old), [new] "r" (new) : "memory"); return oldval; }
-# 347 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc__cmpxchg_double(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { unsigned long tmp, ret; asm volatile("// __cmpxchg_double" "" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxp	%0, %1, %2\n" "	eor	%0, %0, %3\n" "	eor	%1, %1, %4\n" "	orr	%1, %0, %1\n" "	cbnz	%1, 2f\n" "	st" "" "xp	%w0, %5, %6, %2\n" "	cbnz	%w0, 1b\n" "	" "" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (tmp), "=&r" (ret), "+Q" (*(unsigned long *)ptr) : "r" (old1), "r" (old2), "r" (new1), "r" (new2) : ); return ret; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc__cmpxchg_double_mb(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { unsigned long tmp, ret; asm volatile("// __cmpxchg_double" "_mb" "\n" "	b	3f\n" "	.subsection	1\n" "3:\n" "	prfm	pstl1strm, %2\n" "1:	ldxp	%0, %1, %2\n" "	eor	%0, %0, %3\n" "	eor	%1, %1, %4\n" "	orr	%1, %0, %1\n" "	cbnz	%1, 2f\n" "	st" "l" "xp	%w0, %5, %6, %2\n" "	cbnz	%w0, 1b\n" "	" "dmb ish" "\n" "2:" "\n" "	b	4f\n" "	.previous\n" "4:\n" : "=&r" (tmp), "=&r" (ret), "+Q" (*(unsigned long *)ptr) : "r" (old1), "r" (old2), "r" (new1), "r" (new2) : "memory"); return ret; }
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 2
+# 278 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __ll_sc__cmpxchg_case_8(volatile void *ptr, unsigned long old, u8 new) { unsigned long tmp; u8 oldval; if (8 < 32) old = (u8)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "b" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "b" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u8 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : ); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __ll_sc__cmpxchg_case_16(volatile void *ptr, unsigned long old, u16 new) { unsigned long tmp; u16 oldval; if (16 < 32) old = (u16)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "h" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "h" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u16 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : ); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __ll_sc__cmpxchg_case_32(volatile void *ptr, unsigned long old, u32 new) { unsigned long tmp; u32 oldval; if (32 < 32) old = (u32)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u32 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : ); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __ll_sc__cmpxchg_case_64(volatile void *ptr, unsigned long old, u64 new) { unsigned long tmp; u64 oldval; if (64 < 32) old = (u64)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "" "[oldval], %[v]\n" "	eor	%" "" "[tmp], %" "" "[oldval], %" "" "[old]\n" "	cbnz	%" "" "[tmp], 2f\n" "	st" "" "xr" "" "\t%w[tmp], %" "" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u64 *)ptr) : [old] "L" "r" (old), [new] "r" (new) : ); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __ll_sc__cmpxchg_case_acq_8(volatile void *ptr, unsigned long old, u8 new) { unsigned long tmp; u8 oldval; if (8 < 32) old = (u8)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "a" "xr" "b" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "b" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u8 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __ll_sc__cmpxchg_case_acq_16(volatile void *ptr, unsigned long old, u16 new) { unsigned long tmp; u16 oldval; if (16 < 32) old = (u16)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "a" "xr" "h" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "h" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u16 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __ll_sc__cmpxchg_case_acq_32(volatile void *ptr, unsigned long old, u32 new) { unsigned long tmp; u32 oldval; if (32 < 32) old = (u32)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "a" "xr" "" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "" "xr" "" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u32 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __ll_sc__cmpxchg_case_acq_64(volatile void *ptr, unsigned long old, u64 new) { unsigned long tmp; u64 oldval; if (64 < 32) old = (u64)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "a" "xr" "" "\t%" "" "[oldval], %[v]\n" "	eor	%" "" "[tmp], %" "" "[oldval], %" "" "[old]\n" "	cbnz	%" "" "[tmp], 2f\n" "	st" "" "xr" "" "\t%w[tmp], %" "" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u64 *)ptr) : [old] "L" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __ll_sc__cmpxchg_case_rel_8(volatile void *ptr, unsigned long old, u8 new) { unsigned long tmp; u8 oldval; if (8 < 32) old = (u8)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "b" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "b" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u8 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __ll_sc__cmpxchg_case_rel_16(volatile void *ptr, unsigned long old, u16 new) { unsigned long tmp; u16 oldval; if (16 < 32) old = (u16)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "h" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "h" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u16 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __ll_sc__cmpxchg_case_rel_32(volatile void *ptr, unsigned long old, u32 new) { unsigned long tmp; u32 oldval; if (32 < 32) old = (u32)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u32 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __ll_sc__cmpxchg_case_rel_64(volatile void *ptr, unsigned long old, u64 new) { unsigned long tmp; u64 oldval; if (64 < 32) old = (u64)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "" "[oldval], %[v]\n" "	eor	%" "" "[tmp], %" "" "[oldval], %" "" "[old]\n" "	cbnz	%" "" "[tmp], 2f\n" "	st" "l" "xr" "" "\t%w[tmp], %" "" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u64 *)ptr) : [old] "L" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __ll_sc__cmpxchg_case_mb_8(volatile void *ptr, unsigned long old, u8 new) { unsigned long tmp; u8 oldval; if (8 < 32) old = (u8)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "b" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "b" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "dmb ish" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u8 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __ll_sc__cmpxchg_case_mb_16(volatile void *ptr, unsigned long old, u16 new) { unsigned long tmp; u16 oldval; if (16 < 32) old = (u16)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "h" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "h" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "dmb ish" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u16 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __ll_sc__cmpxchg_case_mb_32(volatile void *ptr, unsigned long old, u32 new) { unsigned long tmp; u32 oldval; if (32 < 32) old = (u32)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "w" "[oldval], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[oldval], %" "w" "[old]\n" "	cbnz	%" "w" "[tmp], 2f\n" "	st" "l" "xr" "" "\t%w[tmp], %" "w" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "dmb ish" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u32 *)ptr) : [old] "K" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __ll_sc__cmpxchg_case_mb_64(volatile void *ptr, unsigned long old, u64 new) { unsigned long tmp; u64 oldval; if (64 < 32) old = (u64)old; asm volatile( "	prfm	pstl1strm, %[v]\n" "1:	ld" "" "xr" "" "\t%" "" "[oldval], %[v]\n" "	eor	%" "" "[tmp], %" "" "[oldval], %" "" "[old]\n" "	cbnz	%" "" "[tmp], 2f\n" "	st" "l" "xr" "" "\t%w[tmp], %" "" "[new], %[v]\n" "	cbnz	%w[tmp], 1b\n" "	" "dmb ish" "\n" "2:" : [tmp] "=&r" (tmp), [oldval] "=&r" (oldval), [v] "+Q" (*(u64 *)ptr) : [old] "L" "r" (old), [new] "r" (new) : "memory"); return oldval; }
+# 325 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_ll_sc.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc__cmpxchg_double(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { unsigned long tmp, ret; asm volatile("// __cmpxchg_double" "" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxp	%0, %1, %2\n" "	eor	%0, %0, %3\n" "	eor	%1, %1, %4\n" "	orr	%1, %0, %1\n" "	cbnz	%1, 2f\n" "	st" "" "xp	%w0, %5, %6, %2\n" "	cbnz	%w0, 1b\n" "	" "" "\n" "2:" : "=&r" (tmp), "=&r" (ret), "+Q" (*(__uint128_t *)ptr) : "r" (old1), "r" (old2), "r" (new1), "r" (new2) : ); return ret; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __ll_sc__cmpxchg_double_mb(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { unsigned long tmp, ret; asm volatile("// __cmpxchg_double" "_mb" "\n" "	prfm	pstl1strm, %2\n" "1:	ldxp	%0, %1, %2\n" "	eor	%0, %0, %3\n" "	eor	%1, %1, %4\n" "	orr	%1, %0, %1\n" "	cbnz	%1, 2f\n" "	st" "l" "xp	%w0, %5, %6, %2\n" "	cbnz	%w0, 1b\n" "	" "dmb ish" "\n" "2:" : "=&r" (tmp), "=&r" (ret), "+Q" (*(__uint128_t *)ptr) : "r" (old1), "r" (old2), "r" (new1), "r" (new2) : "memory"); return ret; }
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 2
 
 
 
@@ -838,8 +844,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h" 1
-# 79 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h" 1
+# 79 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
 extern bool static_key_initialized;
 
 
@@ -850,18 +856,18 @@ extern bool static_key_initialized;
 
 struct static_key {
  atomic_t enabled;
-# 102 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
+# 102 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
  union {
   unsigned long type;
   struct jump_entry *entries;
   struct static_key_mod *next;
  };
 };
-# 117 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/jump_label.h" 1
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/jump_label.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/insn.h" 1
-# 32 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/insn.h"
+# 117 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/jump_label.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/jump_label.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/insn.h" 1
+# 32 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/insn.h"
 enum aarch64_insn_encoding_class {
  AARCH64_INSN_CLS_UNKNOWN,
  AARCH64_INSN_CLS_DP_IMM,
@@ -1113,7 +1119,7 @@ enum aarch64_insn_adr_type {
  AARCH64_INSN_ADR_TYPE_ADRP,
  AARCH64_INSN_ADR_TYPE_ADR,
 };
-# 295 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/insn.h"
+# 295 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/insn.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool aarch64_insn_is_adr(u32 code) { do { extern void __compiletime_assert_0(void) __attribute__((__error__("BUILD_BUG_ON failed: " "~(0x9F000000) & (0x10000000)"))); if (!(!(~(0x9F000000) & (0x10000000)))) __compiletime_assert_0(); } while (0); return (code & (0x9F000000)) == (0x10000000); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u32 aarch64_insn_get_adr_value(void) { return (0x10000000); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool aarch64_insn_is_adrp(u32 code) { do { extern void __compiletime_assert_1(void) __attribute__((__error__("BUILD_BUG_ON failed: " "~(0x9F000000) & (0x90000000)"))); if (!(!(~(0x9F000000) & (0x90000000)))) __compiletime_assert_1(); } while (0); return (code & (0x9F000000)) == (0x90000000); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u32 aarch64_insn_get_adrp_value(void) { return (0x90000000); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool aarch64_insn_is_prfm(u32 code) { do { extern void __compiletime_assert_2(void) __attribute__((__error__("BUILD_BUG_ON failed: " "~(0x3FC00000) & (0x39800000)"))); if (!(!(~(0x3FC00000) & (0x39800000)))) __compiletime_assert_2(); } while (0); return (code & (0x3FC00000)) == (0x39800000); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u32 aarch64_insn_get_prfm_value(void) { return (0x39800000); }
@@ -1330,7 +1336,7 @@ u32 aarch32_insn_mcr_extract_crm(u32 insn);
 
 typedef bool (pstate_check_t)(unsigned long);
 extern pstate_check_t * const aarch32_opcode_cond_checks[16];
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/jump_label.h" 2
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/jump_label.h" 2
 
 
 
@@ -1367,7 +1373,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 l_yes:
  return true;
 }
-# 118 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h" 2
+# 118 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h" 2
 
 
 
@@ -1394,7 +1400,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
  return (struct static_key *)((unsigned long)&entry->key + offset);
 }
-# 164 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
+# 164 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool jump_entry_is_branch(const struct jump_entry *entry)
 {
  return (unsigned long)entry->key & 1UL;
@@ -1421,7 +1427,7 @@ enum jump_label_type {
 };
 
 struct module;
-# 198 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
+# 198 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool static_key_false(struct static_key *key)
 {
  return arch_static_branch(key, false);
@@ -1456,7 +1462,7 @@ extern void static_key_enable(struct static_key *key);
 extern void static_key_disable(struct static_key *key);
 extern void static_key_enable_cpuslocked(struct static_key *key);
 extern void static_key_disable_cpuslocked(struct static_key *key);
-# 346 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
+# 346 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
 struct static_key_true {
  struct static_key key;
 };
@@ -1464,25 +1470,25 @@ struct static_key_true {
 struct static_key_false {
  struct static_key key;
 };
-# 385 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
+# 385 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/jump_label.h"
 extern bool ____wrong_branch_error(void);
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 2
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/alternative.h" 1
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpucaps.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/alternative.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/alternative.h" 1
 
 
 
 
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpucaps.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/alternative.h" 2
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/init.h" 1
-# 116 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/init.h"
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/init.h" 1
+# 116 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/init.h"
 typedef int (*initcall_t)(void);
 typedef void (*exitcall_t)(void);
 
@@ -1493,7 +1499,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return offset_to_ptr(entry);
 }
-# 135 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/init.h"
+# 135 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/init.h"
 extern initcall_entry_t __con_initcall_start[], __con_initcall_end[];
 
 
@@ -1523,7 +1529,7 @@ void mark_rodata_ro(void);
 extern void (*late_time_init)(void);
 
 extern bool initcall_debug;
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/alternative.h" 2
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/alternative.h" 2
 
 
 
@@ -1545,19 +1551,19 @@ bool alternative_is_applied(u16 cpufeature);
 
 
 void apply_alternatives_module(void *start, size_t length);
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h" 1
-# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h" 1
+# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __lse_atomic_andnot(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "stclr" "	%w[i], %[v]\n" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v)); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __lse_atomic_or(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "stset" "	%w[i], %[v]\n" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v)); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __lse_atomic_xor(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "steor" "	%w[i], %[v]\n" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v)); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __lse_atomic_add(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "stadd" "	%w[i], %[v]\n" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v)); }
-# 49 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 49 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_andnot_relaxed(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldclr" "" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_andnot_acquire(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldclr" "a" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_andnot_release(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldclr" "l" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_andnot(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldclr" "al" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_or_relaxed(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldset" "" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_or_acquire(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldset" "a" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_or_release(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldset" "l" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_or(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldset" "al" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_xor_relaxed(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldeor" "" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_xor_acquire(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldeor" "a" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_xor_release(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldeor" "l" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_xor(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldeor" "al" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_add_relaxed(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldadd" "" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_add_acquire(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldadd" "a" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_add_release(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldadd" "l" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_add(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	" "ldadd" "al" "	%w[i], %w[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
-# 73 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 73 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_add_return_relaxed(int i, atomic_t *v) { u32 tmp; asm volatile( ".arch_extension lse\n" "	ldadd" "" "	%w[i], %w[tmp], %[v]\n" "	add	%w[i], %w[i], %w[tmp]" : [i] "+r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : ); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_add_return_acquire(int i, atomic_t *v) { u32 tmp; asm volatile( ".arch_extension lse\n" "	ldadd" "a" "	%w[i], %w[tmp], %[v]\n" "	add	%w[i], %w[i], %w[tmp]" : [i] "+r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_add_return_release(int i, atomic_t *v) { u32 tmp; asm volatile( ".arch_extension lse\n" "	ldadd" "l" "	%w[i], %w[tmp], %[v]\n" "	add	%w[i], %w[i], %w[tmp]" : [i] "+r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
@@ -1574,7 +1580,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  : [i] "+&r" (i), [v] "+Q" (v->counter)
  : "r" (v));
 }
-# 104 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 104 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_and_relaxed(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	mvn	%w[i], %w[i]\n" "	ldclr" "" "	%w[i], %w[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_and_acquire(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	mvn	%w[i], %w[i]\n" "	ldclr" "a" "	%w[i], %w[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_and_release(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	mvn	%w[i], %w[i]\n" "	ldclr" "l" "	%w[i], %w[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
@@ -1591,27 +1597,27 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  : [i] "+&r" (i), [v] "+Q" (v->counter)
  : "r" (v));
 }
-# 138 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 138 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_sub_return_relaxed(int i, atomic_t *v) { u32 tmp; asm volatile( ".arch_extension lse\n" "	neg	%w[i], %w[i]\n" "	ldadd" "" "	%w[i], %w[tmp], %[v]\n" "	add	%w[i], %w[i], %w[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : ); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_sub_return_acquire(int i, atomic_t *v) { u32 tmp; asm volatile( ".arch_extension lse\n" "	neg	%w[i], %w[i]\n" "	ldadd" "a" "	%w[i], %w[tmp], %[v]\n" "	add	%w[i], %w[i], %w[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_sub_return_release(int i, atomic_t *v) { u32 tmp; asm volatile( ".arch_extension lse\n" "	neg	%w[i], %w[i]\n" "	ldadd" "l" "	%w[i], %w[tmp], %[v]\n" "	add	%w[i], %w[i], %w[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_sub_return(int i, atomic_t *v) { u32 tmp; asm volatile( ".arch_extension lse\n" "	neg	%w[i], %w[i]\n" "	ldadd" "al" "	%w[i], %w[tmp], %[v]\n" "	add	%w[i], %w[i], %w[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
-# 159 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 159 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_sub_relaxed(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	neg	%w[i], %w[i]\n" "	ldadd" "" "	%w[i], %w[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_sub_acquire(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	neg	%w[i], %w[i]\n" "	ldadd" "a" "	%w[i], %w[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_sub_release(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	neg	%w[i], %w[i]\n" "	ldadd" "l" "	%w[i], %w[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __lse_atomic_fetch_sub(int i, atomic_t *v) { asm volatile( ".arch_extension lse\n" "	neg	%w[i], %w[i]\n" "	ldadd" "al" "	%w[i], %w[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
-# 176 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 176 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __lse_atomic64_andnot(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	" "stclr" "	%[i], %[v]\n" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v)); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __lse_atomic64_or(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	" "stset" "	%[i], %[v]\n" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v)); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __lse_atomic64_xor(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	" "steor" "	%[i], %[v]\n" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v)); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __lse_atomic64_add(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	" "stadd" "	%[i], %[v]\n" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v)); }
-# 202 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 202 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_andnot_relaxed(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldclr" "" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_andnot_acquire(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldclr" "a" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_andnot_release(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldclr" "l" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_andnot(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldclr" "al" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_or_relaxed(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldset" "" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_or_acquire(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldset" "a" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_or_release(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldset" "l" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_or(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldset" "al" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_xor_relaxed(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldeor" "" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_xor_acquire(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldeor" "a" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_xor_release(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldeor" "l" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_xor(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldeor" "al" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_add_relaxed(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldadd" "" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_add_acquire(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldadd" "a" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_add_release(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldadd" "l" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_add(s64 i, atomic64_t *v){ asm volatile( ".arch_extension lse\n" "	" "ldadd" "al" "	%[i], %[i], %[v]" : [i] "+r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
-# 226 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 226 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_add_return_relaxed(s64 i, atomic64_t *v){ unsigned long tmp; asm volatile( ".arch_extension lse\n" "	ldadd" "" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : ); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_add_return_acquire(s64 i, atomic64_t *v){ unsigned long tmp; asm volatile( ".arch_extension lse\n" "	ldadd" "a" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_add_return_release(s64 i, atomic64_t *v){ unsigned long tmp; asm volatile( ".arch_extension lse\n" "	ldadd" "l" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
@@ -1628,7 +1634,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  : [i] "+&r" (i), [v] "+Q" (v->counter)
  : "r" (v));
 }
-# 257 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 257 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_and_relaxed(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	mvn	%[i], %[i]\n" "	ldclr" "" "	%[i], %[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_and_acquire(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	mvn	%[i], %[i]\n" "	ldclr" "a" "	%[i], %[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_and_release(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	mvn	%[i], %[i]\n" "	ldclr" "l" "	%[i], %[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
@@ -1645,12 +1651,12 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  : [i] "+&r" (i), [v] "+Q" (v->counter)
  : "r" (v));
 }
-# 291 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_sub_return_relaxed(s64 i, atomic64_t *v) { unsigned long tmp; asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : ); return i; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_sub_return_acquire(s64 i, atomic64_t *v) { unsigned long tmp; asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "a" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_sub_return_release(s64 i, atomic64_t *v) { unsigned long tmp; asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "l" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_sub_return(s64 i, atomic64_t *v) { unsigned long tmp; asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "al" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
-# 312 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 291 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_sub_return_relaxed(s64 i, atomic64_t *v){ unsigned long tmp; asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : ); return i; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_sub_return_acquire(s64 i, atomic64_t *v){ unsigned long tmp; asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "a" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_sub_return_release(s64 i, atomic64_t *v){ unsigned long tmp; asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "l" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_sub_return(s64 i, atomic64_t *v){ unsigned long tmp; asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "al" "	%[i], %x[tmp], %[v]\n" "	add	%[i], %[i], %x[tmp]" : [i] "+&r" (i), [v] "+Q" (v->counter), [tmp] "=&r" (tmp) : "r" (v) : "memory"); return i; }
+# 312 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_sub_relaxed(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "" "	%[i], %[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : ); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_sub_acquire(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "a" "	%[i], %[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __lse_atomic64_fetch_sub_release(s64 i, atomic64_t *v) { asm volatile( ".arch_extension lse\n" "	neg	%[i], %[i]\n" "	ldadd" "l" "	%[i], %[i], %[v]" : [i] "+&r" (i), [v] "+Q" (v->counter) : "r" (v) : "memory"); return i; }
@@ -1678,7 +1684,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
  return (long)v;
 }
-# 364 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+# 364 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u8 __lse__cmpxchg_case_8(volatile void *ptr, u8 old, u8 new) { register unsigned long x0 asm ("x0") = (unsigned long)ptr; register u8 x1 asm ("x1") = old; register u8 x2 asm ("x2") = new; unsigned long tmp; asm volatile( ".arch_extension lse\n" "	mov	%" "w" "[tmp], %" "w" "[old]\n" "	cas" "" "b" "\t%" "w" "[tmp], %" "w" "[new], %[v]\n" "	mov	%" "w" "[ret], %" "w" "[tmp]" : [ret] "+r" (x0), [v] "+Q" (*(unsigned long *)ptr), [tmp] "=&r" (tmp) : [old] "r" (x1), [new] "r" (x2) : ); return x0; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u16 __lse__cmpxchg_case_16(volatile void *ptr, u16 old, u16 new) { register unsigned long x0 asm ("x0") = (unsigned long)ptr; register u16 x1 asm ("x1") = old; register u16 x2 asm ("x2") = new; unsigned long tmp; asm volatile( ".arch_extension lse\n" "	mov	%" "w" "[tmp], %" "w" "[old]\n" "	cas" "" "h" "\t%" "w" "[tmp], %" "w" "[new], %[v]\n" "	mov	%" "w" "[ret], %" "w" "[tmp]" : [ret] "+r" (x0), [v] "+Q" (*(unsigned long *)ptr), [tmp] "=&r" (tmp) : [old] "r" (x1), [new] "r" (x2) : ); return x0; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u32 __lse__cmpxchg_case_32(volatile void *ptr, u32 old, u32 new) { register unsigned long x0 asm ("x0") = (unsigned long)ptr; register u32 x1 asm ("x1") = old; register u32 x2 asm ("x2") = new; unsigned long tmp; asm volatile( ".arch_extension lse\n" "	mov	%" "w" "[tmp], %" "w" "[old]\n" "	cas" "" "" "\t%" "w" "[tmp], %" "w" "[new], %[v]\n" "	mov	%" "w" "[ret], %" "w" "[tmp]" : [ret] "+r" (x0), [v] "+Q" (*(unsigned long *)ptr), [tmp] "=&r" (tmp) : [old] "r" (x1), [new] "r" (x2) : ); return x0; }
@@ -1695,13 +1701,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u16 __lse__cmpxchg_case_mb_16(volatile void *ptr, u16 old, u16 new) { register unsigned long x0 asm ("x0") = (unsigned long)ptr; register u16 x1 asm ("x1") = old; register u16 x2 asm ("x2") = new; unsigned long tmp; asm volatile( ".arch_extension lse\n" "	mov	%" "w" "[tmp], %" "w" "[old]\n" "	cas" "al" "h" "\t%" "w" "[tmp], %" "w" "[new], %[v]\n" "	mov	%" "w" "[ret], %" "w" "[tmp]" : [ret] "+r" (x0), [v] "+Q" (*(unsigned long *)ptr), [tmp] "=&r" (tmp) : [old] "r" (x1), [new] "r" (x2) : "memory"); return x0; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u32 __lse__cmpxchg_case_mb_32(volatile void *ptr, u32 old, u32 new) { register unsigned long x0 asm ("x0") = (unsigned long)ptr; register u32 x1 asm ("x1") = old; register u32 x2 asm ("x2") = new; unsigned long tmp; asm volatile( ".arch_extension lse\n" "	mov	%" "w" "[tmp], %" "w" "[old]\n" "	cas" "al" "" "\t%" "w" "[tmp], %" "w" "[new], %[v]\n" "	mov	%" "w" "[ret], %" "w" "[tmp]" : [ret] "+r" (x0), [v] "+Q" (*(unsigned long *)ptr), [tmp] "=&r" (tmp) : [old] "r" (x1), [new] "r" (x2) : "memory"); return x0; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) u64 __lse__cmpxchg_case_mb_64(volatile void *ptr, u64 old, u64 new) { register unsigned long x0 asm ("x0") = (unsigned long)ptr; register u64 x1 asm ("x1") = old; register u64 x2 asm ("x2") = new; unsigned long tmp; asm volatile( ".arch_extension lse\n" "	mov	%" "x" "[tmp], %" "x" "[old]\n" "	cas" "al" "" "\t%" "x" "[tmp], %" "x" "[new], %[v]\n" "	mov	%" "x" "[ret], %" "x" "[tmp]" : [ret] "+r" (x0), [v] "+Q" (*(unsigned long *)ptr), [tmp] "=&r" (tmp) : [old] "r" (x1), [new] "r" (x2) : "memory"); return x0; }
-# 414 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long __lse__cmpxchg_double(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { unsigned long oldval1 = old1; unsigned long oldval2 = old2; register unsigned long x0 asm ("x0") = old1; register unsigned long x1 asm ("x1") = old2; register unsigned long x2 asm ("x2") = new1; register unsigned long x3 asm ("x3") = new2; register unsigned long x4 asm ("x4") = (unsigned long)ptr; asm volatile( ".arch_extension lse\n" "	casp" "" "\t%[old1], %[old2], %[new1], %[new2], %[v]\n" "	eor	%[old1], %[old1], %[oldval1]\n" "	eor	%[old2], %[old2], %[oldval2]\n" "	orr	%[old1], %[old1], %[old2]" : [old1] "+&r" (x0), [old2] "+&r" (x1), [v] "+Q" (*(unsigned long *)ptr) : [new1] "r" (x2), [new2] "r" (x3), [ptr] "r" (x4), [oldval1] "r" (oldval1), [oldval2] "r" (oldval2) : ); return x0; }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long __lse__cmpxchg_double_mb(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { unsigned long oldval1 = old1; unsigned long oldval2 = old2; register unsigned long x0 asm ("x0") = old1; register unsigned long x1 asm ("x1") = old2; register unsigned long x2 asm ("x2") = new1; register unsigned long x3 asm ("x3") = new2; register unsigned long x4 asm ("x4") = (unsigned long)ptr; asm volatile( ".arch_extension lse\n" "	casp" "al" "\t%[old1], %[old2], %[new1], %[new2], %[v]\n" "	eor	%[old1], %[old1], %[oldval1]\n" "	eor	%[old2], %[old2], %[oldval2]\n" "	orr	%[old1], %[old1], %[old2]" : [old1] "+&r" (x0), [old2] "+&r" (x1), [v] "+Q" (*(unsigned long *)ptr) : [new1] "r" (x2), [new2] "r" (x3), [ptr] "r" (x4), [oldval1] "r" (oldval1), [oldval2] "r" (oldval2) : "memory"); return x0; }
-# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 2
+# 414 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic_lse.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long __lse__cmpxchg_double(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { unsigned long oldval1 = old1; unsigned long oldval2 = old2; register unsigned long x0 asm ("x0") = old1; register unsigned long x1 asm ("x1") = old2; register unsigned long x2 asm ("x2") = new1; register unsigned long x3 asm ("x3") = new2; register unsigned long x4 asm ("x4") = (unsigned long)ptr; asm volatile( ".arch_extension lse\n" "	casp" "" "\t%[old1], %[old2], %[new1], %[new2], %[v]\n" "	eor	%[old1], %[old1], %[oldval1]\n" "	eor	%[old2], %[old2], %[oldval2]\n" "	orr	%[old1], %[old1], %[old2]" : [old1] "+&r" (x0), [old2] "+&r" (x1), [v] "+Q" (*(__uint128_t *)ptr) : [new1] "r" (x2), [new2] "r" (x3), [ptr] "r" (x4), [oldval1] "r" (oldval1), [oldval2] "r" (oldval2) : ); return x0; }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long __lse__cmpxchg_double_mb(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { unsigned long oldval1 = old1; unsigned long oldval2 = old2; register unsigned long x0 asm ("x0") = old1; register unsigned long x1 asm ("x1") = old2; register unsigned long x2 asm ("x2") = new1; register unsigned long x3 asm ("x3") = new2; register unsigned long x4 asm ("x4") = (unsigned long)ptr; asm volatile( ".arch_extension lse\n" "	casp" "al" "\t%[old1], %[old2], %[new1], %[new2], %[v]\n" "	eor	%[old1], %[old1], %[oldval1]\n" "	eor	%[old2], %[old2], %[oldval2]\n" "	orr	%[old1], %[old1], %[old2]" : [old1] "+&r" (x0), [old2] "+&r" (x1), [v] "+Q" (*(__uint128_t *)ptr) : [new1] "r" (x2), [new2] "r" (x3), [ptr] "r" (x4), [oldval1] "r" (oldval1), [oldval2] "r" (oldval2) : "memory"); return x0; }
+# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/lse.h" 2
 
 
-extern struct static_key_false cpu_hwcap_keys[61];
+extern struct static_key_false cpu_hwcap_keys[63];
 extern struct static_key_false arm64_const_caps_ready;
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool system_uses_lse_atomics(void)
@@ -1709,8 +1715,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  return (({ bool branch; if (__builtin_types_compatible_p(typeof(*&arm64_const_caps_ready), struct static_key_true)) branch = !arch_static_branch(&(&arm64_const_caps_ready)->key, true); else if (__builtin_types_compatible_p(typeof(*&arm64_const_caps_ready), struct static_key_false)) branch = !arch_static_branch_jump(&(&arm64_const_caps_ready)->key, true); else branch = ____wrong_branch_error(); __builtin_expect(!!(branch), 1); })) &&
   ({ bool branch; if (__builtin_types_compatible_p(typeof(*&cpu_hwcap_keys[5]), struct static_key_true)) branch = !arch_static_branch(&(&cpu_hwcap_keys[5])->key, true); else if (__builtin_types_compatible_p(typeof(*&cpu_hwcap_keys[5]), struct static_key_false)) branch = !arch_static_branch_jump(&(&cpu_hwcap_keys[5])->key, true); else branch = ____wrong_branch_error(); __builtin_expect(!!(branch), 1); });
 }
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h" 2
-# 45 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h" 2
+# 45 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __xchg_case_8(u8 x, volatile void *ptr) { u8 ret; unsigned long tmp; asm volatile(".if ""1"" == 1\n" "661:\n\t" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr" "b" "\t%" "w" "0, %2\n" "	st" "" "xr" "b" "\t%w1, %" "w" "3, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "	swp" "" "" "b" "\t%" "w" "3, %" "w" "0, %2\n" ".rept	" "3" "\nnop\n.endr\n" "	" "" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : "=&r" (ret), "=&r" (tmp), "+Q" (*(u8 *)ptr) : "r" (x) : ); return ret; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __xchg_case_16(u16 x, volatile void *ptr) { u16 ret; unsigned long tmp; asm volatile(".if ""1"" == 1\n" "661:\n\t" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr" "h" "\t%" "w" "0, %2\n" "	st" "" "xr" "h" "\t%w1, %" "w" "3, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "	swp" "" "" "h" "\t%" "w" "3, %" "w" "0, %2\n" ".rept	" "3" "\nnop\n.endr\n" "	" "" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : "=&r" (ret), "=&r" (tmp), "+Q" (*(u16 *)ptr) : "r" (x) : ); return ret; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __xchg_case_32(u32 x, volatile void *ptr) { u32 ret; unsigned long tmp; asm volatile(".if ""1"" == 1\n" "661:\n\t" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr" "" "\t%" "w" "0, %2\n" "	st" "" "xr" "" "\t%w1, %" "w" "3, %2\n" "	cbnz	%w1, 1b\n" "	" "" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "	swp" "" "" "" "\t%" "w" "3, %" "w" "0, %2\n" ".rept	" "3" "\nnop\n.endr\n" "	" "" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : "=&r" (ret), "=&r" (tmp), "+Q" (*(u32 *)ptr) : "r" (x) : ); return ret; }
@@ -1727,12 +1733,12 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __xchg_case_mb_16(u16 x, volatile void *ptr) { u16 ret; unsigned long tmp; asm volatile(".if ""1"" == 1\n" "661:\n\t" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr" "h" "\t%" "w" "0, %2\n" "	st" "l" "xr" "h" "\t%w1, %" "w" "3, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "	swp" "a" "l" "h" "\t%" "w" "3, %" "w" "0, %2\n" ".rept	" "3" "\nnop\n.endr\n" "	" "nop" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : "=&r" (ret), "=&r" (tmp), "+Q" (*(u16 *)ptr) : "r" (x) : "memory"); return ret; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __xchg_case_mb_32(u32 x, volatile void *ptr) { u32 ret; unsigned long tmp; asm volatile(".if ""1"" == 1\n" "661:\n\t" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr" "" "\t%" "w" "0, %2\n" "	st" "l" "xr" "" "\t%w1, %" "w" "3, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "	swp" "a" "l" "" "\t%" "w" "3, %" "w" "0, %2\n" ".rept	" "3" "\nnop\n.endr\n" "	" "nop" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : "=&r" (ret), "=&r" (tmp), "+Q" (*(u32 *)ptr) : "r" (x) : "memory"); return ret; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __xchg_case_mb_64(u64 x, volatile void *ptr) { u64 ret; unsigned long tmp; asm volatile(".if ""1"" == 1\n" "661:\n\t" "	prfm	pstl1strm, %2\n" "1:	ld" "" "xr" "" "\t%" "" "0, %2\n" "	st" "l" "xr" "" "\t%w1, %" "" "3, %2\n" "	cbnz	%w1, 1b\n" "	" "dmb ish" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "	swp" "a" "l" "" "\t%" "" "3, %" "" "0, %2\n" ".rept	" "3" "\nnop\n.endr\n" "	" "nop" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : "=&r" (ret), "=&r" (tmp), "+Q" (*(u64 *)ptr) : "r" (x) : "memory"); return ret; }
-# 85 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
+# 85 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __xchg(unsigned long x, volatile void *ptr, int size) { switch (size) { case 1: return __xchg_case_8(x, ptr); case 2: return __xchg_case_16(x, ptr); case 4: return __xchg_case_32(x, ptr); case 8: return __xchg_case_64(x, ptr); default: do { extern void __compiletime_assert_78(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_78(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __xchg_acq(unsigned long x, volatile void *ptr, int size) { switch (size) { case 1: return __xchg_case_acq_8(x, ptr); case 2: return __xchg_case_acq_16(x, ptr); case 4: return __xchg_case_acq_32(x, ptr); case 8: return __xchg_case_acq_64(x, ptr); default: do { extern void __compiletime_assert_79(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_79(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __xchg_rel(unsigned long x, volatile void *ptr, int size) { switch (size) { case 1: return __xchg_case_rel_8(x, ptr); case 2: return __xchg_case_rel_16(x, ptr); case 4: return __xchg_case_rel_32(x, ptr); case 8: return __xchg_case_rel_64(x, ptr); default: do { extern void __compiletime_assert_80(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_80(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __xchg_mb(unsigned long x, volatile void *ptr, int size) { switch (size) { case 1: return __xchg_case_mb_8(x, ptr); case 2: return __xchg_case_mb_16(x, ptr); case 4: return __xchg_case_mb_32(x, ptr); case 8: return __xchg_case_mb_64(x, ptr); default: do { extern void __compiletime_assert_81(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_81(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
-# 115 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
+# 115 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __cmpxchg_case_8(volatile void *ptr, u8 old, u8 new) { return ({ system_uses_lse_atomics() ? __lse__cmpxchg_case_8(ptr, old, new) : __ll_sc__cmpxchg_case_8(ptr, old, new); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __cmpxchg_case_16(volatile void *ptr, u16 old, u16 new) { return ({ system_uses_lse_atomics() ? __lse__cmpxchg_case_16(ptr, old, new) : __ll_sc__cmpxchg_case_16(ptr, old, new); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __cmpxchg_case_32(volatile void *ptr, u32 old, u32 new) { return ({ system_uses_lse_atomics() ? __lse__cmpxchg_case_32(ptr, old, new) : __ll_sc__cmpxchg_case_32(ptr, old, new); }); }
@@ -1749,30 +1755,30 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __cmpxchg_case_mb_16(volatile void *ptr, u16 old, u16 new) { return ({ system_uses_lse_atomics() ? __lse__cmpxchg_case_mb_16(ptr, old, new) : __ll_sc__cmpxchg_case_mb_16(ptr, old, new); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __cmpxchg_case_mb_32(volatile void *ptr, u32 old, u32 new) { return ({ system_uses_lse_atomics() ? __lse__cmpxchg_case_mb_32(ptr, old, new) : __ll_sc__cmpxchg_case_mb_32(ptr, old, new); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __cmpxchg_case_mb_64(volatile void *ptr, u64 old, u64 new) { return ({ system_uses_lse_atomics() ? __lse__cmpxchg_case_mb_64(ptr, old, new) : __ll_sc__cmpxchg_case_mb_64(ptr, old, new); }); }
-# 145 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
+# 145 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __cmpxchg_double(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { return ({ system_uses_lse_atomics() ? __lse__cmpxchg_double(old1, old2, new1, new2, ptr) : __ll_sc__cmpxchg_double(old1, old2, new1, new2, ptr); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) long __cmpxchg_double_mb(unsigned long old1, unsigned long old2, unsigned long new1, unsigned long new2, volatile void *ptr) { return ({ system_uses_lse_atomics() ? __lse__cmpxchg_double_mb(old1, old2, new1, new2, ptr) : __ll_sc__cmpxchg_double_mb(old1, old2, new1, new2, ptr); }); }
-# 172 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
+# 172 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new, int size) { switch (size) { case 1: return __cmpxchg_case_8(ptr, old, new); case 2: return __cmpxchg_case_16(ptr, old, new); case 4: return __cmpxchg_case_32(ptr, old, new); case 8: return __cmpxchg_case_64(ptr, old, new); default: do { extern void __compiletime_assert_82(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_82(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __cmpxchg_acq(volatile void *ptr, unsigned long old, unsigned long new, int size) { switch (size) { case 1: return __cmpxchg_case_acq_8(ptr, old, new); case 2: return __cmpxchg_case_acq_16(ptr, old, new); case 4: return __cmpxchg_case_acq_32(ptr, old, new); case 8: return __cmpxchg_case_acq_64(ptr, old, new); default: do { extern void __compiletime_assert_83(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_83(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __cmpxchg_rel(volatile void *ptr, unsigned long old, unsigned long new, int size) { switch (size) { case 1: return __cmpxchg_case_rel_8(ptr, old, new); case 2: return __cmpxchg_case_rel_16(ptr, old, new); case 4: return __cmpxchg_case_rel_32(ptr, old, new); case 8: return __cmpxchg_case_rel_64(ptr, old, new); default: do { extern void __compiletime_assert_84(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_84(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __cmpxchg_mb(volatile void *ptr, unsigned long old, unsigned long new, int size) { switch (size) { case 1: return __cmpxchg_case_mb_8(ptr, old, new); case 2: return __cmpxchg_case_mb_16(ptr, old, new); case 4: return __cmpxchg_case_mb_32(ptr, old, new); case 8: return __cmpxchg_case_mb_64(ptr, old, new); default: do { extern void __compiletime_assert_85(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_85(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
-# 250 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
+# 250 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __cmpwait_case_8(volatile void *ptr, unsigned long val) { unsigned long tmp; asm volatile( "	sevl\n" "	wfe\n" "	ldxr" "b" "\t%" "w" "[tmp], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	cbnz	%" "w" "[tmp], 1f\n" "	wfe\n" "1:" : [tmp] "=&r" (tmp), [v] "+Q" (*(unsigned long *)ptr) : [val] "r" (val)); };
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __cmpwait_case_16(volatile void *ptr, unsigned long val) { unsigned long tmp; asm volatile( "	sevl\n" "	wfe\n" "	ldxr" "h" "\t%" "w" "[tmp], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	cbnz	%" "w" "[tmp], 1f\n" "	wfe\n" "1:" : [tmp] "=&r" (tmp), [v] "+Q" (*(unsigned long *)ptr) : [val] "r" (val)); };
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __cmpwait_case_32(volatile void *ptr, unsigned long val) { unsigned long tmp; asm volatile( "	sevl\n" "	wfe\n" "	ldxr" "" "\t%" "w" "[tmp], %[v]\n" "	eor	%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	cbnz	%" "w" "[tmp], 1f\n" "	wfe\n" "1:" : [tmp] "=&r" (tmp), [v] "+Q" (*(unsigned long *)ptr) : [val] "r" (val)); };
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __cmpwait_case_64(volatile void *ptr, unsigned long val) { unsigned long tmp; asm volatile( "	sevl\n" "	wfe\n" "	ldxr" "" "\t%" "" "[tmp], %[v]\n" "	eor	%" "" "[tmp], %" "" "[tmp], %" "" "[val]\n" "	cbnz	%" "" "[tmp], 1f\n" "	wfe\n" "1:" : [tmp] "=&r" (tmp), [v] "+Q" (*(unsigned long *)ptr) : [val] "r" (val)); };
-# 278 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
+# 278 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cmpxchg.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void __cmpwait(volatile void *ptr, unsigned long val, int size) { switch (size) { case 1: return __cmpwait_case_8(ptr, (u8)val); case 2: return __cmpwait_case_16(ptr, (u16)val); case 4: return __cmpwait_case_32(ptr, val); case 8: return __cmpwait_case_64(ptr, val); default: do { extern void __compiletime_assert_86(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_86(); } while (0); } do { ; asm volatile(""); __builtin_unreachable(); } while (0); }
-# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h" 2
-# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
+# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h" 2
+# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic_andnot(int i, atomic_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic_andnot(i, v) : __ll_sc_atomic_andnot(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic_or(int i, atomic_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic_or(i, v) : __ll_sc_atomic_or(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic_xor(int i, atomic_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic_xor(i, v) : __ll_sc_atomic_xor(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic_add(int i, atomic_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic_add(i, v) : __ll_sc_atomic_add(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic_and(int i, atomic_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic_and(i, v) : __ll_sc_atomic_and(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic_sub(int i, atomic_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic_sub(i, v) : __ll_sc_atomic_sub(i, v); }); }
-# 46 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
+# 46 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_andnot_relaxed(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_andnot_relaxed(i, v) : __ll_sc_atomic_fetch_andnot_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_andnot_acquire(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_andnot_acquire(i, v) : __ll_sc_atomic_fetch_andnot_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_andnot_release(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_andnot_release(i, v) : __ll_sc_atomic_fetch_andnot_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_andnot(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_andnot(i, v) : __ll_sc_atomic_fetch_andnot(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_or_relaxed(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_or_relaxed(i, v) : __ll_sc_atomic_fetch_or_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_or_acquire(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_or_acquire(i, v) : __ll_sc_atomic_fetch_or_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_or_release(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_or_release(i, v) : __ll_sc_atomic_fetch_or_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_or(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_or(i, v) : __ll_sc_atomic_fetch_or(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_xor_relaxed(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_xor_relaxed(i, v) : __ll_sc_atomic_fetch_xor_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_xor_acquire(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_xor_acquire(i, v) : __ll_sc_atomic_fetch_xor_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_xor_release(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_xor_release(i, v) : __ll_sc_atomic_fetch_xor_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_xor(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_xor(i, v) : __ll_sc_atomic_fetch_xor(i, v); }); }
@@ -1781,14 +1787,14 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_sub_relaxed(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_sub_relaxed(i, v) : __ll_sc_atomic_fetch_sub_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_sub_acquire(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_sub_acquire(i, v) : __ll_sc_atomic_fetch_sub_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_sub_release(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_sub_release(i, v) : __ll_sc_atomic_fetch_sub_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_fetch_sub(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_fetch_sub(i, v) : __ll_sc_atomic_fetch_sub(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_add_return_relaxed(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_add_return_relaxed(i, v) : __ll_sc_atomic_add_return_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_add_return_acquire(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_add_return_acquire(i, v) : __ll_sc_atomic_add_return_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_add_return_release(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_add_return_release(i, v) : __ll_sc_atomic_add_return_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_add_return(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_add_return(i, v) : __ll_sc_atomic_add_return(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_sub_return_relaxed(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_sub_return_relaxed(i, v) : __ll_sc_atomic_sub_return_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_sub_return_acquire(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_sub_return_acquire(i, v) : __ll_sc_atomic_sub_return_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_sub_return_release(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_sub_return_release(i, v) : __ll_sc_atomic_sub_return_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int arch_atomic_sub_return(int i, atomic_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic_sub_return(i, v) : __ll_sc_atomic_sub_return(i, v); }); }
-# 64 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
+# 64 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic64_andnot(long i, atomic64_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic64_andnot(i, v) : __ll_sc_atomic64_andnot(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic64_or(long i, atomic64_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic64_or(i, v) : __ll_sc_atomic64_or(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic64_xor(long i, atomic64_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic64_xor(i, v) : __ll_sc_atomic64_xor(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic64_add(long i, atomic64_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic64_add(i, v) : __ll_sc_atomic64_add(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic64_and(long i, atomic64_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic64_and(i, v) : __ll_sc_atomic64_and(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void arch_atomic64_sub(long i, atomic64_t *v) { ({ system_uses_lse_atomics() ? __lse_atomic64_sub(i, v) : __ll_sc_atomic64_sub(i, v); }); }
-# 85 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
+# 85 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_andnot_relaxed(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_andnot_relaxed(i, v) : __ll_sc_atomic64_fetch_andnot_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_andnot_acquire(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_andnot_acquire(i, v) : __ll_sc_atomic64_fetch_andnot_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_andnot_release(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_andnot_release(i, v) : __ll_sc_atomic64_fetch_andnot_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_andnot(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_andnot(i, v) : __ll_sc_atomic64_fetch_andnot(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_or_relaxed(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_or_relaxed(i, v) : __ll_sc_atomic64_fetch_or_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_or_acquire(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_or_acquire(i, v) : __ll_sc_atomic64_fetch_or_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_or_release(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_or_release(i, v) : __ll_sc_atomic64_fetch_or_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_or(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_or(i, v) : __ll_sc_atomic64_fetch_or(i, v); }); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_xor_relaxed(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_xor_relaxed(i, v) : __ll_sc_atomic64_fetch_xor_relaxed(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_xor_acquire(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_xor_acquire(i, v) : __ll_sc_atomic64_fetch_xor_acquire(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_xor_release(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_xor_release(i, v) : __ll_sc_atomic64_fetch_xor_release(i, v); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long arch_atomic64_fetch_xor(long i, atomic64_t *v) { return ({ system_uses_lse_atomics() ? __lse_atomic64_fetch_xor(i, v) : __ll_sc_atomic64_fetch_xor(i, v); }); }
@@ -1805,10 +1811,10 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return ({ system_uses_lse_atomics() ? __lse_atomic64_dec_if_positive(v) : __ll_sc_atomic64_dec_if_positive(v); });
 }
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 2
-# 81 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h" 1
-# 81 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 2
+# 81 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h" 1
+# 81 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int
 arch_atomic_read_acquire(const atomic_t *v)
 {
@@ -1823,13 +1829,13 @@ arch_atomic_set_release(atomic_t *v, int i)
 {
  do { typeof(&(v)->counter) __p = (&(v)->counter); union { typeof( _Generic((*&(v)->counter), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&(v)->counter))) __val; char __c[1]; } __u = { .__val = ( typeof( _Generic((*&(v)->counter), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&(v)->counter)))) (i) }; do { extern void __compiletime_assert_88(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&(v)->counter) == sizeof(char) || sizeof(*&(v)->counter) == sizeof(short) || sizeof(*&(v)->counter) == sizeof(int) || sizeof(*&(v)->counter) == sizeof(long)))) __compiletime_assert_88(); } while (0); kasan_check_write(__p, sizeof(*&(v)->counter)); switch (sizeof(*&(v)->counter)) { case 1: asm volatile ("stlrb %w1, %0" : "=Q" (*__p) : "r" (*(__u8 *)__u.__c) : "memory"); break; case 2: asm volatile ("stlrh %w1, %0" : "=Q" (*__p) : "r" (*(__u16 *)__u.__c) : "memory"); break; case 4: asm volatile ("stlr %w1, %0" : "=Q" (*__p) : "r" (*(__u32 *)__u.__c) : "memory"); break; case 8: asm volatile ("stlr %1, %0" : "=Q" (*__p) : "r" (*(__u64 *)__u.__c) : "memory"); break; } } while (0);
 }
-# 267 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 267 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void
 arch_atomic_inc(atomic_t *v)
 {
  arch_atomic_add(1, v);
 }
-# 283 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 283 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int
 arch_atomic_inc_return(atomic_t *v)
 {
@@ -1862,7 +1868,7 @@ arch_atomic_inc_return_relaxed(atomic_t *v)
 {
  return arch_atomic_add_return_relaxed(1, v);
 }
-# 364 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 364 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int
 arch_atomic_fetch_inc(atomic_t *v)
 {
@@ -1895,13 +1901,13 @@ arch_atomic_fetch_inc_relaxed(atomic_t *v)
 {
  return arch_atomic_fetch_add_relaxed(1, v);
 }
-# 438 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 438 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void
 arch_atomic_dec(atomic_t *v)
 {
  arch_atomic_sub(1, v);
 }
-# 454 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 454 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int
 arch_atomic_dec_return(atomic_t *v)
 {
@@ -1934,7 +1940,7 @@ arch_atomic_dec_return_relaxed(atomic_t *v)
 {
  return arch_atomic_sub_return_relaxed(1, v);
 }
-# 535 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 535 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int
 arch_atomic_fetch_dec(atomic_t *v)
 {
@@ -1967,7 +1973,7 @@ arch_atomic_fetch_dec_relaxed(atomic_t *v)
 {
  return arch_atomic_fetch_sub_relaxed(1, v);
 }
-# 916 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 916 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic_try_cmpxchg(atomic_t *v, int *old, int new)
 {
@@ -2016,31 +2022,31 @@ arch_atomic_try_cmpxchg_relaxed(atomic_t *v, int *old, int new)
   *old = r;
  return __builtin_expect(!!(r == o), 1);
 }
-# 1015 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1015 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic_sub_and_test(int i, atomic_t *v)
 {
  return arch_atomic_sub_return(i, v) == 0;
 }
-# 1032 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1032 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic_dec_and_test(atomic_t *v)
 {
  return arch_atomic_dec_return(v) == 0;
 }
-# 1049 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1049 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic_inc_and_test(atomic_t *v)
 {
  return arch_atomic_inc_return(v) == 0;
 }
-# 1067 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1067 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic_add_negative(int i, atomic_t *v)
 {
  return arch_atomic_add_return(i, v) < 0;
 }
-# 1085 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1085 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int
 arch_atomic_fetch_add_unless(atomic_t *v, int a, int u)
 {
@@ -2053,13 +2059,13 @@ arch_atomic_fetch_add_unless(atomic_t *v, int a, int u)
 
  return c;
 }
-# 1110 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1110 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic_add_unless(atomic_t *v, int a, int u)
 {
  return arch_atomic_fetch_add_unless(v, a, u) != u;
 }
-# 1126 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1126 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic_inc_not_zero(atomic_t *v)
 {
@@ -2114,7 +2120,7 @@ arch_atomic_dec_if_positive(atomic_t *v)
 
  return dec;
 }
-# 1188 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1188 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) s64
 arch_atomic64_read_acquire(const atomic64_t *v)
 {
@@ -2129,13 +2135,13 @@ arch_atomic64_set_release(atomic64_t *v, s64 i)
 {
  do { typeof(&(v)->counter) __p = (&(v)->counter); union { typeof( _Generic((*&(v)->counter), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&(v)->counter))) __val; char __c[1]; } __u = { .__val = ( typeof( _Generic((*&(v)->counter), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&(v)->counter)))) (i) }; do { extern void __compiletime_assert_90(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&(v)->counter) == sizeof(char) || sizeof(*&(v)->counter) == sizeof(short) || sizeof(*&(v)->counter) == sizeof(int) || sizeof(*&(v)->counter) == sizeof(long)))) __compiletime_assert_90(); } while (0); kasan_check_write(__p, sizeof(*&(v)->counter)); switch (sizeof(*&(v)->counter)) { case 1: asm volatile ("stlrb %w1, %0" : "=Q" (*__p) : "r" (*(__u8 *)__u.__c) : "memory"); break; case 2: asm volatile ("stlrh %w1, %0" : "=Q" (*__p) : "r" (*(__u16 *)__u.__c) : "memory"); break; case 4: asm volatile ("stlr %w1, %0" : "=Q" (*__p) : "r" (*(__u32 *)__u.__c) : "memory"); break; case 8: asm volatile ("stlr %1, %0" : "=Q" (*__p) : "r" (*(__u64 *)__u.__c) : "memory"); break; } } while (0);
 }
-# 1374 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1374 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void
 arch_atomic64_inc(atomic64_t *v)
 {
  arch_atomic64_add(1, v);
 }
-# 1390 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1390 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) s64
 arch_atomic64_inc_return(atomic64_t *v)
 {
@@ -2168,7 +2174,7 @@ arch_atomic64_inc_return_relaxed(atomic64_t *v)
 {
  return arch_atomic64_add_return_relaxed(1, v);
 }
-# 1471 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1471 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) s64
 arch_atomic64_fetch_inc(atomic64_t *v)
 {
@@ -2201,13 +2207,13 @@ arch_atomic64_fetch_inc_relaxed(atomic64_t *v)
 {
  return arch_atomic64_fetch_add_relaxed(1, v);
 }
-# 1545 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1545 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void
 arch_atomic64_dec(atomic64_t *v)
 {
  arch_atomic64_sub(1, v);
 }
-# 1561 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1561 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) s64
 arch_atomic64_dec_return(atomic64_t *v)
 {
@@ -2240,7 +2246,7 @@ arch_atomic64_dec_return_relaxed(atomic64_t *v)
 {
  return arch_atomic64_sub_return_relaxed(1, v);
 }
-# 1642 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 1642 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) s64
 arch_atomic64_fetch_dec(atomic64_t *v)
 {
@@ -2273,7 +2279,7 @@ arch_atomic64_fetch_dec_relaxed(atomic64_t *v)
 {
  return arch_atomic64_fetch_sub_relaxed(1, v);
 }
-# 2023 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 2023 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic64_try_cmpxchg(atomic64_t *v, s64 *old, s64 new)
 {
@@ -2322,31 +2328,31 @@ arch_atomic64_try_cmpxchg_relaxed(atomic64_t *v, s64 *old, s64 new)
   *old = r;
  return __builtin_expect(!!(r == o), 1);
 }
-# 2122 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 2122 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic64_sub_and_test(s64 i, atomic64_t *v)
 {
  return arch_atomic64_sub_return(i, v) == 0;
 }
-# 2139 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 2139 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic64_dec_and_test(atomic64_t *v)
 {
  return arch_atomic64_dec_return(v) == 0;
 }
-# 2156 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 2156 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic64_inc_and_test(atomic64_t *v)
 {
  return arch_atomic64_inc_return(v) == 0;
 }
-# 2174 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 2174 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic64_add_negative(s64 i, atomic64_t *v)
 {
  return arch_atomic64_add_return(i, v) < 0;
 }
-# 2192 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 2192 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) s64
 arch_atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u)
 {
@@ -2359,13 +2365,13 @@ arch_atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u)
 
  return c;
 }
-# 2217 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 2217 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic64_add_unless(atomic64_t *v, s64 a, s64 u)
 {
  return arch_atomic64_fetch_add_unless(v, a, u) != u;
 }
-# 2233 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
+# 2233 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic-arch-fallback.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool
 arch_atomic64_inc_not_zero(atomic64_t *v)
 {
@@ -2403,61 +2409,61 @@ arch_atomic64_dec_unless_positive(atomic64_t *v)
 
  return true;
 }
-# 82 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-instrumented.h" 1
-# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-instrumented.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h" 1
-# 24 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
+# 82 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-instrumented.h" 1
+# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-instrumented.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h" 1
+# 24 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void instrument_read(const volatile void *v, size_t size)
 {
  kasan_check_read(v, size);
  kcsan_check_access(v, size, 0);
 }
-# 39 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
+# 39 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void instrument_write(const volatile void *v, size_t size)
 {
  kasan_check_write(v, size);
  kcsan_check_access(v, size, (1 << 0));
 }
-# 54 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
+# 54 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void instrument_read_write(const volatile void *v, size_t size)
 {
  kasan_check_write(v, size);
  kcsan_check_access(v, size, (1 << 1) | (1 << 0));
 }
-# 69 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
+# 69 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void instrument_atomic_read(const volatile void *v, size_t size)
 {
  kasan_check_read(v, size);
  kcsan_check_access(v, size, (1 << 2));
 }
-# 84 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
+# 84 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void instrument_atomic_write(const volatile void *v, size_t size)
 {
  kasan_check_write(v, size);
  kcsan_check_access(v, size, (1 << 2) | (1 << 0));
 }
-# 99 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
+# 99 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void instrument_atomic_read_write(const volatile void *v, size_t size)
 {
  kasan_check_write(v, size);
  kcsan_check_access(v, size, (1 << 2) | (1 << 0) | (1 << 1));
 }
-# 115 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
+# 115 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void
 instrument_copy_to_user(void *to, const void *from, unsigned long n)
 {
  kasan_check_read(from, n);
  kcsan_check_access(from, n, 0);
 }
-# 132 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
+# 132 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumented.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void
 instrument_copy_from_user(const void *to, const void *from, unsigned long n)
 {
  kasan_check_write(to, n);
  kcsan_check_access(to, n, (1 << 0));
 }
-# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-instrumented.h" 2
+# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-instrumented.h" 2
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int
 atomic_read(const atomic_t *v)
@@ -4076,19 +4082,19 @@ atomic64_dec_if_positive(atomic64_t *v)
  instrument_atomic_read_write(v, sizeof(*v));
  return arch_atomic64_dec_if_positive(v);
 }
-# 83 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 2
+# 83 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 2
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-long.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-long.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-long.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-long.h"
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-long.h" 2
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-long.h" 2
 
 
 typedef atomic64_t atomic_long_t;
-# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-long.h"
+# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/atomic-long.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) long
 atomic_long_read(const atomic_long_t *v)
 {
@@ -4580,9 +4586,9 @@ atomic_long_dec_if_positive(atomic_long_t *v)
 {
  return atomic64_dec_if_positive(v);
 }
-# 88 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/atomic.h" 2
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/atomic.h"
+# 88 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/atomic.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/atomic.h" 2
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void set_bit(unsigned int nr, volatile unsigned long *p)
 {
  p += ((nr) / 64);
@@ -4607,9 +4613,6 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  unsigned long mask = ((((1UL))) << ((nr) % 64));
 
  p += ((nr) / 64);
- if (({ do { extern void __compiletime_assert_91(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*p) == sizeof(char) || sizeof(*p) == sizeof(short) || sizeof(*p) == sizeof(int) || sizeof(*p) == sizeof(long)) || sizeof(*p) == sizeof(long long))) __compiletime_assert_91(); } while (0); (*(const volatile typeof( _Generic((*p), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*p))) *)&(*p)); }) & mask)
-  return 1;
-
  old = atomic_long_fetch_or(mask, (atomic_long_t *)p);
  return !!(old & mask);
 }
@@ -4620,9 +4623,6 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  unsigned long mask = ((((1UL))) << ((nr) % 64));
 
  p += ((nr) / 64);
- if (!(({ do { extern void __compiletime_assert_92(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*p) == sizeof(char) || sizeof(*p) == sizeof(short) || sizeof(*p) == sizeof(int) || sizeof(*p) == sizeof(long)) || sizeof(*p) == sizeof(long long))) __compiletime_assert_92(); } while (0); (*(const volatile typeof( _Generic((*p), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*p))) *)&(*p)); }) & mask))
-  return 0;
-
  old = atomic_long_fetch_andnot(mask, (atomic_long_t *)p);
  return !!(old & mask);
 }
@@ -4636,9 +4636,9 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  old = atomic_long_fetch_xor(mask, (atomic_long_t *)p);
  return !!(old & mask);
 }
-# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h" 1
-# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h"
+# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h" 1
+# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int test_and_set_bit_lock(unsigned int nr,
      volatile unsigned long *p)
 {
@@ -4646,30 +4646,30 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  unsigned long mask = ((((1UL))) << ((nr) % 64));
 
  p += ((nr) / 64);
- if (({ do { extern void __compiletime_assert_93(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*p) == sizeof(char) || sizeof(*p) == sizeof(short) || sizeof(*p) == sizeof(int) || sizeof(*p) == sizeof(long)) || sizeof(*p) == sizeof(long long))) __compiletime_assert_93(); } while (0); (*(const volatile typeof( _Generic((*p), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*p))) *)&(*p)); }) & mask)
+ if (({ do { extern void __compiletime_assert_91(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*p) == sizeof(char) || sizeof(*p) == sizeof(short) || sizeof(*p) == sizeof(int) || sizeof(*p) == sizeof(long)) || sizeof(*p) == sizeof(long long))) __compiletime_assert_91(); } while (0); (*(const volatile typeof( _Generic((*p), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*p))) *)&(*p)); }) & mask)
   return 1;
 
  old = atomic_long_fetch_or_acquire(mask, (atomic_long_t *)p);
  return !!(old & mask);
 }
-# 40 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h"
+# 40 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void clear_bit_unlock(unsigned int nr, volatile unsigned long *p)
 {
  p += ((nr) / 64);
  atomic_long_fetch_andnot_release(((((1UL))) << ((nr) % 64)), (atomic_long_t *)p);
 }
-# 57 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h"
+# 57 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __clear_bit_unlock(unsigned int nr,
           volatile unsigned long *p)
 {
  unsigned long old;
 
  p += ((nr) / 64);
- old = ({ do { extern void __compiletime_assert_94(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*p) == sizeof(char) || sizeof(*p) == sizeof(short) || sizeof(*p) == sizeof(int) || sizeof(*p) == sizeof(long)) || sizeof(*p) == sizeof(long long))) __compiletime_assert_94(); } while (0); (*(const volatile typeof( _Generic((*p), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*p))) *)&(*p)); });
+ old = ({ do { extern void __compiletime_assert_92(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*p) == sizeof(char) || sizeof(*p) == sizeof(short) || sizeof(*p) == sizeof(int) || sizeof(*p) == sizeof(long)) || sizeof(*p) == sizeof(long long))) __compiletime_assert_92(); } while (0); (*(const volatile typeof( _Generic((*p), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*p))) *)&(*p)); });
  old &= ~((((1UL))) << ((nr) % 64));
  atomic_long_set_release((atomic_long_t *)p, old);
 }
-# 78 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h"
+# 78 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/lock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool clear_bit_unlock_is_negative_byte(unsigned int nr,
            volatile unsigned long *p)
 {
@@ -4680,15 +4680,15 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  old = atomic_long_fetch_andnot_release(mask, (atomic_long_t *)p);
  return !!(old & ((((1UL))) << (7)));
 }
-# 28 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h" 1
+# 28 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h" 1
 
 
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h" 2
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h"
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h" 2
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __set_bit(int nr, volatile unsigned long *addr)
 {
  unsigned long mask = ((((1UL))) << ((nr) % 64));
@@ -4704,7 +4704,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
  *p &= ~mask;
 }
-# 41 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h"
+# 41 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __change_bit(int nr, volatile unsigned long *addr)
 {
  unsigned long mask = ((((1UL))) << ((nr) % 64));
@@ -4712,7 +4712,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
  *p ^= mask;
 }
-# 58 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h"
+# 58 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __test_and_set_bit(int nr, volatile unsigned long *addr)
 {
  unsigned long mask = ((((1UL))) << ((nr) % 64));
@@ -4722,7 +4722,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  *p = old | mask;
  return (old & mask) != 0;
 }
-# 77 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h"
+# 77 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/non-atomic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __test_and_clear_bit(int nr, volatile unsigned long *addr)
 {
  unsigned long mask = ((((1UL))) << ((nr) % 64));
@@ -4754,29 +4754,29 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return 1UL & (addr[((nr) / 64)] >> (nr & (64 -1)));
 }
-# 29 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/le.h" 1
+# 29 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/le.h" 1
 
 
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/le.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/byteorder.h" 1
-# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/byteorder.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/little_endian.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/le.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/byteorder.h" 1
+# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/byteorder.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/little_endian.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/byteorder/little_endian.h" 1
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/byteorder/little_endian.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/swab.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/byteorder/little_endian.h" 1
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/byteorder/little_endian.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/swab.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h" 1
 
 
 
@@ -4785,10 +4785,10 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/swab.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/swab.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/swab.h" 1
 # 1 "./arch/arm64/include/generated/uapi/asm/swab.h" 2
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h" 2
-# 48 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h"
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h" 2
+# 48 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__const__)) __u16 __fswab16(__u16 val)
 {
 
@@ -4837,7 +4837,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  return ((__u32)( (((__u32)(val) & (__u32)0x00ff00ffUL) << 8) | (((__u32)(val) & (__u32)0xff00ff00UL) >> 8)));
 
 }
-# 136 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h"
+# 136 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) unsigned long __swab(const unsigned long y)
 {
 
@@ -4846,7 +4846,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 }
-# 171 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h"
+# 171 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/swab.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) __u16 __swab16p(const __u16 *p)
 {
 
@@ -4979,9 +4979,9 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  *p = __swahb32p(p);
 
 }
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/swab.h" 2
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/byteorder/little_endian.h" 2
-# 44 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/byteorder/little_endian.h"
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/swab.h" 2
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/byteorder/little_endian.h" 2
+# 44 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/byteorder/little_endian.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) __le64 __cpu_to_le64p(const __u64 *p)
 {
  return ( __le64)*p;
@@ -5030,14 +5030,14 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return __swab16p((__u16 *)p);
 }
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/little_endian.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/little_endian.h" 2
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/generic.h" 1
-# 144 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/generic.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/generic.h" 1
+# 144 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/generic.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void le16_add_cpu(__le16 *var, u16 val)
 {
  *var = (( __le16)(__u16)((( __u16)(__le16)(*var)) + val));
@@ -5100,9 +5100,9 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  for (i = 0; i < len; i++)
   dst[i] = (__builtin_constant_p((__u32)(( __u32)(__be32)(src[i]))) ? ((__u32)( (((__u32)(( __u32)(__be32)(src[i])) & (__u32)0x000000ffUL) << 24) | (((__u32)(( __u32)(__be32)(src[i])) & (__u32)0x0000ff00UL) << 8) | (((__u32)(( __u32)(__be32)(src[i])) & (__u32)0x00ff0000UL) >> 8) | (((__u32)(( __u32)(__be32)(src[i])) & (__u32)0xff000000UL) >> 24))) : __fswab32(( __u32)(__be32)(src[i])));
 }
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/little_endian.h" 2
-# 24 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/byteorder.h" 2
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/le.h" 2
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/byteorder/little_endian.h" 2
+# 24 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/byteorder.h" 2
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/le.h" 2
 
 
 
@@ -5125,7 +5125,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return find_next_zero_bit((addr), (size), 0);
 }
-# 53 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/le.h"
+# 53 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/le.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int test_bit_le(int nr, const void *addr)
 {
  return test_bit(nr ^ 0, addr);
@@ -5170,11 +5170,11 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return __test_and_clear_bit(nr ^ 0, addr);
 }
-# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/ext2-atomic-setbit.h" 1
-# 31 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
-# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h" 2
-# 65 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
+# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bitops/ext2-atomic-setbit.h" 1
+# 31 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bitops.h" 2
+# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h" 2
+# 65 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int get_bitmask_order(unsigned int count)
 {
  int order;
@@ -5267,7 +5267,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return (word >> (shift & 7)) | (word << ((-shift) & 7));
 }
-# 165 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
+# 165 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) __s32 sign_extend32(__u32 value, int index)
 {
  __u8 shift = 31 - index;
@@ -5312,7 +5312,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   return -1;
  return (int)fls_long(--l);
 }
-# 218 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
+# 218 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __ffs64(u64 word)
 {
 
@@ -5347,613 +5347,18 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  else
   __clear_bit(nr, addr);
 }
-# 294 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
+# 294 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitops.h"
 extern unsigned long find_last_bit(const unsigned long *addr,
        unsigned long size);
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h" 1
-# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
-int __ilog2_u32(u32 n)
-{
- return fls(n) - 1;
-}
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
-int __ilog2_u64(u64 n)
-{
- return fls64(n) - 1;
-}
-# 44 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
-bool is_power_of_2(unsigned long n)
-{
- return (n != 0 && ((n & (n - 1)) == 0));
-}
-
-
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
-unsigned long __roundup_pow_of_two(unsigned long n)
-{
- return 1UL << fls_long(n - 1);
-}
-
-
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
-unsigned long __rounddown_pow_of_two(unsigned long n)
-{
- return 1UL << (fls_long(n) - 1);
-}
-# 197 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__const__))
-int __order_base_2(unsigned long n)
-{
- return n > 1 ? ( __builtin_constant_p(n - 1) ? ( __builtin_constant_p(n - 1) ? ( (n - 1) < 2 ? 0 : (n - 1) & (1ULL << 63) ? 63 : (n - 1) & (1ULL << 62) ? 62 : (n - 1) & (1ULL << 61) ? 61 : (n - 1) & (1ULL << 60) ? 60 : (n - 1) & (1ULL << 59) ? 59 : (n - 1) & (1ULL << 58) ? 58 : (n - 1) & (1ULL << 57) ? 57 : (n - 1) & (1ULL << 56) ? 56 : (n - 1) & (1ULL << 55) ? 55 : (n - 1) & (1ULL << 54) ? 54 : (n - 1) & (1ULL << 53) ? 53 : (n - 1) & (1ULL << 52) ? 52 : (n - 1) & (1ULL << 51) ? 51 : (n - 1) & (1ULL << 50) ? 50 : (n - 1) & (1ULL << 49) ? 49 : (n - 1) & (1ULL << 48) ? 48 : (n - 1) & (1ULL << 47) ? 47 : (n - 1) & (1ULL << 46) ? 46 : (n - 1) & (1ULL << 45) ? 45 : (n - 1) & (1ULL << 44) ? 44 : (n - 1) & (1ULL << 43) ? 43 : (n - 1) & (1ULL << 42) ? 42 : (n - 1) & (1ULL << 41) ? 41 : (n - 1) & (1ULL << 40) ? 40 : (n - 1) & (1ULL << 39) ? 39 : (n - 1) & (1ULL << 38) ? 38 : (n - 1) & (1ULL << 37) ? 37 : (n - 1) & (1ULL << 36) ? 36 : (n - 1) & (1ULL << 35) ? 35 : (n - 1) & (1ULL << 34) ? 34 : (n - 1) & (1ULL << 33) ? 33 : (n - 1) & (1ULL << 32) ? 32 : (n - 1) & (1ULL << 31) ? 31 : (n - 1) & (1ULL << 30) ? 30 : (n - 1) & (1ULL << 29) ? 29 : (n - 1) & (1ULL << 28) ? 28 : (n - 1) & (1ULL << 27) ? 27 : (n - 1) & (1ULL << 26) ? 26 : (n - 1) & (1ULL << 25) ? 25 : (n - 1) & (1ULL << 24) ? 24 : (n - 1) & (1ULL << 23) ? 23 : (n - 1) & (1ULL << 22) ? 22 : (n - 1) & (1ULL << 21) ? 21 : (n - 1) & (1ULL << 20) ? 20 : (n - 1) & (1ULL << 19) ? 19 : (n - 1) & (1ULL << 18) ? 18 : (n - 1) & (1ULL << 17) ? 17 : (n - 1) & (1ULL << 16) ? 16 : (n - 1) & (1ULL << 15) ? 15 : (n - 1) & (1ULL << 14) ? 14 : (n - 1) & (1ULL << 13) ? 13 : (n - 1) & (1ULL << 12) ? 12 : (n - 1) & (1ULL << 11) ? 11 : (n - 1) & (1ULL << 10) ? 10 : (n - 1) & (1ULL << 9) ? 9 : (n - 1) & (1ULL << 8) ? 8 : (n - 1) & (1ULL << 7) ? 7 : (n - 1) & (1ULL << 6) ? 6 : (n - 1) & (1ULL << 5) ? 5 : (n - 1) & (1ULL << 4) ? 4 : (n - 1) & (1ULL << 3) ? 3 : (n - 1) & (1ULL << 2) ? 2 : 1) : -1) : (sizeof(n - 1) <= 4) ? __ilog2_u32(n - 1) : __ilog2_u64(n - 1) ) + 1 : 0;
-}
-# 224 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
-int __bits_per(unsigned long n)
-{
- if (n < 2)
-  return 1;
- if (is_power_of_2(n))
-  return ( __builtin_constant_p(n) ? ( ((n) == 0 || (n) == 1) ? 0 : ( __builtin_constant_p((n) - 1) ? ( __builtin_constant_p((n) - 1) ? ( ((n) - 1) < 2 ? 0 : ((n) - 1) & (1ULL << 63) ? 63 : ((n) - 1) & (1ULL << 62) ? 62 : ((n) - 1) & (1ULL << 61) ? 61 : ((n) - 1) & (1ULL << 60) ? 60 : ((n) - 1) & (1ULL << 59) ? 59 : ((n) - 1) & (1ULL << 58) ? 58 : ((n) - 1) & (1ULL << 57) ? 57 : ((n) - 1) & (1ULL << 56) ? 56 : ((n) - 1) & (1ULL << 55) ? 55 : ((n) - 1) & (1ULL << 54) ? 54 : ((n) - 1) & (1ULL << 53) ? 53 : ((n) - 1) & (1ULL << 52) ? 52 : ((n) - 1) & (1ULL << 51) ? 51 : ((n) - 1) & (1ULL << 50) ? 50 : ((n) - 1) & (1ULL << 49) ? 49 : ((n) - 1) & (1ULL << 48) ? 48 : ((n) - 1) & (1ULL << 47) ? 47 : ((n) - 1) & (1ULL << 46) ? 46 : ((n) - 1) & (1ULL << 45) ? 45 : ((n) - 1) & (1ULL << 44) ? 44 : ((n) - 1) & (1ULL << 43) ? 43 : ((n) - 1) & (1ULL << 42) ? 42 : ((n) - 1) & (1ULL << 41) ? 41 : ((n) - 1) & (1ULL << 40) ? 40 : ((n) - 1) & (1ULL << 39) ? 39 : ((n) - 1) & (1ULL << 38) ? 38 : ((n) - 1) & (1ULL << 37) ? 37 : ((n) - 1) & (1ULL << 36) ? 36 : ((n) - 1) & (1ULL << 35) ? 35 : ((n) - 1) & (1ULL << 34) ? 34 : ((n) - 1) & (1ULL << 33) ? 33 : ((n) - 1) & (1ULL << 32) ? 32 : ((n) - 1) & (1ULL << 31) ? 31 : ((n) - 1) & (1ULL << 30) ? 30 : ((n) - 1) & (1ULL << 29) ? 29 : ((n) - 1) & (1ULL << 28) ? 28 : ((n) - 1) & (1ULL << 27) ? 27 : ((n) - 1) & (1ULL << 26) ? 26 : ((n) - 1) & (1ULL << 25) ? 25 : ((n) - 1) & (1ULL << 24) ? 24 : ((n) - 1) & (1ULL << 23) ? 23 : ((n) - 1) & (1ULL << 22) ? 22 : ((n) - 1) & (1ULL << 21) ? 21 : ((n) - 1) & (1ULL << 20) ? 20 : ((n) - 1) & (1ULL << 19) ? 19 : ((n) - 1) & (1ULL << 18) ? 18 : ((n) - 1) & (1ULL << 17) ? 17 : ((n) - 1) & (1ULL << 16) ? 16 : ((n) - 1) & (1ULL << 15) ? 15 : ((n) - 1) & (1ULL << 14) ? 14 : ((n) - 1) & (1ULL << 13) ? 13 : ((n) - 1) & (1ULL << 12) ? 12 : ((n) - 1) & (1ULL << 11) ? 11 : ((n) - 1) & (1ULL << 10) ? 10 : ((n) - 1) & (1ULL << 9) ? 9 : ((n) - 1) & (1ULL << 8) ? 8 : ((n) - 1) & (1ULL << 7) ? 7 : ((n) - 1) & (1ULL << 6) ? 6 : ((n) - 1) & (1ULL << 5) ? 5 : ((n) - 1) & (1ULL << 4) ? 4 : ((n) - 1) & (1ULL << 3) ? 3 : ((n) - 1) & (1ULL << 2) ? 2 : 1) : -1) : (sizeof((n) - 1) <= 4) ? __ilog2_u32((n) - 1) : __ilog2_u64((n) - 1) ) + 1) : __order_base_2(n) ) + 1;
- return ( __builtin_constant_p(n) ? ( ((n) == 0 || (n) == 1) ? 0 : ( __builtin_constant_p((n) - 1) ? ( __builtin_constant_p((n) - 1) ? ( ((n) - 1) < 2 ? 0 : ((n) - 1) & (1ULL << 63) ? 63 : ((n) - 1) & (1ULL << 62) ? 62 : ((n) - 1) & (1ULL << 61) ? 61 : ((n) - 1) & (1ULL << 60) ? 60 : ((n) - 1) & (1ULL << 59) ? 59 : ((n) - 1) & (1ULL << 58) ? 58 : ((n) - 1) & (1ULL << 57) ? 57 : ((n) - 1) & (1ULL << 56) ? 56 : ((n) - 1) & (1ULL << 55) ? 55 : ((n) - 1) & (1ULL << 54) ? 54 : ((n) - 1) & (1ULL << 53) ? 53 : ((n) - 1) & (1ULL << 52) ? 52 : ((n) - 1) & (1ULL << 51) ? 51 : ((n) - 1) & (1ULL << 50) ? 50 : ((n) - 1) & (1ULL << 49) ? 49 : ((n) - 1) & (1ULL << 48) ? 48 : ((n) - 1) & (1ULL << 47) ? 47 : ((n) - 1) & (1ULL << 46) ? 46 : ((n) - 1) & (1ULL << 45) ? 45 : ((n) - 1) & (1ULL << 44) ? 44 : ((n) - 1) & (1ULL << 43) ? 43 : ((n) - 1) & (1ULL << 42) ? 42 : ((n) - 1) & (1ULL << 41) ? 41 : ((n) - 1) & (1ULL << 40) ? 40 : ((n) - 1) & (1ULL << 39) ? 39 : ((n) - 1) & (1ULL << 38) ? 38 : ((n) - 1) & (1ULL << 37) ? 37 : ((n) - 1) & (1ULL << 36) ? 36 : ((n) - 1) & (1ULL << 35) ? 35 : ((n) - 1) & (1ULL << 34) ? 34 : ((n) - 1) & (1ULL << 33) ? 33 : ((n) - 1) & (1ULL << 32) ? 32 : ((n) - 1) & (1ULL << 31) ? 31 : ((n) - 1) & (1ULL << 30) ? 30 : ((n) - 1) & (1ULL << 29) ? 29 : ((n) - 1) & (1ULL << 28) ? 28 : ((n) - 1) & (1ULL << 27) ? 27 : ((n) - 1) & (1ULL << 26) ? 26 : ((n) - 1) & (1ULL << 25) ? 25 : ((n) - 1) & (1ULL << 24) ? 24 : ((n) - 1) & (1ULL << 23) ? 23 : ((n) - 1) & (1ULL << 22) ? 22 : ((n) - 1) & (1ULL << 21) ? 21 : ((n) - 1) & (1ULL << 20) ? 20 : ((n) - 1) & (1ULL << 19) ? 19 : ((n) - 1) & (1ULL << 18) ? 18 : ((n) - 1) & (1ULL << 17) ? 17 : ((n) - 1) & (1ULL << 16) ? 16 : ((n) - 1) & (1ULL << 15) ? 15 : ((n) - 1) & (1ULL << 14) ? 14 : ((n) - 1) & (1ULL << 13) ? 13 : ((n) - 1) & (1ULL << 12) ? 12 : ((n) - 1) & (1ULL << 11) ? 11 : ((n) - 1) & (1ULL << 10) ? 10 : ((n) - 1) & (1ULL << 9) ? 9 : ((n) - 1) & (1ULL << 8) ? 8 : ((n) - 1) & (1ULL << 7) ? 7 : ((n) - 1) & (1ULL << 6) ? 6 : ((n) - 1) & (1ULL << 5) ? 5 : ((n) - 1) & (1ULL << 4) ? 4 : ((n) - 1) & (1ULL << 3) ? 3 : ((n) - 1) & (1ULL << 2) ? 2 : 1) : -1) : (sizeof((n) - 1) <= 4) ? __ilog2_u32((n) - 1) : __ilog2_u64((n) - 1) ) + 1) : __order_base_2(n) );
-}
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/minmax.h" 1
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/typecheck.h" 1
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h" 1
-
-
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kern_levels.h" 1
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h" 2
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cache.h" 1
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/kernel.h" 1
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/sysinfo.h" 1
-
-
-
-
-
-
-
-struct sysinfo {
- __kernel_long_t uptime;
- __kernel_ulong_t loads[3];
- __kernel_ulong_t totalram;
- __kernel_ulong_t freeram;
- __kernel_ulong_t sharedram;
- __kernel_ulong_t bufferram;
- __kernel_ulong_t totalswap;
- __kernel_ulong_t freeswap;
- __u16 procs;
- __u16 pad;
- __kernel_ulong_t totalhigh;
- __kernel_ulong_t freehigh;
- __u32 mem_unit;
- char _f[20-2*sizeof(__kernel_ulong_t)-sizeof(__u32)];
-};
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/kernel.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cache.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cache.h" 1
-
-
-
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h" 1
-# 162 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/sysreg.h" 1
-# 163 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h" 2
-# 175 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h"
-struct midr_range {
- u32 model;
- u32 rv_min;
- u32 rv_max;
-};
-# 192 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool midr_is_cpu_model_range(u32 midr, u32 model, u32 rv_min,
-        u32 rv_max)
-{
- u32 _model = midr & ((0xff << 24) | (0xfff << 4) | (0xf << 16));
- u32 rv = midr & (0xf | (0xf << 20));
-
- return _model == model && rv >= rv_min && rv <= rv_max;
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool is_midr_in_range(u32 midr, struct midr_range const *range)
-{
- return midr_is_cpu_model_range(midr, range->model,
-           range->rv_min, range->rv_max);
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool
-is_midr_in_range_list(u32 midr, struct midr_range const *ranges)
-{
- while (ranges->model)
-  if (is_midr_in_range(midr, ranges++))
-   return true;
- return false;
-}
-
-
-
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __attribute__((__const__)) read_cpuid_id(void)
-{
- return ({ u64 __val; asm volatile("	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n" "	.equ	.L__reg_num_x\\num, \\num\n" "	.endr\n" "	.equ	.L__reg_num_xzr, 31\n" "	.macro	mrs_s, rt, sreg\n" ".inst " "(0xd5200000|(\\sreg)|(.L__reg_num_\\rt))" "\n\t" "	.endm\n" "	mrs_s " "%0" ", " "(((3) << 19) | ((0) << 16) | ((0) << 12) | ((0) << 8) | ((0) << 5))" "\n" "	.purgem	mrs_s\n" : "=r" (__val)); __val; });
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __attribute__((__const__)) read_cpuid_mpidr(void)
-{
- return ({ u64 __val; asm volatile("	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n" "	.equ	.L__reg_num_x\\num, \\num\n" "	.endr\n" "	.equ	.L__reg_num_xzr, 31\n" "	.macro	mrs_s, rt, sreg\n" ".inst " "(0xd5200000|(\\sreg)|(.L__reg_num_\\rt))" "\n\t" "	.endm\n" "	mrs_s " "%0" ", " "(((3) << 19) | ((0) << 16) | ((0) << 12) | ((0) << 8) | ((5) << 5))" "\n" "	.purgem	mrs_s\n" : "=r" (__val)); __val; });
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned int __attribute__((__const__)) read_cpuid_implementor(void)
-{
- return (((read_cpuid_id()) & (0xff << 24)) >> 24);
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned int __attribute__((__const__)) read_cpuid_part_number(void)
-{
- return (((read_cpuid_id()) & (0xfff << 4)) >> 4);
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __attribute__((__const__)) read_cpuid_cachetype(void)
-{
- return ({ u64 __val; asm volatile("	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n" "	.equ	.L__reg_num_x\\num, \\num\n" "	.endr\n" "	.equ	.L__reg_num_xzr, 31\n" "	.macro	mrs_s, rt, sreg\n" ".inst " "(0xd5200000|(\\sreg)|(.L__reg_num_\\rt))" "\n\t" "	.endm\n" "	mrs_s " "%0" ", " "(((3) << 19) | ((3) << 16) | ((0) << 12) | ((0) << 8) | ((1) << 5))" "\n" "	.purgem	mrs_s\n" : "=r" (__val)); __val; });
-}
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cache.h" 2
-# 62 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cache.h"
-extern unsigned long __icache_flags;
-
-
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int icache_is_aliasing(void)
-{
- return test_bit(0, &__icache_flags);
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int icache_is_vpipt(void)
-{
- return test_bit(1, &__icache_flags);
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 cache_type_cwg(void)
-{
- return (read_cpuid_cachetype() >> 24) & 15;
-}
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cache_line_size_of_cpu(void)
-{
- u32 cwg = cache_type_cwg();
-
- return cwg ? 4 << cwg : (128);
-}
-
-int cache_line_size(void);
-# 110 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cache.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __attribute__((__const__)) read_cpuid_effective_cachetype(void)
-{
- u32 ctr = read_cpuid_cachetype();
-
- if (!(ctr & ((((1UL))) << (28)))) {
-  u64 clidr = ({ u64 __val; asm volatile("mrs %0, " "clidr_el1" : "=r" (__val)); __val; });
-
-  if ((((clidr) >> 24) & 0x7) == 0 ||
-      ((((clidr) >> 21) & 0x7) == 0 && (((clidr) >> 27) & 0x7) == 0))
-   ctr |= ((((1UL))) << (28));
- }
-
- return ctr;
-}
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cache.h" 2
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/ratelimit_types.h" 1
-
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/param.h" 1
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/param.h" 1
-# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/param.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/param.h" 1
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/param.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/param.h" 2
-# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/param.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/param.h" 2
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/ratelimit_types.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h" 1
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock_types.h" 1
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock_types.h"
-typedef struct qspinlock {
- union {
-  atomic_t val;
-
-
-
-
-
-
-
-  struct {
-   u8 locked;
-   u8 pending;
-  };
-  struct {
-   u16 locked_pending;
-   u16 tail;
-  };
-# 43 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock_types.h"
- };
-} arch_spinlock_t;
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock_types.h" 1
-
-
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h" 1
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock_types.h" 2
-
-
-
-
-
-typedef struct qrwlock {
- union {
-  atomic_t cnts;
-  struct {
-
-   u8 wlocked;
-   u8 __lstate[3];
-
-
-
-
-  };
- };
- arch_spinlock_t wait_lock;
-} arch_rwlock_t;
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h" 2
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h" 2
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep_types.h" 1
-# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep_types.h"
-enum lockdep_wait_type {
- LD_WAIT_INV = 0,
-
- LD_WAIT_FREE,
- LD_WAIT_SPIN,
-
-
-
-
- LD_WAIT_CONFIG = LD_WAIT_SPIN,
-
- LD_WAIT_SLEEP,
-
- LD_WAIT_MAX,
-};
-
-enum lockdep_lock_type {
- LD_LOCK_NORMAL = 0,
- LD_LOCK_PERCPU,
- LD_LOCK_MAX,
-};
-# 197 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep_types.h"
-struct lock_class_key { };
-
-
-
-
-struct lockdep_map { };
-
-struct pin_cookie { };
-# 19 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h" 2
-
-typedef struct raw_spinlock {
- arch_spinlock_t raw_lock;
-
-
-
-
-
-
-
-} raw_spinlock_t;
-# 71 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h"
-typedef struct spinlock {
- union {
-  struct raw_spinlock rlock;
-# 82 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h"
- };
-} spinlock_t;
-# 99 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_types.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_types.h"
-typedef struct {
- arch_rwlock_t raw_lock;
-
-
-
-
-
-
-
-} rwlock_t;
-# 100 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h" 2
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/ratelimit_types.h" 2
-
-
-
-
-
-
-
-struct ratelimit_state {
- raw_spinlock_t lock;
-
- int interval;
- int burst;
- int printed;
- int missed;
- unsigned long begin;
- unsigned long flags;
-};
-# 40 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/ratelimit_types.h"
-extern int ___ratelimit(struct ratelimit_state *rs, const char *func);
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h" 2
-
-extern const char linux_banner[];
-extern const char linux_proc_banner[];
-
-extern int oops_in_progress;
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int printk_get_level(const char *buffer)
-{
- if (buffer[0] == '\001' && buffer[1]) {
-  switch (buffer[1]) {
-  case '0' ... '7':
-  case 'c':
-   return buffer[1];
-  }
- }
- return 0;
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) const char *printk_skip_level(const char *buffer)
-{
- if (printk_get_level(buffer))
-  return buffer + 2;
-
- return buffer;
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) const char *printk_skip_headers(const char *buffer)
-{
- while (printk_get_level(buffer))
-  buffer = printk_skip_level(buffer);
-
- return buffer;
-}
-# 65 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
-extern int console_printk[];
-
-
-
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void console_silent(void)
-{
- (console_printk[0]) = 0;
-}
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void console_verbose(void)
-{
- if ((console_printk[0]))
-  (console_printk[0]) = 15;
-}
-
-
-
-extern char devkmsg_log_str[];
-struct ctl_table;
-
-extern int suppress_printk;
-
-struct va_format {
- const char *fmt;
- va_list *va;
-};
-# 148 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__format__(printf, 1, 2))) __attribute__((__cold__))
-void early_printk(const char *s, ...) { }
-
-
-
-extern void printk_nmi_enter(void);
-extern void printk_nmi_exit(void);
-extern void printk_nmi_direct_enter(void);
-extern void printk_nmi_direct_exit(void);
-
-
-
-
-
-
-
-struct dev_printk_info;
-
-
- __attribute__((__format__(printf, 4, 0)))
-int vprintk_emit(int facility, int level,
-   const struct dev_printk_info *dev_info,
-   const char *fmt, va_list args);
-
- __attribute__((__format__(printf, 1, 0)))
-int vprintk(const char *fmt, va_list args);
-
- __attribute__((__format__(printf, 1, 2))) __attribute__((__cold__))
-int printk(const char *fmt, ...);
-
-
-
-
-__attribute__((__format__(printf, 1, 2))) __attribute__((__cold__)) int printk_deferred(const char *fmt, ...);
-
-
-
-
-
-
-extern int __printk_ratelimit(const char *func);
-
-extern bool printk_timed_ratelimit(unsigned long *caller_jiffies,
-       unsigned int interval_msec);
-
-extern int printk_delay_msec;
-extern int dmesg_restrict;
-
-extern int
-devkmsg_sysctl_set_loglvl(struct ctl_table *table, int write, void *buf,
-     size_t *lenp, loff_t *ppos);
-
-extern void wake_up_klogd(void);
-
-char *log_buf_addr_get(void);
-u32 log_buf_len_get(void);
-void log_buf_vmcoreinfo_setup(void);
-void __attribute__((__section__(".init.text"))) __attribute__((__cold__)) setup_log_buf(int early);
-__attribute__((__format__(printf, 1, 2))) void dump_stack_set_arch_desc(const char *fmt, ...);
-void dump_stack_print_info(const char *log_lvl);
-void show_regs_print_info(const char *log_lvl);
-extern void dump_stack(void) __attribute__((__cold__));
-extern void printk_safe_flush(void);
-extern void printk_safe_flush_on_panic(void);
-# 285 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
-extern int kptr_restrict;
-# 565 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
-extern const struct file_operations kmsg_fops;
-
-enum {
- DUMP_PREFIX_NONE,
- DUMP_PREFIX_ADDRESS,
- DUMP_PREFIX_OFFSET
-};
-extern int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
-         int groupsize, char *linebuf, size_t linebuflen,
-         bool ascii);
-
-extern void print_hex_dump(const char *level, const char *prefix_str,
-      int prefix_type, int rowsize, int groupsize,
-      const void *buf, size_t len, bool ascii);
-# 604 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void print_hex_dump_debug(const char *prefix_str, int prefix_type,
-     int rowsize, int groupsize,
-     const void *buf, size_t len, bool ascii)
-{
-}
-# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
-
-
-# 1 "./arch/arm64/include/generated/asm/div64.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/div64.h" 1
-# 1 "./arch/arm64/include/generated/asm/div64.h" 2
-# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
-# 192 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
-struct completion;
-struct pt_regs;
-struct user;
-# 248 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
-  static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void ___might_sleep(const char *file, int line,
-       int preempt_offset) { }
-  static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __might_sleep(const char *file, int line,
-       int preempt_offset) { }
-# 305 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 reciprocal_scale(u32 val, u32 ep_ro)
-{
- return (u32)(((u64) val * ep_ro) >> 32);
-}
-
-
-
-
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void might_fault(void) { }
-
-
-extern struct atomic_notifier_head panic_notifier_list;
-extern long (*panic_blink)(int state);
-__attribute__((__format__(printf, 1, 2)))
-void panic(const char *fmt, ...) __attribute__((__noreturn__)) __attribute__((__cold__));
-void nmi_panic(struct pt_regs *regs, const char *msg);
-extern void oops_enter(void);
-extern void oops_exit(void);
-extern bool oops_may_print(void);
-void do_exit(long error_code) __attribute__((__noreturn__));
-void complete_and_exit(struct completion *, long) __attribute__((__noreturn__));
-
-
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kstrtox.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kstrtox.h"
 int __attribute__((__warn_unused_result__)) _kstrtoul(const char *s, unsigned int base, unsigned long *res);
 int __attribute__((__warn_unused_result__)) _kstrtol(const char *s, unsigned int base, long *res);
 
 int __attribute__((__warn_unused_result__)) kstrtoull(const char *s, unsigned int base, unsigned long long *res);
 int __attribute__((__warn_unused_result__)) kstrtoll(const char *s, unsigned int base, long long *res);
-# 351 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kstrtox.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __attribute__((__warn_unused_result__)) kstrtoul(const char *s, unsigned int base, unsigned long *res)
 {
 
@@ -5966,7 +5371,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  else
   return _kstrtoul(s, base, res);
 }
-# 379 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+# 58 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kstrtox.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __attribute__((__warn_unused_result__)) kstrtol(const char *s, unsigned int base, long *res)
 {
 
@@ -6040,11 +5445,616 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return kstrtoint_from_user(s, count, base, res);
 }
-# 466 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+# 145 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kstrtox.h"
 extern unsigned long simple_strtoul(const char *,char **,unsigned int);
 extern long simple_strtol(const char *,char **,unsigned int);
 extern unsigned long long simple_strtoull(const char *,char **,unsigned int);
 extern long long simple_strtoll(const char *,char **,unsigned int);
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int strtobool(const char *s, bool *res)
+{
+ return kstrtobool(s, res);
+}
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h" 1
+# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
+int __ilog2_u32(u32 n)
+{
+ return fls(n) - 1;
+}
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
+int __ilog2_u64(u64 n)
+{
+ return fls64(n) - 1;
+}
+# 44 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
+bool is_power_of_2(unsigned long n)
+{
+ return (n != 0 && ((n & (n - 1)) == 0));
+}
+
+
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
+unsigned long __roundup_pow_of_two(unsigned long n)
+{
+ return 1UL << fls_long(n - 1);
+}
+
+
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
+unsigned long __rounddown_pow_of_two(unsigned long n)
+{
+ return 1UL << (fls_long(n) - 1);
+}
+# 197 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__const__))
+int __order_base_2(unsigned long n)
+{
+ return n > 1 ? ( __builtin_constant_p(n - 1) ? ( __builtin_constant_p(n - 1) ? ( (n - 1) < 2 ? 0 : (n - 1) & (1ULL << 63) ? 63 : (n - 1) & (1ULL << 62) ? 62 : (n - 1) & (1ULL << 61) ? 61 : (n - 1) & (1ULL << 60) ? 60 : (n - 1) & (1ULL << 59) ? 59 : (n - 1) & (1ULL << 58) ? 58 : (n - 1) & (1ULL << 57) ? 57 : (n - 1) & (1ULL << 56) ? 56 : (n - 1) & (1ULL << 55) ? 55 : (n - 1) & (1ULL << 54) ? 54 : (n - 1) & (1ULL << 53) ? 53 : (n - 1) & (1ULL << 52) ? 52 : (n - 1) & (1ULL << 51) ? 51 : (n - 1) & (1ULL << 50) ? 50 : (n - 1) & (1ULL << 49) ? 49 : (n - 1) & (1ULL << 48) ? 48 : (n - 1) & (1ULL << 47) ? 47 : (n - 1) & (1ULL << 46) ? 46 : (n - 1) & (1ULL << 45) ? 45 : (n - 1) & (1ULL << 44) ? 44 : (n - 1) & (1ULL << 43) ? 43 : (n - 1) & (1ULL << 42) ? 42 : (n - 1) & (1ULL << 41) ? 41 : (n - 1) & (1ULL << 40) ? 40 : (n - 1) & (1ULL << 39) ? 39 : (n - 1) & (1ULL << 38) ? 38 : (n - 1) & (1ULL << 37) ? 37 : (n - 1) & (1ULL << 36) ? 36 : (n - 1) & (1ULL << 35) ? 35 : (n - 1) & (1ULL << 34) ? 34 : (n - 1) & (1ULL << 33) ? 33 : (n - 1) & (1ULL << 32) ? 32 : (n - 1) & (1ULL << 31) ? 31 : (n - 1) & (1ULL << 30) ? 30 : (n - 1) & (1ULL << 29) ? 29 : (n - 1) & (1ULL << 28) ? 28 : (n - 1) & (1ULL << 27) ? 27 : (n - 1) & (1ULL << 26) ? 26 : (n - 1) & (1ULL << 25) ? 25 : (n - 1) & (1ULL << 24) ? 24 : (n - 1) & (1ULL << 23) ? 23 : (n - 1) & (1ULL << 22) ? 22 : (n - 1) & (1ULL << 21) ? 21 : (n - 1) & (1ULL << 20) ? 20 : (n - 1) & (1ULL << 19) ? 19 : (n - 1) & (1ULL << 18) ? 18 : (n - 1) & (1ULL << 17) ? 17 : (n - 1) & (1ULL << 16) ? 16 : (n - 1) & (1ULL << 15) ? 15 : (n - 1) & (1ULL << 14) ? 14 : (n - 1) & (1ULL << 13) ? 13 : (n - 1) & (1ULL << 12) ? 12 : (n - 1) & (1ULL << 11) ? 11 : (n - 1) & (1ULL << 10) ? 10 : (n - 1) & (1ULL << 9) ? 9 : (n - 1) & (1ULL << 8) ? 8 : (n - 1) & (1ULL << 7) ? 7 : (n - 1) & (1ULL << 6) ? 6 : (n - 1) & (1ULL << 5) ? 5 : (n - 1) & (1ULL << 4) ? 4 : (n - 1) & (1ULL << 3) ? 3 : (n - 1) & (1ULL << 2) ? 2 : 1) : -1) : (sizeof(n - 1) <= 4) ? __ilog2_u32(n - 1) : __ilog2_u64(n - 1) ) + 1 : 0;
+}
+# 224 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/log2.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((const))
+int __bits_per(unsigned long n)
+{
+ if (n < 2)
+  return 1;
+ if (is_power_of_2(n))
+  return ( __builtin_constant_p(n) ? ( ((n) == 0 || (n) == 1) ? 0 : ( __builtin_constant_p((n) - 1) ? ( __builtin_constant_p((n) - 1) ? ( ((n) - 1) < 2 ? 0 : ((n) - 1) & (1ULL << 63) ? 63 : ((n) - 1) & (1ULL << 62) ? 62 : ((n) - 1) & (1ULL << 61) ? 61 : ((n) - 1) & (1ULL << 60) ? 60 : ((n) - 1) & (1ULL << 59) ? 59 : ((n) - 1) & (1ULL << 58) ? 58 : ((n) - 1) & (1ULL << 57) ? 57 : ((n) - 1) & (1ULL << 56) ? 56 : ((n) - 1) & (1ULL << 55) ? 55 : ((n) - 1) & (1ULL << 54) ? 54 : ((n) - 1) & (1ULL << 53) ? 53 : ((n) - 1) & (1ULL << 52) ? 52 : ((n) - 1) & (1ULL << 51) ? 51 : ((n) - 1) & (1ULL << 50) ? 50 : ((n) - 1) & (1ULL << 49) ? 49 : ((n) - 1) & (1ULL << 48) ? 48 : ((n) - 1) & (1ULL << 47) ? 47 : ((n) - 1) & (1ULL << 46) ? 46 : ((n) - 1) & (1ULL << 45) ? 45 : ((n) - 1) & (1ULL << 44) ? 44 : ((n) - 1) & (1ULL << 43) ? 43 : ((n) - 1) & (1ULL << 42) ? 42 : ((n) - 1) & (1ULL << 41) ? 41 : ((n) - 1) & (1ULL << 40) ? 40 : ((n) - 1) & (1ULL << 39) ? 39 : ((n) - 1) & (1ULL << 38) ? 38 : ((n) - 1) & (1ULL << 37) ? 37 : ((n) - 1) & (1ULL << 36) ? 36 : ((n) - 1) & (1ULL << 35) ? 35 : ((n) - 1) & (1ULL << 34) ? 34 : ((n) - 1) & (1ULL << 33) ? 33 : ((n) - 1) & (1ULL << 32) ? 32 : ((n) - 1) & (1ULL << 31) ? 31 : ((n) - 1) & (1ULL << 30) ? 30 : ((n) - 1) & (1ULL << 29) ? 29 : ((n) - 1) & (1ULL << 28) ? 28 : ((n) - 1) & (1ULL << 27) ? 27 : ((n) - 1) & (1ULL << 26) ? 26 : ((n) - 1) & (1ULL << 25) ? 25 : ((n) - 1) & (1ULL << 24) ? 24 : ((n) - 1) & (1ULL << 23) ? 23 : ((n) - 1) & (1ULL << 22) ? 22 : ((n) - 1) & (1ULL << 21) ? 21 : ((n) - 1) & (1ULL << 20) ? 20 : ((n) - 1) & (1ULL << 19) ? 19 : ((n) - 1) & (1ULL << 18) ? 18 : ((n) - 1) & (1ULL << 17) ? 17 : ((n) - 1) & (1ULL << 16) ? 16 : ((n) - 1) & (1ULL << 15) ? 15 : ((n) - 1) & (1ULL << 14) ? 14 : ((n) - 1) & (1ULL << 13) ? 13 : ((n) - 1) & (1ULL << 12) ? 12 : ((n) - 1) & (1ULL << 11) ? 11 : ((n) - 1) & (1ULL << 10) ? 10 : ((n) - 1) & (1ULL << 9) ? 9 : ((n) - 1) & (1ULL << 8) ? 8 : ((n) - 1) & (1ULL << 7) ? 7 : ((n) - 1) & (1ULL << 6) ? 6 : ((n) - 1) & (1ULL << 5) ? 5 : ((n) - 1) & (1ULL << 4) ? 4 : ((n) - 1) & (1ULL << 3) ? 3 : ((n) - 1) & (1ULL << 2) ? 2 : 1) : -1) : (sizeof((n) - 1) <= 4) ? __ilog2_u32((n) - 1) : __ilog2_u64((n) - 1) ) + 1) : __order_base_2(n) ) + 1;
+ return ( __builtin_constant_p(n) ? ( ((n) == 0 || (n) == 1) ? 0 : ( __builtin_constant_p((n) - 1) ? ( __builtin_constant_p((n) - 1) ? ( ((n) - 1) < 2 ? 0 : ((n) - 1) & (1ULL << 63) ? 63 : ((n) - 1) & (1ULL << 62) ? 62 : ((n) - 1) & (1ULL << 61) ? 61 : ((n) - 1) & (1ULL << 60) ? 60 : ((n) - 1) & (1ULL << 59) ? 59 : ((n) - 1) & (1ULL << 58) ? 58 : ((n) - 1) & (1ULL << 57) ? 57 : ((n) - 1) & (1ULL << 56) ? 56 : ((n) - 1) & (1ULL << 55) ? 55 : ((n) - 1) & (1ULL << 54) ? 54 : ((n) - 1) & (1ULL << 53) ? 53 : ((n) - 1) & (1ULL << 52) ? 52 : ((n) - 1) & (1ULL << 51) ? 51 : ((n) - 1) & (1ULL << 50) ? 50 : ((n) - 1) & (1ULL << 49) ? 49 : ((n) - 1) & (1ULL << 48) ? 48 : ((n) - 1) & (1ULL << 47) ? 47 : ((n) - 1) & (1ULL << 46) ? 46 : ((n) - 1) & (1ULL << 45) ? 45 : ((n) - 1) & (1ULL << 44) ? 44 : ((n) - 1) & (1ULL << 43) ? 43 : ((n) - 1) & (1ULL << 42) ? 42 : ((n) - 1) & (1ULL << 41) ? 41 : ((n) - 1) & (1ULL << 40) ? 40 : ((n) - 1) & (1ULL << 39) ? 39 : ((n) - 1) & (1ULL << 38) ? 38 : ((n) - 1) & (1ULL << 37) ? 37 : ((n) - 1) & (1ULL << 36) ? 36 : ((n) - 1) & (1ULL << 35) ? 35 : ((n) - 1) & (1ULL << 34) ? 34 : ((n) - 1) & (1ULL << 33) ? 33 : ((n) - 1) & (1ULL << 32) ? 32 : ((n) - 1) & (1ULL << 31) ? 31 : ((n) - 1) & (1ULL << 30) ? 30 : ((n) - 1) & (1ULL << 29) ? 29 : ((n) - 1) & (1ULL << 28) ? 28 : ((n) - 1) & (1ULL << 27) ? 27 : ((n) - 1) & (1ULL << 26) ? 26 : ((n) - 1) & (1ULL << 25) ? 25 : ((n) - 1) & (1ULL << 24) ? 24 : ((n) - 1) & (1ULL << 23) ? 23 : ((n) - 1) & (1ULL << 22) ? 22 : ((n) - 1) & (1ULL << 21) ? 21 : ((n) - 1) & (1ULL << 20) ? 20 : ((n) - 1) & (1ULL << 19) ? 19 : ((n) - 1) & (1ULL << 18) ? 18 : ((n) - 1) & (1ULL << 17) ? 17 : ((n) - 1) & (1ULL << 16) ? 16 : ((n) - 1) & (1ULL << 15) ? 15 : ((n) - 1) & (1ULL << 14) ? 14 : ((n) - 1) & (1ULL << 13) ? 13 : ((n) - 1) & (1ULL << 12) ? 12 : ((n) - 1) & (1ULL << 11) ? 11 : ((n) - 1) & (1ULL << 10) ? 10 : ((n) - 1) & (1ULL << 9) ? 9 : ((n) - 1) & (1ULL << 8) ? 8 : ((n) - 1) & (1ULL << 7) ? 7 : ((n) - 1) & (1ULL << 6) ? 6 : ((n) - 1) & (1ULL << 5) ? 5 : ((n) - 1) & (1ULL << 4) ? 4 : ((n) - 1) & (1ULL << 3) ? 3 : ((n) - 1) & (1ULL << 2) ? 2 : 1) : -1) : (sizeof((n) - 1) <= 4) ? __ilog2_u32((n) - 1) : __ilog2_u64((n) - 1) ) + 1) : __order_base_2(n) );
+}
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/minmax.h" 1
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/typecheck.h" 1
+# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h" 1
+
+
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kern_levels.h" 1
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h" 2
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cache.h" 1
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/kernel.h" 1
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/sysinfo.h" 1
+
+
+
+
+
+
+
+struct sysinfo {
+ __kernel_long_t uptime;
+ __kernel_ulong_t loads[3];
+ __kernel_ulong_t totalram;
+ __kernel_ulong_t freeram;
+ __kernel_ulong_t sharedram;
+ __kernel_ulong_t bufferram;
+ __kernel_ulong_t totalswap;
+ __kernel_ulong_t freeswap;
+ __u16 procs;
+ __u16 pad;
+ __kernel_ulong_t totalhigh;
+ __kernel_ulong_t freehigh;
+ __u32 mem_unit;
+ char _f[20-2*sizeof(__kernel_ulong_t)-sizeof(__u32)];
+};
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/kernel.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cache.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cache.h" 1
+
+
+
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h" 1
+# 168 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/sysreg.h" 1
+# 169 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h" 2
+# 181 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h"
+struct midr_range {
+ u32 model;
+ u32 rv_min;
+ u32 rv_max;
+};
+# 198 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cputype.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool midr_is_cpu_model_range(u32 midr, u32 model, u32 rv_min,
+        u32 rv_max)
+{
+ u32 _model = midr & ((0xff << 24) | (0xfff << 4) | (0xf << 16));
+ u32 rv = midr & (0xf | (0xf << 20));
+
+ return _model == model && rv >= rv_min && rv <= rv_max;
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool is_midr_in_range(u32 midr, struct midr_range const *range)
+{
+ return midr_is_cpu_model_range(midr, range->model,
+           range->rv_min, range->rv_max);
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool
+is_midr_in_range_list(u32 midr, struct midr_range const *ranges)
+{
+ while (ranges->model)
+  if (is_midr_in_range(midr, ranges++))
+   return true;
+ return false;
+}
+
+
+
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __attribute__((__const__)) read_cpuid_id(void)
+{
+ return ({ u64 __val; asm volatile("	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n" "	.equ	.L__reg_num_x\\num, \\num\n" "	.endr\n" "	.equ	.L__reg_num_xzr, 31\n" "	.macro	mrs_s, rt, sreg\n" ".inst " "(0xd5200000|(\\sreg)|(.L__reg_num_\\rt))" "\n\t" "	.endm\n" "	mrs_s " "%0" ", " "(((3) << 19) | ((0) << 16) | ((0) << 12) | ((0) << 8) | ((0) << 5))" "\n" "	.purgem	mrs_s\n" : "=r" (__val)); __val; });
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __attribute__((__const__)) read_cpuid_mpidr(void)
+{
+ return ({ u64 __val; asm volatile("	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n" "	.equ	.L__reg_num_x\\num, \\num\n" "	.endr\n" "	.equ	.L__reg_num_xzr, 31\n" "	.macro	mrs_s, rt, sreg\n" ".inst " "(0xd5200000|(\\sreg)|(.L__reg_num_\\rt))" "\n\t" "	.endm\n" "	mrs_s " "%0" ", " "(((3) << 19) | ((0) << 16) | ((0) << 12) | ((0) << 8) | ((5) << 5))" "\n" "	.purgem	mrs_s\n" : "=r" (__val)); __val; });
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned int __attribute__((__const__)) read_cpuid_implementor(void)
+{
+ return (((read_cpuid_id()) & (0xff << 24)) >> 24);
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned int __attribute__((__const__)) read_cpuid_part_number(void)
+{
+ return (((read_cpuid_id()) & (0xfff << 4)) >> 4);
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __attribute__((__const__)) read_cpuid_cachetype(void)
+{
+ return ({ u64 __val; asm volatile("	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n" "	.equ	.L__reg_num_x\\num, \\num\n" "	.endr\n" "	.equ	.L__reg_num_xzr, 31\n" "	.macro	mrs_s, rt, sreg\n" ".inst " "(0xd5200000|(\\sreg)|(.L__reg_num_\\rt))" "\n\t" "	.endm\n" "	mrs_s " "%0" ", " "(((3) << 19) | ((3) << 16) | ((0) << 12) | ((0) << 8) | ((1) << 5))" "\n" "	.purgem	mrs_s\n" : "=r" (__val)); __val; });
+}
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cache.h" 2
+# 62 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cache.h"
+extern unsigned long __icache_flags;
+
+
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int icache_is_aliasing(void)
+{
+ return test_bit(0, &__icache_flags);
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int icache_is_vpipt(void)
+{
+ return test_bit(1, &__icache_flags);
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 cache_type_cwg(void)
+{
+ return (read_cpuid_cachetype() >> 24) & 15;
+}
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cache_line_size_of_cpu(void)
+{
+ u32 cwg = cache_type_cwg();
+
+ return cwg ? 4 << cwg : (128);
+}
+
+int cache_line_size(void);
+# 110 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cache.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __attribute__((__const__)) read_cpuid_effective_cachetype(void)
+{
+ u32 ctr = read_cpuid_cachetype();
+
+ if (!(ctr & ((((1UL))) << (28)))) {
+  u64 clidr = ({ u64 __val; asm volatile("mrs %0, " "clidr_el1" : "=r" (__val)); __val; });
+
+  if ((((clidr) >> 24) & 0x7) == 0 ||
+      ((((clidr) >> 21) & 0x7) == 0 && (((clidr) >> 27) & 0x7) == 0))
+   ctr |= ((((1UL))) << (28));
+ }
+
+ return ctr;
+}
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cache.h" 2
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/ratelimit_types.h" 1
+
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/param.h" 1
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/param.h" 1
+# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/param.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/param.h" 1
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/param.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/param.h" 2
+# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/param.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/param.h" 2
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/ratelimit_types.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h" 1
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock_types.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock_types.h"
+typedef struct qspinlock {
+ union {
+  atomic_t val;
+
+
+
+
+
+
+
+  struct {
+   u8 locked;
+   u8 pending;
+  };
+  struct {
+   u16 locked_pending;
+   u16 tail;
+  };
+# 43 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock_types.h"
+ };
+} arch_spinlock_t;
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock_types.h" 1
+
+
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h" 1
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock_types.h" 2
+
+
+
+
+
+typedef struct qrwlock {
+ union {
+  atomic_t cnts;
+  struct {
+
+   u8 wlocked;
+   u8 __lstate[3];
+
+
+
+
+  };
+ };
+ arch_spinlock_t wait_lock;
+} arch_rwlock_t;
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock_types.h" 2
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h" 2
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep_types.h" 1
+# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep_types.h"
+enum lockdep_wait_type {
+ LD_WAIT_INV = 0,
+
+ LD_WAIT_FREE,
+ LD_WAIT_SPIN,
+
+
+
+
+ LD_WAIT_CONFIG = LD_WAIT_SPIN,
+
+ LD_WAIT_SLEEP,
+
+ LD_WAIT_MAX,
+};
+
+enum lockdep_lock_type {
+ LD_LOCK_NORMAL = 0,
+ LD_LOCK_PERCPU,
+ LD_LOCK_MAX,
+};
+# 197 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep_types.h"
+struct lock_class_key { };
+
+
+
+
+struct lockdep_map { };
+
+struct pin_cookie { };
+# 19 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h" 2
+
+typedef struct raw_spinlock {
+ arch_spinlock_t raw_lock;
+
+
+
+
+
+
+
+} raw_spinlock_t;
+# 71 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h"
+typedef struct spinlock {
+ union {
+  struct raw_spinlock rlock;
+# 82 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h"
+ };
+} spinlock_t;
+# 99 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_types.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_types.h"
+typedef struct {
+ arch_rwlock_t raw_lock;
+
+
+
+
+
+
+
+} rwlock_t;
+# 100 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_types.h" 2
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/ratelimit_types.h" 2
+
+
+
+
+
+
+
+struct ratelimit_state {
+ raw_spinlock_t lock;
+
+ int interval;
+ int burst;
+ int printed;
+ int missed;
+ unsigned long begin;
+ unsigned long flags;
+};
+# 44 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/ratelimit_types.h"
+extern int ___ratelimit(struct ratelimit_state *rs, const char *func);
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h" 2
+
+extern const char linux_banner[];
+extern const char linux_proc_banner[];
+
+extern int oops_in_progress;
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int printk_get_level(const char *buffer)
+{
+ if (buffer[0] == '\001' && buffer[1]) {
+  switch (buffer[1]) {
+  case '0' ... '7':
+  case 'c':
+   return buffer[1];
+  }
+ }
+ return 0;
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) const char *printk_skip_level(const char *buffer)
+{
+ if (printk_get_level(buffer))
+  return buffer + 2;
+
+ return buffer;
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) const char *printk_skip_headers(const char *buffer)
+{
+ while (printk_get_level(buffer))
+  buffer = printk_skip_level(buffer);
+
+ return buffer;
+}
+# 65 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
+extern int console_printk[];
+
+
+
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void console_silent(void)
+{
+ (console_printk[0]) = 0;
+}
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void console_verbose(void)
+{
+ if ((console_printk[0]))
+  (console_printk[0]) = 15;
+}
+
+
+
+extern char devkmsg_log_str[];
+struct ctl_table;
+
+extern int suppress_printk;
+
+struct va_format {
+ const char *fmt;
+ va_list *va;
+};
+# 148 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__format__(printf, 1, 2))) __attribute__((__cold__))
+void early_printk(const char *s, ...) { }
+
+
+
+extern void printk_nmi_enter(void);
+extern void printk_nmi_exit(void);
+extern void printk_nmi_direct_enter(void);
+extern void printk_nmi_direct_exit(void);
+
+
+
+
+
+
+
+struct dev_printk_info;
+
+
+ __attribute__((__format__(printf, 4, 0)))
+int vprintk_emit(int facility, int level,
+   const struct dev_printk_info *dev_info,
+   const char *fmt, va_list args);
+
+ __attribute__((__format__(printf, 1, 0)))
+int vprintk(const char *fmt, va_list args);
+
+ __attribute__((__format__(printf, 1, 2))) __attribute__((__cold__))
+int printk(const char *fmt, ...);
+
+
+
+
+__attribute__((__format__(printf, 1, 2))) __attribute__((__cold__)) int printk_deferred(const char *fmt, ...);
+
+
+
+
+
+
+extern int __printk_ratelimit(const char *func);
+
+extern bool printk_timed_ratelimit(unsigned long *caller_jiffies,
+       unsigned int interval_msec);
+
+extern int printk_delay_msec;
+extern int dmesg_restrict;
+
+extern int
+devkmsg_sysctl_set_loglvl(struct ctl_table *table, int write, void *buf,
+     size_t *lenp, loff_t *ppos);
+
+extern void wake_up_klogd(void);
+
+char *log_buf_addr_get(void);
+u32 log_buf_len_get(void);
+void log_buf_vmcoreinfo_setup(void);
+void __attribute__((__section__(".init.text"))) __attribute__((__cold__)) setup_log_buf(int early);
+__attribute__((__format__(printf, 1, 2))) void dump_stack_set_arch_desc(const char *fmt, ...);
+void dump_stack_print_info(const char *log_lvl);
+void show_regs_print_info(const char *log_lvl);
+extern void dump_stack(void) __attribute__((__cold__));
+extern void printk_safe_flush(void);
+extern void printk_safe_flush_on_panic(void);
+# 285 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
+extern int kptr_restrict;
+# 565 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
+extern const struct file_operations kmsg_fops;
+
+enum {
+ DUMP_PREFIX_NONE,
+ DUMP_PREFIX_ADDRESS,
+ DUMP_PREFIX_OFFSET
+};
+extern int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
+         int groupsize, char *linebuf, size_t linebuflen,
+         bool ascii);
+
+extern void print_hex_dump(const char *level, const char *prefix_str,
+      int prefix_type, int rowsize, int groupsize,
+      const void *buf, size_t len, bool ascii);
+# 604 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void print_hex_dump_debug(const char *prefix_str, int prefix_type,
+     int rowsize, int groupsize,
+     const void *buf, size_t len, bool ascii)
+{
+}
+# 627 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/printk.h"
+extern void __printk_safe_enter(void);
+extern void __printk_safe_exit(void);
+# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
+
+
+# 1 "./arch/arm64/include/generated/asm/div64.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/div64.h" 1
+# 1 "./arch/arm64/include/generated/asm/div64.h" 2
+# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h" 2
+# 195 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+struct completion;
+struct pt_regs;
+struct user;
+# 251 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+  static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void ___might_sleep(const char *file, int line,
+       int preempt_offset) { }
+  static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __might_sleep(const char *file, int line,
+       int preempt_offset) { }
+# 308 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 reciprocal_scale(u32 val, u32 ep_ro)
+{
+ return (u32)(((u64) val * ep_ro) >> 32);
+}
+
+
+
+
+
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void might_fault(void) { }
+
+
+extern struct atomic_notifier_head panic_notifier_list;
+extern long (*panic_blink)(int state);
+__attribute__((__format__(printf, 1, 2)))
+void panic(const char *fmt, ...) __attribute__((__noreturn__)) __attribute__((__cold__));
+void nmi_panic(struct pt_regs *regs, const char *msg);
+void check_panic_on_warn(const char *origin);
+extern void oops_enter(void);
+extern void oops_exit(void);
+extern bool oops_may_print(void);
+void do_exit(long error_code) __attribute__((__noreturn__));
+void complete_and_exit(struct completion *, long) __attribute__((__noreturn__));
 
 extern int num_to_str(char *buf, int size,
         unsigned long long num, unsigned int width);
@@ -6096,12 +6106,6 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return (u32)int_sqrt(x);
 }
-
-
-
-extern unsigned int sysctl_oops_all_cpu_backtrace;
-
-
 
 
 extern void bust_spinlocks(int yes);
@@ -6160,7 +6164,7 @@ extern enum system_states {
  SYSTEM_RESTART,
  SYSTEM_SUSPEND,
 } system_state;
-# 608 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+# 464 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
 struct taint_flag {
  char c_true;
  char c_false;
@@ -6196,7 +6200,7 @@ extern int __attribute__((__warn_unused_result__)) hex2bin(u8 *dst, const char *
 extern char *bin2hex(char *dst, const void *src, size_t count);
 
 bool mac_pton(const char *s, u8 *mac);
-# 664 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+# 520 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
 enum ftrace_dump_mode {
  DUMP_NONE,
  DUMP_ALL,
@@ -6217,18 +6221,18 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 void ____trace_printk_check_format(const char *fmt, ...)
 {
 }
-# 743 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+# 599 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
 extern __attribute__((__format__(printf, 2, 3)))
 int __trace_bprintk(unsigned long ip, const char *fmt, ...);
 
 extern __attribute__((__format__(printf, 2, 3)))
 int __trace_printk(unsigned long ip, const char *fmt, ...);
-# 784 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+# 640 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
 extern int __trace_bputs(unsigned long ip, const char *str);
 extern int __trace_puts(unsigned long ip, const char *str, int size);
 
 extern void trace_dump_stack(int skip);
-# 806 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
+# 662 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/kernel.h"
 extern __attribute__((__format__(printf, 2, 0))) int
 __ftrace_vbprintk(unsigned long ip, const char *fmt, va_list ap);
 
@@ -6236,20 +6240,20 @@ extern __attribute__((__format__(printf, 2, 0))) int
 __ftrace_vprintk(unsigned long ip, const char *fmt, va_list ap);
 
 extern void ftrace_dump(enum ftrace_dump_mode oops_dump_mode);
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h" 1
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h" 1
 
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/poison.h" 1
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h" 2
-# 33 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/poison.h" 1
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h" 2
+# 33 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void INIT_LIST_HEAD(struct list_head *list)
 {
- do { do { extern void __compiletime_assert_95(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(list->next) == sizeof(char) || sizeof(list->next) == sizeof(short) || sizeof(list->next) == sizeof(int) || sizeof(list->next) == sizeof(long)) || sizeof(list->next) == sizeof(long long))) __compiletime_assert_95(); } while (0); do { *(volatile typeof(list->next) *)&(list->next) = (list); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_93(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(list->next) == sizeof(char) || sizeof(list->next) == sizeof(short) || sizeof(list->next) == sizeof(int) || sizeof(list->next) == sizeof(long)) || sizeof(list->next) == sizeof(long long))) __compiletime_assert_93(); } while (0); do { *(volatile typeof(list->next) *)&(list->next) = (list); } while (0); } while (0);
  list->prev = list;
 }
 
@@ -6269,7 +6273,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return true;
 }
-# 63 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 63 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __list_add(struct list_head *new,
          struct list_head *prev,
          struct list_head *next)
@@ -6280,25 +6284,25 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  next->prev = new;
  new->next = next;
  new->prev = prev;
- do { do { extern void __compiletime_assert_96(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(prev->next) == sizeof(char) || sizeof(prev->next) == sizeof(short) || sizeof(prev->next) == sizeof(int) || sizeof(prev->next) == sizeof(long)) || sizeof(prev->next) == sizeof(long long))) __compiletime_assert_96(); } while (0); do { *(volatile typeof(prev->next) *)&(prev->next) = (new); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_94(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(prev->next) == sizeof(char) || sizeof(prev->next) == sizeof(short) || sizeof(prev->next) == sizeof(int) || sizeof(prev->next) == sizeof(long)) || sizeof(prev->next) == sizeof(long long))) __compiletime_assert_94(); } while (0); do { *(volatile typeof(prev->next) *)&(prev->next) = (new); } while (0); } while (0);
 }
-# 84 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 84 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_add(struct list_head *new, struct list_head *head)
 {
  __list_add(new, head, head->next);
 }
-# 98 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 98 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_add_tail(struct list_head *new, struct list_head *head)
 {
  __list_add(new, head->prev, head);
 }
-# 110 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 110 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __list_del(struct list_head * prev, struct list_head * next)
 {
  next->prev = prev;
- do { do { extern void __compiletime_assert_97(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(prev->next) == sizeof(char) || sizeof(prev->next) == sizeof(short) || sizeof(prev->next) == sizeof(int) || sizeof(prev->next) == sizeof(long)) || sizeof(prev->next) == sizeof(long long))) __compiletime_assert_97(); } while (0); do { *(volatile typeof(prev->next) *)&(prev->next) = (next); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_95(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(prev->next) == sizeof(char) || sizeof(prev->next) == sizeof(short) || sizeof(prev->next) == sizeof(int) || sizeof(prev->next) == sizeof(long)) || sizeof(prev->next) == sizeof(long long))) __compiletime_assert_95(); } while (0); do { *(volatile typeof(prev->next) *)&(prev->next) = (next); } while (0); } while (0);
 }
-# 124 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 124 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __list_del_clearprev(struct list_head *entry)
 {
  __list_del(entry->prev, entry->next);
@@ -6325,7 +6329,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  entry->next = ((void *) 0x100 + (0xdead000000000000UL));
  entry->prev = ((void *) 0x122 + (0xdead000000000000UL));
 }
-# 158 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 158 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_replace(struct list_head *old,
     struct list_head *new)
 {
@@ -6334,7 +6338,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  new->prev = old->prev;
  new->prev->next = new;
 }
-# 174 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 174 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_replace_init(struct list_head *old,
          struct list_head *new)
 {
@@ -6391,7 +6395,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  __list_del_entry(list);
  list_add_tail(list, head);
 }
-# 240 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 240 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_bulk_move_tail(struct list_head *head,
            struct list_head *first,
            struct list_head *last)
@@ -6434,19 +6438,19 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int list_empty(const struct list_head *head)
 {
- return ({ do { extern void __compiletime_assert_98(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(head->next) == sizeof(char) || sizeof(head->next) == sizeof(short) || sizeof(head->next) == sizeof(int) || sizeof(head->next) == sizeof(long)) || sizeof(head->next) == sizeof(long long))) __compiletime_assert_98(); } while (0); (*(const volatile typeof( _Generic((head->next), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (head->next))) *)&(head->next)); }) == head;
+ return ({ do { extern void __compiletime_assert_96(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(head->next) == sizeof(char) || sizeof(head->next) == sizeof(short) || sizeof(head->next) == sizeof(int) || sizeof(head->next) == sizeof(long)) || sizeof(head->next) == sizeof(long long))) __compiletime_assert_96(); } while (0); (*(const volatile typeof( _Generic((head->next), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (head->next))) *)&(head->next)); }) == head;
 }
-# 296 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 296 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_del_init_careful(struct list_head *entry)
 {
  __list_del_entry(entry);
  entry->prev = entry;
- do { typeof(&entry->next) __p = (&entry->next); union { typeof( _Generic((*&entry->next), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&entry->next))) __val; char __c[1]; } __u = { .__val = ( typeof( _Generic((*&entry->next), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&entry->next)))) (entry) }; do { extern void __compiletime_assert_99(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&entry->next) == sizeof(char) || sizeof(*&entry->next) == sizeof(short) || sizeof(*&entry->next) == sizeof(int) || sizeof(*&entry->next) == sizeof(long)))) __compiletime_assert_99(); } while (0); kasan_check_write(__p, sizeof(*&entry->next)); switch (sizeof(*&entry->next)) { case 1: asm volatile ("stlrb %w1, %0" : "=Q" (*__p) : "r" (*(__u8 *)__u.__c) : "memory"); break; case 2: asm volatile ("stlrh %w1, %0" : "=Q" (*__p) : "r" (*(__u16 *)__u.__c) : "memory"); break; case 4: asm volatile ("stlr %w1, %0" : "=Q" (*__p) : "r" (*(__u32 *)__u.__c) : "memory"); break; case 8: asm volatile ("stlr %1, %0" : "=Q" (*__p) : "r" (*(__u64 *)__u.__c) : "memory"); break; } } while (0);
+ do { typeof(&entry->next) __p = (&entry->next); union { typeof( _Generic((*&entry->next), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&entry->next))) __val; char __c[1]; } __u = { .__val = ( typeof( _Generic((*&entry->next), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&entry->next)))) (entry) }; do { extern void __compiletime_assert_97(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&entry->next) == sizeof(char) || sizeof(*&entry->next) == sizeof(short) || sizeof(*&entry->next) == sizeof(int) || sizeof(*&entry->next) == sizeof(long)))) __compiletime_assert_97(); } while (0); kasan_check_write(__p, sizeof(*&entry->next)); switch (sizeof(*&entry->next)) { case 1: asm volatile ("stlrb %w1, %0" : "=Q" (*__p) : "r" (*(__u8 *)__u.__c) : "memory"); break; case 2: asm volatile ("stlrh %w1, %0" : "=Q" (*__p) : "r" (*(__u16 *)__u.__c) : "memory"); break; case 4: asm volatile ("stlr %w1, %0" : "=Q" (*__p) : "r" (*(__u32 *)__u.__c) : "memory"); break; case 8: asm volatile ("stlr %1, %0" : "=Q" (*__p) : "r" (*(__u64 *)__u.__c) : "memory"); break; } } while (0);
 }
-# 316 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 316 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int list_empty_careful(const struct list_head *head)
 {
- struct list_head *next = ({ union { typeof( _Generic((*&head->next), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&head->next))) __val; char __c[1]; } __u; typeof(&head->next) __p = (&head->next); do { extern void __compiletime_assert_100(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&head->next) == sizeof(char) || sizeof(*&head->next) == sizeof(short) || sizeof(*&head->next) == sizeof(int) || sizeof(*&head->next) == sizeof(long)))) __compiletime_assert_100(); } while (0); kasan_check_read(__p, sizeof(*&head->next)); switch (sizeof(*&head->next)) { case 1: asm volatile ("ldarb %w0, %1" : "=r" (*(__u8 *)__u.__c) : "Q" (*__p) : "memory"); break; case 2: asm volatile ("ldarh %w0, %1" : "=r" (*(__u16 *)__u.__c) : "Q" (*__p) : "memory"); break; case 4: asm volatile ("ldar %w0, %1" : "=r" (*(__u32 *)__u.__c) : "Q" (*__p) : "memory"); break; case 8: asm volatile ("ldar %0, %1" : "=r" (*(__u64 *)__u.__c) : "Q" (*__p) : "memory"); break; } (typeof(*&head->next))__u.__val; });
+ struct list_head *next = ({ union { typeof( _Generic((*&head->next), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&head->next))) __val; char __c[1]; } __u; typeof(&head->next) __p = (&head->next); do { extern void __compiletime_assert_98(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&head->next) == sizeof(char) || sizeof(*&head->next) == sizeof(short) || sizeof(*&head->next) == sizeof(int) || sizeof(*&head->next) == sizeof(long)))) __compiletime_assert_98(); } while (0); kasan_check_read(__p, sizeof(*&head->next)); switch (sizeof(*&head->next)) { case 1: asm volatile ("ldarb %w0, %1" : "=r" (*(__u8 *)__u.__c) : "Q" (*__p) : "memory"); break; case 2: asm volatile ("ldarh %w0, %1" : "=r" (*(__u16 *)__u.__c) : "Q" (*__p) : "memory"); break; case 4: asm volatile ("ldar %w0, %1" : "=r" (*(__u32 *)__u.__c) : "Q" (*__p) : "memory"); break; case 8: asm volatile ("ldar %0, %1" : "=r" (*(__u64 *)__u.__c) : "Q" (*__p) : "memory"); break; } (typeof(*&head->next))__u.__val; });
  return (next == head) && (next == head->prev);
 }
 
@@ -6463,7 +6467,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   list_move_tail(first, head);
  }
 }
-# 343 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 343 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_rotate_to_front(struct list_head *list,
      struct list_head *head)
 {
@@ -6495,7 +6499,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  head->next = new_first;
  new_first->prev = head;
 }
-# 389 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 389 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_cut_position(struct list_head *list,
   struct list_head *head, struct list_head *entry)
 {
@@ -6509,7 +6513,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  else
   __list_cut_position(list, head, entry);
 }
-# 417 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 417 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_cut_before(struct list_head *list,
        struct list_head *head,
        struct list_head *entry)
@@ -6563,7 +6567,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  if (!list_empty(list))
   __list_splice(list, head->prev, head);
 }
-# 478 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 478 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_splice_init(struct list_head *list,
         struct list_head *head)
 {
@@ -6572,7 +6576,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   INIT_LIST_HEAD(list);
  }
 }
-# 495 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 495 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void list_splice_tail_init(struct list_head *list,
       struct list_head *head)
 {
@@ -6581,21 +6585,21 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   INIT_LIST_HEAD(list);
  }
 }
-# 792 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 792 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void INIT_HLIST_NODE(struct hlist_node *h)
 {
  h->next = ((void *)0);
  h->pprev = ((void *)0);
 }
-# 806 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 806 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int hlist_unhashed(const struct hlist_node *h)
 {
  return !h->pprev;
 }
-# 819 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 819 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int hlist_unhashed_lockless(const struct hlist_node *h)
 {
- return !({ do { extern void __compiletime_assert_101(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(h->pprev) == sizeof(char) || sizeof(h->pprev) == sizeof(short) || sizeof(h->pprev) == sizeof(int) || sizeof(h->pprev) == sizeof(long)) || sizeof(h->pprev) == sizeof(long long))) __compiletime_assert_101(); } while (0); (*(const volatile typeof( _Generic((h->pprev), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (h->pprev))) *)&(h->pprev)); });
+ return !({ do { extern void __compiletime_assert_99(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(h->pprev) == sizeof(char) || sizeof(h->pprev) == sizeof(short) || sizeof(h->pprev) == sizeof(int) || sizeof(h->pprev) == sizeof(long)) || sizeof(h->pprev) == sizeof(long long))) __compiletime_assert_99(); } while (0); (*(const volatile typeof( _Generic((h->pprev), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (h->pprev))) *)&(h->pprev)); });
 }
 
 
@@ -6604,7 +6608,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int hlist_empty(const struct hlist_head *h)
 {
- return !({ do { extern void __compiletime_assert_102(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(h->first) == sizeof(char) || sizeof(h->first) == sizeof(short) || sizeof(h->first) == sizeof(int) || sizeof(h->first) == sizeof(long)) || sizeof(h->first) == sizeof(long long))) __compiletime_assert_102(); } while (0); (*(const volatile typeof( _Generic((h->first), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (h->first))) *)&(h->first)); });
+ return !({ do { extern void __compiletime_assert_100(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(h->first) == sizeof(char) || sizeof(h->first) == sizeof(short) || sizeof(h->first) == sizeof(int) || sizeof(h->first) == sizeof(long)) || sizeof(h->first) == sizeof(long long))) __compiletime_assert_100(); } while (0); (*(const volatile typeof( _Generic((h->first), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (h->first))) *)&(h->first)); });
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __hlist_del(struct hlist_node *n)
@@ -6612,11 +6616,11 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  struct hlist_node *next = n->next;
  struct hlist_node **pprev = n->pprev;
 
- do { do { extern void __compiletime_assert_103(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*pprev) == sizeof(char) || sizeof(*pprev) == sizeof(short) || sizeof(*pprev) == sizeof(int) || sizeof(*pprev) == sizeof(long)) || sizeof(*pprev) == sizeof(long long))) __compiletime_assert_103(); } while (0); do { *(volatile typeof(*pprev) *)&(*pprev) = (next); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_101(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*pprev) == sizeof(char) || sizeof(*pprev) == sizeof(short) || sizeof(*pprev) == sizeof(int) || sizeof(*pprev) == sizeof(long)) || sizeof(*pprev) == sizeof(long long))) __compiletime_assert_101(); } while (0); do { *(volatile typeof(*pprev) *)&(*pprev) = (next); } while (0); } while (0);
  if (next)
-  do { do { extern void __compiletime_assert_104(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(next->pprev) == sizeof(char) || sizeof(next->pprev) == sizeof(short) || sizeof(next->pprev) == sizeof(int) || sizeof(next->pprev) == sizeof(long)) || sizeof(next->pprev) == sizeof(long long))) __compiletime_assert_104(); } while (0); do { *(volatile typeof(next->pprev) *)&(next->pprev) = (pprev); } while (0); } while (0);
+  do { do { extern void __compiletime_assert_102(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(next->pprev) == sizeof(char) || sizeof(next->pprev) == sizeof(short) || sizeof(next->pprev) == sizeof(int) || sizeof(next->pprev) == sizeof(long)) || sizeof(next->pprev) == sizeof(long long))) __compiletime_assert_102(); } while (0); do { *(volatile typeof(next->pprev) *)&(next->pprev) = (pprev); } while (0); } while (0);
 }
-# 850 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 850 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void hlist_del(struct hlist_node *n)
 {
  __hlist_del(n);
@@ -6637,15 +6641,15 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   INIT_HLIST_NODE(n);
  }
 }
-# 879 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 879 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void hlist_add_head(struct hlist_node *n, struct hlist_head *h)
 {
  struct hlist_node *first = h->first;
- do { do { extern void __compiletime_assert_105(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->next) == sizeof(char) || sizeof(n->next) == sizeof(short) || sizeof(n->next) == sizeof(int) || sizeof(n->next) == sizeof(long)) || sizeof(n->next) == sizeof(long long))) __compiletime_assert_105(); } while (0); do { *(volatile typeof(n->next) *)&(n->next) = (first); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_103(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->next) == sizeof(char) || sizeof(n->next) == sizeof(short) || sizeof(n->next) == sizeof(int) || sizeof(n->next) == sizeof(long)) || sizeof(n->next) == sizeof(long long))) __compiletime_assert_103(); } while (0); do { *(volatile typeof(n->next) *)&(n->next) = (first); } while (0); } while (0);
  if (first)
-  do { do { extern void __compiletime_assert_106(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(first->pprev) == sizeof(char) || sizeof(first->pprev) == sizeof(short) || sizeof(first->pprev) == sizeof(int) || sizeof(first->pprev) == sizeof(long)) || sizeof(first->pprev) == sizeof(long long))) __compiletime_assert_106(); } while (0); do { *(volatile typeof(first->pprev) *)&(first->pprev) = (&n->next); } while (0); } while (0);
- do { do { extern void __compiletime_assert_107(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(h->first) == sizeof(char) || sizeof(h->first) == sizeof(short) || sizeof(h->first) == sizeof(int) || sizeof(h->first) == sizeof(long)) || sizeof(h->first) == sizeof(long long))) __compiletime_assert_107(); } while (0); do { *(volatile typeof(h->first) *)&(h->first) = (n); } while (0); } while (0);
- do { do { extern void __compiletime_assert_108(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->pprev) == sizeof(char) || sizeof(n->pprev) == sizeof(short) || sizeof(n->pprev) == sizeof(int) || sizeof(n->pprev) == sizeof(long)) || sizeof(n->pprev) == sizeof(long long))) __compiletime_assert_108(); } while (0); do { *(volatile typeof(n->pprev) *)&(n->pprev) = (&h->first); } while (0); } while (0);
+  do { do { extern void __compiletime_assert_104(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(first->pprev) == sizeof(char) || sizeof(first->pprev) == sizeof(short) || sizeof(first->pprev) == sizeof(int) || sizeof(first->pprev) == sizeof(long)) || sizeof(first->pprev) == sizeof(long long))) __compiletime_assert_104(); } while (0); do { *(volatile typeof(first->pprev) *)&(first->pprev) = (&n->next); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_105(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(h->first) == sizeof(char) || sizeof(h->first) == sizeof(short) || sizeof(h->first) == sizeof(int) || sizeof(h->first) == sizeof(long)) || sizeof(h->first) == sizeof(long long))) __compiletime_assert_105(); } while (0); do { *(volatile typeof(h->first) *)&(h->first) = (n); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_106(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->pprev) == sizeof(char) || sizeof(n->pprev) == sizeof(short) || sizeof(n->pprev) == sizeof(int) || sizeof(n->pprev) == sizeof(long)) || sizeof(n->pprev) == sizeof(long long))) __compiletime_assert_106(); } while (0); do { *(volatile typeof(n->pprev) *)&(n->pprev) = (&h->first); } while (0); } while (0);
 }
 
 
@@ -6656,10 +6660,10 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void hlist_add_before(struct hlist_node *n,
         struct hlist_node *next)
 {
- do { do { extern void __compiletime_assert_109(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->pprev) == sizeof(char) || sizeof(n->pprev) == sizeof(short) || sizeof(n->pprev) == sizeof(int) || sizeof(n->pprev) == sizeof(long)) || sizeof(n->pprev) == sizeof(long long))) __compiletime_assert_109(); } while (0); do { *(volatile typeof(n->pprev) *)&(n->pprev) = (next->pprev); } while (0); } while (0);
- do { do { extern void __compiletime_assert_110(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->next) == sizeof(char) || sizeof(n->next) == sizeof(short) || sizeof(n->next) == sizeof(int) || sizeof(n->next) == sizeof(long)) || sizeof(n->next) == sizeof(long long))) __compiletime_assert_110(); } while (0); do { *(volatile typeof(n->next) *)&(n->next) = (next); } while (0); } while (0);
- do { do { extern void __compiletime_assert_111(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(next->pprev) == sizeof(char) || sizeof(next->pprev) == sizeof(short) || sizeof(next->pprev) == sizeof(int) || sizeof(next->pprev) == sizeof(long)) || sizeof(next->pprev) == sizeof(long long))) __compiletime_assert_111(); } while (0); do { *(volatile typeof(next->pprev) *)&(next->pprev) = (&n->next); } while (0); } while (0);
- do { do { extern void __compiletime_assert_112(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(n->pprev)) == sizeof(char) || sizeof(*(n->pprev)) == sizeof(short) || sizeof(*(n->pprev)) == sizeof(int) || sizeof(*(n->pprev)) == sizeof(long)) || sizeof(*(n->pprev)) == sizeof(long long))) __compiletime_assert_112(); } while (0); do { *(volatile typeof(*(n->pprev)) *)&(*(n->pprev)) = (n); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_107(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->pprev) == sizeof(char) || sizeof(n->pprev) == sizeof(short) || sizeof(n->pprev) == sizeof(int) || sizeof(n->pprev) == sizeof(long)) || sizeof(n->pprev) == sizeof(long long))) __compiletime_assert_107(); } while (0); do { *(volatile typeof(n->pprev) *)&(n->pprev) = (next->pprev); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_108(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->next) == sizeof(char) || sizeof(n->next) == sizeof(short) || sizeof(n->next) == sizeof(int) || sizeof(n->next) == sizeof(long)) || sizeof(n->next) == sizeof(long long))) __compiletime_assert_108(); } while (0); do { *(volatile typeof(n->next) *)&(n->next) = (next); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_109(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(next->pprev) == sizeof(char) || sizeof(next->pprev) == sizeof(short) || sizeof(next->pprev) == sizeof(int) || sizeof(next->pprev) == sizeof(long)) || sizeof(next->pprev) == sizeof(long long))) __compiletime_assert_109(); } while (0); do { *(volatile typeof(next->pprev) *)&(next->pprev) = (&n->next); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_110(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(n->pprev)) == sizeof(char) || sizeof(*(n->pprev)) == sizeof(short) || sizeof(*(n->pprev)) == sizeof(int) || sizeof(*(n->pprev)) == sizeof(long)) || sizeof(*(n->pprev)) == sizeof(long long))) __compiletime_assert_110(); } while (0); do { *(volatile typeof(*(n->pprev)) *)&(*(n->pprev)) = (n); } while (0); } while (0);
 }
 
 
@@ -6670,14 +6674,14 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void hlist_add_behind(struct hlist_node *n,
         struct hlist_node *prev)
 {
- do { do { extern void __compiletime_assert_113(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->next) == sizeof(char) || sizeof(n->next) == sizeof(short) || sizeof(n->next) == sizeof(int) || sizeof(n->next) == sizeof(long)) || sizeof(n->next) == sizeof(long long))) __compiletime_assert_113(); } while (0); do { *(volatile typeof(n->next) *)&(n->next) = (prev->next); } while (0); } while (0);
- do { do { extern void __compiletime_assert_114(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(prev->next) == sizeof(char) || sizeof(prev->next) == sizeof(short) || sizeof(prev->next) == sizeof(int) || sizeof(prev->next) == sizeof(long)) || sizeof(prev->next) == sizeof(long long))) __compiletime_assert_114(); } while (0); do { *(volatile typeof(prev->next) *)&(prev->next) = (n); } while (0); } while (0);
- do { do { extern void __compiletime_assert_115(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->pprev) == sizeof(char) || sizeof(n->pprev) == sizeof(short) || sizeof(n->pprev) == sizeof(int) || sizeof(n->pprev) == sizeof(long)) || sizeof(n->pprev) == sizeof(long long))) __compiletime_assert_115(); } while (0); do { *(volatile typeof(n->pprev) *)&(n->pprev) = (&prev->next); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_111(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->next) == sizeof(char) || sizeof(n->next) == sizeof(short) || sizeof(n->next) == sizeof(int) || sizeof(n->next) == sizeof(long)) || sizeof(n->next) == sizeof(long long))) __compiletime_assert_111(); } while (0); do { *(volatile typeof(n->next) *)&(n->next) = (prev->next); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_112(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(prev->next) == sizeof(char) || sizeof(prev->next) == sizeof(short) || sizeof(prev->next) == sizeof(int) || sizeof(prev->next) == sizeof(long)) || sizeof(prev->next) == sizeof(long long))) __compiletime_assert_112(); } while (0); do { *(volatile typeof(prev->next) *)&(prev->next) = (n); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_113(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->pprev) == sizeof(char) || sizeof(n->pprev) == sizeof(short) || sizeof(n->pprev) == sizeof(int) || sizeof(n->pprev) == sizeof(long)) || sizeof(n->pprev) == sizeof(long long))) __compiletime_assert_113(); } while (0); do { *(volatile typeof(n->pprev) *)&(n->pprev) = (&prev->next); } while (0); } while (0);
 
  if (n->next)
-  do { do { extern void __compiletime_assert_116(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->next->pprev) == sizeof(char) || sizeof(n->next->pprev) == sizeof(short) || sizeof(n->next->pprev) == sizeof(int) || sizeof(n->next->pprev) == sizeof(long)) || sizeof(n->next->pprev) == sizeof(long long))) __compiletime_assert_116(); } while (0); do { *(volatile typeof(n->next->pprev) *)&(n->next->pprev) = (&n->next); } while (0); } while (0);
+  do { do { extern void __compiletime_assert_114(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(n->next->pprev) == sizeof(char) || sizeof(n->next->pprev) == sizeof(short) || sizeof(n->next->pprev) == sizeof(int) || sizeof(n->next->pprev) == sizeof(long)) || sizeof(n->next->pprev) == sizeof(long long))) __compiletime_assert_114(); } while (0); do { *(volatile typeof(n->next->pprev) *)&(n->next->pprev) = (&n->next); } while (0); } while (0);
 }
-# 927 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 927 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void hlist_add_fake(struct hlist_node *n)
 {
  n->pprev = &n->next;
@@ -6691,13 +6695,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return h->pprev == &h->next;
 }
-# 949 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 949 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool
 hlist_is_singular_node(struct hlist_node *n, struct hlist_head *h)
 {
  return !n->next && n->pprev == &h->first;
 }
-# 963 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
+# 963 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/list.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void hlist_move_list(struct hlist_head *old,
        struct hlist_head *new)
 {
@@ -6706,46 +6710,46 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   new->first->pprev = &new->first;
  old->first = ((void *)0);
 }
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 1
-# 51 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h" 1
-# 78 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/preempt.h" 1
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 1
+# 51 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h" 1
+# 78 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/preempt.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bug.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bug.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/asm-bug.h" 1
-
-
-
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/brk-imm.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/asm-bug.h" 2
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h" 2
-# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/asm-bug.h" 1
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumentation.h" 1
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h" 2
-# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h"
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/brk-imm.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/asm-bug.h" 2
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h" 2
+# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h" 1
+
+
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/instrumentation.h" 1
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h" 2
+# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h"
 struct bug_entry {
 
 
@@ -6762,16 +6766,16 @@ struct bug_entry {
 
  unsigned short flags;
 };
-# 93 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h"
+# 93 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h"
 extern __attribute__((__format__(printf, 1, 2))) void __warn_printk(const char *fmt, ...);
-# 111 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h"
+# 111 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/bug.h"
 struct warn_args;
 struct pt_regs;
 
 void __warn(const char *file, int line, void *caller, unsigned taint,
      struct pt_regs *regs, struct warn_args *args);
-# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bug.h" 2
+# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/bug.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bug.h" 2
 
 
 
@@ -6782,7 +6786,7 @@ enum bug_trap_type {
 };
 
 struct pt_regs;
-# 34 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bug.h"
+# 34 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bug.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int is_warning_bug(const struct bug_entry *bug)
 {
  return bug->flags & (1 << 0);
@@ -6796,23 +6800,23 @@ enum bug_trap_type report_bug(unsigned long bug_addr, struct pt_regs *regs);
 int is_valid_bugaddr(unsigned long addr);
 
 void generic_bug_clear_once(void);
-# 70 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bug.h"
+# 70 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bug.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__warn_unused_result__)) bool check_data_corruption(bool v) { return v; }
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/restart_block.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/restart_block.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h" 1
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/restart_block.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/restart_block.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h" 1
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/math64.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/math64.h" 1
 
 
 
@@ -6835,44 +6839,44 @@ __iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder)
 
  return ret;
 }
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h" 2
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h" 2
 # 1 "./arch/arm64/include/generated/asm/div64.h" 1
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h" 2
-# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h" 2
+# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
 {
  *remainder = dividend % divisor;
  return dividend / divisor;
 }
-# 39 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
+# 39 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder)
 {
  *remainder = dividend % divisor;
  return dividend / divisor;
 }
-# 53 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
+# 53 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 div64_u64_rem(u64 dividend, u64 divisor, u64 *remainder)
 {
  *remainder = dividend % divisor;
  return dividend / divisor;
 }
-# 66 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
+# 66 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 div64_u64(u64 dividend, u64 divisor)
 {
  return dividend / divisor;
 }
-# 78 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
+# 78 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) s64 div64_s64(s64 dividend, s64 divisor)
 {
  return dividend / divisor;
 }
-# 124 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
+# 124 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 div_u64(u64 dividend, u32 divisor)
 {
  u32 remainder;
  return div_u64_rem(dividend, divisor, &remainder);
 }
-# 137 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
+# 137 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) s64 div_s64(s64 dividend, s32 divisor)
 {
  s32 remainder;
@@ -6906,7 +6910,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return (u64)(((unsigned __int128)a * mul) >> shift);
 }
-# 238 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
+# 238 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/math64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 mul_u64_u32_div(u64 a, u32 mul, u32 divisor)
 {
  union {
@@ -6936,20 +6940,20 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 u64 mul_u64_u64_div_u64(u64 a, u64 mul, u64 div);
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/time64.h" 1
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/time64.h" 1
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h" 2
 
 typedef __s64 time64_t;
 typedef __u64 timeu64_t;
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time.h" 1
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time_types.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time_types.h" 1
 
 
 
@@ -6965,7 +6969,7 @@ struct __kernel_itimerspec {
  struct __kernel_timespec it_interval;
  struct __kernel_timespec it_value;
 };
-# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time_types.h"
+# 25 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time_types.h"
 struct __kernel_old_timeval {
  __kernel_long_t tv_sec;
  __kernel_long_t tv_usec;
@@ -6986,13 +6990,13 @@ struct __kernel_sock_timeval {
  __s64 tv_sec;
  __s64 tv_usec;
 };
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time.h" 2
-# 33 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time.h"
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time.h" 2
+# 33 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/time.h"
 struct timezone {
  int tz_minuteswest;
  int tz_dsttime;
 };
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h" 2
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h" 2
 
 struct timespec64 {
  time64_t tv_sec;
@@ -7003,7 +7007,7 @@ struct itimerspec64 {
  struct timespec64 it_interval;
  struct timespec64 it_value;
 };
-# 41 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h"
+# 41 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int timespec64_equal(const struct timespec64 *a,
        const struct timespec64 *b)
 {
@@ -7080,7 +7084,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   return false;
  return true;
 }
-# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h"
+# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) s64 timespec64_to_ns(const struct timespec64 *ts)
 {
 
@@ -7097,7 +7101,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 extern struct timespec64 ns_to_timespec64(const s64 nsec);
-# 150 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h"
+# 150 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/time64.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void timespec64_add_ns(struct timespec64 *a, u64 ns)
 {
  a->tv_sec += __iter_div_u64_rem(a->tv_nsec + ns, 1000000000L, &ns);
@@ -7110,7 +7114,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 extern struct timespec64 timespec64_add_safe(const struct timespec64 lhs,
       const struct timespec64 rhs);
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/restart_block.h" 2
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/restart_block.h" 2
 
 struct timespec;
 struct old_timespec32;
@@ -7159,25 +7163,25 @@ struct restart_block {
 };
 
 extern long do_no_restart_syscall(struct restart_block *parm);
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/errno.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/errno.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/errno.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/errno.h" 1
 # 1 "./arch/arm64/include/generated/uapi/asm/errno.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/errno.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/errno.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/errno-base.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/errno.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/errno-base.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/errno.h" 2
 # 1 "./arch/arm64/include/generated/uapi/asm/errno.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/errno.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/errno.h" 2
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/errno.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/errno.h" 2
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
 
 
 
@@ -7185,8 +7189,8 @@ extern long do_no_restart_syscall(struct restart_block *parm);
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/current.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/current.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/current.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/current.h"
 struct task_struct;
 
 
@@ -7201,8 +7205,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
  return (struct task_struct *)sp_el0;
 }
-# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
-# 32 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h"
+# 23 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
+# 32 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h"
 enum {
  BAD_STACK = -1,
  NOT_STACK = 0,
@@ -7210,18 +7214,18 @@ enum {
  GOOD_STACK,
 };
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h" 1
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h" 1
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h"
 struct task_struct;
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 1
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/sizes.h" 1
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/page-def.h" 1
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 2
-# 165 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/mmdebug.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/sizes.h" 1
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/page-def.h" 1
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 2
+# 165 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/mmdebug.h" 1
 
 
 
@@ -7237,7 +7241,7 @@ extern void dump_page(struct page *page, const char *reason);
 extern void __dump_page(struct page *page, const char *reason);
 void dump_vma(const struct vm_area_struct *vma);
 void dump_mm(const struct mm_struct *mm);
-# 166 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 2
+# 166 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 2
 
 
 
@@ -7258,13 +7262,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return kimage_vaddr - (((((((-((((1UL))) << ((((48))) - 1))))) + (0x08000000))) + (0x08000000)));
 }
-# 227 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
+# 227 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) const void *__tag_set(const void *addr, u8 tag)
 {
  u64 __addr = (u64)addr & ~0UL;
  return (const void *)(__addr | 0UL);
 }
-# 280 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
+# 280 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) phys_addr_t virt_to_phys(const volatile void *x)
 {
  return ({ phys_addr_t __x = (phys_addr_t)(((unsigned long)(x))); (((u64)(__x) ^ ((-((((1UL))) << ((48)))))) < (((-((((1UL))) << ((vabits_actual) - 1)))) - ((-((((1UL))) << ((48))))))) ? (((__x) & ~((-((((1UL))) << ((48)))))) + ({ ((void)(sizeof(( long)(memstart_addr & 1)))); memstart_addr; })) : ((__x) - kimage_voffset); });
@@ -7275,23 +7279,23 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return (void *)(((unsigned long)((x) - ({ ((void)(sizeof(( long)(memstart_addr & 1)))); memstart_addr; })) | ((-((((1UL))) << ((48)))))));
 }
-# 335 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
+# 335 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
 void dump_mem_limit(void);
-# 349 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/memory_model.h" 1
+# 349 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/memory_model.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/pfn.h" 1
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/pfn.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/pfn.h" 1
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/pfn.h"
 typedef struct {
  u64 val;
 } pfn_t;
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/memory_model.h" 2
-# 350 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 2
-# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/stack_pointer.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/memory_model.h" 2
+# 350 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/memory.h" 2
+# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/stack_pointer.h" 1
 
 
 
@@ -7300,9 +7304,9 @@ typedef struct {
 
 
 register unsigned long current_stack_pointer asm ("sp");
-# 19 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h" 2
+# 19 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h" 2
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h" 2
+# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h" 2
 
 typedef unsigned long mm_segment_t;
 
@@ -7332,12 +7336,12 @@ struct thread_info {
 
 
 };
-# 57 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h"
+# 57 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/thread_info.h"
 void arch_setup_new_exec(void);
 
 
 void arch_release_task_struct(struct task_struct *tsk);
-# 40 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
+# 40 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h" 2
 
 
 
@@ -7352,7 +7356,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  do { } while (0);
  return -516;
 }
-# 66 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h"
+# 66 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void set_ti_thread_flag(struct thread_info *ti, int flag)
 {
  set_bit(flag, (unsigned long *)&ti->flags);
@@ -7386,7 +7390,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return test_bit(flag, (unsigned long *)&ti->flags);
 }
-# 116 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h"
+# 116 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/thread_info.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int arch_within_stack_frames(const void * const stack,
         const void * const stackend,
         const void *obj, unsigned long len)
@@ -7439,22 +7443,22 @@ check_copy_size(const void *addr, size_t bytes, bool is_source)
  check_object_size(addr, bytes, is_source);
  return true;
 }
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/preempt.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/preempt.h" 2
 
 
 
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int preempt_count(void)
 {
- return ({ do { extern void __compiletime_assert_117(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_117(); } while (0); (*(const volatile typeof( _Generic((((struct thread_info *)get_current())->preempt.count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (((struct thread_info *)get_current())->preempt.count))) *)&(((struct thread_info *)get_current())->preempt.count)); });
+ return ({ do { extern void __compiletime_assert_115(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_115(); } while (0); (*(const volatile typeof( _Generic((((struct thread_info *)get_current())->preempt.count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (((struct thread_info *)get_current())->preempt.count))) *)&(((struct thread_info *)get_current())->preempt.count)); });
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void preempt_count_set(u64 pc)
 {
 
- do { do { extern void __compiletime_assert_118(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_118(); } while (0); do { *(volatile typeof(((struct thread_info *)get_current())->preempt.count) *)&(((struct thread_info *)get_current())->preempt.count) = (pc); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_116(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_116(); } while (0); do { *(volatile typeof(((struct thread_info *)get_current())->preempt.count) *)&(((struct thread_info *)get_current())->preempt.count) = (pc); } while (0); } while (0);
 }
-# 29 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/preempt.h"
+# 29 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/preempt.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void set_preempt_need_resched(void)
 {
  ((struct thread_info *)get_current())->preempt.need_resched = 0;
@@ -7472,32 +7476,32 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __preempt_count_add(int val)
 {
- u32 pc = ({ do { extern void __compiletime_assert_119(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_119(); } while (0); (*(const volatile typeof( _Generic((((struct thread_info *)get_current())->preempt.count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (((struct thread_info *)get_current())->preempt.count))) *)&(((struct thread_info *)get_current())->preempt.count)); });
+ u32 pc = ({ do { extern void __compiletime_assert_117(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_117(); } while (0); (*(const volatile typeof( _Generic((((struct thread_info *)get_current())->preempt.count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (((struct thread_info *)get_current())->preempt.count))) *)&(((struct thread_info *)get_current())->preempt.count)); });
  pc += val;
- do { do { extern void __compiletime_assert_120(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_120(); } while (0); do { *(volatile typeof(((struct thread_info *)get_current())->preempt.count) *)&(((struct thread_info *)get_current())->preempt.count) = (pc); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_118(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_118(); } while (0); do { *(volatile typeof(((struct thread_info *)get_current())->preempt.count) *)&(((struct thread_info *)get_current())->preempt.count) = (pc); } while (0); } while (0);
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __preempt_count_sub(int val)
 {
- u32 pc = ({ do { extern void __compiletime_assert_121(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_121(); } while (0); (*(const volatile typeof( _Generic((((struct thread_info *)get_current())->preempt.count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (((struct thread_info *)get_current())->preempt.count))) *)&(((struct thread_info *)get_current())->preempt.count)); });
+ u32 pc = ({ do { extern void __compiletime_assert_119(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_119(); } while (0); (*(const volatile typeof( _Generic((((struct thread_info *)get_current())->preempt.count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (((struct thread_info *)get_current())->preempt.count))) *)&(((struct thread_info *)get_current())->preempt.count)); });
  pc -= val;
- do { do { extern void __compiletime_assert_122(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_122(); } while (0); do { *(volatile typeof(((struct thread_info *)get_current())->preempt.count) *)&(((struct thread_info *)get_current())->preempt.count) = (pc); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_120(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt.count) == sizeof(long long))) __compiletime_assert_120(); } while (0); do { *(volatile typeof(((struct thread_info *)get_current())->preempt.count) *)&(((struct thread_info *)get_current())->preempt.count) = (pc); } while (0); } while (0);
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool __preempt_count_dec_and_test(void)
 {
  struct thread_info *ti = ((struct thread_info *)get_current());
- u64 pc = ({ do { extern void __compiletime_assert_123(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(ti->preempt_count) == sizeof(char) || sizeof(ti->preempt_count) == sizeof(short) || sizeof(ti->preempt_count) == sizeof(int) || sizeof(ti->preempt_count) == sizeof(long)) || sizeof(ti->preempt_count) == sizeof(long long))) __compiletime_assert_123(); } while (0); (*(const volatile typeof( _Generic((ti->preempt_count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (ti->preempt_count))) *)&(ti->preempt_count)); });
+ u64 pc = ({ do { extern void __compiletime_assert_121(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(ti->preempt_count) == sizeof(char) || sizeof(ti->preempt_count) == sizeof(short) || sizeof(ti->preempt_count) == sizeof(int) || sizeof(ti->preempt_count) == sizeof(long)) || sizeof(ti->preempt_count) == sizeof(long long))) __compiletime_assert_121(); } while (0); (*(const volatile typeof( _Generic((ti->preempt_count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (ti->preempt_count))) *)&(ti->preempt_count)); });
 
 
- do { do { extern void __compiletime_assert_124(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(ti->preempt.count) == sizeof(char) || sizeof(ti->preempt.count) == sizeof(short) || sizeof(ti->preempt.count) == sizeof(int) || sizeof(ti->preempt.count) == sizeof(long)) || sizeof(ti->preempt.count) == sizeof(long long))) __compiletime_assert_124(); } while (0); do { *(volatile typeof(ti->preempt.count) *)&(ti->preempt.count) = (--pc); } while (0); } while (0);
-# 73 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/preempt.h"
- return !pc || !({ do { extern void __compiletime_assert_125(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(ti->preempt_count) == sizeof(char) || sizeof(ti->preempt_count) == sizeof(short) || sizeof(ti->preempt_count) == sizeof(int) || sizeof(ti->preempt_count) == sizeof(long)) || sizeof(ti->preempt_count) == sizeof(long long))) __compiletime_assert_125(); } while (0); (*(const volatile typeof( _Generic((ti->preempt_count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (ti->preempt_count))) *)&(ti->preempt_count)); });
+ do { do { extern void __compiletime_assert_122(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(ti->preempt.count) == sizeof(char) || sizeof(ti->preempt.count) == sizeof(short) || sizeof(ti->preempt.count) == sizeof(int) || sizeof(ti->preempt.count) == sizeof(long)) || sizeof(ti->preempt.count) == sizeof(long long))) __compiletime_assert_122(); } while (0); do { *(volatile typeof(ti->preempt.count) *)&(ti->preempt.count) = (--pc); } while (0); } while (0);
+# 73 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/preempt.h"
+ return !pc || !({ do { extern void __compiletime_assert_123(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(ti->preempt_count) == sizeof(char) || sizeof(ti->preempt_count) == sizeof(short) || sizeof(ti->preempt_count) == sizeof(int) || sizeof(ti->preempt_count) == sizeof(long)) || sizeof(ti->preempt_count) == sizeof(long long))) __compiletime_assert_123(); } while (0); (*(const volatile typeof( _Generic((ti->preempt_count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (ti->preempt_count))) *)&(ti->preempt_count)); });
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool should_resched(int preempt_offset)
 {
- u64 pc = ({ do { extern void __compiletime_assert_126(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(long long))) __compiletime_assert_126(); } while (0); (*(const volatile typeof( _Generic((((struct thread_info *)get_current())->preempt_count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (((struct thread_info *)get_current())->preempt_count))) *)&(((struct thread_info *)get_current())->preempt_count)); });
+ u64 pc = ({ do { extern void __compiletime_assert_124(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(char) || sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(short) || sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(int) || sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(long)) || sizeof(((struct thread_info *)get_current())->preempt_count) == sizeof(long long))) __compiletime_assert_124(); } while (0); (*(const volatile typeof( _Generic((((struct thread_info *)get_current())->preempt_count), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (((struct thread_info *)get_current())->preempt_count))) *)&(((struct thread_info *)get_current())->preempt_count)); });
  return pc == preempt_offset;
 }
 
@@ -7505,16 +7509,16 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 void preempt_schedule(void);
 
 void preempt_schedule_notrace(void);
-# 79 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h" 2
-# 277 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
+# 79 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h" 2
+# 277 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
 struct preempt_notifier;
-# 293 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
+# 293 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
 struct preempt_ops {
  void (*sched_in)(struct preempt_notifier *notifier, int cpu);
  void (*sched_out)(struct preempt_notifier *notifier,
      struct task_struct *next);
 };
-# 306 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
+# 306 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
 struct preempt_notifier {
  struct hlist_node link;
  struct preempt_ops *ops;
@@ -7531,40 +7535,40 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  INIT_HLIST_NODE(&notifier->link);
  notifier->ops = ops;
 }
-# 335 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
+# 335 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void migrate_disable(void)
 {
  do { __preempt_count_add(1); __asm__ __volatile__("": : :"memory"); } while (0);
 }
-# 350 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
+# 350 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/preempt.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void migrate_enable(void)
 {
  do { __asm__ __volatile__("": : :"memory"); if (__builtin_expect(!!(__preempt_count_dec_and_test()), 0)) preempt_schedule(); } while (0);
 }
-# 52 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
+# 52 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h" 1
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/irqflags.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/irqflags.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hwcap.h" 1
-
-
-
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h" 1
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/irqflags.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/irqflags.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hwcap.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/hwcap.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hwcap.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hwcap.h" 2
-# 122 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hwcap.h"
+
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/hwcap.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hwcap.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hwcap.h" 2
+# 122 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hwcap.h"
 extern unsigned int compat_elf_hwcap, compat_elf_hwcap2;
 
 
@@ -7575,15 +7579,15 @@ enum {
  CAP_COMPAT_HWCAP2,
 
 };
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h" 2
-# 37 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h" 2
+# 37 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
 enum ftr_type {
  FTR_EXACT,
  FTR_LOWER_SAFE,
  FTR_HIGHER_SAFE,
  FTR_HIGHER_OR_ZERO_SAFE,
 };
-# 56 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 56 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
 struct arm64_ftr_bits {
  bool sign;
  bool visible;
@@ -7609,13 +7613,13 @@ struct arm64_ftr_reg {
 };
 
 extern struct arm64_ftr_reg arm64_ftr_reg_ctrel0;
-# 305 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 305 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
 struct arm64_cpu_capabilities {
  const char *desc;
  u16 capability;
  u16 type;
  bool (*matches)(const struct arm64_cpu_capabilities *caps, int scope);
-# 322 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 322 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
  void (*cpu_enable)(const struct arm64_cpu_capabilities *cap);
  union {
   struct {
@@ -7636,7 +7640,7 @@ struct arm64_cpu_capabilities {
    unsigned long hwcap;
   };
  };
-# 354 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 354 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
  const struct arm64_cpu_capabilities *match_list;
 };
 
@@ -7680,13 +7684,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  return is_vhe_hyp_code() || is_nvhe_hyp_code();
 }
 
-extern unsigned long cpu_hwcaps[(((61) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8)))];
-extern struct static_key_false cpu_hwcap_keys[61];
+extern unsigned long cpu_hwcaps[(((63) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8)))];
+extern struct static_key_false cpu_hwcap_keys[63];
 extern struct static_key_false arm64_const_caps_ready;
 
 
 
-extern unsigned long boot_capabilities[((((61 + 1)) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8)))];
+extern unsigned long boot_capabilities[((((63 + 1)) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8)))];
 
 
 
@@ -7712,18 +7716,18 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool cpus_have_cap(unsigned int num)
 {
- if (num >= 61)
+ if (num >= 63)
   return false;
  return test_bit(num, cpu_hwcaps);
 }
-# 442 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 442 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool __cpus_have_const_cap(int num)
 {
- if (num >= 61)
+ if (num >= 63)
   return false;
  return ({ bool branch; if (__builtin_types_compatible_p(typeof(*&cpu_hwcap_keys[num]), struct static_key_true)) branch = arch_static_branch_jump(&(&cpu_hwcap_keys[num])->key, false); else if (__builtin_types_compatible_p(typeof(*&cpu_hwcap_keys[num]), struct static_key_false)) branch = arch_static_branch(&(&cpu_hwcap_keys[num])->key, false); else branch = ____wrong_branch_error(); __builtin_expect(!!(branch), 0); });
 }
-# 457 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 457 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool cpus_have_final_cap(int num)
 {
  if (system_capabilities_finalized())
@@ -7731,7 +7735,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  else
   do { asm volatile (".pushsection __bug_table,\"aw\"; .align 2; 14470: .long 14471f - 14470b; .pushsection .rodata.str,\"aMS\",@progbits,1; 14472: .string \"arch/arm64/include/asm/cpufeature.h\"; .popsection; .long 14472b - 14470b; .short 462; .short 0; .popsection; 14471: brk 0x800");; do { ; asm volatile(""); __builtin_unreachable(); } while (0); } while (0);
 }
-# 476 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
+# 476 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/cpufeature.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool cpus_have_const_cap(int num)
 {
  if (is_hyp_code())
@@ -7744,8 +7748,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void cpus_set_cap(unsigned int num)
 {
- if (num >= 61) {
-  printk("\001" "4" "Attempt to set an illegal CPU capability (%d >= %d)\n", num, 61)
+ if (num >= 63) {
+  printk("\001" "4" "Attempt to set an illegal CPU capability (%d >= %d)\n", num, 63)
                     ;
  } else {
   __set_bit(num, cpu_hwcaps);
@@ -7907,7 +7911,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  val = cpuid_feature_extract_unsigned_field(mmfr0,
       28);
 
- return val == 0x0;
+ return (val >= 0x0) &&
+        (val <= 0x7);
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool system_supports_64kb_granule(void)
@@ -7919,7 +7924,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  val = cpuid_feature_extract_unsigned_field(mmfr0,
       24);
 
- return val == 0x0;
+ return (val >= 0x0) &&
+        (val <= 0x7);
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool system_supports_16kb_granule(void)
@@ -7931,7 +7937,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  val = cpuid_feature_extract_unsigned_field(mmfr0,
       20);
 
- return val == 0x1;
+ return (val >= 0x1) &&
+        (val <= 0xf);
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool system_supports_mixed_endian_el0(void)
@@ -8015,7 +8022,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   cpus_have_const_cap(56);
 }
 
-extern int do_emulate_mrs(struct pt_regs *regs, u32 sys_reg, u32 rt);
+int do_emulate_mrs(struct pt_regs *regs, u32 sys_reg, u32 rt);
+bool try_emulate_mrs(struct pt_regs *regs, u32 isn);
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 id_aa64mmfr0_parange_to_phys_shift(int parange)
 {
@@ -8074,13 +8082,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 u32 get_kvm_ipa_limit(void);
 void dump_cpu_features(void);
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h" 2
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h" 1
-# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sve_context.h" 1
-# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h" 2
-# 88 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h" 1
+# 26 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sve_context.h" 1
+# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h" 2
+# 88 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h"
 struct user_pt_regs {
  __u64 regs[31];
  __u64 sp;
@@ -8115,7 +8123,7 @@ struct user_sve_header {
  __u16 flags;
  __u16 __reserved;
 };
-# 250 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h"
+# 250 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/ptrace.h"
 struct user_pac_mask {
  __u64 data_mask;
  __u64 insn_mask;
@@ -8133,8 +8141,8 @@ struct user_pac_address_keys {
 struct user_pac_generic_keys {
  __uint128_t apgakey;
 };
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h" 2
-# 144 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h" 2
+# 144 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long compat_psr_to_pstate(const unsigned long psr)
 {
  unsigned long pstate;
@@ -8202,7 +8210,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  regs->syscallno = (-1);
 }
-# 244 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
+# 244 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long user_stack_pointer(struct pt_regs *regs)
 {
  if ((((regs)->pstate & (0x00000010 | 0x0000000f)) == (0x00000010 | 0x00000000)))
@@ -8213,7 +8221,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 extern int regs_query_register_offset(const char *name);
 extern unsigned long regs_get_kernel_stack_nth(struct pt_regs *regs,
             unsigned int n);
-# 264 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
+# 264 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 regs_get_register(struct pt_regs *regs, unsigned int offset)
 {
  u64 val = 0;
@@ -8286,7 +8294,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  regs->regs[0] = rc;
 }
-# 350 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
+# 350 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/ptrace.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long regs_get_kernel_argument(struct pt_regs *regs,
            unsigned int n)
 {
@@ -8324,8 +8332,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 }
 
 extern unsigned long profile_pc(struct pt_regs *regs);
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/irqflags.h" 2
-# 29 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/irqflags.h"
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/irqflags.h" 2
+# 29 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/irqflags.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void arch_local_irq_enable(void)
 {
  if (system_has_prio_mask_debugging()) {
@@ -8433,9 +8441,9 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   do {} while (0);
  }
 }
-# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h" 1
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h"
+# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void set_my_cpu_offset(unsigned long off)
 {
  asm volatile(".if ""1"" == 1\n" "661:\n\t" "msr tpidr_el1, %0" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "11" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" "msr tpidr_el2, %0" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n"
@@ -8469,49 +8477,49 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
  return off;
 }
-# 122 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h"
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __percpu_read_8(void *ptr) { return ({ do { extern void __compiletime_assert_127(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u8 *)ptr) == sizeof(char) || sizeof(*(u8 *)ptr) == sizeof(short) || sizeof(*(u8 *)ptr) == sizeof(int) || sizeof(*(u8 *)ptr) == sizeof(long)) || sizeof(*(u8 *)ptr) == sizeof(long long))) __compiletime_assert_127(); } while (0); (*(const volatile typeof( _Generic((*(u8 *)ptr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(u8 *)ptr))) *)&(*(u8 *)ptr)); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_write_8(void *ptr, unsigned long val) { do { do { extern void __compiletime_assert_128(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u8 *)ptr) == sizeof(char) || sizeof(*(u8 *)ptr) == sizeof(short) || sizeof(*(u8 *)ptr) == sizeof(int) || sizeof(*(u8 *)ptr) == sizeof(long)) || sizeof(*(u8 *)ptr) == sizeof(long long))) __compiletime_assert_128(); } while (0); do { *(volatile typeof(*(u8 *)ptr) *)&(*(u8 *)ptr) = ((u8)val); } while (0); } while (0); }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __percpu_read_16(void *ptr) { return ({ do { extern void __compiletime_assert_129(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u16 *)ptr) == sizeof(char) || sizeof(*(u16 *)ptr) == sizeof(short) || sizeof(*(u16 *)ptr) == sizeof(int) || sizeof(*(u16 *)ptr) == sizeof(long)) || sizeof(*(u16 *)ptr) == sizeof(long long))) __compiletime_assert_129(); } while (0); (*(const volatile typeof( _Generic((*(u16 *)ptr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(u16 *)ptr))) *)&(*(u16 *)ptr)); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_write_16(void *ptr, unsigned long val) { do { do { extern void __compiletime_assert_130(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u16 *)ptr) == sizeof(char) || sizeof(*(u16 *)ptr) == sizeof(short) || sizeof(*(u16 *)ptr) == sizeof(int) || sizeof(*(u16 *)ptr) == sizeof(long)) || sizeof(*(u16 *)ptr) == sizeof(long long))) __compiletime_assert_130(); } while (0); do { *(volatile typeof(*(u16 *)ptr) *)&(*(u16 *)ptr) = ((u16)val); } while (0); } while (0); }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __percpu_read_32(void *ptr) { return ({ do { extern void __compiletime_assert_131(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u32 *)ptr) == sizeof(char) || sizeof(*(u32 *)ptr) == sizeof(short) || sizeof(*(u32 *)ptr) == sizeof(int) || sizeof(*(u32 *)ptr) == sizeof(long)) || sizeof(*(u32 *)ptr) == sizeof(long long))) __compiletime_assert_131(); } while (0); (*(const volatile typeof( _Generic((*(u32 *)ptr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(u32 *)ptr))) *)&(*(u32 *)ptr)); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_write_32(void *ptr, unsigned long val) { do { do { extern void __compiletime_assert_132(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u32 *)ptr) == sizeof(char) || sizeof(*(u32 *)ptr) == sizeof(short) || sizeof(*(u32 *)ptr) == sizeof(int) || sizeof(*(u32 *)ptr) == sizeof(long)) || sizeof(*(u32 *)ptr) == sizeof(long long))) __compiletime_assert_132(); } while (0); do { *(volatile typeof(*(u32 *)ptr) *)&(*(u32 *)ptr) = ((u32)val); } while (0); } while (0); }
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __percpu_read_64(void *ptr) { return ({ do { extern void __compiletime_assert_133(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u64 *)ptr) == sizeof(char) || sizeof(*(u64 *)ptr) == sizeof(short) || sizeof(*(u64 *)ptr) == sizeof(int) || sizeof(*(u64 *)ptr) == sizeof(long)) || sizeof(*(u64 *)ptr) == sizeof(long long))) __compiletime_assert_133(); } while (0); (*(const volatile typeof( _Generic((*(u64 *)ptr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(u64 *)ptr))) *)&(*(u64 *)ptr)); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_write_64(void *ptr, unsigned long val) { do { do { extern void __compiletime_assert_134(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u64 *)ptr) == sizeof(char) || sizeof(*(u64 *)ptr) == sizeof(short) || sizeof(*(u64 *)ptr) == sizeof(int) || sizeof(*(u64 *)ptr) == sizeof(long)) || sizeof(*(u64 *)ptr) == sizeof(long long))) __compiletime_assert_134(); } while (0); do { *(volatile typeof(*(u64 *)ptr) *)&(*(u64 *)ptr) = ((u64)val); } while (0); } while (0); }
+# 122 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h"
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __percpu_read_8(void *ptr) { return ({ do { extern void __compiletime_assert_125(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u8 *)ptr) == sizeof(char) || sizeof(*(u8 *)ptr) == sizeof(short) || sizeof(*(u8 *)ptr) == sizeof(int) || sizeof(*(u8 *)ptr) == sizeof(long)) || sizeof(*(u8 *)ptr) == sizeof(long long))) __compiletime_assert_125(); } while (0); (*(const volatile typeof( _Generic((*(u8 *)ptr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(u8 *)ptr))) *)&(*(u8 *)ptr)); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_write_8(void *ptr, unsigned long val) { do { do { extern void __compiletime_assert_126(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u8 *)ptr) == sizeof(char) || sizeof(*(u8 *)ptr) == sizeof(short) || sizeof(*(u8 *)ptr) == sizeof(int) || sizeof(*(u8 *)ptr) == sizeof(long)) || sizeof(*(u8 *)ptr) == sizeof(long long))) __compiletime_assert_126(); } while (0); do { *(volatile typeof(*(u8 *)ptr) *)&(*(u8 *)ptr) = ((u8)val); } while (0); } while (0); }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __percpu_read_16(void *ptr) { return ({ do { extern void __compiletime_assert_127(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u16 *)ptr) == sizeof(char) || sizeof(*(u16 *)ptr) == sizeof(short) || sizeof(*(u16 *)ptr) == sizeof(int) || sizeof(*(u16 *)ptr) == sizeof(long)) || sizeof(*(u16 *)ptr) == sizeof(long long))) __compiletime_assert_127(); } while (0); (*(const volatile typeof( _Generic((*(u16 *)ptr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(u16 *)ptr))) *)&(*(u16 *)ptr)); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_write_16(void *ptr, unsigned long val) { do { do { extern void __compiletime_assert_128(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u16 *)ptr) == sizeof(char) || sizeof(*(u16 *)ptr) == sizeof(short) || sizeof(*(u16 *)ptr) == sizeof(int) || sizeof(*(u16 *)ptr) == sizeof(long)) || sizeof(*(u16 *)ptr) == sizeof(long long))) __compiletime_assert_128(); } while (0); do { *(volatile typeof(*(u16 *)ptr) *)&(*(u16 *)ptr) = ((u16)val); } while (0); } while (0); }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __percpu_read_32(void *ptr) { return ({ do { extern void __compiletime_assert_129(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u32 *)ptr) == sizeof(char) || sizeof(*(u32 *)ptr) == sizeof(short) || sizeof(*(u32 *)ptr) == sizeof(int) || sizeof(*(u32 *)ptr) == sizeof(long)) || sizeof(*(u32 *)ptr) == sizeof(long long))) __compiletime_assert_129(); } while (0); (*(const volatile typeof( _Generic((*(u32 *)ptr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(u32 *)ptr))) *)&(*(u32 *)ptr)); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_write_32(void *ptr, unsigned long val) { do { do { extern void __compiletime_assert_130(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u32 *)ptr) == sizeof(char) || sizeof(*(u32 *)ptr) == sizeof(short) || sizeof(*(u32 *)ptr) == sizeof(int) || sizeof(*(u32 *)ptr) == sizeof(long)) || sizeof(*(u32 *)ptr) == sizeof(long long))) __compiletime_assert_130(); } while (0); do { *(volatile typeof(*(u32 *)ptr) *)&(*(u32 *)ptr) = ((u32)val); } while (0); } while (0); }
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __percpu_read_64(void *ptr) { return ({ do { extern void __compiletime_assert_131(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u64 *)ptr) == sizeof(char) || sizeof(*(u64 *)ptr) == sizeof(short) || sizeof(*(u64 *)ptr) == sizeof(int) || sizeof(*(u64 *)ptr) == sizeof(long)) || sizeof(*(u64 *)ptr) == sizeof(long long))) __compiletime_assert_131(); } while (0); (*(const volatile typeof( _Generic((*(u64 *)ptr), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*(u64 *)ptr))) *)&(*(u64 *)ptr)); }); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_write_64(void *ptr, unsigned long val) { do { do { extern void __compiletime_assert_132(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(*(u64 *)ptr) == sizeof(char) || sizeof(*(u64 *)ptr) == sizeof(short) || sizeof(*(u64 *)ptr) == sizeof(int) || sizeof(*(u64 *)ptr) == sizeof(long)) || sizeof(*(u64 *)ptr) == sizeof(long long))) __compiletime_assert_132(); } while (0); do { *(volatile typeof(*(u64 *)ptr) *)&(*(u64 *)ptr) = ((u64)val); } while (0); } while (0); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_add_case_8(void *ptr, unsigned long val) { unsigned int loop; u8 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "b" "\t%" "w" "[tmp], %[ptr]\n" "add" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "b" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stadd" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u8 *)ptr) : [val] "r" ((u8)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_add_case_16(void *ptr, unsigned long val) { unsigned int loop; u16 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "h" "\t%" "w" "[tmp], %[ptr]\n" "add" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "h" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stadd" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u16 *)ptr) : [val] "r" ((u16)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_add_case_32(void *ptr, unsigned long val) { unsigned int loop; u32 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "" "\t%" "w" "[tmp], %[ptr]\n" "add" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stadd" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u32 *)ptr) : [val] "r" ((u32)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_add_case_64(void *ptr, unsigned long val) { unsigned int loop; u64 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "" "\t%" "" "[tmp], %[ptr]\n" "add" "\t%" "" "[tmp], %" "" "[tmp], %" "" "[val]\n" "	stxr" "" "\t%w[loop], %" "" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stadd" "\t%" "" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u64 *)ptr) : [val] "r" ((u64)(val))); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_andnot_case_8(void *ptr, unsigned long val) { unsigned int loop; u8 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "b" "\t%" "w" "[tmp], %[ptr]\n" "bic" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "b" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stclr" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u8 *)ptr) : [val] "r" ((u8)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_andnot_case_16(void *ptr, unsigned long val) { unsigned int loop; u16 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "h" "\t%" "w" "[tmp], %[ptr]\n" "bic" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "h" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stclr" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u16 *)ptr) : [val] "r" ((u16)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_andnot_case_32(void *ptr, unsigned long val) { unsigned int loop; u32 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "" "\t%" "w" "[tmp], %[ptr]\n" "bic" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stclr" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u32 *)ptr) : [val] "r" ((u32)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_andnot_case_64(void *ptr, unsigned long val) { unsigned int loop; u64 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "" "\t%" "" "[tmp], %[ptr]\n" "bic" "\t%" "" "[tmp], %" "" "[tmp], %" "" "[val]\n" "	stxr" "" "\t%w[loop], %" "" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stclr" "\t%" "" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u64 *)ptr) : [val] "r" ((u64)(val))); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_or_case_8(void *ptr, unsigned long val) { unsigned int loop; u8 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "b" "\t%" "w" "[tmp], %[ptr]\n" "orr" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "b" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stset" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u8 *)ptr) : [val] "r" ((u8)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_or_case_16(void *ptr, unsigned long val) { unsigned int loop; u16 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "h" "\t%" "w" "[tmp], %[ptr]\n" "orr" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "h" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stset" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u16 *)ptr) : [val] "r" ((u16)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_or_case_32(void *ptr, unsigned long val) { unsigned int loop; u32 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "" "\t%" "w" "[tmp], %[ptr]\n" "orr" "\t%" "w" "[tmp], %" "w" "[tmp], %" "w" "[val]\n" "	stxr" "" "\t%w[loop], %" "w" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stset" "\t%" "w" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u32 *)ptr) : [val] "r" ((u32)(val))); } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __percpu_or_case_64(void *ptr, unsigned long val) { unsigned int loop; u64 tmp; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "" "\t%" "" "[tmp], %[ptr]\n" "orr" "\t%" "" "[tmp], %" "" "[tmp], %" "" "[val]\n" "	stxr" "" "\t%w[loop], %" "" "[tmp], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "stset" "\t%" "" "[val], %[ptr]\n" ".rept	" "3" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [tmp] "=&r" (tmp), [ptr] "+Q"(*(u64 *)ptr) : [val] "r" ((u64)(val))); }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u8 __percpu_add_return_case_8(void *ptr, unsigned long val) { unsigned int loop; u8 ret; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "b" "\t%" "w" "[ret], %[ptr]\n" "add" "\t%" "w" "[ret], %" "w" "[ret], %" "w" "[val]\n" "	stxr" "b" "\t%w[loop], %" "w" "[ret], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "ldadd" "\t%" "w" "[val], %" "w" "[ret], %[ptr]\n" "add" "\t%" "w" "[ret], %" "w" "[ret], %" "w" "[val]\n" ".rept	" "2" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [ret] "=&r" (ret), [ptr] "+Q"(*(u8 *)ptr) : [val] "r" ((u8)(val))); return ret; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u16 __percpu_add_return_case_16(void *ptr, unsigned long val) { unsigned int loop; u16 ret; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "h" "\t%" "w" "[ret], %[ptr]\n" "add" "\t%" "w" "[ret], %" "w" "[ret], %" "w" "[val]\n" "	stxr" "h" "\t%w[loop], %" "w" "[ret], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "ldadd" "\t%" "w" "[val], %" "w" "[ret], %[ptr]\n" "add" "\t%" "w" "[ret], %" "w" "[ret], %" "w" "[val]\n" ".rept	" "2" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [ret] "=&r" (ret), [ptr] "+Q"(*(u16 *)ptr) : [val] "r" ((u16)(val))); return ret; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 __percpu_add_return_case_32(void *ptr, unsigned long val) { unsigned int loop; u32 ret; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "" "\t%" "w" "[ret], %[ptr]\n" "add" "\t%" "w" "[ret], %" "w" "[ret], %" "w" "[val]\n" "	stxr" "" "\t%w[loop], %" "w" "[ret], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "ldadd" "\t%" "w" "[val], %" "w" "[ret], %[ptr]\n" "add" "\t%" "w" "[ret], %" "w" "[ret], %" "w" "[val]\n" ".rept	" "2" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [ret] "=&r" (ret), [ptr] "+Q"(*(u32 *)ptr) : [val] "r" ((u32)(val))); return ret; } static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u64 __percpu_add_return_case_64(void *ptr, unsigned long val) { unsigned int loop; u64 ret; asm volatile (".if ""1"" == 1\n" "661:\n\t" "1:	ldxr" "" "\t%" "" "[ret], %[ptr]\n" "add" "\t%" "" "[ret], %" "" "[ret], %" "" "[val]\n" "	stxr" "" "\t%w[loop], %" "" "[ret], %[ptr]\n" "	cbnz	%w[loop], 1b" "\n" "662:\n" ".pushsection .altinstructions,\"a\"\n" " .word 661b - .\n" " .word 663f - .\n" " .hword " "5" "\n" " .byte 662b-661b\n" " .byte 664f-663f\n" ".popsection\n" ".subsection 1\n" "663:\n\t" ".arch_extension lse\n" "ldadd" "\t%" "" "[val], %" "" "[ret], %[ptr]\n" "add" "\t%" "" "[ret], %" "" "[ret], %" "" "[val]\n" ".rept	" "2" "\nnop\n.endr\n" "\n" "664:\n\t" ".org	. - (664b-663b) + (662b-661b)\n\t" ".org	. - (662b-661b) + (664b-663b)\n\t" ".previous\n" ".endif\n" : [loop] "=&r" (loop), [ret] "=&r" (ret), [ptr] "+Q"(*(u64 *)ptr) : [val] "r" ((u64)(val))); return ret; }
-# 242 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/percpu.h" 1
+# 242 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/percpu.h" 1
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/threads.h" 1
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/percpu.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu-defs.h" 1
-# 308 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu-defs.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/threads.h" 1
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/percpu.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu-defs.h" 1
+# 308 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu-defs.h"
 extern void __bad_size_call_parameter(void);
 
 
 
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __this_cpu_preempt_check(const char *op) { }
-# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/percpu.h" 2
-# 19 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/percpu.h"
+# 8 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/percpu.h" 2
+# 19 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/percpu.h"
 extern unsigned long __per_cpu_offset[256];
-# 243 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h" 2
-# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h" 2
-# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h"
+# 243 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/percpu.h" 2
+# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h" 2
+# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqflags.h"
   static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_softirqs_on(unsigned long ip) { }
   static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_softirqs_off(unsigned long ip) { }
   static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_hardirqs_on_prepare(unsigned long ip) { }
   static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_hardirqs_on(unsigned long ip) { }
   static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_hardirqs_off(unsigned long ip) { }
-# 55 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
+# 55 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bottom_half.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bottom_half.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bottom_half.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bottom_half.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
 {
  __preempt_count_add(cnt);
@@ -8536,19 +8544,19 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  __local_bh_enable_ip(({ __label__ __here; __here: (unsigned long)&&__here; }), (2 * (1UL << (0 + 8))));
 }
-# 59 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h" 1
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h" 1
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/string.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h" 2
+# 59 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h" 1
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/string.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h" 2
 
 extern char *strndup_user(const char *, long);
 extern void *memdup_user(const void *, size_t);
@@ -8558,8 +8566,8 @@ extern void *memdup_user_nul(const void *, size_t);
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/string.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/string.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/string.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/string.h"
 extern char *strrchr(const char *, int c);
 
 
@@ -8595,7 +8603,7 @@ extern void *__memmove(void *, const void *, __kernel_size_t);
 
 extern void *memset(void *, int, __kernel_size_t);
 extern void *__memset(void *, int, __kernel_size_t);
-# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h" 2
+# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h" 2
 
 
 extern char * strcpy(char *,const char *);
@@ -8621,7 +8629,7 @@ extern char * strncat(char *, const char *, __kernel_size_t);
 
 
 extern size_t strlcat(char *, const char *, __kernel_size_t);
-# 54 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 53 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
 extern int strcasecmp(const char *s1, const char *s2);
 
 
@@ -8654,7 +8662,7 @@ extern char * strstr(const char *, const char *);
 
 
 extern char * strnstr(const char *, const char *, size_t);
-# 94 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 93 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
 extern char * strpbrk(const char *,const char *);
 
 
@@ -8701,7 +8709,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 }
 
 extern void **__memcat_p(void **a, void **b);
-# 153 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 152 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
 extern void * memscan(void *,int,__kernel_size_t);
 
 
@@ -8735,15 +8743,9 @@ extern char **argv_split(gfp_t gfp, const char *str, int *argcp);
 extern void argv_free(char **argv);
 
 extern bool sysfs_streq(const char *s1, const char *s2);
-extern int kstrtobool(const char *s, bool *res);
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int strtobool(const char *s, bool *res)
-{
- return kstrtobool(s, res);
-}
-
 int match_string(const char * const *array, size_t n, const char *string);
 int __sysfs_match_string(const char * const *array, size_t n, const char *s);
-# 205 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 198 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
 int vbin_printf(u32 *bin_buf, size_t size, const char *fmt, va_list args);
 int bstr_printf(char *buf, size_t size, const char *fmt, const u32 *bin_buf);
 int bprintf(u32 *bin_buf, size_t size, const char *fmt, ...) __attribute__((__format__(printf, 3, 4)));
@@ -8765,7 +8767,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 }
 
 size_t memweight(const void *ptr, size_t bytes);
-# 241 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 234 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void memzero_explicit(void *s, size_t count)
 {
  memset(s, 0, count);
@@ -8791,7 +8793,7 @@ void __read_overflow(void) __attribute__((__error__("detected read beyond size o
 void __read_overflow2(void) __attribute__((__error__("detected read beyond size of object passed as 2nd parameter")));
 void __read_overflow3(void) __attribute__((__error__("detected read beyond size of object passed as 3rd parameter")));
 void __write_overflow(void) __attribute__((__error__("detected write beyond size of object passed as 1st parameter")));
-# 293 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 286 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
 extern inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) __attribute__((gnu_inline)) char *strncpy(char *p, const char *q, __kernel_size_t size)
 {
  size_t p_size = __builtin_object_size(p, 0);
@@ -8984,7 +8986,7 @@ extern inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  memcpy(p, q, strlen(q) + 1);
  return p;
 }
-# 507 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 500 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void memcpy_and_pad(void *dest, size_t dest_len,
       const void *src, size_t count, int pad)
 {
@@ -8994,17 +8996,26 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  } else
   memcpy(dest, src, dest_len);
 }
-# 532 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
+# 525 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/string.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) size_t str_has_prefix(const char *str, const char *prefix)
 {
  size_t len = strlen(prefix);
  return strncmp(str, prefix, len) == 0 ? len : 0;
 }
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h" 2
-# 121 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h" 2
+
+
+struct device;
+# 123 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
 extern unsigned long *bitmap_alloc(unsigned int nbits, gfp_t flags);
 extern unsigned long *bitmap_zalloc(unsigned int nbits, gfp_t flags);
 extern void bitmap_free(const unsigned long *bitmap);
+
+
+unsigned long *devm_bitmap_alloc(struct device *dev,
+     unsigned int nbits, gfp_t flags);
+unsigned long *devm_bitmap_zalloc(struct device *dev,
+      unsigned int nbits, gfp_t flags);
 
 
 
@@ -9052,7 +9063,7 @@ extern unsigned long bitmap_find_next_zero_area_off(unsigned long *map,
           unsigned int nr,
           unsigned long align_mask,
           unsigned long align_offset);
-# 184 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 192 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long
 bitmap_find_next_zero_area(unsigned long *map,
       unsigned long size,
@@ -9092,7 +9103,7 @@ extern int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int o
 extern unsigned int bitmap_ord_to_pos(const unsigned long *bitmap, unsigned int ord, unsigned int nbits);
 extern int bitmap_print_to_pagebuf(bool list, char *buf,
        const unsigned long *maskp, int nmaskbits);
-# 235 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 243 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void bitmap_zero(unsigned long *dst, unsigned int nbits)
 {
  unsigned int len = (((nbits) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8))) * sizeof(unsigned long);
@@ -9132,7 +9143,7 @@ extern void bitmap_from_arr32(unsigned long *bitmap, const u32 *buf,
        unsigned int nbits);
 extern void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap,
        unsigned int nbits);
-# 283 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 291 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int bitmap_and(unsigned long *dst, const unsigned long *src1,
    const unsigned long *src2, unsigned int nbits)
 {
@@ -9175,7 +9186,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  else
   __bitmap_complement(dst, src, nbits);
 }
-# 333 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 341 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int bitmap_equal(const unsigned long *src1,
    const unsigned long *src2, unsigned int nbits)
 {
@@ -9186,7 +9197,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   return !memcmp(src1, src2, nbits / 8);
  return __bitmap_equal(src1, src2, nbits);
 }
-# 353 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 361 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool bitmap_or_equal(const unsigned long *src1,
        const unsigned long *src2,
        const unsigned long *src3,
@@ -9312,7 +9323,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  *rs = find_next_bit(bitmap, end, *rs);
  *re = find_next_zero_bit(bitmap, end, *rs + 1);
 }
-# 541 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 549 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void bitmap_from_u64(unsigned long *dst, u64 mask)
 {
  dst[0] = mask & (~0UL);
@@ -9320,7 +9331,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  if (sizeof(mask) > sizeof(unsigned long))
   dst[1] = mask >> 32;
 }
-# 557 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
+# 565 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/bitmap.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long bitmap_get_value8(const unsigned long *map,
            unsigned long start)
 {
@@ -9345,15 +9356,15 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  map[index] &= ~(0xFFUL << offset);
  map[index] |= value << offset;
 }
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h" 2
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h" 2
 
 
 
 
 typedef struct cpumask { unsigned long bits[(((256) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8)))]; } cpumask_t;
-# 39 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 39 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 extern unsigned int nr_cpu_ids;
-# 90 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 90 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 extern struct cpumask __cpu_possible_mask;
 extern struct cpumask __cpu_online_mask;
 extern struct cpumask __cpu_present_mask;
@@ -9364,12 +9375,12 @@ extern struct cpumask __cpu_active_mask;
 
 
 extern atomic_t __num_online_cpus;
-# 110 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 110 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned int num_online_cpus(void)
 {
  return atomic_read(&__num_online_cpus);
 }
-# 132 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 132 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 extern cpumask_t cpus_booted_once_mask;
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void cpu_max_bits_warn(unsigned int cpu, unsigned int bits)
@@ -9385,7 +9396,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  cpu_max_bits_warn(cpu, ((unsigned int)256));
  return cpu;
 }
-# 217 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 217 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned int cpumask_first(const struct cpumask *srcp)
 {
  return find_next_bit((((srcp)->bits)), (((unsigned int)256)), 0);
@@ -9403,7 +9414,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 }
 
 unsigned int cpumask_next(int n, const struct cpumask *srcp);
-# 242 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 242 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned int cpumask_next_zero(int n, const struct cpumask *srcp)
 {
 
@@ -9417,9 +9428,9 @@ int cpumask_any_but(const struct cpumask *mask, unsigned int cpu);
 unsigned int cpumask_local_spread(unsigned int i, int node);
 int cpumask_any_and_distribute(const struct cpumask *src1p,
           const struct cpumask *src2p);
-# 280 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 280 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 extern int cpumask_next_wrap(int n, const struct cpumask *mask, int start, bool wrap);
-# 332 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 332 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)
 {
  set_bit(cpumask_check(cpu), ((dstp)->bits));
@@ -9445,17 +9456,17 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  __clear_bit(cpumask_check(cpu), ((dstp)->bits));
 }
-# 365 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 365 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_test_cpu(int cpu, const struct cpumask *cpumask)
 {
  return test_bit(cpumask_check(cpu), (((cpumask))->bits));
 }
-# 379 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 379 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_test_and_set_cpu(int cpu, struct cpumask *cpumask)
 {
  return test_and_set_bit(cpumask_check(cpu), ((cpumask)->bits));
 }
-# 393 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 393 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_test_and_clear_cpu(int cpu, struct cpumask *cpumask)
 {
  return test_and_clear_bit(cpumask_check(cpu), ((cpumask)->bits));
@@ -9478,7 +9489,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  bitmap_zero(((dstp)->bits), ((unsigned int)256));
 }
-# 424 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 424 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_and(struct cpumask *dstp,
           const struct cpumask *src1p,
           const struct cpumask *src2p)
@@ -9513,7 +9524,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  bitmap_xor(((dstp)->bits), ((src1p)->bits),
            ((src2p)->bits), ((unsigned int)256));
 }
-# 467 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 467 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_andnot(struct cpumask *dstp,
       const struct cpumask *src1p,
       const struct cpumask *src2p)
@@ -9571,7 +9582,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  return bitmap_intersects(((src1p)->bits), ((src2p)->bits),
             ((unsigned int)256));
 }
-# 532 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 532 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_subset(const struct cpumask *src1p,
      const struct cpumask *src2p)
 {
@@ -9642,25 +9653,25 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  bitmap_copy(((dstp)->bits), ((srcp)->bits), ((unsigned int)256));
 }
-# 643 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 643 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_parse_user(const char *buf, int len,
          struct cpumask *dstp)
 {
  return bitmap_parse_user(buf, len, ((dstp)->bits), ((unsigned int)256));
 }
-# 657 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 657 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_parselist_user(const char *buf, int len,
          struct cpumask *dstp)
 {
  return bitmap_parselist_user(buf, len, ((dstp)->bits),
          ((unsigned int)256));
 }
-# 671 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 671 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpumask_parse(const char *buf, struct cpumask *dstp)
 {
  return bitmap_parse(buf, (~0U), ((dstp)->bits), ((unsigned int)256));
 }
-# 683 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 683 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int cpulist_parse(const char *buf, struct cpumask *dstp)
 {
  return bitmap_parselist(buf, ((dstp)->bits), ((unsigned int)256));
@@ -9673,7 +9684,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return (((((unsigned int)256)) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8))) * sizeof(long);
 }
-# 756 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 756 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 typedef struct cpumask cpumask_var_t[1];
 
 
@@ -9724,7 +9735,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 extern const unsigned long cpu_all_bits[(((256) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8)))];
-# 816 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 816 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 void init_cpu_present(const struct cpumask *src);
 void init_cpu_possible(const struct cpumask *src);
 void init_cpu_online(const struct cpumask *src);
@@ -9762,12 +9773,12 @@ set_cpu_active(unsigned int cpu, bool active)
  else
   cpumask_clear_cpu(cpu, &__cpu_active_mask);
 }
-# 869 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 869 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __check_is_bitmap(const unsigned long *bitmap)
 {
  return 1;
 }
-# 881 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 881 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 extern const unsigned long
  cpu_bit_bitmap[64 +1][(((256) + ((sizeof(long) * 8)) - 1) / ((sizeof(long) * 8)))];
 
@@ -9777,22 +9788,22 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  p -= cpu / 64;
  return ((struct cpumask *)(1 ? (p) : (void *)sizeof(__check_is_bitmap(p))));
 }
-# 918 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
+# 918 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/cpumask.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) ssize_t
 cpumap_print_to_pagebuf(bool list, char *buf, const struct cpumask *mask)
 {
  return bitmap_print_to_pagebuf(list, buf, ((mask)->bits),
           nr_cpu_ids);
 }
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h" 2
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp_types.h" 1
-
-
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp_types.h" 1
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h" 1
-# 54 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h"
+
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h" 1
+# 54 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h"
 struct llist_head {
  struct llist_node *first;
 };
@@ -9800,15 +9811,15 @@ struct llist_head {
 struct llist_node {
  struct llist_node *next;
 };
-# 69 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h"
+# 69 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void init_llist_head(struct llist_head *list)
 {
  list->first = ((void *)0);
 }
-# 187 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h"
+# 187 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool llist_empty(const struct llist_head *head)
 {
- return ({ do { extern void __compiletime_assert_135(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(head->first) == sizeof(char) || sizeof(head->first) == sizeof(short) || sizeof(head->first) == sizeof(int) || sizeof(head->first) == sizeof(long)) || sizeof(head->first) == sizeof(long long))) __compiletime_assert_135(); } while (0); (*(const volatile typeof( _Generic((head->first), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (head->first))) *)&(head->first)); }) == ((void *)0);
+ return ({ do { extern void __compiletime_assert_133(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(head->first) == sizeof(char) || sizeof(head->first) == sizeof(short) || sizeof(head->first) == sizeof(int) || sizeof(head->first) == sizeof(long)) || sizeof(head->first) == sizeof(long long))) __compiletime_assert_133(); } while (0); (*(const volatile typeof( _Generic((head->first), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (head->first))) *)&(head->first)); }) == ((void *)0);
 }
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) struct llist_node *llist_next(struct llist_node *node)
@@ -9830,7 +9841,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return llist_add_batch(new, new, head);
 }
-# 220 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h"
+# 220 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/llist.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) struct llist_node *llist_del_all(struct llist_head *head)
 {
  return ({ typeof(&head->first) __ai_ptr = (&head->first); instrument_atomic_write(__ai_ptr, sizeof(*__ai_ptr)); ({ __typeof__(*(__ai_ptr)) __ret; __ret = (__typeof__(*(__ai_ptr))) __xchg_mb((unsigned long)(((void *)0)), (__ai_ptr), sizeof(*(__ai_ptr))); __ret; }); });
@@ -9839,7 +9850,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 extern struct llist_node *llist_del_first(struct llist_head *head);
 
 struct llist_node *llist_reverse_order(struct llist_node *head);
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp_types.h" 2
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp_types.h" 2
 
 enum {
  CSD_FLAG_LOCK = 0x01,
@@ -9858,7 +9869,7 @@ enum {
 
  CSD_FLAG_TYPE_MASK = 0xF0,
 };
-# 58 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp_types.h"
+# 58 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp_types.h"
 struct __call_single_node {
  struct llist_node llist;
  union {
@@ -9869,7 +9880,7 @@ struct __call_single_node {
  u16 src, dst;
 
 };
-# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h" 2
+# 16 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h" 2
 
 typedef void (*smp_call_func_t)(void *info);
 typedef bool (*smp_cond_func_t)(int cpu, void *info);
@@ -9939,10 +9950,10 @@ int smp_call_function_single_async(int cpu, struct __call_single_data *csd);
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/smp.h" 1
-# 34 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/smp.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/smp.h" 1
+# 34 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/smp.h"
 extern __attribute__((section(".data..percpu" "..read_mostly"))) __typeof__(int) cpu_number;
-# 48 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/smp.h"
+# 48 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/smp.h"
 extern u64 __cpu_logical_map[256];
 extern u64 cpu_logical_map(int cpu);
 
@@ -9993,7 +10004,7 @@ extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void arch_send_wakeup_ipi_mask(const struct cpumask *mask)
 {
- do { extern void __compiletime_assert_136(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_136(); } while (0);
+ do { extern void __compiletime_assert_134(void) __attribute__((__error__("BUILD_BUG failed"))); if (!(!(1))) __compiletime_assert_134(); } while (0);
 }
 
 
@@ -10013,7 +10024,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void update_cpu_boot_status(int val)
 {
- do { do { extern void __compiletime_assert_137(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(secondary_data.status) == sizeof(char) || sizeof(secondary_data.status) == sizeof(short) || sizeof(secondary_data.status) == sizeof(int) || sizeof(secondary_data.status) == sizeof(long)) || sizeof(secondary_data.status) == sizeof(long long))) __compiletime_assert_137(); } while (0); do { *(volatile typeof(secondary_data.status) *)&(secondary_data.status) = (val); } while (0); } while (0);
+ do { do { extern void __compiletime_assert_135(void) __attribute__((__error__("Unsupported access size for {READ,WRITE}_ONCE()."))); if (!((sizeof(secondary_data.status) == sizeof(char) || sizeof(secondary_data.status) == sizeof(short) || sizeof(secondary_data.status) == sizeof(int) || sizeof(secondary_data.status) == sizeof(long)) || sizeof(secondary_data.status) == sizeof(long long))) __compiletime_assert_135(); } while (0); do { *(volatile typeof(secondary_data.status) *)&(secondary_data.status) = (val); } while (0); } while (0);
 
  asm volatile("dsb " "ishst" : : : "memory");
 }
@@ -10028,13 +10039,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  update_cpu_boot_status((3));
  cpu_park_loop();
 }
-# 144 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/smp.h"
+# 144 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/smp.h"
 bool cpus_are_stuck_in_kernel(void);
 
 extern void crash_smp_send_stop(void);
 extern bool smp_crash_stop_failed(void);
-# 86 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h" 2
-# 95 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h"
+# 86 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h" 2
+# 95 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h"
 extern void smp_send_stop(void);
 
 
@@ -10095,7 +10106,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return __boot_cpu_id;
 }
-# 246 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h"
+# 246 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/smp.h"
 extern void arch_disable_smp_support(void);
 
 extern void arch_thaw_secondary_cpus_begin(void);
@@ -10110,7 +10121,7 @@ int smp_call_on_cpu(unsigned int cpu, int (*func)(void *), void *par,
 int smpcfd_prepare_cpu(unsigned int cpu);
 int smpcfd_dead_cpu(unsigned int cpu);
 int smpcfd_dying_cpu(unsigned int cpu);
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h" 2
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h" 2
 
 
 struct task_struct;
@@ -10118,7 +10129,7 @@ struct task_struct;
 
 extern int prove_locking;
 extern int lock_stat;
-# 328 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
+# 336 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_init_task(struct task_struct *task)
 {
 }
@@ -10134,7 +10145,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_set_selftest_task(struct task_struct *task)
 {
 }
-# 377 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
+# 385 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_register_key(struct lock_class_key *key)
 {
 }
@@ -10142,32 +10153,32 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_unregister_key(struct lock_class_key *key)
 {
 }
-# 404 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
+# 413 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
 enum xhlock_context_t {
  XHLOCK_HARD,
  XHLOCK_SOFT,
  XHLOCK_CTX_NR,
 };
-# 418 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
+# 427 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_invariant_state(bool force) {}
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void lockdep_free_task(struct task_struct *task) {}
-# 480 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
+# 489 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void print_irqtrace_events(struct task_struct *curr)
 {
 }
-# 637 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
+# 646 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/lockdep.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void
 lockdep_rcu_suspicious(const char *file, const int line, const char *s)
 {
 }
-# 60 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
+# 60 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
 
 # 1 "./arch/arm64/include/generated/asm/mmiowb.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/mmiowb.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/mmiowb.h" 1
 # 1 "./arch/arm64/include/generated/asm/mmiowb.h" 2
-# 62 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
-# 90 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock.h" 1
+# 62 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
+# 90 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock.h" 1
 
 
 
@@ -10176,28 +10187,28 @@ lockdep_rcu_suspicious(const char *file, const int line, const char *s)
 
 
 # 1 "./arch/arm64/include/generated/asm/qrwlock.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock.h" 1
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 1
-# 31 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/processor.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/processor.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/vdso/processor.h" 1
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/vdso/processor.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock.h" 1
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 1
+# 31 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/processor.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/processor.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/vdso/processor.h" 1
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/vdso/processor.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void cpu_relax(void)
 {
  asm volatile("yield" ::: "memory");
 }
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/processor.h" 2
-# 32 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/vdso/processor.h" 2
+# 32 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/virt.h" 1
-# 50 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/virt.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/sections.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/virt.h" 1
+# 50 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/virt.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/sections.h" 1
 
 
 
@@ -10205,8 +10216,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h" 1
-# 35 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h" 1
+# 35 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
 extern char _text[], _stext[], _etext[];
 extern char _data[], _sdata[], _edata[];
 extern char __bss_start[], __bss_stop[];
@@ -10232,7 +10243,7 @@ extern char __start_opd[], __end_opd[];
 extern char __noinstr_text_start[], __noinstr_text_end[];
 
 extern __attribute__((__externally_visible__)) const void __nosave_begin, __nosave_end;
-# 70 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
+# 70 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int arch_is_kernel_text(unsigned long addr)
 {
  return 0;
@@ -10244,42 +10255,45 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return 0;
 }
-# 91 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
+# 91 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int arch_is_kernel_initmem_freed(unsigned long addr)
 {
  return 0;
 }
-# 108 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
+# 108 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool memory_contains(void *begin, void *end, void *virt,
        size_t size)
 {
  return virt >= begin && virt + size <= end;
 }
-# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
+# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool memory_intersects(void *begin, void *end, void *virt,
          size_t size)
 {
  void *vend = virt + size;
 
- return (virt >= begin && virt < end) || (vend >= begin && vend < end);
+ if (virt < end && vend > begin)
+  return true;
+
+ return false;
 }
-# 142 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
+# 145 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool init_section_contains(void *virt, size_t size)
 {
  return memory_contains(__init_begin, __init_end, virt, size);
 }
-# 156 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
+# 159 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool init_section_intersects(void *virt, size_t size)
 {
  return memory_intersects(__init_begin, __init_end, virt, size);
 }
-# 169 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
+# 172 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/sections.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool is_kernel_rodata(unsigned long addr)
 {
  return addr >= (unsigned long)__start_rodata &&
         addr < (unsigned long)__end_rodata;
 }
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/sections.h" 2
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/sections.h" 2
 
 extern char __alt_instructions[], __alt_instructions_end[];
 extern char __hibernate_exit_text_start[], __hibernate_exit_text_end[];
@@ -10297,8 +10311,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return __entry_tramp_text_end - __entry_tramp_text_start;
 }
-# 51 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/virt.h" 2
-# 63 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/virt.h"
+# 51 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/virt.h" 2
+# 63 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/virt.h"
 extern u32 __boot_cpu_mode[2];
 
 void __hyp_set_vectors(phys_addr_t phys_vector_base);
@@ -10335,7 +10349,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  else
   return cpus_have_final_cap(11);
 }
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h" 2
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h" 2
 
 struct arch_hw_breakpoint_ctrl {
  u32 __reserved : 19,
@@ -10379,7 +10393,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  reg >>= 2;
  ctrl->len = reg & 0xff;
 }
-# 107 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h"
+# 107 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h"
 struct task_struct;
 struct notifier_block;
 struct perf_event_attr;
@@ -10403,7 +10417,7 @@ extern int hw_breakpoint_slots(int type);
 
 extern void hw_breakpoint_thread_switch(struct task_struct *next);
 extern void ptrace_hw_copy_thread(struct task_struct *task);
-# 140 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h"
+# 140 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/hw_breakpoint.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int get_num_brps(void)
 {
  u64 dfr0 = read_sanitised_ftr_reg((((3) << 19) | ((0) << 16) | ((0) << 12) | ((5) << 8) | ((0) << 5)));
@@ -10420,13 +10434,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   cpuid_feature_extract_unsigned_field(dfr0,
       20);
 }
-# 36 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/kasan.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/kasan.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h"
+# 36 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/kasan.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/kasan.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h"
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h" 2
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h" 2
 
 typedef u64 pteval_t;
 typedef u64 pmdval_t;
@@ -10458,65 +10472,64 @@ typedef struct { pgdval_t pgd; } pgd_t;
 
 
 typedef struct { pteval_t pgprot; } pgprot_t;
-# 52 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/pgtable-nop4d.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/pgtable-nop4d.h"
+# 52 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/pgtable-nop4d.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/pgtable-nop4d.h"
 typedef struct { pgd_t pgd; } p4d_t;
-# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/pgtable-nop4d.h"
+# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/pgtable-nop4d.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int pgd_none(pgd_t pgd) { return 0; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int pgd_bad(pgd_t pgd) { return 0; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int pgd_present(pgd_t pgd) { return 1; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void pgd_clear(pgd_t *pgd) { }
-# 36 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/pgtable-nop4d.h"
+# 36 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/pgtable-nop4d.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) p4d_t *p4d_offset(pgd_t *pgd, unsigned long address)
 {
  return (p4d_t *)pgd;
 }
-# 53 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h" 2
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/kasan.h" 2
-# 41 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/kasan.h"
+# 53 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-types.h" 2
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/kasan.h" 2
+# 41 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/kasan.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void kasan_init(void) { }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void kasan_copy_shadow(pgd_t *pgdir) { }
-# 37 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
+# 37 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-hwdef.h" 1
-# 39 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pointer_auth.h" 1
-
-
-
-
-
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/once.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pgtable-hwdef.h" 1
+# 39 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pointer_auth.h" 1
 
 
 
 
 
-
-
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/once.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/once.h"
 bool __do_once_start(bool *done, unsigned long *flags);
 void __do_once_done(bool *done, struct static_key_true *once_key,
       unsigned long *flags, struct module *mod);
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/ioctl.h" 1
+
+bool __do_once_slow_start(bool *done);
+void __do_once_slow_done(bool *done, struct static_key_true *once_key,
+    struct module *mod);
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 2
+
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/ioctl.h" 1
 
 
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/ioctl.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/ioctl.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/ioctl.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/ioctl.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/ioctl.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/asm-generic/ioctl.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/ioctl.h" 2
 
 
 
@@ -10524,28 +10537,28 @@ void __do_once_done(bool *done, struct static_key_true *once_key,
 
 extern unsigned int __invalid_size_argument_for_IOC;
 # 1 "./arch/arm64/include/generated/uapi/asm/ioctl.h" 2
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/ioctl.h" 2
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqnr.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/ioctl.h" 2
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqnr.h" 1
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/irqnr.h" 1
-# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqnr.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/irqnr.h" 1
+# 6 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/irqnr.h" 2
 
 
 extern int nr_irqs;
 extern struct irq_desc *irq_to_desc(unsigned int irq);
 unsigned int irq_get_next_irq(unsigned int offset);
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h" 2
-# 41 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h"
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h" 2
+# 41 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/uapi/linux/random.h"
 struct rand_pool_info {
  int entropy_count;
  int buf_size;
  __u32 buf[0];
 };
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 2
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 2
 
 struct notifier_block;
 
@@ -10556,14 +10569,14 @@ void add_input_randomness(unsigned int type, unsigned int code,
 void add_interrupt_randomness(int irq) ;
 void add_hwgenerator_randomness(const void *buf, size_t len, size_t entropy);
 
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void add_latent_entropy(void)
+{
 
 
 
+ add_device_randomness(((void *)0), 0);
 
-
-
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void add_latent_entropy(void) { }
-
+}
 
 void get_random_bytes(void *buf, size_t len);
 size_t __attribute__((__warn_unused_result__)) get_random_bytes_arch(void *buf, size_t len);
@@ -10581,7 +10594,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 }
-# 62 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h"
+# 62 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long get_random_canary(void)
 {
  return get_random_long() & 0xffffffffffffff00UL;
@@ -10601,7 +10614,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  get_random_bytes(buf, nbytes);
  return ret;
 }
-# 90 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h"
+# 90 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int get_random_u32_wait(u32 *out) { int ret = wait_for_random_bytes(); if (__builtin_expect(!!(ret), 0)) return ret; *out = get_random_u32(); return 0; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int get_random_u64_wait(u32 *out) { int ret = wait_for_random_bytes(); if (__builtin_expect(!!(ret), 0)) return ret; *out = get_random_u64(); return 0; }
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int get_random_int_wait(unsigned int *out) { int ret = wait_for_random_bytes(); if (__builtin_expect(!!(ret), 0)) return ret; *out = get_random_int(); return 0; }
@@ -10613,10 +10626,10 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h" 1
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu.h" 1
-# 65 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h" 1
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu.h" 1
+# 65 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu.h"
 extern void *pcpu_base_addr;
 extern const unsigned long *pcpu_unit_offsets;
 
@@ -10662,7 +10675,7 @@ extern void __attribute__((__section__(".init.text"))) __attribute__((__cold__))
 
 extern void __attribute__((__section__(".init.text"))) __attribute__((__cold__)) pcpu_setup_first_chunk(const struct pcpu_alloc_info *ai,
       void *base_addr);
-# 126 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu.h"
+# 126 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu.h"
 extern void *__alloc_reserved_percpu(size_t size, size_t align);
 extern bool __is_kernel_percpu_address(unsigned long addr, unsigned long *can_addr);
 extern bool is_kernel_percpu_address(unsigned long addr);
@@ -10675,11 +10688,11 @@ extern void *__alloc_percpu_gfp(size_t size, size_t align, gfp_t gfp);
 extern void *__alloc_percpu(size_t size, size_t align);
 extern void free_percpu(void *__pdata);
 extern phys_addr_t per_cpu_ptr_to_phys(void *addr);
-# 146 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu.h"
+# 146 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/percpu.h"
 extern unsigned long pcpu_nr_pages(void);
-# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/siphash.h" 1
-# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/siphash.h"
+# 13 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/siphash.h" 1
+# 20 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/siphash.h"
 typedef struct {
  u64 key[2];
 } siphash_key_t;
@@ -10798,7 +10811,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
   return __hsiphash_unaligned(data, len, key);
  return ___hsiphash_aligned(data, len, key);
 }
-# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h" 2
+# 14 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h" 2
 
 u32 prandom_u32(void);
 void prandom_bytes(void *buf, size_t nbytes);
@@ -10806,7 +10819,7 @@ void prandom_seed(u32 seed);
 void prandom_reseed_late(void);
 
 extern __attribute__((section(".data..percpu" ""))) __typeof__(unsigned long) net_rand_noise;
-# 50 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h"
+# 50 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void prandom_u32_add_noise(unsigned long a, unsigned long b,
       unsigned long c, unsigned long d)
 {
@@ -10826,7 +10839,7 @@ struct rnd_state {
 u32 prandom_u32_state(struct rnd_state *state);
 void prandom_bytes_state(struct rnd_state *state, void *buf, size_t nbytes);
 void prandom_seed_full_state(struct rnd_state *pcpu_state);
-# 85 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h"
+# 85 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/prandom.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) u32 prandom_u32_max(u32 ep_ro)
 {
  return (u32)(((u64) prandom_u32() * ep_ro) >> 32);
@@ -10861,11 +10874,11 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return seed * 1664525 + 1013904223;
 }
-# 102 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 2
+# 102 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 2
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/archrandom.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/archrandom.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/archrandom.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/archrandom.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool __arm64_rndr(unsigned long *v)
 {
  bool ok;
@@ -10935,8 +10948,8 @@ arch_get_random_seed_long_early(unsigned long *v)
 
  return __arm64_rndr(v);
 }
-# 105 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 2
-# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h"
+# 105 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h" 2
+# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/random.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool __attribute__((__section__(".init.text"))) __attribute__((__cold__)) arch_get_random_long_early(unsigned long *v)
 {
  ({ int __ret_warn_on = !!(system_state != SYSTEM_BOOTING); if (__builtin_expect(!!(__ret_warn_on), 0)) asm volatile (".pushsection __bug_table,\"aw\"; .align 2; 14470: .long 14471f - 14470b; .pushsection .rodata.str,\"aMS\",@progbits,1; 14472: .string \"include/linux/random.h\"; .popsection; .long 14472b - 14470b; .short 127; .short (1 << 0)|(((9) << 8)); .popsection; 14471: brk 0x800");; __builtin_expect(!!(__ret_warn_on), 0); });
@@ -10947,17 +10960,18 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 int random_prepare_cpu(unsigned int cpu);
 int random_online_cpu(unsigned int cpu);
-# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pointer_auth.h" 2
-# 40 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
+# 7 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/pointer_auth.h" 2
+# 40 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spectre.h" 1
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spectre.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spectre.h" 1
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spectre.h"
 enum mitigation_state {
  SPECTRE_UNAFFECTED,
  SPECTRE_MITIGATED,
  SPECTRE_VULNERABLE,
 };
 
+struct pt_regs;
 struct task_struct;
 
 enum mitigation_state arm64_get_spectre_v2_state(void);
@@ -10973,10 +10987,11 @@ enum mitigation_state arm64_get_spectre_bhb_state(void);
 bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
 u8 spectre_bhb_loop_affected(int scope);
 void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
-# 42 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
+bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
+# 42 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
 # 1 "./arch/arm64/include/generated/uapi/asm/types.h" 1
-# 43 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
-# 98 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
+# 43 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
+# 98 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
 extern phys_addr_t arm64_dma_phys_limit;
 
 
@@ -11044,7 +11059,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
       unsigned long *size)
 {
 
- do { extern void __compiletime_assert_138(void) __attribute__((__error__("BUILD_BUG_ON failed: " "sizeof_field(struct thread_struct, uw) != sizeof_field(struct thread_struct, uw.tp_value) + sizeof_field(struct thread_struct, uw.tp2_value) + sizeof_field(struct thread_struct, uw.fpsimd_state)"))); if (!(!(sizeof((((struct thread_struct *)0)->uw)) != sizeof((((struct thread_struct *)0)->uw.tp_value)) + sizeof((((struct thread_struct *)0)->uw.tp2_value)) + sizeof((((struct thread_struct *)0)->uw.fpsimd_state))))) __compiletime_assert_138(); } while (0)
+ do { extern void __compiletime_assert_136(void) __attribute__((__error__("BUILD_BUG_ON failed: " "sizeof_field(struct thread_struct, uw) != sizeof_field(struct thread_struct, uw.tp_value) + sizeof_field(struct thread_struct, uw.tp2_value) + sizeof_field(struct thread_struct, uw.fpsimd_state)"))); if (!(!(sizeof((((struct thread_struct *)0)->uw)) != sizeof((((struct thread_struct *)0)->uw.tp_value)) + sizeof((((struct thread_struct *)0)->uw.tp2_value)) + sizeof((((struct thread_struct *)0)->uw.fpsimd_state))))) __compiletime_assert_136(); } while (0)
 
 
                                                            ;
@@ -11052,7 +11067,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  *offset = __builtin_offsetof(struct thread_struct, uw);
  *size = sizeof((((struct thread_struct *)0)->uw));
 }
-# 189 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
+# 189 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
 void tls_preserve_current_state(void);
 
 
@@ -11061,8 +11076,9 @@ void tls_preserve_current_state(void);
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void start_thread_common(struct pt_regs *regs, unsigned long pc)
 {
+ s32 previous_syscall = regs->syscallno;
  memset(regs, 0, sizeof(*regs));
- forget_syscall(regs);
+ regs->syscallno = previous_syscall;
  regs->pc = pc;
 
  if (system_uses_irq_prio_masking())
@@ -11096,13 +11112,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 }
 
 
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool is_ttbr0_addr(unsigned long addr)
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool is_ttbr0_addr(unsigned long addr)
 {
 
  return addr < (test_ti_thread_flag(((struct thread_info *)get_current()), 22) ? ((((0x100000000UL))) - ((1UL) << 12)) : ((((1UL))) << vabits_actual));
 }
 
-static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool is_ttbr1_addr(unsigned long addr)
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) bool is_ttbr1_addr(unsigned long addr)
 {
 
  return (addr) >= ((-((((1UL))) << ((48)))));
@@ -11119,7 +11135,7 @@ unsigned long get_wchan(struct task_struct *p);
 
 extern struct task_struct *cpu_switch_to(struct task_struct *prev,
       struct task_struct *next);
-# 266 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
+# 267 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void prefetch(const void *ptr)
 {
  asm volatile("prfm pldl1keep, %a0\n" : : "p" (ptr));
@@ -11141,8 +11157,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 extern unsigned long __attribute__((__section__(".data..ro_after_init"))) signal_minsigstksz;
 extern void __attribute__((__section__(".init.text"))) __attribute__((__cold__)) minsigstksz_setup(void);
-# 297 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h" 1
+# 298 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h" 1
 
 
 
@@ -11151,12 +11167,12 @@ extern void __attribute__((__section__(".init.text"))) __attribute__((__cold__))
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/errno.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h" 2
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 1
-# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h" 2
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h" 1
-# 28 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 1
+# 11 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h" 2
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h" 1
+# 28 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h"
 struct sigcontext {
  __u64 fault_address;
 
@@ -11167,7 +11183,7 @@ struct sigcontext {
 
  __u8 __reserved[4096] __attribute__((__aligned__(16)));
 };
-# 66 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h"
+# 66 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h"
 struct _aarch64_ctx {
  __u32 magic;
  __u32 size;
@@ -11181,12 +11197,12 @@ struct fpsimd_context {
  __u32 fpcr;
  __uint128_t vregs[32];
 };
-# 92 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h"
+# 92 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h"
 struct esr_context {
  struct _aarch64_ctx head;
  __u64 esr;
 };
-# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h"
+# 125 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/uapi/asm/sigcontext.h"
 struct extra_context {
  struct _aarch64_ctx head;
  __u64 datap;
@@ -11201,8 +11217,8 @@ struct sve_context {
  __u16 vl;
  __u16 __reserved[3];
 };
-# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h" 2
-# 35 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h"
+# 12 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h" 2
+# 35 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h"
 struct task_struct;
 
 extern void fpsimd_save_state(struct user_fpsimd_state *state);
@@ -11309,15 +11325,15 @@ extern void __attribute__((__section__(".init.text"))) __attribute__((__cold__))
 extern void sve_update_vq_map(void);
 extern int sve_verify_vq_map(void);
 extern void __attribute__((__section__(".init.text"))) __attribute__((__cold__)) sve_setup(void);
-# 170 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h"
+# 170 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/fpsimd.h"
 extern void __efi_fpsimd_begin(void);
 extern void __efi_fpsimd_end(void);
-# 298 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
-# 308 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
+# 299 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h" 2
+# 309 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/processor.h"
 long set_tagged_addr_ctrl(struct task_struct *task, unsigned long arg);
 long get_tagged_addr_ctrl(struct task_struct *task);
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock.h" 2
-# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock.h"
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock.h" 2
+# 30 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qrwlock.h"
 extern void queued_read_lock_slowpath(struct qrwlock *lock);
 extern void queued_write_lock_slowpath(struct qrwlock *lock);
 
@@ -11404,13 +11420,13 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void queued_write_unlock(struct qrwlock *lock)
 {
- do { typeof(&lock->wlocked) __p = (&lock->wlocked); union { typeof( _Generic((*&lock->wlocked), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&lock->wlocked))) __val; char __c[1]; } __u = { .__val = ( typeof( _Generic((*&lock->wlocked), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&lock->wlocked)))) (0) }; do { extern void __compiletime_assert_139(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&lock->wlocked) == sizeof(char) || sizeof(*&lock->wlocked) == sizeof(short) || sizeof(*&lock->wlocked) == sizeof(int) || sizeof(*&lock->wlocked) == sizeof(long)))) __compiletime_assert_139(); } while (0); kasan_check_write(__p, sizeof(*&lock->wlocked)); switch (sizeof(*&lock->wlocked)) { case 1: asm volatile ("stlrb %w1, %0" : "=Q" (*__p) : "r" (*(__u8 *)__u.__c) : "memory"); break; case 2: asm volatile ("stlrh %w1, %0" : "=Q" (*__p) : "r" (*(__u16 *)__u.__c) : "memory"); break; case 4: asm volatile ("stlr %w1, %0" : "=Q" (*__p) : "r" (*(__u32 *)__u.__c) : "memory"); break; case 8: asm volatile ("stlr %1, %0" : "=Q" (*__p) : "r" (*(__u64 *)__u.__c) : "memory"); break; } } while (0);
+ do { typeof(&lock->wlocked) __p = (&lock->wlocked); union { typeof( _Generic((*&lock->wlocked), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&lock->wlocked))) __val; char __c[1]; } __u = { .__val = ( typeof( _Generic((*&lock->wlocked), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&lock->wlocked)))) (0) }; do { extern void __compiletime_assert_137(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&lock->wlocked) == sizeof(char) || sizeof(*&lock->wlocked) == sizeof(short) || sizeof(*&lock->wlocked) == sizeof(int) || sizeof(*&lock->wlocked) == sizeof(long)))) __compiletime_assert_137(); } while (0); kasan_check_write(__p, sizeof(*&lock->wlocked)); switch (sizeof(*&lock->wlocked)) { case 1: asm volatile ("stlrb %w1, %0" : "=Q" (*__p) : "r" (*(__u8 *)__u.__c) : "memory"); break; case 2: asm volatile ("stlrh %w1, %0" : "=Q" (*__p) : "r" (*(__u16 *)__u.__c) : "memory"); break; case 4: asm volatile ("stlr %w1, %0" : "=Q" (*__p) : "r" (*(__u32 *)__u.__c) : "memory"); break; case 8: asm volatile ("stlr %1, %0" : "=Q" (*__p) : "r" (*(__u64 *)__u.__c) : "memory"); break; } } while (0);
 }
 # 1 "./arch/arm64/include/generated/asm/qrwlock.h" 2
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock.h" 2
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock.h" 2
 # 1 "./arch/arm64/include/generated/asm/qspinlock.h" 1
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock.h" 1
-# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock.h" 1
+# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int queued_spin_is_locked(struct qspinlock *lock)
 {
 
@@ -11419,10 +11435,10 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
  return atomic_read(&lock->val);
 }
-# 42 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock.h"
+# 42 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/asm-generic/qspinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int queued_spin_value_unlocked(struct qspinlock lock)
 {
- return !atomic_read(&lock.val);
+ return !lock.val.counter;
 }
 
 
@@ -11477,7 +11493,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 
 
 
- do { typeof(&lock->locked) __p = (&lock->locked); union { typeof( _Generic((*&lock->locked), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&lock->locked))) __val; char __c[1]; } __u = { .__val = ( typeof( _Generic((*&lock->locked), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&lock->locked)))) (0) }; do { extern void __compiletime_assert_140(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&lock->locked) == sizeof(char) || sizeof(*&lock->locked) == sizeof(short) || sizeof(*&lock->locked) == sizeof(int) || sizeof(*&lock->locked) == sizeof(long)))) __compiletime_assert_140(); } while (0); kasan_check_write(__p, sizeof(*&lock->locked)); switch (sizeof(*&lock->locked)) { case 1: asm volatile ("stlrb %w1, %0" : "=Q" (*__p) : "r" (*(__u8 *)__u.__c) : "memory"); break; case 2: asm volatile ("stlrh %w1, %0" : "=Q" (*__p) : "r" (*(__u16 *)__u.__c) : "memory"); break; case 4: asm volatile ("stlr %w1, %0" : "=Q" (*__p) : "r" (*(__u32 *)__u.__c) : "memory"); break; case 8: asm volatile ("stlr %1, %0" : "=Q" (*__p) : "r" (*(__u64 *)__u.__c) : "memory"); break; } } while (0);
+ do { typeof(&lock->locked) __p = (&lock->locked); union { typeof( _Generic((*&lock->locked), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&lock->locked))) __val; char __c[1]; } __u = { .__val = ( typeof( _Generic((*&lock->locked), char: (char)0, unsigned char: (unsigned char)0, signed char: (signed char)0, unsigned short: (unsigned short)0, signed short: (signed short)0, unsigned int: (unsigned int)0, signed int: (signed int)0, unsigned long: (unsigned long)0, signed long: (signed long)0, unsigned long long: (unsigned long long)0, signed long long: (signed long long)0, default: (*&lock->locked)))) (0) }; do { extern void __compiletime_assert_138(void) __attribute__((__error__("Need native word sized stores/loads for atomicity."))); if (!((sizeof(*&lock->locked) == sizeof(char) || sizeof(*&lock->locked) == sizeof(short) || sizeof(*&lock->locked) == sizeof(int) || sizeof(*&lock->locked) == sizeof(long)))) __compiletime_assert_138(); } while (0); kasan_check_write(__p, sizeof(*&lock->locked)); switch (sizeof(*&lock->locked)) { case 1: asm volatile ("stlrb %w1, %0" : "=Q" (*__p) : "r" (*(__u8 *)__u.__c) : "memory"); break; case 2: asm volatile ("stlrh %w1, %0" : "=Q" (*__p) : "r" (*(__u16 *)__u.__c) : "memory"); break; case 4: asm volatile ("stlr %w1, %0" : "=Q" (*__p) : "r" (*(__u32 *)__u.__c) : "memory"); break; case 8: asm volatile ("stlr %1, %0" : "=Q" (*__p) : "r" (*(__u64 *)__u.__c) : "memory"); break; } } while (0);
 }
 
 
@@ -11487,14 +11503,14 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  return false;
 }
 # 1 "./arch/arm64/include/generated/asm/qspinlock.h" 2
-# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock.h" 2
-# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock.h"
+# 10 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock.h" 2
+# 22 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/arch/arm64/include/asm/spinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) bool vcpu_is_preempted(int cpu)
 {
  return false;
 }
-# 91 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
-# 180 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 91 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
+# 180 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void do_raw_spin_lock(raw_spinlock_t *lock)
 {
  (void)0;
@@ -11530,16 +11546,16 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  queued_spin_unlock(&lock->raw_lock);
  (void)0;
 }
-# 312 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock.h" 1
-# 313 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
+# 312 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock.h" 1
+# 313 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
 
 
 
 
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h" 1
-# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h" 1
+# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h"
 int in_lock_functions(unsigned long addr);
 
 
@@ -11567,7 +11583,7 @@ void __attribute__((__section__(".spinlock.text"))) _raw_spin_unlock_irq(raw_spi
 void __attribute__((__section__(".spinlock.text")))
 _raw_spin_unlock_irqrestore(raw_spinlock_t *lock, unsigned long flags)
         ;
-# 86 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h"
+# 86 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __raw_spin_trylock(raw_spinlock_t *lock)
 {
  do { __preempt_count_add(1); __asm__ __volatile__("": : :"memory"); } while (0);
@@ -11578,7 +11594,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  do { __asm__ __volatile__("": : :"memory"); if (__builtin_expect(!!(__preempt_count_dec_and_test()), 0)) preempt_schedule(); } while (0);
  return 0;
 }
-# 104 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h"
+# 104 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) unsigned long __raw_spin_lock_irqsave(raw_spinlock_t *lock)
 {
  unsigned long flags;
@@ -11586,7 +11602,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  do { do { ({ unsigned long __dummy; typeof(flags) __dummy2; (void)(&__dummy == &__dummy2); 1; }); flags = arch_local_irq_save(); } while (0); } while (0);
  do { __preempt_count_add(1); __asm__ __volatile__("": : :"memory"); } while (0);
  do { } while (0);
-# 119 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h"
+# 119 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h"
  do_raw_spin_lock_flags(lock, &flags);
 
  return flags;
@@ -11658,8 +11674,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  return 0;
 }
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_api_smp.h" 1
-# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_api_smp.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_api_smp.h" 1
+# 18 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_api_smp.h"
 void __attribute__((__section__(".spinlock.text"))) _raw_read_lock(rwlock_t *lock) ;
 void __attribute__((__section__(".spinlock.text"))) _raw_write_lock(rwlock_t *lock) ;
 void __attribute__((__section__(".spinlock.text"))) _raw_read_lock_bh(rwlock_t *lock) ;
@@ -11684,7 +11700,7 @@ _raw_read_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
 void __attribute__((__section__(".spinlock.text")))
 _raw_write_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
        ;
-# 117 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_api_smp.h"
+# 117 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_api_smp.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int __raw_read_trylock(rwlock_t *lock)
 {
  do { __preempt_count_add(1); __asm__ __volatile__("": : :"memory"); } while (0);
@@ -11706,7 +11722,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  do { __asm__ __volatile__("": : :"memory"); if (__builtin_expect(!!(__preempt_count_dec_and_test()), 0)) preempt_schedule(); } while (0);
  return 0;
 }
-# 146 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_api_smp.h"
+# 146 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwlock_api_smp.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void __raw_read_lock(rwlock_t *lock)
 {
  do { __preempt_count_add(1); __asm__ __volatile__("": : :"memory"); } while (0);
@@ -11838,14 +11854,14 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  do {queued_write_unlock(&(lock)->raw_lock); (void)0; } while (0);
  __local_bh_enable_ip((unsigned long)(void *)((((unsigned long)__builtin_return_address(0) & ((((1ULL))) << (55))) ? ((unsigned long)__builtin_return_address(0) | ((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) == sizeof(*(8 ? ((void *)((long)((vabits_actual) > (63)) * 0l)) : (int *)8))), (vabits_actual) > (63), 0))); })))) + (((~(((0ULL)))) - ((((1ULL))) << (vabits_actual)) + 1) & (~(((0ULL))) >> (64 - 1 - (63)))))) : ((unsigned long)__builtin_return_address(0) & ~((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) == sizeof(*(8 ? ((void *)((long)((vabits_actual) > (54)) * 0l)) : (int *)8))), (vabits_actual) > (54), 0))); })))) + (((~(((0ULL)))) - ((((1ULL))) << (vabits_actual)) + 1) & (~(((0ULL))) >> (64 - 1 - (54)))))))), ((2 * (1UL << (0 + 8))) + (1UL << 0)));
 }
-# 191 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h" 2
-# 319 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
-# 327 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 191 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock_api_smp.h" 2
+# 319 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h" 2
+# 327 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) raw_spinlock_t *spinlock_check(spinlock_t *lock)
 {
  return &lock->rlock;
 }
-# 352 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 352 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void spin_lock(spinlock_t *lock)
 {
  _raw_spin_lock(&lock->rlock);
@@ -11860,12 +11876,12 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return (_raw_spin_trylock(&lock->rlock));
 }
-# 377 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 377 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void spin_lock_irq(spinlock_t *lock)
 {
  _raw_spin_lock_irq(&lock->rlock);
 }
-# 392 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 392 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) void spin_unlock(spinlock_t *lock)
 {
  _raw_spin_unlock(&lock->rlock);
@@ -11895,7 +11911,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return ({ do { arch_local_irq_disable(); } while (0); (_raw_spin_trylock(&lock->rlock)) ? 1 : ({ do { arch_local_irq_enable(); } while (0); 0; }); });
 }
-# 445 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 445 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) __attribute__((__always_inline__)) int spin_is_locked(spinlock_t *lock)
 {
  return queued_spin_is_locked(&(&lock->rlock)->raw_lock);
@@ -11905,7 +11921,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return queued_spin_is_contended(&(&lock->rlock)->raw_lock);
 }
-# 470 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 470 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
 extern int _atomic_dec_and_lock(atomic_t *atomic, spinlock_t *lock);
 
 
@@ -11919,11 +11935,11 @@ int __alloc_bucket_spinlocks(spinlock_t **locks, unsigned int *lock_mask,
         size_t max_size, unsigned int cpu_mult,
         gfp_t gfp, const char *name,
         struct lock_class_key *key);
-# 494 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
+# 494 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/spinlock.h"
 void free_bucket_spinlocks(spinlock_t *locks);
-# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
+# 17 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/err.h" 1
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/err.h" 1
 
 
 
@@ -11932,8 +11948,8 @@ void free_bucket_spinlocks(spinlock_t *locks);
 
 
 # 1 "./arch/arm64/include/generated/uapi/asm/errno.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/err.h" 2
-# 24 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/err.h"
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/err.h" 2
+# 24 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/err.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void * __attribute__((__warn_unused_result__)) ERR_PTR(long error)
 {
  return (void *) error;
@@ -11953,7 +11969,7 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return __builtin_expect(!!(!ptr), 0) || __builtin_expect(!!((unsigned long)(void *)((unsigned long)ptr) >= (unsigned long)-4095), 0);
 }
-# 51 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/err.h"
+# 51 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/err.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) void * __attribute__((__warn_unused_result__)) ERR_CAST( const void *ptr)
 {
 
@@ -11967,10 +11983,10 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
  else
   return 0;
 }
-# 19 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
+# 19 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
 
-# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/osq_lock.h" 1
-# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/osq_lock.h"
+# 1 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/osq_lock.h" 1
+# 9 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/osq_lock.h"
 struct optimistic_spin_node {
  struct optimistic_spin_node *next, *prev;
  int locked;
@@ -12002,8 +12018,8 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return atomic_read(&lock->tail) != (0);
 }
-# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
-# 35 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h"
+# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h" 2
+# 35 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h"
 struct rw_semaphore {
  atomic_long_t count;
 
@@ -12030,10 +12046,10 @@ static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attr
 {
  return atomic_long_read(&sem->count) != 0;
 }
-# 101 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h"
+# 101 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h"
 extern void __init_rwsem(struct rw_semaphore *sem, const char *name,
     struct lock_class_key *key);
-# 117 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h"
+# 117 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/kernel-5.10/include/linux/rwsem.h"
 static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((__no_instrument_function__)) int rwsem_is_contended(struct rw_semaphore *sem)
 {
  return !list_empty(&sem->wait_list);
@@ -12076,25 +12092,25 @@ extern void up_write(struct rw_semaphore *sem);
 
 
 extern void downgrade_write(struct rw_semaphore *sem);
-# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/linux/rwsem.h" 2
+# 21 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/linux/rwsem.h" 2
 
 struct nvgpu_rwsem {
  struct rw_semaphore rwsem;
 };
-# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h" 2
-# 38 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
+# 27 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h" 2
+# 38 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
 struct nvgpu_rwsem;
-# 50 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
+# 50 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
 void nvgpu_rwsem_init(struct nvgpu_rwsem *rwsem);
-# 62 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
+# 62 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
 void nvgpu_rwsem_up_read(struct nvgpu_rwsem *rwsem);
-# 76 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
+# 76 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
 void nvgpu_rwsem_down_read(struct nvgpu_rwsem *rwsem);
-# 88 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
+# 88 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
 void nvgpu_rwsem_up_write(struct nvgpu_rwsem *rwsem);
-# 101 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
+# 101 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/include/nvgpu/rwsem.h"
 void nvgpu_rwsem_down_write(struct nvgpu_rwsem *rwsem);
-# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/rwsem.c" 2
+# 15 "/mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/rwsem.c" 2
 
 void nvgpu_rwsem_init(struct nvgpu_rwsem *rwsem)
 {

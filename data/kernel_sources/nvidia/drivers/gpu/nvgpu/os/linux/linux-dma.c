@@ -306,9 +306,9 @@ int nvgpu_dma_alloc_flags_sys(struct gk20a *g, unsigned long flags,
 		printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_alloc_attrs called from %s\n", __func__);
 		dump_stack();
 		printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_alloc_attrs\n");
-
 		alloc_ret = dma_alloc_attrs(d, size, &iova, gfps, dma_attrs);
 	}
+	
 	if (!alloc_ret) {
 		err = -ENOMEM;
 		goto print_dma_err;

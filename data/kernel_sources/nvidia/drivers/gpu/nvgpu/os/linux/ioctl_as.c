@@ -117,6 +117,7 @@ static int gk20a_as_ioctl_map_buffer_ex(
 {
  printk(KERN_INFO "IOCTL_HANDLER: Function gk20a_as_ioctl_map_buffer_ex called at %s:%d\n", __FILE__, __LINE__);
 	struct gk20a *g = gk20a_from_vm(as_share->vm);
+	printk(KERN_ERR "[Debug Sri] Entered %s\n", __func__);
 
 	nvgpu_log_fn(g, " ");
 

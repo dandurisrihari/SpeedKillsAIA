@@ -492,10 +492,10 @@ printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
 
 	else{
 		printk(KERN_INFO "DMA_INSTRUMENT: About to call dma_buf_put from function %s at %s:%d\n", __func__, __FILE__, __LINE__);
-		dma_buf_put(dmabuf);
 		printk(KERN_INFO "DMA_STACK_START: Stack trace for dma_buf_put called from %s\n", __func__);
 		dump_stack();
 		printk(KERN_INFO "DMA_STACK_END: End of stack trace for dma_buf_put\n");
+		dma_buf_put(dmabuf);
 	}
 
 	return err;
