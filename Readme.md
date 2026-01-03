@@ -116,6 +116,18 @@ strace -f -o hailo_strace.log ./inference_app
 
 ## Step 5: Generate JSON from Logs
 
+> ** Important:** Before processing, ensure all file paths in your log files are **relative to the kernel source directory** (`data/kernel_sources/<platform>/`).
+>
+> **Example path conversion:**
+> ```
+> # Absolute path in raw log (WRONG):
+> /mnt/8e8fbd72-3ef4-4af6-854c-33dbfb634ac7/jetson_linux_r35_6_1/Linux_for_Tegra/source/public/kernel/nvgpu/drivers/gpu/nvgpu/os/linux/vm.c:436
+>
+> # Relative path required (CORRECT):
+> drivers/gpu/nvgpu/os/linux/vm.c:436
+> ```
+> Use `sed` or similar tools to convert paths before processing.
+
 ### Option A: Using Helper Script (Recommended)
 
 1. **Add platform entry to `processjson.sh`:**
