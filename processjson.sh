@@ -3,7 +3,7 @@
 set -u
 trap 'echo "An error occurred at line $LINENO. Exiting."' ERR
 
-PLATFORMS=("nxp" "ti" "coral" "aws" "hailo")
+PLATFORMS=("nxp" "ti" "coral" "aws" "hailo" "nvidia")
 
 run_preprocess() {
   local platform=$1

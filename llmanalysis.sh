@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Define platforms
-PLATFORMS=("nxp" "ti" "coral" "aws" "hailo")
+PLATFORMS=("nxp" "ti" "coral" "aws" "hailo" "nvidia")
 
 # Input/output directories
 INPUT_DIR="data/json_files"
