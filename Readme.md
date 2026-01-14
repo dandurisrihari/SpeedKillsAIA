@@ -133,7 +133,7 @@ strace -f -o hailo_strace.log ./inference_app
 1. **Add platform entry to `processjson.sh`:**
 
 ```bash
-PLATFORMS=("hailo" "nxp" "ti" "coral" "aws")  # Add your platform
+PLATFORMS=("hailo" "nxp" "ti" "coral" "aws" "nvidia")  # Add your platform
 ```
 
 2. **Run the script:**
@@ -181,7 +181,7 @@ python3 -m src.preprocess \
 1. **Add platform entry to `llmanalysis.sh`:**
 
 ```bash
-PLATFORMS=("nxp" "ti" "coral" "aws" "hailo")  # Add your platform
+PLATFORMS=("nxp" "ti" "coral" "aws" "hailo" "nvidia")  # Add your platform
 ```
 
 2. **Run the script:**
@@ -229,12 +229,14 @@ SpeedKillsAIA/
 │   │   ├── aws/
 │   │   ├── coral/
 │   │   ├── hailo/
+│   │   ├── nvidia/
 │   │   ├── nxp/
 │   │   └── ti/
 │   ├── logs/                   # Collected logs per platform
 │   │   ├── aws/
 │   │   ├── coral/
 │   │   ├── hailo/
+│   │   ├── nvidia/
 │   │   ├── nxp/
 │   │   └── ti/
 │   ├── json_files/             # Preprocessed JSON files
@@ -243,6 +245,8 @@ SpeedKillsAIA/
 ├── exploits/                   # Exploit scripts per AIA
 │   ├── aws/
 │   ├── coral/
+│   ├── hailo/
+│   ├── nvidia/
 │   ├── nxp/
 │   └── ti/
 ├── overhead/                   # Overhead calculation tools
@@ -261,8 +265,7 @@ SpeedKillsAIA/
 |----------|--------|-----------------|
 | **AWS** | Amazon | AWS Neuron (Inferentia) |
 | **Coral** | Google | Edge TPU |
-| **Hailo** | Hailo | Hailo-8 |
-| **NXP** | NXP | i.MX NPU |
+| **Hailo** | Hailo | Hailo-8 || **NVIDIA** | NVIDIA | Jetson (NVGPU) || **NXP** | NXP | i.MX NPU |
 | **TI** | Texas Instruments | TDA4VM TIDL |
 
 ---
@@ -283,7 +286,9 @@ python3 -m src.structanalyzer --help
 The `exploits/` directory contains proof-of-concept exploit scripts for confused deputy attacks on each AI Accelerator:
 
 - **`exploits/aws/`** - AWS Neuron exploits
-- **`exploits/coral/`** - Google Edge TPU exploits  
+- **`exploits/coral/`** - Google Edge TPU exploits
+- **`exploits/hailo/`** - Hailo-8 exploits
+- **`exploits/nvidia/`** - NVIDIA Jetson exploits
 - **`exploits/nxp/`** - NXP NPU exploits
 - **`exploits/ti/`** - TI TIDL exploits
 
