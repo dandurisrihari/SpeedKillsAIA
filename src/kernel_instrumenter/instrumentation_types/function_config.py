@@ -21,7 +21,7 @@ class FunctionInstrumentationType(InstrumentationType):
     
     @property
     def template(self) -> str:
-        return '''printk(KERN_INFO "FUNC_ENTRY: Entering function {function_name} at %s:%d\\n", __FILE__, __LINE__);'''
+        return '''printk_once(KERN_INFO "[Dynamic Baseline] {function_name}\\n");'''
     
     @property
     def required_headers(self) -> list[str]:
@@ -32,4 +32,4 @@ class FunctionInstrumentationType(InstrumentationType):
     
     @property
     def marker_prefix(self) -> str:
-        return "FUNC_ENTRY"
+        return "[Dynamic Baseline]"

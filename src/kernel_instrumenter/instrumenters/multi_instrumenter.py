@@ -55,12 +55,9 @@ class MultiInstrumenter:
 
     def _is_already_instrumented(self, source_lines: List[str], line_number: int) -> bool:
         """Check if a line is already instrumented by looking for our markers"""
-        if line_number > 0 and len(source_lines) > line_number - 1:
-            prev_line = source_lines[line_number - 1]
-            # Check for any of our instrumentation markers
-            markers = ['DMA_INSTRUMENT', 'USER_COPY', 'FUNC_ENTRY', 'IOCTL_HANDLER']
-            return any(marker in prev_line for marker in markers)
-        return False
+        nearby_lines = source_lines[max(0, line_number - 1):line_number + 1]
+        markers = ['DMA_INSTRUMENT', 'USER_COPY', 'FUNC_ENTRY', 'IOCTL_HANDLER', '[Dynamic Baseline]']
+        return any(marker in line for line in nearby_lines for marker in markers)
 
     def _create_instrumentation_line(self, item_info: Dict[str, Any]) -> str:
         """Create the instrumentation line for any instrumentation type"""

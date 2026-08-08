@@ -62,7 +62,7 @@ static int device_open(struct inode *inode, struct file *file) {
 }
 """
         result = self.instrumenter.instrument_code(source_code, "functions")
-        self.assertIn("FUNC_ENTRY:", result)
+        self.assertIn('[Dynamic Baseline] device_open\\n', result)
         self.assertIn("device_open", result)
     
     def test_multiple_function_types(self):

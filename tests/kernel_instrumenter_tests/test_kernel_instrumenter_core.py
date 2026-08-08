@@ -223,7 +223,7 @@ MODULE_AUTHOR("Test Suite");
             content = f.read()
         
         # Should not contain instrumentation code
-        self.assertNotIn('FUNC_ENTRY:', content)
+        self.assertNotIn('[Dynamic Baseline]', content)
         self.assertNotIn('DMA_ALLOC:', content)
     
     def test_dma_instrumentation_detection(self):
