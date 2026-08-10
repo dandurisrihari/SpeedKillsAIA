@@ -121,7 +121,7 @@ class StructAnalyzerTool:
                 cmd,
                 capture_output=True,
                 text=True,
-                cwd="/media/sri/D/Research/Accelerators_Research/SpeedKillsAIA"
+                cwd=Path(__file__).resolve().parents[2]
             )
             
             if result.returncode != 0:
