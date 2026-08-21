@@ -43,6 +43,18 @@ add_profile \
 	"/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/data/codeql-dbs/nxp-codeql-db" \
 	"cd \"/home/sri/Desktop/Research/Accelerators_Research/nxp_8mplusbb/linux-imx\" && set +u && source /opt/fsl-imx-fb/6.6-scarthgap/environment-setup-armv8a-poky-linux && set -u && make M=drivers/mxc/gpu-viv clean && make -j$(nproc) drivers/mxc/gpu-viv/"
 
+# Example profile for an TI CodeQL database:
+add_profile \
+	"ti-codeql-db" \
+	"/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/data/codeql-dbs/ti-codeql-db" \
+	"cd \"/home/sri/Desktop/Research/Accelerators_Research/ti_tda4vm/kernel_source/board-support/ti-linux-kernel-6.1.80+gitAUTOINC+2e423244f8-ti\" && ./build-drivers.sh clean && ./build-drivers.sh"
+
+# Example profile for an NVIDIA CodeQL database:
+add_profile \
+	"nvidia-codeql-db" \
+	"/home/sri/Desktop/Research/Accelerators_Research/SpeedKillsAIA/data/codeql-dbs/nvidia-codeql-db" \
+	"cd \"/home/sri/Desktop/Research/Accelerators_Research/nvidia/speedkillseval\" && ./build-drivers.sh"
+
 # Copy this block to add another database profile.
 # add_profile \
 # 	"google-custom" \
