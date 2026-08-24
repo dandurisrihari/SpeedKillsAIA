@@ -3,7 +3,8 @@
 # Runs the post-analysis stats pipeline over this directory:
 #   1. unique  - unique_<name>.csv per analysis CSV (per-category, score > 0, sorted by score)
 #   2. ber     - BER.csv per run directory
-#   3. average - average_BER.csv across the timestamped run directories
+#   3. ner     - NER.csv per run directory
+#   4. average - average_BER.csv across the timestamped run directories
 #
 set -u
 
@@ -17,9 +18,10 @@ usage() {
 Usage: $(basename "${BASH_SOURCE[0]}") [COMMAND]
 
 Commands:
-  all        Run unique, ber and average in order (default)
+  all        Run unique, ber, ner and average in order (default)
   unique     Create unique_<name>.csv for every analysis CSV (recursive)
   ber        Create BER.csv in every run directory (recursive)
+  ner        Create NER.csv, or recompute NER% from the manually filled column
   average    Create average_BER.csv from the timestamped run directories
   help       Show this message
 
@@ -40,6 +42,11 @@ run_ber() {
   "${PYTHON}" "${STATS_DIR}/ber.py" "${ANALYSIS_DIR}" --recursive
 }
 
+run_ner() {
+  echo "=== NER.csv ==="
+  "${PYTHON}" "${STATS_DIR}/ner.py" "${ANALYSIS_DIR}" --recursive
+}
+
 run_average() {
   echo "=== average_BER.csv ==="
   "${PYTHON}" "${STATS_DIR}/averageber.py" "${ANALYSIS_DIR}"
@@ -47,13 +54,16 @@ run_average() {
 
 case "${1:-all}" in
   all)
-    run_unique && echo && run_ber && echo && run_average
+    run_unique && echo && run_ber && echo && run_ner && echo && run_average
     ;;
   unique)
     run_unique
     ;;
   ber)
     run_ber
+    ;;
+  ner)
+    run_ner
     ;;
   average)
     run_average
