@@ -1,0 +1,1024 @@
+functions_by_file:
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_constructor
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `mpset_constructor` does not
+    involve any operations related to shared memory (SMem) with an AI Accelerator
+    (AIA). It primarily initializes a memory pool structure (`mempool_set`) and reserves
+    host memory. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any DMA-related operations that would typically be associated with AIA memory
+    management.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is purely a constructor for setting up internal structures and does
+    not interact with user space.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The function focuses on initializing the `mempool_set`
+    structure and does not exchange data with user space.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would qualify as message structures for communication
+    with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    that correspond to SMIDs, such as device virtual addresses, physical addresses,
+    or DMA addresses. Overall, the function `mpset_constructor` is focused on memory
+    pool initialization and does not engage in any operations relevant to AI Accelerator
+    integration, user space communication, or shared memory management.'
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_hrm_pool
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (70%)**: The function `mp_init_hrm_pool` is primarily
+    focused on initializing a memory pool for a device, which involves allocating
+    coherent DMA memory using `dma_alloc_coherent`. This is relevant for AI Accelerator
+    integration as it manages memory that could be shared with an AI Accelerator.
+    However, it does not directly handle user pages or memory mapping for an AI Accelerator,
+    which would involve functions like `get_user_pages` or `pin_user_pages`. Thus,
+    while it is related to memory management for devices, it does not fully meet the
+    criteria for high relevance to AIA functions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space. There are no `ioctl` calls or similar mechanisms
+    that would indicate it is handling user commands or acting as a dispatch point
+    for user requests. It is a utility function that is likely called from other parts
+    of the kernel code, but it does not serve as a direct interface for user space
+    interactions.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it deal with structures
+    that would typically contain shared memory identifiers (SMIDs). The function is
+    focused on internal memory management and does not interact with user-defined
+    structures or data.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    shared memory identifiers or similar constructs that would be relevant for tracking
+    memory access between user space and the AI Accelerator. In summary, while `mp_init_hrm_pool`
+    is important for memory management in the context of device drivers, it does not
+    directly engage with the AI Accelerator integration, user space interactions,
+    or message structures that would typically be relevant in such contexts.'
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_init_device_pools
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `mpset_init_device_pools` does
+    not directly interact with an AI Accelerator (AIA) or perform operations related
+    to shared memory management that would typically be associated with AIA integration.
+    The function primarily initializes device memory pools for a neuron device, which
+    does not involve pinning user pages, DMA address management, or memory mapping
+    for an AIA.'
+  - '**Relevant KD Entry Point Score (0%)**: There are no indications that this function
+    serves as an entry point from user space to kernel space, such as through an ioctl
+    command. The function appears to be a helper function called within the context
+    of device initialization, rather than a direct interface for user commands.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the code, nor are there any structures that
+    would qualify as message structures or contain Shared Memory Identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would facilitate communication between user
+    space and kernel space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    fields or structures that would qualify as SMIDs, such as device virtual addresses,
+    physical addresses, or DMA addresses. In summary, the function `mpset_init_device_pools`
+    is focused on initializing memory pools for a neuron device and does not engage
+    in any operations relevant to AIA integration, user-space interactions, or message
+    structure handling. Therefore, all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_device_mem
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `mp_init_device_mem` is primarily
+    focused on initializing a memory pool for a device. It does not involve any operations
+    related to shared memory management with an AI Accelerator (AIA). There are no
+    calls to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related
+    operations that would typically be associated with AIA memory management. Therefore,
+    the confidence score for AIA relevance is zero.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as through an `ioctl()` call. It is
+    a static function that is likely called internally within the driver or module,
+    and does not handle any user commands or ioctl codes. Thus, the score for KD entry
+    point relevance is also zero.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it deal with any structures
+    that would qualify as message structures or contain shared memory identifiers
+    (SMIDs). Therefore, the score for message structure handling is zero.'
+  - '**Message Structures Identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMIDs Identified**: None identified. There are no fields in the function that
+    correspond to shared memory identifiers, such as device virtual addresses, physical
+    addresses, or DMA addresses. In summary, the function `mp_init_device_mem` is
+    focused on memory pool initialization for a device and does not engage in any
+    operations relevant to shared memory management with an AI Accelerator, nor does
+    it serve as an entry point for user space interactions or handle message structures.'
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_align
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `mc_alloc_align` does not directly
+    interact with any AI Accelerator (AIA) relevant operations such as memory pinning,
+    DMA address handling, or memory mapping for an AIA. It simply calls another function
+    `mc_alloc_internal`, which is not defined in the provided context. Without further
+    information about `mc_alloc_internal`, we cannot ascertain any AIA-related functionality.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not appear to be an
+    entry point for user-space interactions, such as through `ioctl()` calls. There
+    are no indications of handling user commands or dispatching to deeper kernel logic
+    that would lead to AIA-related functions. The function is a straightforward allocation
+    function without any user-space interface.'
+  - '**Message_Structure_Handling Score (0%)**: There are no `copy_from_user()` or
+    `copy_to_user()` calls present in the function, nor does it handle any message
+    structures that would typically involve shared memory identifiers (SMIDs). The
+    function does not interact with user-space data structures or manage any message
+    exchanges.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be exchanged between user space and
+    kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that qualify as shared memory identifiers, such as device virtual
+    addresses, physical addresses, or DMA addresses. In summary, the function `mc_alloc_align`
+    is primarily focused on memory allocation and does not engage with any AIA-specific
+    operations, user-space interactions, or message structure handling. Further analysis
+    of the `mc_alloc_internal` function would be necessary to determine if any relevant
+    functionality exists there.'
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_internal
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct mem_chunk]'
+  SMIDs_identified:
+  - '[mc->va'
+  - mc->pa
+  - mc->mc_handle
+  - mc->pid]
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `mc_alloc_internal` is primarily
+    focused on memory allocation for a device, which is relevant for AI Accelerator
+    integration. It uses `dma_alloc_coherent` to allocate memory that can be accessed
+    by both the CPU and the device, which is critical for shared memory operations.
+    The function also manages memory pools and handles physical addresses, which are
+    essential for DMA operations. However, it does not directly interact with an AI
+    Accelerator or its specific memory management patterns, hence the score is not
+    at the maximum.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent a direct
+    entry point from user space to kernel space, such as through an `ioctl()` call.
+    It is a helper function that is likely called by other functions that handle user
+    commands. Therefore, it receives a score of 0 in this category.'
+  - '**Message_Structure_Handling Score (80)**: The function handles a message structure,
+    specifically `struct mem_chunk`, which is used to manage memory allocation details.
+    The function utilizes `copy_from_user()` and `copy_to_user()` indirectly through
+    the management of memory chunks, which may involve user-space interactions. The
+    fields in `struct mem_chunk` such as `va` (virtual address), `pa` (physical address),
+    and `pid` (process ID) are relevant for tracking memory allocations and their
+    usage, contributing to a high score in this category.'
+  - '**Message Structures Identified**: The primary message structure identified is
+    `struct mem_chunk`, which contains fields that are critical for memory management,
+    including:'
+  - '`u64 pa`: Physical address of the allocated memory.'
+  - '`void* va`: Virtual address of the allocated memory.'
+  - '`uint64_t mc_handle`: Memory chunk handle, which is likely used for tracking
+    the memory allocation.'
+  - '`int pid`: Process ID of the caller, which helps in managing memory allocations
+    per process.'
+  - '**SMID''s Identified**: The identified SMIDs include:'
+  - '`mc->va`: The virtual address allocated for the memory chunk.'
+  - '`mc->pa`: The physical address allocated for the memory chunk.'
+  - '`mc->mc_handle`: The handle for the memory chunk, which may be used to reference
+    the allocation.'
+  - '`mc->pid`: The process ID, which is relevant for tracking which process is using
+    the allocated memory. Overall, the function demonstrates a strong focus on memory
+    management relevant to device operations, particularly in the context of shared
+    memory, which is essential for AI Accelerator integration. The handling of memory
+    structures and addresses indicates a well-structured approach to managing memory
+    allocations.'
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_add_to_lifespan_list
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `mc_add_to_lifespan_list` does
+    not interact with any AI Accelerator (AIA) relevant operations. It simply adds
+    a memory chunk (`mem_chunk`) to a lifespan list managed by a memory pool set (`mempool_set`).
+    There are no operations related to shared memory, DMA addresses, or memory mapping
+    that would be relevant to an AIA.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA relevant functions.
+    It is a static function that operates internally within the kernel.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it deal with any structures that would
+    qualify as message structures or contain Shared Memory Identifiers (SMIDs).'
+  - '**Message Structures Identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space or that contain relevant
+    metadata for communication.'
+  - '**SMIDs Identified**: None identified. There are no fields in the structures
+    used in this function that would qualify as SMIDs, such as device virtual addresses,
+    physical addresses, or DMA addresses. In summary, the function `mc_add_to_lifespan_list`
+    is focused on managing memory chunks within a lifespan list and does not engage
+    in any operations that would be relevant to AI Accelerator integration, user space
+    interactions, or message structure handling.'
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_get_lifespan_head
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `mpset_get_lifespan_head` does
+    not interact with any AI Accelerator (AIA) relevant operations such as memory
+    mapping, DMA address handling, or shared memory management. It primarily retrieves
+    a pointer to a `list_head` based on the lifespan enum provided. There are no operations
+    that involve pinning user pages, iterating over user pages, or managing DMA buffers,
+    which are typical characteristics of AIA relevant functions.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic. The function is a simple
+    utility function that operates on the `mempool_set` structure and does not involve
+    any user interaction or command processing.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The function simply returns a pointer to a `list_head`,
+    which does not qualify as a message structure.'
+  - '**Message Structures identified**: None identified. The function does not involve
+    any structures that would be exchanged between user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    that correspond to shared memory identifiers or any relevant metadata that would
+    indicate shared memory usage. In summary, the function `mpset_get_lifespan_head`
+    is a straightforward utility function that does not engage with AI Accelerator
+    integration, user space interactions, or message structure handling, leading to
+    a score of 0 across all categories.'
+- Function/Code_Block_Name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_insert_node
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `mc_insert_node` is primarily
+    focused on inserting a node into a red-black tree structure (`rb_root`). It does
+    not involve any operations related to shared memory management, DMA, or interactions
+    with an AI Accelerator (AIA). There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any memory mapping functions that would typically be associated
+    with AIA operations.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It operates purely on the data structures
+    defined and does not interact with user space or provide a mechanism for user
+    commands to trigger deeper kernel logic.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures or contain Shared Memory Identifiers (SMIDs). The function
+    solely manipulates the `mem_chunk` and `rb_node` structures without any indication
+    of user-space interaction.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the `mem_chunk`
+    or `rb_node` structures that would qualify as SMIDs, as the function does not
+    deal with memory addresses or identifiers relevant to shared memory. In summary,
+    the `mc_insert_node` function is focused on tree manipulation and does not engage
+    in any operations that would be relevant to AIA integration, kernel entry points,
+    or message structure handling. Therefore, all confidence scores are assigned as
+    0%.'
+dma_operations:
+- Function/Code_Block_Name: mp_init_hrm_pool
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `mp_init_hrm_pool` is primarily
+    focused on initializing a memory pool for a device, specifically allocating coherent
+    DMA memory and managing memory pools. It does not directly interact with an AI
+    Accelerator (AIA) or perform operations that would typically involve shared memory
+    management with an AIA. There are no calls to functions like `get_user_pages`,
+    `dma_map_page`, or similar that would indicate AIA memory management. Therefore,
+    the score is 0.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not serve as an entry
+    point for user-space interactions, such as through `ioctl()` calls. It is a static
+    function that is likely called internally within the driver, and there are no
+    indications of handling user commands or ioctl codes. Thus, the score is 0.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures that would be exchanged between user space and kernel space. There
+    are no `copy_from_user()` or `copy_to_user()` calls present in the function, nor
+    are there any structures that would qualify as message structures or contain Shared
+    Memory Identifiers (SMIDs). Therefore, the score is 0.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific structures for message handling.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    that would qualify as SMIDs, such as device virtual addresses, physical addresses,
+    or DMA addresses. In summary, the function `mp_init_hrm_pool` is focused on memory
+    pool initialization and does not engage in any operations relevant to AIA memory
+    management, user-space interactions, or message structure handling.'
+- Function/Code_Block_Name: mp_init_hrm_pool
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - '[None identified]'
+  SMIDs_identified:
+  - '[page_va_array'
+  - page_pa_array]
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `mp_init_hrm_pool` is responsible
+    for initializing a memory pool, which involves allocating coherent DMA memory
+    using `dma_alloc_coherent`. This is relevant for AI Accelerator integration as
+    it manages memory that may be shared with the AIA. The function also utilizes
+    `gen_pool_add_virt`, which is critical for managing virtual addresses in a memory
+    pool context. However, it does not directly handle user pages or DMA addresses
+    in a way that would typically be associated with AIA operations, hence the score
+    is not a full 100%.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent a kernel
+    entry point from user space, such as an ioctl handler. It is an internal function
+    that initializes a memory pool and does not process any user commands or ioctl
+    codes. Therefore, the score is 0.'
+  - '**Message_Structure_Handling Score (60)**: The function does not explicitly handle
+    message structures exchanged between user space and kernel space, as it does not
+    utilize `copy_from_user()` or `copy_to_user()`. However, it does manage memory
+    structures (`mempool` and `mempool_set`) that could be relevant in a broader context
+    of memory management for AIA. The `page_va_array` and `page_pa_array` fields in
+    the `mempool` structure are significant as they hold virtual and physical addresses,
+    which could be considered as SMIDs in the context of memory management.'
+  - '**Message Structures identified**: None identified. The function does not directly
+    interact with user-defined message structures or perform operations that would
+    involve transferring structured data between user space and kernel space.'
+  - '**SMID''s identified**: The `page_va_array` and `page_pa_array` fields in the
+    `mempool` structure are identified as potential SMIDs. These fields store virtual
+    and physical addresses of allocated memory pages, which are critical for managing
+    shared memory between the CPU and the AIA. The `page_va_array` holds the virtual
+    addresses of the allocated pages, while `page_pa_array` holds the corresponding
+    physical addresses, which are essential for DMA operations. In summary, while
+    the function is relevant to memory management for AI Accelerator integration,
+    it does not serve as a direct entry point for user commands nor does it handle
+    message structures explicitly. The identified SMIDs are crucial for understanding
+    how memory is allocated and managed in the context of AIA operations.'
+- Function/Code_Block_Name: mc_alloc_internal
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[struct mem_chunk]'
+  SMIDs_identified:
+  - '[mc->pa'
+  - mc->va
+  - mc->nc_id
+  - mc->pid]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `mc_alloc_internal` is involved
+    in memory allocation that could be relevant for an AI Accelerator (AIA) context,
+    particularly through the use of `dma_alloc_coherent` and `gen_pool_dma_alloc`.
+    These functions are critical for managing memory that may be shared with an AIA,
+    as they allocate coherent memory that can be accessed by both the CPU and the
+    AIA. The presence of physical addresses (`mc->pa`) and virtual addresses (`mc->va`)
+    in the `mem_chunk` structure further supports this relevance. However, the function
+    does not explicitly handle memory mapping or DMA operations directly related to
+    an AIA, which is why the score is not higher.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent a direct
+    entry point from user space to kernel space, such as through an `ioctl()` call.
+    Instead, it is a helper function that is likely called from another function that
+    serves as the actual entry point. Therefore, the score is 0.'
+  - '**Message_Structure_Handling Score (70)**: The function handles a message structure,
+    specifically `struct mem_chunk`, which is used to manage memory allocations. The
+    fields within this structure, such as `mc->pa` (physical address), `mc->va` (virtual
+    address), and `mc->nc_id` (neuron channel ID), are relevant for understanding
+    how memory is allocated and managed. The function also uses `copy_from_user` and
+    `copy_to_user` indirectly through the allocation process, as it prepares memory
+    that may be shared with user space. However, the function does not explicitly
+    show these copy operations, which is why the score is not higher.'
+  - '**Message Structures identified**: The primary message structure identified is
+    `struct mem_chunk`, which contains fields that are essential for memory management
+    in the context of the AIA. The fields of interest include:'
+  - '`u64 pa`: Physical address of the allocated memory.'
+  - '`void* va`: Virtual address of the allocated memory.'
+  - '`u32 nc_id`: Neuron channel ID, which could be relevant for identifying the specific
+    AIA context.'
+  - '`int pid`: Process ID of the caller, which can be useful for tracking memory
+    usage per process.'
+  - '**SMID''s identified**: The identified SMIDs include:'
+  - '`mc->pa`: The physical address of the allocated memory, which is crucial for
+    DMA operations.'
+  - '`mc->va`: The virtual address of the allocated memory, which is used by the CPU.'
+  - '`mc->nc_id`: The neuron channel ID, which may be used to identify the specific
+    AIA context.'
+  - '`mc->pid`: The process ID, which helps in managing memory allocations per user
+    process. Overall, the function `mc_alloc_internal` plays a significant role in
+    memory management that is relevant to AI Accelerator integration, particularly
+    through its handling of coherent memory allocations and the management of memory
+    structures.'
+Top_Analysis:
+  AIARelevantFunction:
+    description: Top 10 functions ranked by AIARelevantFunction score
+    functions:
+    - rank: 1
+      function_name: mc_alloc_internal
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `mc_alloc_internal`
+        is involved in memory allocation that could be relevant for an AI Accelerator
+        (AIA) context, particularly through the use of `dma_a...'
+    - rank: 2
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_hrm_pool
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, which involves
+        allocating coherent DMA memory using `dma_alloc_coh...'
+    - rank: 3
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_internal
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mc_alloc_internal`
+        is primarily focused on memory allocation for a device, which is relevant
+        for AI Accelerator integration. It uses `dma_alloc_cohere...'
+    - rank: 4
+      function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mp_init_hrm_pool`
+        is responsible for initializing a memory pool, which involves allocating coherent
+        DMA memory using `dma_alloc_coherent`. This is rel...'
+    - rank: 5
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_constructor
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_constructor`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily initializes a memory poo...'
+    - rank: 6
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_init_device_pools
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_init_device_pools`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would ...'
+    - rank: 7
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_device_mem
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mp_init_device_mem`
+        is primarily focused on initializing a memory pool for a device. It does not
+        involve any operations related to shared memory manag...'
+    - rank: 8
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_align
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mc_alloc_align`
+        does not directly interact with any AI Accelerator (AIA) relevant operations
+        such as memory pinning, DMA address handling, or memory m...'
+    - rank: 9
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_add_to_lifespan_list
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_add_to_lifespan_list`
+        does not interact with any AI Accelerator (AIA) relevant operations. It simply
+        adds a memory chunk (`mem_chunk`) to a lifespan...'
+    - rank: 10
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_get_lifespan_head
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mpset_get_lifespan_head`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory mapping, DMA address handling, or shared me...'
+  Relevant_KD_Entry_Point:
+    description: Top 10 functions ranked by Relevant_KD_Entry_Point score
+    functions:
+    - rank: 1
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_constructor
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_constructor`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily initializes a memory poo...'
+    - rank: 2
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_hrm_pool
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, which involves
+        allocating coherent DMA memory using `dma_alloc_coh...'
+    - rank: 3
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_init_device_pools
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_init_device_pools`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would ...'
+    - rank: 4
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_device_mem
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mp_init_device_mem`
+        is primarily focused on initializing a memory pool for a device. It does not
+        involve any operations related to shared memory manag...'
+    - rank: 5
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_align
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mc_alloc_align`
+        does not directly interact with any AI Accelerator (AIA) relevant operations
+        such as memory pinning, DMA address handling, or memory m...'
+    - rank: 6
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_internal
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mc_alloc_internal`
+        is primarily focused on memory allocation for a device, which is relevant
+        for AI Accelerator integration. It uses `dma_alloc_cohere...'
+    - rank: 7
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_add_to_lifespan_list
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_add_to_lifespan_list`
+        does not interact with any AI Accelerator (AIA) relevant operations. It simply
+        adds a memory chunk (`mem_chunk`) to a lifespan...'
+    - rank: 8
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_get_lifespan_head
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mpset_get_lifespan_head`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory mapping, DMA address handling, or shared me...'
+    - rank: 9
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_insert_node
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_insert_node`
+        is primarily focused on inserting a node into a red-black tree structure (`rb_root`).
+        It does not involve any operations related to sha...'
+    - rank: 10
+      function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, specifically
+        allocating coherent DMA memory and managing memory pool...'
+  Message_Structure_Handling:
+    description: Top 10 functions ranked by Message_Structure_Handling score
+    functions:
+    - rank: 1
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_internal
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mc_alloc_internal`
+        is primarily focused on memory allocation for a device, which is relevant
+        for AI Accelerator integration. It uses `dma_alloc_cohere...'
+      message_structures_identified:
+      - '[struct mem_chunk]'
+      smids_identified:
+      - '[mc->va'
+      - mc->pa
+      - mc->mc_handle
+      - mc->pid]
+    - rank: 2
+      function_name: mc_alloc_internal
+      operation_type: dma_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `mc_alloc_internal`
+        is involved in memory allocation that could be relevant for an AI Accelerator
+        (AIA) context, particularly through the use of `dma_a...'
+      message_structures_identified:
+      - '[struct mem_chunk]'
+      smids_identified:
+      - '[mc->pa'
+      - mc->va
+      - mc->nc_id
+      - mc->pid]
+    - rank: 3
+      function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      score: 60
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mp_init_hrm_pool`
+        is responsible for initializing a memory pool, which involves allocating coherent
+        DMA memory using `dma_alloc_coherent`. This is rel...'
+      message_structures_identified:
+      - '[None identified]'
+      smids_identified:
+      - '[page_va_array'
+      - page_pa_array]
+    - rank: 4
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_constructor
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_constructor`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily initializes a memory poo...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 5
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_hrm_pool
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, which involves
+        allocating coherent DMA memory using `dma_alloc_coh...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 6
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_init_device_pools
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_init_device_pools`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would ...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 7
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_device_mem
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mp_init_device_mem`
+        is primarily focused on initializing a memory pool for a device. It does not
+        involve any operations related to shared memory manag...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 8
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_align
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mc_alloc_align`
+        does not directly interact with any AI Accelerator (AIA) relevant operations
+        such as memory pinning, DMA address handling, or memory m...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 9
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_add_to_lifespan_list
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_add_to_lifespan_list`
+        does not interact with any AI Accelerator (AIA) relevant operations. It simply
+        adds a memory chunk (`mem_chunk`) to a lifespan...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 10
+      function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_get_lifespan_head
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mpset_get_lifespan_head`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory mapping, DMA address handling, or shared me...'
+      message_structures_identified: []
+      smids_identified: []
+  Overall_Top_Scores:
+    description: All function scores sorted from highest to lowest across all categories
+    total_entries: 36
+    entries:
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_internal
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mc_alloc_internal`
+        is primarily focused on memory allocation for a device, which is relevant
+        for AI Accelerator integration. It uses `dma_alloc_cohere...'
+      message_structures:
+      - '[struct mem_chunk]'
+      smids:
+      - '[mc->va'
+      - mc->pa
+      - mc->mc_handle
+      - mc->pid]
+    - function_name: mc_alloc_internal
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `mc_alloc_internal`
+        is involved in memory allocation that could be relevant for an AI Accelerator
+        (AIA) context, particularly through the use of `dma_a...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_hrm_pool
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, which involves
+        allocating coherent DMA memory using `dma_alloc_coh...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_internal
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mc_alloc_internal`
+        is primarily focused on memory allocation for a device, which is relevant
+        for AI Accelerator integration. It uses `dma_alloc_cohere...'
+      message_structures: []
+      smids: []
+    - function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mp_init_hrm_pool`
+        is responsible for initializing a memory pool, which involves allocating coherent
+        DMA memory using `dma_alloc_coherent`. This is rel...'
+      message_structures: []
+      smids: []
+    - function_name: mc_alloc_internal
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `mc_alloc_internal`
+        is involved in memory allocation that could be relevant for an AI Accelerator
+        (AIA) context, particularly through the use of `dma_a...'
+      message_structures:
+      - '[struct mem_chunk]'
+      smids:
+      - '[mc->pa'
+      - mc->va
+      - mc->nc_id
+      - mc->pid]
+    - function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mp_init_hrm_pool`
+        is responsible for initializing a memory pool, which involves allocating coherent
+        DMA memory using `dma_alloc_coherent`. This is rel...'
+      message_structures:
+      - '[None identified]'
+      smids:
+      - '[page_va_array'
+      - page_pa_array]
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_constructor
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_constructor`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily initializes a memory poo...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_constructor
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_constructor`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily initializes a memory poo...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_constructor
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_constructor`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily initializes a memory poo...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_hrm_pool
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, which involves
+        allocating coherent DMA memory using `dma_alloc_coh...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_hrm_pool
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, which involves
+        allocating coherent DMA memory using `dma_alloc_coh...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_init_device_pools
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_init_device_pools`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would ...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_init_device_pools
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_init_device_pools`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would ...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_init_device_pools
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mpset_init_device_pools`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would ...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_device_mem
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mp_init_device_mem`
+        is primarily focused on initializing a memory pool for a device. It does not
+        involve any operations related to shared memory manag...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_device_mem
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mp_init_device_mem`
+        is primarily focused on initializing a memory pool for a device. It does not
+        involve any operations related to shared memory manag...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mp_init_device_mem
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mp_init_device_mem`
+        is primarily focused on initializing a memory pool for a device. It does not
+        involve any operations related to shared memory manag...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_align
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mc_alloc_align`
+        does not directly interact with any AI Accelerator (AIA) relevant operations
+        such as memory pinning, DMA address handling, or memory m...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_align
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mc_alloc_align`
+        does not directly interact with any AI Accelerator (AIA) relevant operations
+        such as memory pinning, DMA address handling, or memory m...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_align
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `mc_alloc_align`
+        does not directly interact with any AI Accelerator (AIA) relevant operations
+        such as memory pinning, DMA address handling, or memory m...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_alloc_internal
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mc_alloc_internal`
+        is primarily focused on memory allocation for a device, which is relevant
+        for AI Accelerator integration. It uses `dma_alloc_cohere...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_add_to_lifespan_list
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_add_to_lifespan_list`
+        does not interact with any AI Accelerator (AIA) relevant operations. It simply
+        adds a memory chunk (`mem_chunk`) to a lifespan...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_add_to_lifespan_list
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_add_to_lifespan_list`
+        does not interact with any AI Accelerator (AIA) relevant operations. It simply
+        adds a memory chunk (`mem_chunk`) to a lifespan...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_add_to_lifespan_list
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_add_to_lifespan_list`
+        does not interact with any AI Accelerator (AIA) relevant operations. It simply
+        adds a memory chunk (`mem_chunk`) to a lifespan...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_get_lifespan_head
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mpset_get_lifespan_head`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory mapping, DMA address handling, or shared me...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_get_lifespan_head
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mpset_get_lifespan_head`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory mapping, DMA address handling, or shared me...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mpset_get_lifespan_head
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mpset_get_lifespan_head`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory mapping, DMA address handling, or shared me...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_insert_node
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_insert_node`
+        is primarily focused on inserting a node into a red-black tree structure (`rb_root`).
+        It does not involve any operations related to sha...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_insert_node
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_insert_node`
+        is primarily focused on inserting a node into a red-black tree structure (`rb_root`).
+        It does not involve any operations related to sha...'
+      message_structures: []
+      smids: []
+    - function_name: aws-neuronx-2.20.28.0/neuron_mempool.c:mc_insert_node
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mc_insert_node`
+        is primarily focused on inserting a node into a red-black tree structure (`rb_root`).
+        It does not involve any operations related to sha...'
+      message_structures: []
+      smids: []
+    - function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, specifically
+        allocating coherent DMA memory and managing memory pool...'
+      message_structures: []
+      smids: []
+    - function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, specifically
+        allocating coherent DMA memory and managing memory pool...'
+      message_structures: []
+      smids: []
+    - function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `mp_init_hrm_pool`
+        is primarily focused on initializing a memory pool for a device, specifically
+        allocating coherent DMA memory and managing memory pool...'
+      message_structures: []
+      smids: []
+    - function_name: mp_init_hrm_pool
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70)**: The function `mp_init_hrm_pool`
+        is responsible for initializing a memory pool, which involves allocating coherent
+        DMA memory using `dma_alloc_coherent`. This is rel...'
+      message_structures: []
+      smids: []
+    - function_name: mc_alloc_internal
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (80)**: The function `mc_alloc_internal`
+        is involved in memory allocation that could be relevant for an AI Accelerator
+        (AIA) context, particularly through the use of `dma_a...'
+      message_structures: []
+      smids: []

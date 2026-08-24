@@ -1,0 +1,2186 @@
+functions_by_file:
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c:gckIOMMU_Construct
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[gcsIOMMU'
+  - device]
+  SMIDs_identified:
+  - '[paddingPageDmaHandle'
+  - phys
+  - dmaHandle]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `gckIOMMU_Construct` is involved
+    in memory management that is critical for the interaction between the CPU and
+    the AI Accelerator (AIA). It utilizes `dma_map_page` to map a page of memory for
+    DMA operations, which is essential for enabling the AIA to access host memory.
+    The function also checks the physical address against the DMA handle, which is
+    a common pattern in AIA-related memory management. The presence of `iommu_domain`
+    indicates that it is managing memory mappings that could be relevant for an AIA.'
+  - '**Relevant_KD_Entry_Point Score (60)**: While the function does not directly
+    represent an entry point from user space (like an ioctl handler), it is invoked
+    within the context of a larger driver that likely includes such entry points.
+    The function is part of the initialization process for the IOMMU, which is often
+    triggered by user commands related to memory management. Therefore, it has some
+    relevance but is not a direct entry point.'
+  - '**Message_Structure_Handling Score (70)**: The function handles structures such
+    as `gcsIOMMU` and `device`, which are involved in memory management and DMA operations.
+    The `gcsIOMMU` structure contains fields like `paddingPageDmaHandle`, which is
+    a DMA address, and the `device` structure contains various fields related to device
+    management. The function also uses `copy_from_user` and `copy_to_user` patterns,
+    although not explicitly shown in this snippet, are likely present in the broader
+    context of the driver.'
+  - '**Message Structures Identified**: The `gcsIOMMU` structure is identified as
+    it holds the `domain`, `device`, and `paddingPageDmaHandle`, which are critical
+    for managing the IOMMU and DMA operations. The `device` structure is also relevant
+    as it contains pointers and fields that manage device-specific information.'
+  - '**SMID''s Identified**: The identified SMIDs include `paddingPageDmaHandle`,
+    which is a DMA address used for mapping memory for the device, `phys`, which represents
+    the physical address of the allocated page, and `dmaHandle`, which is the handle
+    returned by `dma_map_page`. These fields are essential for tracking memory addresses
+    that the AIA will access. Overall, the function demonstrates a strong connection
+    to AIA memory management, though it does not serve as a direct entry point from
+    user space. The handling of DMA addresses and the structures involved indicate
+    its importance in the context of shared memory operations with an AI Accelerator.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloctorInit
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `_GFPAlloctorInit` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on initializing a memory allocator, which includes setting
+    up capabilities and private data structures. There are no calls to functions like
+    `get_user_pages`, `pin_user_pages`, or any DMA-related operations that would typically
+    be associated with AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point for user space interactions through ioctl or similar mechanisms. It is a
+    private function that initializes an allocator and does not handle any user commands
+    or ioctl codes. Therefore, it does not lead to the execution of any AIA-related
+    functions.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it involve any structures that would typically
+    be exchanged between user space and kernel space. The function is focused on internal
+    memory management and does not interact with user-defined structures or shared
+    memory identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would qualify as message structures for communication
+    between user space and kernel.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers in
+    the function that correspond to shared memory identifiers (SMIDs) such as device
+    virtual addresses, physical addresses, or DMA addresses. In summary, the function
+    `_GFPAlloctorInit` is primarily concerned with memory allocation and does not
+    engage in any operations relevant to AI Accelerator integration, user space interactions,
+    or message structure handling.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAllocatorDebugfsInit
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `_GFPAllocatorDebugfsInit` does
+    not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+    It primarily initializes a debug filesystem directory for an allocator, which
+    is unrelated to memory management for AI accelerators. There are no calls to functions
+    that would pin user pages, manage DMA buffers, or handle memory mapping for an
+    AIA.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic. The function is purely for
+    initializing debug information and does not interact with user space.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
+    Memory Identifiers (SMIDs). The operations performed are limited to initializing
+    debug filesystem entries.'
+  - '**Message Structures identified**: None identified. There are no structures being
+    passed or manipulated that would qualify as message structures.'
+  - '**SMID''s identified**: None identified. There are no identifiers or fields related
+    to shared memory or memory management that would qualify as SMIDs. In summary,
+    the function `_GFPAllocatorDebugfsInit` is focused on setting up a debug filesystem
+    for an allocator and does not engage in any operations relevant to AI Accelerator
+    integration, user space interactions, or message structure handling. The lack
+    of relevant structures and operations leads to a score of 0 across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloc
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[LINUX_MDL'
+  - gfp_alloc
+  - gfp_mdl_priv]
+  SMIDs_identified:
+  - '[dmaHandle'
+  - physical
+  - logical
+  - device]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is primarily responsible
+    for allocating memory, which is a critical operation when integrating with an
+    AI Accelerator (AIA). It utilizes functions like `dma_map_page` and `dma_map_sg`,
+    which are essential for mapping allocated memory to DMA addresses that the AIA
+    can access. The presence of flags for contiguous memory allocation and DMA mapping
+    indicates its relevance to AIA operations. However, it does not directly handle
+    shared memory identifiers (SMIDs) or user-space interactions, which slightly lowers
+    the score.'
+  - '**Relevant_KD_Entry_Point Score (60)**: The function does not explicitly represent
+    an entry point from user space to kernel space, such as through an `ioctl()` interface.
+    However, it is likely called from higher-level functions that handle user requests
+    for memory allocation. The absence of direct `ioctl` handling in the provided
+    code limits its score in this category.'
+  - '**Message_Structure_Handling Score (70)**: The function interacts with several
+    structures that could be considered message structures, particularly `LINUX_MDL`,
+    `gfp_alloc`, and `gfp_mdl_priv`. These structures contain fields relevant to memory
+    management, such as `dmaHandle` in `LINUX_MDL`, which is crucial for DMA operations.
+    The function also uses `copy_from_user` and `copy_to_user` indirectly through
+    the `Mdl` structure, which suggests some level of user-space interaction. The
+    presence of these structures and their fields contributes positively to the score.'
+  - '**Message Structures Identified**:'
+  - '**LINUX_MDL**: This structure contains fields like `dmaHandle`, `numPages`, and
+    `addr`, which are relevant for managing memory allocation and DMA operations.'
+  - '**gfp_alloc**: Contains atomic counters for low and high memory, which are important
+    for tracking memory usage.'
+  - '**gfp_mdl_priv**: Contains fields that may relate to platform-specific memory
+    management.'
+  - '**SMIDs Identified**:'
+  - '**dmaHandle**: Represents the DMA handle for the allocated memory, crucial for
+    AIA access.'
+  - '**physical**: Represents the physical address of the allocated memory, which
+    is essential for DMA operations.'
+  - '**logical**: Represents the logical address used in the kernel for memory management.'
+  - '**device**: Represents the device associated with the memory allocation, which
+    is important for DMA mapping. Overall, the function `_GFPAlloc` plays a significant
+    role in memory management for AIA integration, particularly through DMA operations,
+    but lacks direct user-space interaction, which affects its scoring in the relevant
+    categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPMapKernel
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `_GFPMapKernel` does not interact
+    with an AI Accelerator (AIA) or shared memory (SMem) relevant to AIA operations.
+    It primarily focuses on memory mapping and managing kernel memory pages, which
+    does not involve pinning user pages, DMA addresses, or memory mapping for an AIA.
+    Therefore, the confidence score is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space, such as through ioctl() commands. It is
+    a static function that is likely called internally within the driver, rather than
+    being exposed as an interface for user-space applications. Thus, the score is
+    0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures or contain Shared Memory Identifiers (SMIDs). Therefore,
+    the score is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    or function parameters that represent shared memory identifiers relevant to AIA
+    operations. In summary, the function `_GFPMapKernel` is focused on memory management
+    within the kernel and does not interact with AIA or shared memory mechanisms,
+    leading to low confidence scores across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPPhysical
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `_GFPPhysical` does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    focuses on calculating the physical address of a memory page based on the provided
+    offset and does not interact with user pages, DMA addresses, or memory mapping
+    for an AIA. Therefore, it receives a score of 0%.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. It does not handle
+    any user commands or dispatch to deeper kernel logic that would lead to AIA-related
+    functions. As such, it receives a score of 0%.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    typically contain Shared Memory Identifiers (SMIDs). Consequently, it receives
+    a score of 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would qualify as message structures.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that represent Shared Memory Identifiers. In summary, the function
+    `_GFPPhysical` is focused solely on calculating physical addresses from memory
+    descriptors and does not engage in any operations relevant to AI Accelerator integration,
+    user space interactions, or message structure handling. The absence of relevant
+    structures and operations leads to the low confidence scores across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAFSLAlloctorInit
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `_CMAFSLAlloctorInit` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on initializing an allocator, constructing it, and managing
+    memory allocation for private data structures. There are no calls to functions
+    like `get_user_pages`, `pin_user_pages`, or any DMA-related operations that would
+    typically be associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space. There are no `ioctl()` calls or similar
+    mechanisms that would indicate it is handling user commands or dispatching to
+    deeper kernel logic. The function is purely internal and does not interact with
+    user space.'
+  - '**Message Structure Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
+    Memory Identifiers (SMIDs). The focus is on internal memory management and allocator
+    initialization.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would qualify as message structures exchanged
+    between user space and kernel.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers in
+    the function that would correspond to shared memory identifiers, such as device
+    virtual addresses, physical addresses, or DMA addresses. In summary, the function
+    `_CMAFSLAlloctorInit` is focused on allocator initialization and does not engage
+    in any operations relevant to AI Accelerator integration, user space interaction,
+    or message structure handling. Therefore, all confidence scores are assigned as
+    0%.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAAllocatorDebugfsInit
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `_CMAAllocatorDebugfsInit` does
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily initializes a debug filesystem directory for a memory allocator,
+    which is not directly related to memory management for AI accelerators or DMA
+    operations. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any other AIA-specific memory management functions.'
+  - '**Relevant KD Entry Point Score (0%)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is purely for initialization and does not interact with user space.'
+  - '**Message Structure Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The operations performed are limited to initializing
+    debug filesystem entries and creating files within that directory.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers related
+    to shared memory or memory management that would qualify as SMIDs in this context.
+    In summary, the function `_CMAAllocatorDebugfsInit` is focused on setting up a
+    debug filesystem for a memory allocator and does not engage in any operations
+    relevant to AI Accelerator integration, user space interactions, or message structure
+    handling. The lack of relevant structures and operations leads to a score of 0
+    across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.c:_UserMemoryAlloctorInit
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `_UserMemoryAlloctorInit` does
+    not involve any operations related to shared memory (SMem) with an AI Accelerator
+    (AIA). It primarily focuses on initializing a user memory allocator and does not
+    include any memory pinning, DMA address handling, or memory mapping that would
+    be relevant to AIA operations.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. There are no
+    ioctl codes being processed or any user commands being handled that would lead
+    to deeper kernel logic or execution of AIA-related functions.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor any structures that would qualify as message
+    structures or contain Shared Memory Identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no identifiers or fields related
+    to shared memory or memory management that would qualify as SMIDs. In summary,
+    the function `_UserMemoryAlloctorInit` is focused solely on the initialization
+    of a memory allocator and does not engage in any operations that would be relevant
+    to AI Accelerator integration, user-kernel communication, or shared memory management.
+    Therefore, all confidence scores are set to 0%.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c:_DmabufAlloctorInit
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `_DmabufAlloctorInit` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on initializing a DMA buffer allocator, which does not include
+    pinning user pages, obtaining physical addresses, or managing DMA buffers for
+    communication with an AIA. Therefore, the confidence score for AIA relevance is
+    0%.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. It does not handle
+    any user commands or trigger deeper kernel logic that would lead to the execution
+    of an AIA relevant function. Thus, the score for relevant kernel entry point is
+    also 0%.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    qualify as shared memory identifiers (SMIDs). Consequently, the score for message
+    structure handling is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not interact with user memory or manage shared
+    memory regions. In summary, the function `_DmabufAlloctorInit` is focused solely
+    on the initialization of a DMA buffer allocator and does not engage in any operations
+    relevant to AI Accelerator integration, user space interactions, or message structure
+    handling.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c:_DebugfsInit
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `_DebugfsInit` does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    initializes a debug filesystem directory and creates files within that directory.
+    There are no indications of memory pinning, DMA address handling, or any operations
+    that would typically be associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is purely for setting up debug information and does not interact
+    with user space.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). The operations performed are internal to the kernel
+    for debug purposes and do not involve communication with user space.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would qualify as message structures.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not deal with memory management or user-space
+    interactions. In summary, the function `_DebugfsInit` is focused on initializing
+    debug filesystem components and does not engage in any activities related to AI
+    Accelerator integration, user-space interactions, or message structure handling.
+    Therefore, all confidence scores are assigned as zero.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_Construct
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_Construct` does not
+    interact with an AI Accelerator (AIA) or perform any operations related to shared
+    memory (SMem) management for an AIA. It primarily focuses on constructing a video
+    memory object (`gckVIDMEM`) and does not involve pinning user pages, obtaining
+    physical addresses for DMA, or managing DMA buffers. Therefore, the confidence
+    score for AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as through `ioctl()` calls. There
+    are no indications of handling user commands or dispatching to deeper kernel logic
+    that would lead to AIA-related functions. Thus, the score for relevant kernel
+    entry points is also 0%.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the code, nor are there any structures that
+    contain Shared Memory Identifiers (SMIDs) or similar metadata. Consequently, the
+    score for message structure handling is 0%.'
+  - '**Message Structures Identified**: None identified. The function does not utilize
+    any structures that would qualify as message structures for communication with
+    user space.'
+  - '**SMIDs Identified**: None identified. There are no fields in the structures
+    that represent shared memory identifiers or any relevant identifiers that would
+    be used for memory management in the context of an AI Accelerator. Overall, the
+    function is focused on memory management for video memory and does not engage
+    with the AIA or shared memory mechanisms relevant to AI accelerators, leading
+    to low confidence scores across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_AllocateVirtual
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_AllocateVirtual`
+    does not directly involve any operations related to sharing memory with an AI
+    Accelerator (AIA). It primarily focuses on allocating virtual memory nodes and
+    does not include any of the typical AIA-related operations such as pinning user
+    pages, obtaining physical addresses, or managing DMA buffers. Therefore, the confidence
+    score for AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not appear to serve
+    as an entry point for user space interactions, such as through ioctl commands.
+    There are no indications in the code that it handles user commands or dispatches
+    to deeper kernel logic related to AIA operations. Thus, the score for relevant
+    kernel entry point is also 0%.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures that would typically involve `copy_from_user()` or `copy_to_user()`
+    calls. There are no structures being passed that would qualify as message structures
+    or contain Shared Memory Identifiers (SMIDs). As a result, the score for message
+    structure handling is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be exchanged between user space and
+    kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that would qualify as SMIDs, such as device virtual addresses, physical
+    addresses, or DMA addresses. In summary, the function `gckVIDMEM_NODE_AllocateVirtual`
+    is focused on memory allocation for virtual nodes and does not engage in any operations
+    that would be relevant to AI Accelerator integration, user space interactions,
+    or message structure handling. The lack of relevant structures and operations
+    leads to a confidence score of 0% across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_AllocateVirtual
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_AllocateVirtual` does
+    not interact with an AI Accelerator (AIA) or perform any operations related to
+    shared memory (SMem) management for an AIA. It primarily focuses on allocating
+    virtual memory for video memory nodes, which is not directly related to the AIA
+    integration patterns such as pinning user pages, managing DMA buffers, or memory
+    mapping for an AIA device.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space, as it does not handle any ioctl commands
+    or user commands that would trigger deeper kernel logic leading to AIA-related
+    functions. It is a utility function for memory allocation within the kernel.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it involve any structures
+    that would qualify as message structures or contain Shared Memory Identifiers
+    (SMIDs).'
+  - '**Message Structures Identified**: None identified. The function does not utilize
+    any structures that are exchanged with user space or that contain relevant metadata
+    for shared memory management.'
+  - '**SMIDs Identified**: None identified. The function does not reference any identifiers
+    or addresses that would be classified as SMIDs, such as device virtual addresses,
+    physical addresses, or DMA addresses. In summary, the function `gckVIDMEM_AllocateVirtual`
+    is focused on allocating virtual memory for video memory nodes and does not engage
+    in any operations that would be relevant to AIA integration, user space interactions,
+    or message structure handling. Therefore, all confidence scores are assigned as
+    zero.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_Construct
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_Construct` does
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on constructing a video memory node, which includes allocating
+    memory, initializing fields, and managing synchronization primitives. There are
+    no calls to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related
+    operations that would typically be associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space, as it does not handle any ioctl commands
+    or user commands that would trigger deeper kernel logic. It is a utility function
+    for constructing a video memory node and does not interact with user space directly.'
+  - '**Message Structure Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
+    Memory Identifiers (SMIDs). The function is focused on internal memory management
+    and does not exchange data with user space.'
+  - '**Message Structures Identified**: None identified. The function does not define
+    or manipulate any message structures that would typically be exchanged between
+    user space and kernel space.'
+  - '**SMIDs Identified**: None identified. There are no fields in the function that
+    correspond to SMIDs, such as device virtual addresses, physical addresses, or
+    DMA addresses. Overall, the function is primarily concerned with the internal
+    management of video memory nodes and does not engage in any operations relevant
+    to AI Accelerator integration or user-kernel communication.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_UpdatePIDInfoListNode
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - '[gcsVIDMEM_PIDINFO]'
+  SMIDs_identified:
+  - '[pid'
+  - ref]
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `_UpdatePIDInfoListNode` does
+    not interact with an AI Accelerator (AIA) or shared memory (SMem) directly. It
+    primarily manages process ID information related to video memory nodes, which
+    does not involve the typical operations associated with AIA integration, such
+    as memory mapping or DMA operations.'
+  - '**Relevant KD Entry Point Score (0%)**: There are no indications that this function
+    serves as an entry point from user space to kernel space, such as through ioctl
+    commands. The function appears to be a utility function for managing internal
+    data structures rather than handling user commands or interfacing with user space.'
+  - '**Message Structure Handling Score (60%)**: The function does handle a message
+    structure, specifically `gcsVIDMEM_PIDINFO`, which contains fields relevant to
+    process ID management. The structure includes:'
+  - '`pid`: Represents the process ID.'
+  - '`ref`: A pointer used for reference counting.'
+  - '`next`: A pointer to the next `gcsVIDMEM_PIDINFO` structure, forming a linked
+    list. The function uses memory management functions like `gckOS_Allocate`, `gckOS_ZeroMemory`,
+    and `gckOS_ReleaseMutex`, which are indicative of handling dynamic memory and
+    synchronization, but it does not involve direct user-space message handling through
+    `copy_from_user()` or `copy_to_user()` calls.'
+  - '**Message Structures Identified**: The only identified message structure is `gcsVIDMEM_PIDINFO`,
+    which is used to manage process IDs in a linked list format.'
+  - '**SMID''s Identified**: The identified SMIDs include:'
+  - '`pid`: This field is crucial as it identifies the process associated with the
+    video memory node.'
+  - '`ref`: This field is used for reference counting, which is important for memory
+    management and ensuring that resources are released appropriately. Overall, while
+    the function does manage structures that could be considered message structures
+    in a broader sense, it does not engage with the AIA or user-space interactions
+    directly, leading to low confidence scores in those areas. The handling of `gcsVIDMEM_PIDINFO`
+    and its fields provides some relevance to message structure handling, but the
+    absence of direct user-space communication limits the overall score.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_LockCPU
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 80
+  Message_Structures_identified: []
+  SMIDs_identified:
+  - physical address
+  - logical address
+  - kvaddr
+  Reasoning:
+  - '**AIARelevantFunction Score (70%)**: The function `gckVIDMEM_NODE_LockCPU` is
+    involved in managing video memory, which is relevant for AI accelerators that
+    require efficient memory access. The function uses several memory management functions
+    such as `gckKERNEL_MapVideoMemory`, `gckOS_LockPages`, and `gckOS_CreateKernelMapping`,
+    which are critical for pinning user pages and mapping memory for the AI Accelerator.
+    However, the absence of explicit DMA address handling or direct interaction with
+    AIA-specific memory structures lowers the confidence slightly.'
+  - '**Relevant_KD_Entry_Point Score (60%)**: The function does not directly represent
+    an entry point from user space to kernel space, such as an `ioctl()` handler.
+    However, it does handle the `FromUser` flag, indicating that it can be called
+    from user space, which is common in driver functions. The lack of explicit `ioctl`
+    command handling reduces the score, but the function''s context within a driver
+    suggests it could be part of a larger entry point mechanism.'
+  - '**Message_Structure_Handling Score (80%)**: The function handles memory structures
+    and performs operations that involve copying logical addresses and physical addresses.
+    The use of `copy_from_user()` and `copy_to_user()` is not explicitly shown in
+    this function, but the logical and physical addresses are manipulated, which are
+    critical for shared memory communication. The function also manages memory locking
+    and mapping, which is essential for ensuring that the memory is accessible to
+    the AI Accelerator. The absence of specific message structures does not detract
+    from the handling of memory addresses.'
+  - '**Message Structures identified**: None identified. The function does not explicitly
+    define or use any message structures that would typically be passed between user
+    space and kernel space.'
+  - '**SMID''s identified**: The function deals with several potential SMIDs:'
+  - '**Physical Address**: The `physical` field in the `VidMem` structure is used
+    to reference the physical memory address.'
+  - '**Logical Address**: The `logical` field is used to reference the logical address
+    of the memory.'
+  - '**kvaddr**: This field is used to store the kernel virtual address, which is
+    crucial for memory mapping. Overall, the function is significant for memory management
+    in the context of AI accelerators, but it lacks explicit structures and entry
+    points that would enhance its relevance to shared memory operations.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_GetGPUPhysical
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_GetGPUPhysical`
+    does not involve any operations related to sharing memory with an AI Accelerator
+    (AIA). It primarily retrieves the physical address of a video memory node, which
+    is not directly related to the AIA''s memory management or DMA operations. There
+    are no calls to functions like `get_user_pages`, `pin_user_pages`, or any memory
+    mapping functions that would typically be associated with AIA operations.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is a utility that operates within the kernel''s memory management
+    context without exposing an interface to user space.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The parameters and return types do not indicate any
+    interaction with user-space structures or memory identifiers.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would qualify as message structures exchanged
+    between user space and kernel.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers in
+    the function that would represent shared memory identifiers, as the function is
+    focused solely on obtaining a physical address from a video memory node. Overall,
+    the function is primarily concerned with internal memory management and does not
+    interact with the AIA or user-space components in a way that would warrant higher
+    confidence scores in the specified categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_GetCPUPhysical
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_GetCPUPhysical`
+    does not directly involve any operations related to sharing memory with an AI
+    Accelerator (AIA). It primarily focuses on obtaining the physical address of a
+    video memory node based on the provided offset. There are no indications of pinning
+    user pages, managing DMA buffers, or interacting with AIA-specific memory structures.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. It does not handle
+    any user commands or ioctl codes that would trigger deeper kernel logic leading
+    to AIA-related functions. The function is a utility function that operates within
+    the kernel, but it does not serve as a gateway for user-space interactions.'
+  - '**Message Structure Handling Score (0%)**: There are no message structures identified
+    in the function. The function does not utilize `copy_from_user()` or `copy_to_user()`
+    calls, nor does it handle any structures that would typically be exchanged between
+    user space and kernel space. Without the definitions of `gckVIDMEM_NODE` and `gckVIDMEM_BLOCK`,
+    which are crucial for understanding the context of the function, it is challenging
+    to identify any relevant message structures or shared memory identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any structures that would qualify as message structures.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    shared memory identifiers or relevant fields that would indicate shared memory
+    management. Overall, the function is focused on internal memory management for
+    video memory and does not engage with the AIA or user-space interactions, leading
+    to low confidence scores across all categories. The lack of structure definitions
+    for `gckVIDMEM_NODE` and `gckVIDMEM_BLOCK` further limits the analysis, as these
+    structures may contain fields relevant to memory management but are not accessible
+    in the current context.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_CleanCache
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_NODE_CleanCache` does
+    not appear to interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+    It primarily focuses on cleaning the cache for a video memory node, which is more
+    related to memory management than to the specific operations required for AIA
+    integration. There are no calls to functions that would typically be associated
+    with AIA operations, such as `get_user_pages`, `dma_map_page`, or memory mapping
+    for an AIA device.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point for user space interactions, such as through `ioctl()` commands. There are
+    no indications of handling user commands or dispatching to deeper kernel logic
+    that would lead to AIA-related functionality. The function is a standard kernel
+    function that operates on video memory nodes without any user-space interface.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
+    Memory Identifiers (SMIDs). The function''s parameters do not include any structures
+    that would typically be involved in user-kernel communication or shared memory
+    management.'
+  - '**Message Structures Identified**: None identified. The function does not define
+    or manipulate any message structures that would be exchanged between user space
+    and kernel space.'
+  - '**SMIDs Identified**: None identified. There are no fields or identifiers in
+    the function that correspond to shared memory identifiers or any relevant memory
+    addresses that would be used in the context of AIA operations. Overall, the function
+    is focused on cache management for video memory and does not engage with the AIA
+    or shared memory mechanisms, leading to low confidence scores across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_AllocateLinear
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_NODE_AllocateLinear`
+    does not appear to interact with an AI Accelerator (AIA) or shared memory (SMem)
+    relevant to AIA operations. It primarily focuses on allocating video memory and
+    managing video memory nodes, which does not involve pinning user pages, obtaining
+    physical addresses for DMA, or programming AIA device page tables. Therefore,
+    the confidence score for AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an ioctl() interface. There
+    are no indications of handling user commands or dispatching based on ioctl codes.
+    The function is a standard memory allocation routine and does not serve as a gateway
+    for user-space interactions. Thus, the score for KD entry point relevance is also
+    0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would typically
+    contain Shared Memory Identifiers (SMIDs). The absence of such interactions leads
+    to a score of 0% for message structure handling.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be involved in user-kernel communication.'
+  - '**SMID''s identified**: None identified. There are no fields or structures that
+    qualify as Shared Memory Identifiers (SMIDs) in the context of this function.
+    Overall, the function is focused on video memory management and does not engage
+    with the AIA or shared memory mechanisms relevant to AI accelerators, leading
+    to low confidence scores across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_AllocateLinear
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_AllocateLinear` does
+    not directly involve sharing memory with an AI Accelerator (AIA). It primarily
+    focuses on allocating linear video memory and managing memory nodes. There are
+    no calls to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related
+    operations that would typically be associated with AIA memory management. Therefore,
+    the confidence score is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through `ioctl()` commands. It
+    is a utility function for memory allocation within the kernel and does not handle
+    any user commands or ioctl codes. Thus, the score is 0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the code, nor does it involve any structures
+    that would typically be used for communication with user space. Consequently,
+    the score is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be relevant for communication with
+    user space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    shared memory identifiers (SMIDs) such as device virtual addresses, physical addresses,
+    or DMA addresses. It focuses solely on internal memory management. In summary,
+    the function `gckVIDMEM_AllocateLinear` is primarily concerned with allocating
+    and managing video memory within the kernel, without any direct interaction with
+    user space or AI Accelerator memory management. Therefore, all confidence scores
+    are 0%.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_FindNode
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `_FindNode` does not interact
+    with any AI Accelerator (AIA) relevant operations. It primarily focuses on finding
+    a suitable node in a video memory management context, specifically looking for
+    free nodes that can accommodate a requested size. There are no indications of
+    memory pinning, DMA address handling, or any operations that would typically be
+    associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not serve as an entry
+    point for user space interactions with the kernel, such as through ioctl commands.
+    It is a utility function that operates within the kernel''s memory management
+    subsystem and does not handle any user commands or transitions from user space
+    to kernel space.'
+  - '**Message Structure Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would typically contain
+    Shared Memory Identifiers (SMIDs). The function''s logic is entirely focused on
+    traversing a linked list of video memory nodes.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    fields or structures that would qualify as Shared Memory Identifiers (SMIDs),
+    such as device addresses, physical addresses, or any identifiers related to shared
+    memory. In summary, the function `_FindNode` is focused solely on internal memory
+    management and does not engage with any AIA-related functionality, user space
+    interactions, or message structure handling. Therefore, all confidence scores
+    are assigned as 0%.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_GetSurfaceBankAlignment
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `_GetSurfaceBankAlignment` does
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on calculating the alignment offset based on the type of
+    video memory and the base address provided. There are no calls to functions that
+    would pin user pages, manage DMA buffers, or interact with AIA memory mappings.
+    Therefore, the confidence score for this category is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space, nor does it handle any ioctl commands.
+    It is a utility function that is likely called by other parts of the kernel code
+    but does not directly interface with user commands or trigger deeper kernel logic
+    leading to AIA-related functions. Thus, the score for this category is also 0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it deal with any structures that would
+    qualify as message structures or contain Shared Memory Identifiers (SMIDs). Consequently,
+    the score for this category is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would typically be exchanged between user
+    space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that correspond to Shared Memory Identifiers (SMIDs) such as device
+    virtual addresses, physical addresses, or DMA addresses. Overall, the function
+    is focused on alignment calculations for different types of video memory and does
+    not engage in any operations that would be relevant to AIA integration, kernel
+    entry points, or message structure handling.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_Split
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `_Split` does not interact with
+    any AI Accelerator (AIA) relevant operations such as memory pinning, DMA address
+    handling, or memory mapping for an AIA. It primarily focuses on managing video
+    memory nodes (`gcuVIDMEM_NODE`) and does not involve any operations that would
+    typically be associated with AIA integration.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. There are no
+    ioctl commands being processed or dispatched within this function. It is a utility
+    function that operates on memory management without any user-space interaction.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures. The function solely manipulates the `gcuVIDMEM_NODE` structure
+    without any indication of shared memory identifiers (SMIDs) or user-space communication.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not deal with user-space addresses or identifiers.
+    In summary, the `_Split` function is focused on managing video memory nodes and
+    does not engage in any operations relevant to AI Accelerator integration, user-space
+    communication, or shared memory management. Therefore, all confidence scores are
+    assigned as zero.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_Lock
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_Lock` does not
+    appear to interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+    It primarily deals with locking a video memory node and does not include operations
+    such as pinning user pages, obtaining physical addresses, or programming DMA addresses,
+    which are typical indicators of AIA-related functions.'
+  - '**Relevant KD Entry Point Score (0%)**: There are no indications that this function
+    serves as an entry point from user space to kernel space, such as handling ioctl
+    commands. The function does not include any ioctl handling logic or dispatching
+    based on ioctl codes, which would typically be present in a relevant kernel driver
+    entry point.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures or contain Shared Memory Identifiers (SMIDs). The function
+    primarily focuses on locking mechanisms and does not involve communication with
+    user space.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would facilitate communication between user
+    space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures that
+    represent Shared Memory Identifiers (SMIDs) in the context of this function. In
+    summary, the function `gckVIDMEM_NODE_Lock` is focused on managing video memory
+    locks and does not engage with AIA functionalities, user space interactions, or
+    message structures relevant to shared memory management. The absence of relevant
+    operations and structures leads to low confidence scores across all categories.'
+- Function/Code_Block_Name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_Lock
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_Lock` does not interact
+    with an AI Accelerator (AIA) or shared memory (SMem) in a way that would qualify
+    it as relevant for AIA operations. It primarily deals with locking video memory
+    and calculating addresses based on the memory pool type. There are no calls to
+    functions like `get_user_pages`, `pin_user_pages`, or any DMA-related operations
+    that would typically be associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as through `ioctl()` commands. There
+    are no indications that this function is invoked as part of an ioctl command handling
+    process. It appears to be a utility function for managing video memory within
+    the kernel, rather than a direct interface for user commands.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures that would involve `copy_from_user()` or `copy_to_user()` calls. There
+    are no structures being passed that would indicate the exchange of data between
+    user space and kernel space. The function operates solely on internal structures
+    and does not involve any user-defined message formats or identifiers.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    (SMIDs) present in the function, as it does not deal with user memory or shared
+    memory regions. In summary, the function `gckVIDMEM_Lock` is focused on locking
+    video memory and calculating addresses based on the type of memory pool, without
+    any interaction with AIA or user space, leading to low confidence scores across
+    all categories.'
+dma_operations:
+- Function/Code_Block_Name: gckIOMMU_Construct
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction (80%)**: The function `gckIOMMU_Construct` is involved
+    in managing memory for an IOMMU (Input/Output Memory Management Unit), which is
+    crucial for AI Accelerators that require efficient memory access. The function
+    uses `dma_map_page` to map a page of memory for DMA (Direct Memory Access) operations,
+    which is a key operation for sharing memory with an AI Accelerator. It also checks
+    if the IOMMU is enabled and handles memory allocation and mapping, which are critical
+    for AIA operations. However, it does not directly interact with user space or
+    shared memory identifiers (SMIDs), which slightly lowers the confidence score.'
+  - '**Relevant_KD_Entry_Point (0%)**: The function does not represent an entry point
+    from user space to kernel space, as it does not handle any ioctl commands or user
+    commands. It is a helper function that is likely called from other parts of the
+    driver, but it does not itself serve as a direct interface for user commands.'
+  - '**Message_Structure_Handling (0%)**: There are no message structures identified
+    in the function. The function does not utilize `copy_from_user()` or `copy_to_user()`
+    calls, nor does it handle any structures that would typically be exchanged between
+    user space and kernel space. Therefore, there are no message structures or SMIDs
+    identified.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any user-defined structures that would typically be involved in message passing.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    shared memory identifiers or similar constructs that would indicate the use of
+    SMIDs. Overall, while the function is important for memory management in the context
+    of an IOMMU, it does not directly engage with user space or shared memory identifiers,
+    which limits its relevance to AIA operations in the context of shared memory management.'
+- Function/Code_Block_Name: _GFPAlloc
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 70
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - '[LINUX_MDL'
+  - gfp_mdl_priv
+  - gfp_alloc
+  - sg_table]
+  SMIDs_identified:
+  - '[dmaHandle'
+  - dma_addr
+  - contiguous
+  - numPages]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is involved in memory
+    allocation, which is critical for AI Accelerator (AIA) operations. It uses `dma_map_page`
+    and `dma_map_sg`, which are essential for mapping memory for DMA operations, indicating
+    that it plays a significant role in facilitating memory access for the AIA. The
+    presence of flags like `gcvALLOC_FLAG_CONTIGUOUS` and `gcvALLOC_FLAG_4GB_ADDR`
+    suggests that it is designed to handle specific memory requirements for AI accelerators,
+    thus justifying a high score.'
+  - '**Relevant_KD_Entry_Point Score (70)**: While the function itself does not directly
+    represent an entry point from user space (like an `ioctl` function), it is likely
+    called from higher-level functions that handle user commands related to memory
+    allocation for the AIA. The presence of flags and conditions that check for memory
+    limits and allocation types indicates that it is part of a larger mechanism that
+    responds to user-space requests, thus earning a moderate score.'
+  - '**Message_Structure_Handling Score (60)**: The function handles several structures
+    that are relevant for memory management and DMA operations. The `LINUX_MDL` structure
+    contains fields like `dmaHandle`, which is crucial for identifying shared memory
+    regions. The `gfp_mdl_priv` structure includes a `contiguous` field, indicating
+    whether the allocated memory should be contiguous, which is relevant for AIA operations.
+    The function also utilizes `sg_table`, which is essential for managing scatter-gather
+    lists in DMA operations. However, the function does not explicitly handle user-space
+    messages or perform `copy_from_user` or `copy_to_user` operations, leading to
+    a moderate score.'
+  - '**Message Structures Identified**:'
+  - '`LINUX_MDL`: Contains fields like `dmaHandle`, `numPages`, and `contiguous`,
+    which are relevant for memory management and DMA operations.'
+  - '`gfp_mdl_priv`: Contains the `contiguous` field, indicating whether the memory
+    allocation should be contiguous.'
+  - '`gfp_alloc`: Although not directly related to AIA, it is involved in the allocation
+    process.'
+  - '`sg_table`: Used for managing scatter-gather lists, which are crucial for DMA
+    operations.'
+  - '**SMID''s Identified**:'
+  - '`dmaHandle`: A handle for the DMA memory, crucial for AIA operations.'
+  - '`dma_addr`: The DMA address obtained from `dma_map_page`, which is essential
+    for the AIA to access the allocated memory.'
+  - '`contiguous`: Indicates whether the allocated memory should be contiguous, which
+    is important for performance in AIA operations.'
+  - '`numPages`: Represents the number of pages to allocate, which is a critical parameter
+    for memory management. Overall, the function `_GFPAlloc` plays a significant role
+    in memory management for AI accelerators, handling various structures and parameters
+    that are essential for efficient memory allocation and access.'
+- Function/Code_Block_Name: _GFPAlloc
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[LINUX_MDL'
+  - gfp_mdl_priv]
+  SMIDs_identified:
+  - '[dmaHandle'
+  - addr
+  - bytes
+  - numPages]
+  Reasoning:
+  - '**AIARelevantFunction (80%)**: The function `_GFPAlloc` is primarily responsible
+    for allocating memory, which is a critical operation when integrating with an
+    AI Accelerator (AIA). It utilizes various memory allocation flags and handles
+    DMA mapping through `dma_map_page` and `dma_map_sg`, which are essential for ensuring
+    that the AIA can access the allocated memory. The presence of `dmaHandle` in the
+    `LINUX_MDL` structure indicates that this function is involved in managing memory
+    that will be shared with the AIA.'
+  - '**Relevant_KD_Entry_Point (60%)**: While `_GFPAlloc` does not directly represent
+    an entry point from user space to kernel space, it is likely called from higher-level
+    functions that handle IOCTL commands related to memory allocation for the AIA.
+    The function''s context suggests it is part of a larger memory management subsystem
+    that interacts with user commands, but without explicit IOCTL handling in the
+    provided code, the score is moderate.'
+  - '**Message_Structure_Handling (70%)**: The function handles structures like `LINUX_MDL`
+    and `gfp_mdl_priv`, which are involved in memory management. The `LINUX_MDL` structure
+    contains fields such as `addr`, `bytes`, and `numPages`, which are relevant for
+    memory allocation and management. The function also uses `copy_from_user` and
+    `copy_to_user` indirectly through the memory management operations, indicating
+    that it deals with user-space data structures.'
+  - '**Message Structures identified**: The identified message structures include
+    `LINUX_MDL`, which contains fields for managing memory allocation, and `gfp_mdl_priv`,
+    which is used for private data related to memory allocation. These structures
+    are crucial for understanding how memory is allocated and managed in the context
+    of the AIA.'
+  - '**SMID''s identified**: The identified SMIDs include `dmaHandle`, which is used
+    for DMA operations, and `addr`, `bytes`, and `numPages`, which are essential for
+    tracking the allocated memory. These fields are critical for ensuring that the
+    AIA can access the correct memory regions. Overall, the function `_GFPAlloc` plays
+    a significant role in memory management for the AIA, and while it does not directly
+    handle user-space commands, it is part of a larger system that does. The presence
+    of relevant structures and fields indicates its importance in the context of shared
+    memory operations with the AIA.'
+Top_Analysis:
+  AIARelevantFunction:
+    description: Top 10 functions ranked by AIARelevantFunction score
+    functions:
+    - rank: 1
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c:gckIOMMU_Construct
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gckIOMMU_Construct`
+        is involved in memory management that is critical for the interaction between
+        the CPU and the AI Accelerator (AIA). It utilizes `d...'
+    - rank: 2
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloc
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        primarily responsible for allocating memory, which is a critical operation
+        when integrating with an AI Accelerator (AIA). It utilizes fu...'
+    - rank: 3
+      function_name: gckIOMMU_Construct
+      operation_type: dma_operations
+      score: 80
+      reasoning: The function `gckIOMMU_Construct` is involved in managing memory
+        for an IOMMU (Input/Output Memory Management Unit), which is crucial for AI
+        Accelerators that require efficient memory access. The function uses `dma_map_page`
+        to map a page of memory for DMA (Direct Memory Access) operations, which is
+        a key operation for sharing memory with an AI Accelerator. It also checks
+        if the IOMMU is enabled and handles memory allocation and mapping, which are
+        critical for AIA operations. However, it does not directly interact with user
+        space or shared memory identifiers (SMIDs), which slightly lowers the confidence
+        score.
+    - rank: 4
+      function_name: _GFPAlloc
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        involved in memory allocation, which is critical for AI Accelerator (AIA)
+        operations. It uses `dma_map_page` and `dma_map_sg`, which are...'
+    - rank: 5
+      function_name: _GFPAlloc
+      operation_type: dma_operations
+      score: 80
+      reasoning: The function `_GFPAlloc` is primarily responsible for allocating
+        memory, which is a critical operation when integrating with an AI Accelerator
+        (AIA). It utilizes various memory allocation flags and handles DMA mapping
+        through `dma_map_page` and `dma_map_sg`, which are essential for ensuring
+        that the AIA can access the allocated memory. The presence of `dmaHandle`
+        in the `LINUX_MDL` structure indicates that this function is involved in managing
+        memory that will be shared with the AIA.
+    - rank: 6
+      function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_LockCPU
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `gckVIDMEM_NODE_LockCPU`
+        is involved in managing video memory, which is relevant for AI accelerators
+        that require efficient memory access. The functio...'
+    - rank: 7
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloctorInit
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a memor...'
+    - rank: 8
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAllocatorDebugfsInit
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPAllocatorDebugfsInit`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily initializes a debug filesyste...'
+    - rank: 9
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPMapKernel
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPMapKernel`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) relevant
+        to AIA operations. It primarily focuses on memory mappin...'
+    - rank: 10
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPPhysical
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating the physical...'
+  Relevant_KD_Entry_Point:
+    description: Top 10 functions ranked by Relevant_KD_Entry_Point score
+    functions:
+    - rank: 1
+      function_name: _GFPAlloc
+      operation_type: dma_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        involved in memory allocation, which is critical for AI Accelerator (AIA)
+        operations. It uses `dma_map_page` and `dma_map_sg`, which are...'
+    - rank: 2
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c:gckIOMMU_Construct
+      operation_type: functions_by_file
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gckIOMMU_Construct`
+        is involved in memory management that is critical for the interaction between
+        the CPU and the AI Accelerator (AIA). It utilizes `d...'
+    - rank: 3
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloc
+      operation_type: functions_by_file
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        primarily responsible for allocating memory, which is a critical operation
+        when integrating with an AI Accelerator (AIA). It utilizes fu...'
+    - rank: 4
+      function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_LockCPU
+      operation_type: functions_by_file
+      score: 60
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `gckVIDMEM_NODE_LockCPU`
+        is involved in managing video memory, which is relevant for AI accelerators
+        that require efficient memory access. The functio...'
+    - rank: 5
+      function_name: _GFPAlloc
+      operation_type: dma_operations
+      score: 60
+      reasoning: While `_GFPAlloc` does not directly represent an entry point from
+        user space to kernel space, it is likely called from higher-level functions
+        that handle IOCTL commands related to memory allocation for the AIA. The function's
+        context suggests it is part of a larger memory management subsystem that interacts
+        with user commands, but without explicit IOCTL handling in the provided code,
+        the score is moderate.
+    - rank: 6
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloctorInit
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a memor...'
+    - rank: 7
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAllocatorDebugfsInit
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPAllocatorDebugfsInit`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily initializes a debug filesyste...'
+    - rank: 8
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPMapKernel
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPMapKernel`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) relevant
+        to AIA operations. It primarily focuses on memory mappin...'
+    - rank: 9
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPPhysical
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating the physical...'
+    - rank: 10
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAFSLAlloctorInit
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_CMAFSLAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing an a...'
+  Message_Structure_Handling:
+    description: Top 10 functions ranked by Message_Structure_Handling score
+    functions:
+    - rank: 1
+      function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_LockCPU
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `gckVIDMEM_NODE_LockCPU`
+        is involved in managing video memory, which is relevant for AI accelerators
+        that require efficient memory access. The functio...'
+      message_structures_identified: []
+      smids_identified:
+      - physical address
+      - logical address
+      - kvaddr
+    - rank: 2
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c:gckIOMMU_Construct
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gckIOMMU_Construct`
+        is involved in memory management that is critical for the interaction between
+        the CPU and the AI Accelerator (AIA). It utilizes `d...'
+      message_structures_identified:
+      - '[gcsIOMMU'
+      - device]
+      smids_identified:
+      - '[paddingPageDmaHandle'
+      - phys
+      - dmaHandle]
+    - rank: 3
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloc
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        primarily responsible for allocating memory, which is a critical operation
+        when integrating with an AI Accelerator (AIA). It utilizes fu...'
+      message_structures_identified:
+      - '[LINUX_MDL'
+      - gfp_alloc
+      - gfp_mdl_priv]
+      smids_identified:
+      - '[dmaHandle'
+      - physical
+      - logical
+      - device]
+    - rank: 4
+      function_name: _GFPAlloc
+      operation_type: dma_operations
+      score: 70
+      reasoning: The function handles structures like `LINUX_MDL` and `gfp_mdl_priv`,
+        which are involved in memory management. The `LINUX_MDL` structure contains
+        fields such as `addr`, `bytes`, and `numPages`, which are relevant for memory
+        allocation and management. The function also uses `copy_from_user` and `copy_to_user`
+        indirectly through the memory management operations, indicating that it deals
+        with user-space data structures.
+      message_structures_identified:
+      - '[LINUX_MDL'
+      - gfp_mdl_priv]
+      smids_identified:
+      - '[dmaHandle'
+      - addr
+      - bytes
+      - numPages]
+    - rank: 5
+      function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_UpdatePIDInfoListNode
+      operation_type: functions_by_file
+      score: 60
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_UpdatePIDInfoListNode`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily manages process ID information r...'
+      message_structures_identified:
+      - '[gcsVIDMEM_PIDINFO]'
+      smids_identified:
+      - '[pid'
+      - ref]
+    - rank: 6
+      function_name: _GFPAlloc
+      operation_type: dma_operations
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        involved in memory allocation, which is critical for AI Accelerator (AIA)
+        operations. It uses `dma_map_page` and `dma_map_sg`, which are...'
+      message_structures_identified:
+      - '[LINUX_MDL'
+      - gfp_mdl_priv
+      - gfp_alloc
+      - sg_table]
+      smids_identified:
+      - '[dmaHandle'
+      - dma_addr
+      - contiguous
+      - numPages]
+    - rank: 7
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloctorInit
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a memor...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 8
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAllocatorDebugfsInit
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPAllocatorDebugfsInit`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily initializes a debug filesyste...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 9
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPMapKernel
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPMapKernel`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) relevant
+        to AIA operations. It primarily focuses on memory mappin...'
+      message_structures_identified: []
+      smids_identified: []
+    - rank: 10
+      function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPPhysical
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating the physical...'
+      message_structures_identified: []
+      smids_identified: []
+  Overall_Top_Scores:
+    description: All function scores sorted from highest to lowest across all categories
+    total_entries: 90
+    entries:
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c:gckIOMMU_Construct
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gckIOMMU_Construct`
+        is involved in memory management that is critical for the interaction between
+        the CPU and the AI Accelerator (AIA). It utilizes `d...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloc
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        primarily responsible for allocating memory, which is a critical operation
+        when integrating with an AI Accelerator (AIA). It utilizes fu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_LockCPU
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `gckVIDMEM_NODE_LockCPU`
+        is involved in managing video memory, which is relevant for AI accelerators
+        that require efficient memory access. The functio...'
+      message_structures: []
+      smids:
+      - physical address
+      - logical address
+      - kvaddr
+    - function_name: gckIOMMU_Construct
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: The function `gckIOMMU_Construct` is involved in managing memory
+        for an IOMMU (Input/Output Memory Management Unit), which is crucial for AI
+        Accelerators that require efficient memory access. The function uses `dma_map_page`
+        to map a page of memory for DMA (Direct Memory Access) operations, which is
+        a key operation for sharing memory with an AI Accelerator. It also checks
+        if the IOMMU is enabled and handles memory allocation and mapping, which are
+        critical for AIA operations. However, it does not directly interact with user
+        space or shared memory identifiers (SMIDs), which slightly lowers the confidence
+        score.
+      message_structures: []
+      smids: []
+    - function_name: _GFPAlloc
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        involved in memory allocation, which is critical for AI Accelerator (AIA)
+        operations. It uses `dma_map_page` and `dma_map_sg`, which are...'
+      message_structures: []
+      smids: []
+    - function_name: _GFPAlloc
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: The function `_GFPAlloc` is primarily responsible for allocating
+        memory, which is a critical operation when integrating with an AI Accelerator
+        (AIA). It utilizes various memory allocation flags and handles DMA mapping
+        through `dma_map_page` and `dma_map_sg`, which are essential for ensuring
+        that the AIA can access the allocated memory. The presence of `dmaHandle`
+        in the `LINUX_MDL` structure indicates that this function is involved in managing
+        memory that will be shared with the AIA.
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c:gckIOMMU_Construct
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gckIOMMU_Construct`
+        is involved in memory management that is critical for the interaction between
+        the CPU and the AI Accelerator (AIA). It utilizes `d...'
+      message_structures:
+      - '[gcsIOMMU'
+      - device]
+      smids:
+      - '[paddingPageDmaHandle'
+      - phys
+      - dmaHandle]
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloc
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        primarily responsible for allocating memory, which is a critical operation
+        when integrating with an AI Accelerator (AIA). It utilizes fu...'
+      message_structures:
+      - '[LINUX_MDL'
+      - gfp_alloc
+      - gfp_mdl_priv]
+      smids:
+      - '[dmaHandle'
+      - physical
+      - logical
+      - device]
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_LockCPU
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `gckVIDMEM_NODE_LockCPU`
+        is involved in managing video memory, which is relevant for AI accelerators
+        that require efficient memory access. The functio...'
+      message_structures: []
+      smids: []
+    - function_name: _GFPAlloc
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        involved in memory allocation, which is critical for AI Accelerator (AIA)
+        operations. It uses `dma_map_page` and `dma_map_sg`, which are...'
+      message_structures: []
+      smids: []
+    - function_name: _GFPAlloc
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: The function handles structures like `LINUX_MDL` and `gfp_mdl_priv`,
+        which are involved in memory management. The `LINUX_MDL` structure contains
+        fields such as `addr`, `bytes`, and `numPages`, which are relevant for memory
+        allocation and management. The function also uses `copy_from_user` and `copy_to_user`
+        indirectly through the memory management operations, indicating that it deals
+        with user-space data structures.
+      message_structures:
+      - '[LINUX_MDL'
+      - gfp_mdl_priv]
+      smids:
+      - '[dmaHandle'
+      - addr
+      - bytes
+      - numPages]
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/gc_hal_kernel_iommu.c:gckIOMMU_Construct
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gckIOMMU_Construct`
+        is involved in memory management that is critical for the interaction between
+        the CPU and the AI Accelerator (AIA). It utilizes `d...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloc
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        primarily responsible for allocating memory, which is a critical operation
+        when integrating with an AI Accelerator (AIA). It utilizes fu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_UpdatePIDInfoListNode
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_UpdatePIDInfoListNode`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily manages process ID information r...'
+      message_structures:
+      - '[gcsVIDMEM_PIDINFO]'
+      smids:
+      - '[pid'
+      - ref]
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_LockCPU
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (70%)**: The function `gckVIDMEM_NODE_LockCPU`
+        is involved in managing video memory, which is relevant for AI accelerators
+        that require efficient memory access. The functio...'
+      message_structures: []
+      smids: []
+    - function_name: _GFPAlloc
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `_GFPAlloc` is
+        involved in memory allocation, which is critical for AI Accelerator (AIA)
+        operations. It uses `dma_map_page` and `dma_map_sg`, which are...'
+      message_structures:
+      - '[LINUX_MDL'
+      - gfp_mdl_priv
+      - gfp_alloc
+      - sg_table]
+      smids:
+      - '[dmaHandle'
+      - dma_addr
+      - contiguous
+      - numPages]
+    - function_name: _GFPAlloc
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: While `_GFPAlloc` does not directly represent an entry point from
+        user space to kernel space, it is likely called from higher-level functions
+        that handle IOCTL commands related to memory allocation for the AIA. The function's
+        context suggests it is part of a larger memory management subsystem that interacts
+        with user commands, but without explicit IOCTL handling in the provided code,
+        the score is moderate.
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloctorInit
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a memor...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloctorInit
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a memor...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAlloctorInit
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a memor...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAllocatorDebugfsInit
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPAllocatorDebugfsInit`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily initializes a debug filesyste...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAllocatorDebugfsInit
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPAllocatorDebugfsInit`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily initializes a debug filesyste...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPAllocatorDebugfsInit
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPAllocatorDebugfsInit`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily initializes a debug filesyste...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPMapKernel
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPMapKernel`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) relevant
+        to AIA operations. It primarily focuses on memory mappin...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPMapKernel
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPMapKernel`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) relevant
+        to AIA operations. It primarily focuses on memory mappin...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPMapKernel
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GFPMapKernel`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) relevant
+        to AIA operations. It primarily focuses on memory mappin...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPPhysical
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating the physical...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPPhysical
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating the physical...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_gfp.c:_GFPPhysical
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_GFPPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating the physical...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAFSLAlloctorInit
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_CMAFSLAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing an a...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAFSLAlloctorInit
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_CMAFSLAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing an a...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAFSLAlloctorInit
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_CMAFSLAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing an a...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAAllocatorDebugfsInit
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_CMAAllocatorDebugfsInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a debug fil...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAAllocatorDebugfsInit
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_CMAAllocatorDebugfsInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a debug fil...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/freescale/gc_hal_kernel_allocator_cma.c:_CMAAllocatorDebugfsInit
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_CMAAllocatorDebugfsInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a debug fil...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.c:_UserMemoryAlloctorInit
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_UserMemoryAlloctorInit`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on initiali...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.c:_UserMemoryAlloctorInit
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_UserMemoryAlloctorInit`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on initiali...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_user_memory.c:_UserMemoryAlloctorInit
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_UserMemoryAlloctorInit`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on initiali...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c:_DmabufAlloctorInit
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_DmabufAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a DM...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c:_DmabufAlloctorInit
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_DmabufAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a DM...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c:_DmabufAlloctorInit
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_DmabufAlloctorInit`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on initializing a DM...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c:_DebugfsInit
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_DebugfsInit` does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a debug filesystem direc...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c:_DebugfsInit
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_DebugfsInit` does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a debug filesystem direc...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/os/linux/kernel/allocator/default/gc_hal_kernel_allocator_dmabuf.c:_DebugfsInit
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_DebugfsInit` does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a debug filesystem direc...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_Construct
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_Construct`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory (SMem) management for an AIA. I...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_Construct
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_Construct`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory (SMem) management for an AIA. I...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_Construct
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_Construct`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory (SMem) management for an AIA. I...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_AllocateVirtual
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_AllocateVirtual`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily focuses ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_AllocateVirtual
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_AllocateVirtual`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily focuses ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_AllocateVirtual
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_AllocateVirtual`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily focuses ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_AllocateVirtual
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_AllocateVirtual`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory (SMem) management for an A...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_AllocateVirtual
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_AllocateVirtual`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory (SMem) management for an A...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_AllocateVirtual
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_AllocateVirtual`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory (SMem) management for an A...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_Construct
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_Construct`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on constructing...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_Construct
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_Construct`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on constructing...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_Construct
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_Construct`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on constructing...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_UpdatePIDInfoListNode
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_UpdatePIDInfoListNode`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily manages process ID information r...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_UpdatePIDInfoListNode
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_UpdatePIDInfoListNode`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily manages process ID information r...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_GetGPUPhysical
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_GetGPUPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily retrieves the phys...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_GetGPUPhysical
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_GetGPUPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily retrieves the phys...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_GetGPUPhysical
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_GetGPUPhysical`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily retrieves the phys...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_GetCPUPhysical
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_GetCPUPhysical`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily focuses o...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_GetCPUPhysical
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_GetCPUPhysical`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily focuses o...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_GetCPUPhysical
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_GetCPUPhysical`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily focuses o...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_CleanCache
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_NODE_CleanCache`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) directly. It primarily focuses on cleaning ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_CleanCache
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_NODE_CleanCache`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) directly. It primarily focuses on cleaning ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_CleanCache
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_NODE_CleanCache`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) directly. It primarily focuses on cleaning ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_AllocateLinear
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_NODE_AllocateLinear`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) relevant to AIA operations. It primaril...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_AllocateLinear
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_NODE_AllocateLinear`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) relevant to AIA operations. It primaril...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_AllocateLinear
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_NODE_AllocateLinear`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) relevant to AIA operations. It primaril...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_AllocateLinear
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_AllocateLinear`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily focuses on allocating linear video memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_AllocateLinear
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_AllocateLinear`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily focuses on allocating linear video memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_AllocateLinear
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gckVIDMEM_AllocateLinear`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily focuses on allocating linear video memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_FindNode
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_FindNode` does
+        not interact with any AI Accelerator (AIA) relevant operations. It primarily
+        focuses on finding a suitable node in a video memory mana...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_FindNode
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_FindNode` does
+        not interact with any AI Accelerator (AIA) relevant operations. It primarily
+        focuses on finding a suitable node in a video memory mana...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_FindNode
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_FindNode` does
+        not interact with any AI Accelerator (AIA) relevant operations. It primarily
+        focuses on finding a suitable node in a video memory mana...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_GetSurfaceBankAlignment
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GetSurfaceBankAlignment`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating t...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_GetSurfaceBankAlignment
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GetSurfaceBankAlignment`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating t...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_GetSurfaceBankAlignment
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_GetSurfaceBankAlignment`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on calculating t...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_Split
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_Split` does not
+        interact with any AI Accelerator (AIA) relevant operations such as memory
+        pinning, DMA address handling, or memory mapping for an AIA....'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_Split
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_Split` does not
+        interact with any AI Accelerator (AIA) relevant operations such as memory
+        pinning, DMA address handling, or memory mapping for an AIA....'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:_Split
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `_Split` does not
+        interact with any AI Accelerator (AIA) relevant operations such as memory
+        pinning, DMA address handling, or memory mapping for an AIA....'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_Lock
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_Lock`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) directly. It primarily deals with locking a vide...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_Lock
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_Lock`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) directly. It primarily deals with locking a vide...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_NODE_Lock
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_NODE_Lock`
+        does not appear to interact with an AI Accelerator (AIA) or shared memory
+        (SMem) directly. It primarily deals with locking a vide...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_Lock
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_Lock`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that would qualify it as relevant for AIA operations. ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_Lock
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_Lock`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that would qualify it as relevant for AIA operations. ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/mxc/gpu-viv/hal/kernel/gc_hal_kernel_video_memory.c:gckVIDMEM_Lock
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gckVIDMEM_Lock`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that would qualify it as relevant for AIA operations. ...'
+      message_structures: []
+      smids: []
+    - function_name: gckIOMMU_Construct
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: The function does not represent an entry point from user space to
+        kernel space, as it does not handle any ioctl commands or user commands. It
+        is a helper function that is likely called from other parts of the driver,
+        but it does not itself serve as a direct interface for user commands.
+      message_structures: []
+      smids: []
+    - function_name: gckIOMMU_Construct
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: There are no message structures identified in the function. The function
+        does not utilize `copy_from_user()` or `copy_to_user()` calls, nor does it
+        handle any structures that would typically be exchanged between user space
+        and kernel space. Therefore, there are no message structures or SMIDs identified.
+      message_structures: []
+      smids: []

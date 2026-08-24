@@ -1,0 +1,3077 @@
+functions_by_file:
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:rmem_dma_heap_carveout_setup
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rmem_dma_heap_carveout_setup`
+    does not interact with an AI Accelerator (AIA) or perform any operations related
+    to shared memory management that would typically involve pinning user pages, obtaining
+    physical addresses, or managing DMA buffers. The function primarily checks the
+    alignment of a reserved memory region and updates a global array with the provided
+    `reserved_mem` structure. Therefore, it does not qualify as an AIA relevant function.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a static initialization function that
+    is likely called during the kernel''s boot process or module initialization, rather
+    than being invoked directly by user space applications.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures being passed that
+    would typically contain shared memory identifiers (SMIDs). The only structure
+    involved is `reserved_mem`, which is used for internal memory management and does
+    not facilitate communication with user space.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    shared memory identifiers or related fields that would indicate interaction with
+    user space memory. In summary, the function `rmem_dma_heap_carveout_setup` is
+    focused on setting up reserved memory regions for DMA heap management and does
+    not engage in any operations that would be relevant to AI Accelerator integration,
+    user space interactions, or message structure handling.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_init_areas
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_init_areas`
+    does not interact with an AI Accelerator (AIA) or perform any operations related
+    to shared memory management that would typically involve pinning user pages, obtaining
+    physical addresses, or managing DMA buffers. The function primarily initializes
+    DMA heap areas by exporting reserved memory regions, which is not directly related
+    to AIA operations.'
+  - '**Relevant KD Entry Point Score (0%)**: There are no user-space entry points
+    such as ioctl() calls in this function. The function does not serve as a dispatch
+    point for user commands or trigger deeper kernel logic that would lead to AIA-related
+    functions. It is a static initialization function that runs during module initialization.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures. The `reserved_mem` structure is used, but it does not involve
+    any user-space interaction or shared memory identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    shared memory identifiers or relevant metadata that would typically be associated
+    with AIA operations. In summary, the function is focused on initializing DMA heap
+    areas and does not engage in any operations that would be relevant to AI Accelerator
+    integration, user-space communication, or shared memory management. Therefore,
+    all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_export
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `carveout_dma_heap_export` does
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on creating and managing a DMA heap and a memory pool, which
+    are not directly related to the AIA memory access patterns such as pinning user
+    pages, obtaining physical addresses for DMA, or managing DMA buffers for communication
+    with an AIA. Therefore, the confidence score is 0%.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. There are no
+    ioctl commands being processed or dispatched within this function. It is a utility
+    function that is likely called from other parts of the kernel code but does not
+    itself serve as a direct interface for user commands. Hence, the score is 0%.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures that involve user space and kernel space communication. There are no
+    `copy_from_user()` or `copy_to_user()` calls present, nor are there any structures
+    being passed that would qualify as message structures or contain Shared Memory
+    Identifiers (SMIDs). The structures defined (`carveout_dma_heap` and `dma_heap_export_info`)
+    are used internally within the function and do not facilitate communication with
+    user space. Thus, the score is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged between user space and
+    kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    that represent shared memory identifiers or any relevant identifiers that would
+    indicate memory access by an AIA. In summary, the function `carveout_dma_heap_export`
+    is focused on memory management for DMA heaps and does not engage in any operations
+    relevant to AI Accelerator integration, user space communication, or message structure
+    handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:remoteproc_init
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The `remoteproc_init` function does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    initializes a workqueue and sets up various subsystems (sysfs, debugfs, character
+    device, panic handling). There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any DMA-related operations that would typically be associated
+    with AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is purely an initialization routine and does not interact with user
+    space.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The initialization process does not involve any data
+    exchange between user space and kernel space.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures.'
+  - '**SMID''s identified**: None identified. There are no fields or structures that
+    qualify as SMIDs in the context of this function. In summary, the `remoteproc_init`
+    function is focused on setting up internal kernel structures and does not engage
+    in any operations related to shared memory management or user-space interactions
+    that would be relevant to AI Accelerator integration.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_init_panic
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_init_panic` does not involve
+    any operations related to shared memory (SMem) with an AI Accelerator (AIA). It
+    primarily registers a notifier callback for panic events, which is unrelated to
+    memory management or DMA operations typically associated with AIA interactions.
+    Therefore, the confidence score for AIA relevance is zero.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through ioctl() functions. It is
+    a static initialization function that sets up a notifier for panic events, which
+    does not involve handling user commands or triggering deeper kernel logic related
+    to AIA. Thus, the score for KD entry point relevance is also zero.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize any `copy_from_user()`
+    or `copy_to_user()` calls, nor does it pass any structures that would involve
+    shared memory identifiers (SMIDs). As a result, the score for message structure
+    handling is zero.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not deal with memory management or shared
+    memory operations. In summary, the function `rproc_init_panic` is focused on registering
+    a panic notifier and does not engage in any operations relevant to AIA, KD entry
+    points, or message structure handling. The lack of relevant structures and operations
+    leads to a confidence score of zero across all categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_alloc
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The `rproc_alloc` function does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    focuses on allocating and initializing a `rproc` structure, which is related to
+    remote processors but does not interact with shared memory management or DMA operations
+    that are typical in AIA integration.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would typically lead to deeper kernel logic or AIA-related
+    functions. The function is purely an internal allocation function without any
+    user-space interaction.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). The focus is on initializing the `rproc` structure
+    and its associated fields.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the `rproc` structure
+    or any other structures involved in this function that qualify as shared memory
+    identifiers (SMIDs) such as device virtual addresses, physical addresses, or DMA
+    addresses. In summary, the `rproc_alloc` function is focused on the allocation
+    and initialization of a remote processor structure and does not engage in any
+    operations relevant to shared memory management or AIA integration. Therefore,
+    all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_ops
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_alloc_ops` does not involve
+    any operations related to shared memory (SMem) with an AI Accelerator (AIA). It
+    primarily focuses on allocating and initializing the `rproc_ops` structure for
+    a remote processor (`rproc`). There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any DMA-related operations that would typically be associated
+    with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space. There are no `ioctl()` calls or similar
+    mechanisms present in this function that would indicate it is handling user commands
+    or dispatching to deeper kernel logic. The function is purely internal to the
+    kernel''s handling of remote processor operations.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The `rproc_ops` structure is allocated and initialized,
+    but it does not involve any user-space interaction or message passing.'
+  - '**Message Structures identified**: None identified. The `rproc_ops` structure
+    is defined but lacks any fields that would qualify it as a message structure for
+    communication with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the `rproc` or
+    `rproc_ops` structures that represent shared memory identifiers or any relevant
+    addresses, handles, or descriptors that would be used for AIA operations. In summary,
+    the function `rproc_alloc_ops` is focused on setting up operations for a remote
+    processor and does not engage in any activities related to shared memory management
+    or user-space communication, leading to a score of 0 across all categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_add
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rproc_add` does not involve
+    any operations related to shared memory (SMem) with an AI Accelerator (AIA). It
+    primarily deals with adding a remote processor (rproc) to the system, validating
+    it, and managing device-related operations. There are no calls to functions like
+    `get_user_pages`, `pin_user_pages`, or any DMA-related operations that would typically
+    be associated with AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space, such as through `ioctl()` calls. It is
+    a part of the kernel''s internal management of remote processors and does not
+    handle user commands or ioctl codes. Therefore, it does not trigger any deeper
+    kernel logic leading to AIA-related functions.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures exchanged
+    between user space and kernel space in this function. The function does not utilize
+    `copy_from_user()` or `copy_to_user()` calls, nor does it handle any structures
+    that would involve Shared Memory Identifiers (SMIDs). The operations performed
+    are related to device management and do not involve message passing or shared
+    memory identifiers.'
+  - '**Message Structures Identified**: None identified. The function does not define
+    or manipulate any structures that would qualify as message structures for communication
+    between user space and kernel space.'
+  - '**SMIDs Identified**: None identified. There are no fields or identifiers in
+    the function that would represent shared memory identifiers, as the function is
+    focused on device management rather than memory management or communication with
+    an AI Accelerator. In summary, the `rproc_add` function is focused on managing
+    remote processors and does not engage in any operations relevant to shared memory
+    management or user-kernel communication that would be pertinent to AI Accelerator
+    integration.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_trigger_auto_boot
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_trigger_auto_boot` does
+    not involve any operations related to shared memory (SMem) with an AI Accelerator
+    (AIA). It primarily focuses on booting a remote processor and does not perform
+    any memory management tasks such as pinning user pages, obtaining physical or
+    DMA addresses, or managing DMA buffers. Therefore, the confidence score for AIA
+    relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. It does not handle
+    any user commands or invoke deeper kernel logic that would lead to the execution
+    of an AIA relevant function. The absence of ioctl handling means the score for
+    this category is also 0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it involve any structures
+    that would qualify as message structures or contain Shared Memory Identifiers
+    (SMIDs). Thus, the score for message structure handling is 0%.'
+  - '**Message Structures Identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged with user space.'
+  - '**SMIDs Identified**: None identified. There are no fields in the function or
+    related structures that would qualify as SMIDs, such as device virtual addresses,
+    physical addresses, or DMA addresses. In summary, the function `rproc_trigger_auto_boot`
+    is focused on booting a remote processor and does not engage in any operations
+    relevant to shared memory management or user-kernel communication, leading to
+    a score of 0 across all categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_boot
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The `rproc_boot` function does not interact
+    with any AI Accelerator (AIA) relevant functions or memory management patterns
+    that would typically involve shared memory (SMem) with an AIA. The function primarily
+    deals with booting a remote processor (rproc) and loading firmware, which does
+    not involve pinning user pages, DMA addresses, or memory mapping for an AIA. Therefore,
+    the confidence score is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through ioctl() commands. It does
+    not handle any user commands or trigger deeper kernel logic that would lead to
+    AIA relevant functions. The absence of ioctl handling means the score is also
+    0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that involve Shared
+    Memory Identifiers (SMIDs). The function focuses on internal operations related
+    to the remote processor and firmware loading, thus the score is 0%.'
+  - '**Message Structures Identified**: None identified. The function does not utilize
+    any specific message structures that would typically be involved in communication
+    with user space.'
+  - '**SMIDs Identified**: None identified. There are no fields or structures that
+    qualify as SMIDs, as the function does not deal with shared memory identifiers
+    or relevant memory management for an AIA. Overall, the `rproc_boot` function is
+    primarily concerned with the initialization and booting of a remote processor
+    and does not engage in any operations that would be relevant to AI Accelerator
+    integration or shared memory management.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_attach
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_attach` does not involve
+    any operations related to shared memory management or direct interaction with
+    an AI Accelerator (AIA). It primarily focuses on attaching a remote processor
+    (rproc) and managing its resources, which does not include pinning user pages,
+    obtaining physical addresses, or managing DMA buffers. Therefore, the confidence
+    score for AIA relevance is 0%.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not serve as an entry
+    point for user space interactions, such as handling ioctl commands. There are
+    no indications of user commands being processed or any dispatching logic that
+    would lead to deeper kernel logic related to AIA. Thus, the score for KD entry
+    point relevance is also 0%.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor any structures that would qualify as message
+    structures or contain Shared Memory Identifiers (SMIDs). Consequently, the score
+    for message structure handling is 0%.'
+  - '**Message Structures Identified**: None identified. The function does not utilize
+    any specific message structures that would be exchanged with user space.'
+  - '**SMIDs Identified**: None identified. There are no fields or structures in the
+    function that represent shared memory identifiers or any relevant memory management
+    patterns associated with AIA. In summary, the `rproc_attach` function is focused
+    on managing the attachment of a remote processor and does not engage in any operations
+    that would be relevant to shared memory management or AI Accelerator integration.
+    Therefore, all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_set_rsc_table
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rproc_set_rsc_table` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily deals with setting up a resource table for a remote processor (rproc)
+    and does not include any memory pinning, DMA address handling, or memory mapping
+    that would be relevant for AIA integration. The function does not utilize any
+    of the typical AIA functions such as `get_user_pages`, `pin_user_pages`, or `dma_map_page`.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, as it does not handle any ioctl commands
+    or user commands. There are no ioctl codes referenced in the function, and it
+    does not act as a dispatch point for user commands that would lead to AIA-related
+    functionality.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    qualify as message structures or contain Shared Memory Identifiers (SMIDs). The
+    function primarily manipulates the `resource_table` structure, which does not
+    include any fields that would be classified as SMIDs.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. The function does not utilize any identifiers
+    or fields that would indicate shared memory access or management. In summary,
+    the function `rproc_set_rsc_table` is focused on setting up a resource table for
+    a remote processor and does not engage in any operations that would be relevant
+    for AIA integration, user space interaction, or message structure handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_handle_resources
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rproc_handle_resources` does
+    not involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily handles resources associated with a remote processor (rproc) and
+    processes resource headers. There are no indications of memory pinning, DMA address
+    handling, or memory mapping that would be relevant to AIA operations.'
+  - '**Relevant KD Entry Point Score (0%)**: This function does not serve as an entry
+    point from user space to kernel space, such as through ioctl commands. It is a
+    utility function that processes resources based on the provided handlers and does
+    not directly handle user commands or ioctl codes.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the code, nor does it involve any structures
+    that would qualify as message structures or contain Shared Memory Identifiers
+    (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    fields or structures that would qualify as SMIDs, such as device virtual addresses,
+    physical addresses, or DMA addresses. In summary, the function `rproc_handle_resources`
+    is focused on handling resources for a remote processor and does not engage in
+    any operations that would be relevant to AI Accelerator integration, user-space
+    communication, or shared memory management. Therefore, all confidence scores are
+    assigned as 0%.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_handle_vdev
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[struct fw_rsc_vdev'
+  - struct rproc_vdev_data]
+  SMIDs_identified:
+  - '[id'
+  - rsc_offset
+  - rsc->id
+  - rsc->num_of_vrings
+  - rsc->config_len]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_handle_vdev` does not
+    directly interact with an AI Accelerator (AIA) or shared memory (SMem) management.
+    It primarily handles the registration of a virtual device resource (`fw_rsc_vdev`)
+    and does not include operations like pinning user pages, obtaining physical addresses,
+    or managing DMA buffers that are characteristic of AIA relevant functions. Therefore,
+    the confidence score is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. It does not handle
+    any ioctl commands or user commands that would trigger deeper kernel logic leading
+    to AIA relevant functions. Thus, the score is also 0%.'
+  - '**Message Structure Handling Score (70)**: The function does handle message structures,
+    specifically `fw_rsc_vdev` and `rproc_vdev_data`. The `fw_rsc_vdev` structure
+    contains fields such as `id`, `num_of_vrings`, and `config_len`, which are relevant
+    for device configuration and management. The function uses these structures to
+    validate and register a virtual device, indicating some level of message structure
+    handling. The presence of `copy_from_user()` or `copy_to_user()` calls is not
+    evident in the provided code, but the function does involve data structures that
+    could be exchanged between user space and kernel space, hence the score of 70%.'
+  - '**Message Structures Identified**: The identified message structures include:'
+  - '`struct fw_rsc_vdev`: This structure contains fields that describe the virtual
+    device, including `id`, `dfeatures`, `config_len`, and `num_of_vrings`.'
+  - '`struct rproc_vdev_data`: This structure is used to hold data related to the
+    virtual device being registered, including `rsc_offset`, `index`, and a pointer
+    to the `fw_rsc_vdev` structure.'
+  - '**SMID''s Identified**: The potential SMIDs identified in the function include:'
+  - '`id`: The identifier for the virtual device.'
+  - '`rsc_offset`: The offset of the resource.'
+  - '`rsc->id`: The ID from the `fw_rsc_vdev` structure.'
+  - '`rsc->num_of_vrings`: The number of vrings specified in the resource.'
+  - '`rsc->config_len`: The length of the configuration data. Overall, while the function
+    does not directly relate to AIA operations or user-space entry points, it does
+    involve message structures that are relevant for device management, leading to
+    a moderate score in message structure handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_parse_vring
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_parse_vring` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on parsing and validating the vring structure from a resource
+    descriptor. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any DMA-related operations that would typically be associated with AIA memory
+    management.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not serve as an entry
+    point for user space interactions with the kernel, such as through `ioctl()` commands.
+    It does not handle any user commands or dispatch any ioctl codes. The function
+    is more of an internal utility for processing vring structures rather than a direct
+    interface for user-space requests.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
+    Memory Identifiers (SMIDs). The function simply accesses fields of the `fw_rsc_vdev`
+    and `rproc_vring` structures directly without any user-space interaction.'
+  - '**Message Structures Identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged between user space
+    and kernel space.'
+  - '**SMIDs Identified**: None identified. The function does not reference any fields
+    that would qualify as SMIDs, such as device virtual addresses, physical addresses,
+    or DMA addresses. In summary, the function `rproc_parse_vring` is focused on validating
+    and setting up vring parameters and does not engage in any operations relevant
+    to shared memory management or user-space communication, leading to a score of
+    0 across all categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_vring
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[fw_rsc_vdev'
+  - rproc_mem_entry]
+  SMIDs_identified:
+  - '[da'
+  - notifyid
+  - dma
+  - rsc_offset]
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `rproc_alloc_vring` is involved
+    in allocating resources for a virtual ring (vring) that is likely used for communication
+    between the CPU and an AI Accelerator (AIA). It interacts with memory management
+    functions and handles device addresses (e.g., `da` in `fw_rsc_vdev_vring`), which
+    are crucial for DMA operations. However, it does not directly manage shared memory
+    or DMA buffers, which lowers the score slightly.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent a direct
+    entry point from user space to kernel space, such as through an `ioctl()` call.
+    It is more of an internal function that is likely called by other higher-level
+    functions that handle user requests. Therefore, the score is 0.'
+  - '**Message_Structure_Handling Score (80)**: The function handles message structures,
+    particularly `fw_rsc_vdev` and `rproc_mem_entry`. It uses fields like `da` (device
+    address) and `notifyid` (notification ID) which are critical for managing communication
+    between the CPU and the AIA. The presence of `copy_from_user()` or `copy_to_user()`
+    is not explicitly shown in this function, but the structures involved suggest
+    that they are part of the message handling process.'
+  - '**Message Structures Identified**:'
+  - '`fw_rsc_vdev`: This structure contains fields such as `id`, `notifyid`, `dfeatures`,
+    `gfeatures`, and `vring`, which are essential for defining the virtual device''s
+    characteristics and its communication capabilities.'
+  - '`rproc_mem_entry`: This structure includes fields like `va` (virtual address),
+    `dma` (DMA address), and `da` (device address), which are crucial for memory management
+    and DMA operations.'
+  - '**SMID''s Identified**:'
+  - '`da`: Device address used for DMA operations.'
+  - '`notifyid`: Used to identify notifications for the vring.'
+  - '`dma`: DMA address for the allocated memory.'
+  - '`rsc_offset`: Offset used to locate resources in the resource table. Overall,
+    the function is significant for resource allocation in the context of AIA integration,
+    but it does not serve as a direct entry point for user commands. The handling
+    of message structures and SMIDs indicates its role in memory management and communication
+    setup.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_find_carveout_by_name
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_find_carveout_by_name`
+    does not involve any operations related to sharing memory with an AI Accelerator
+    (AIA). It primarily searches for a memory carveout by name within a list of carveouts
+    associated with a `rproc` structure. There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any memory mapping operations that would typically be associated
+    with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic. The function is a utility
+    function that operates entirely within the kernel context, searching for a specific
+    memory entry.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it involve any structures
+    that would typically be used for communication between user space and kernel space.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would be relevant for shared memory communication.'
+  - '**SMID''s identified**: None identified. The function does not utilize any shared
+    memory identifiers (SMIDs) or related fields that would indicate memory addresses
+    or descriptors relevant to shared memory operations. In summary, the function
+    is focused on locating a memory carveout by name and does not engage in any operations
+    that would be relevant to AIA integration, kernel entry points, or message structure
+    handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_add_carveout
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_add_carveout` does not
+    involve any operations related to shared memory management or AI Accelerator integration.
+    It simply adds a memory entry (`mem`) to a list of carveouts associated with a
+    remote processor (`rproc`). There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any DMA-related operations, which are typically indicative
+    of AIA relevant functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. There are no `ioctl` commands or user commands
+    being handled within this function. It operates purely within the kernel context
+    and does not interact with user space or handle any user commands.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls, nor does it involve any structures that would typically
+    contain Shared Memory Identifiers (SMIDs). The `rproc_mem_entry` structure is
+    used as a parameter, but it is not being exchanged with user space, nor does it
+    contain any fields that would qualify as SMIDs in the context of shared memory
+    management.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would be relevant for shared memory or AI Accelerator
+    integration.'
+  - '**SMID''s identified**: None identified. The `rproc_mem_entry` structure does
+    contain fields like `dma`, `va`, and `da`, but these are not being utilized in
+    a manner that indicates they are being used as SMIDs in this function. The function''s
+    purpose is simply to manage a list of memory entries for a remote processor, not
+    to facilitate shared memory access or communication with an AI Accelerator. Overall,
+    the function is focused on list management and does not engage in any operations
+    that would be relevant to shared memory or AI Accelerator integration, leading
+    to a score of 0 across all categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_mem_entry_init
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_mem_entry_init` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily initializes a `rproc_mem_entry` structure, which is used for managing
+    memory resources in a remote processor context. There are no calls to functions
+    like `get_user_pages`, `pin_user_pages`, or any DMA-related operations that would
+    typically be associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic. The function is purely an
+    internal initialization routine and does not interact with user space or provide
+    a mechanism for user commands to invoke it.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The `rproc_mem_entry` structure is initialized but
+    does not contain fields that would qualify as SMIDs for communication between
+    user space and kernel space.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. The `rproc_mem_entry` structure does
+    not contain any fields that represent shared memory identifiers, such as device
+    virtual addresses, physical addresses, or DMA addresses. The fields in the structure
+    are related to memory management but do not serve as identifiers for shared memory
+    access. In summary, the function `rproc_mem_entry_init` is focused on initializing
+    a memory entry structure for a remote processor and does not engage in any operations
+    relevant to AI Accelerator integration, user space interaction, or message structure
+    handling. Therefore, all confidence scores are assigned as 0.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_add_rvdev
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rproc_add_rvdev` does not involve
+    any operations related to shared memory management or interactions with an AI
+    Accelerator (AIA). It simply adds a virtual device (`rvdev`) to a list of devices
+    (`rvdevs`) associated with a remote processor (`rproc`). There are no calls to
+    functions like `get_user_pages`, `pin_user_pages`, or any DMA-related operations,
+    which are typically associated with AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point for user space to kernel space interactions, such as through `ioctl()` commands.
+    There are no indications that this function is invoked in response to user commands
+    or that it dispatches any specific ioctl codes. It is a straightforward list manipulation
+    function without any user-space interaction.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it manipulate any structures that would typically
+    be exchanged between user space and kernel space. The only structures involved
+    are `rproc` and `rproc_vdev`, which are used for internal management of devices
+    and do not represent message structures in the context of user-kernel communication.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would typically contain shared memory identifiers
+    or other relevant fields.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    that would qualify as shared memory identifiers (SMIDs) since the function does
+    not deal with memory management or shared memory communication. In summary, the
+    function `rproc_add_rvdev` is primarily concerned with managing a list of virtual
+    devices associated with a remote processor and does not engage in any operations
+    relevant to shared memory or AI Accelerator interactions. Therefore, all confidence
+    scores are assigned as 0%.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_add_subdev
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_add_subdev` does not involve
+    any operations related to shared memory management, DMA, or interactions with
+    an AI Accelerator. It simply adds a sub-device to a list within a remote processor
+    structure (`rproc`). There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any memory mapping functions that would typically be associated with AIA relevant
+    functions.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space. There are no `ioctl` commands or user commands
+    being handled in this function. It is a straightforward list manipulation function
+    and does not interact with user space or handle any commands that would lead to
+    deeper kernel logic.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it involve any structures that would typically
+    be exchanged between user space and kernel space. The only structures involved
+    are `rproc` and `rproc_subdev`, which are used for internal management of remote
+    processors and their sub-devices.'
+  - '**Message Structures identified**: None identified. The function does not deal
+    with any structures that would qualify as message structures exchanged with user
+    space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    or similar constructs present in the function. In summary, the function `rproc_add_subdev`
+    is primarily focused on managing the internal state of the `rproc` structure by
+    adding a sub-device to its list of sub-devices. It does not engage in any operations
+    that would be relevant to AI Accelerator integration, kernel entry points, or
+    message structure handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_handle_trace
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct fw_rsc_trace'
+  - struct rproc_debug_trace]
+  SMIDs_identified:
+  - '[da (Device Address)'
+  - len (Length)]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_handle_trace` does not
+    interact with an AI Accelerator (AIA) or shared memory (SMem) directly. It primarily
+    handles trace resources and does not involve pinning user pages, DMA addresses,
+    or memory mapping for an AIA. Therefore, the confidence score for AIA relevance
+    is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an ioctl() call. It is
+    a utility function that processes trace resources and does not handle any user
+    commands or ioctl codes. Thus, the score for KD entry point relevance is also
+    0%.'
+  - '**Message Structure Handling Score (80)**: The function handles message structures,
+    specifically `fw_rsc_trace` and `rproc_debug_trace`. It uses the `fw_rsc_trace`
+    structure to validate and process trace data, which includes fields like `da`
+    (device address) and `len` (length). The presence of `copy_from_user()` or `copy_to_user()`
+    calls is not evident in this function, but it does manage memory and structures
+    that could be involved in message handling. Therefore, the score is high but not
+    perfect due to the absence of direct user memory copying.'
+  - '**Message Structures Identified**: The function utilizes `struct fw_rsc_trace`
+    to obtain the device address (`da`) and length (`len`) of the trace resource.
+    It also creates an instance of `struct rproc_debug_trace` to manage the trace
+    data. These structures are critical for understanding the data being processed.'
+  - '**SMID''s Identified**: The identified SMIDs include `da` (device address) and
+    `len` (length), which are essential for managing the trace resource. The `da`
+    field is particularly relevant as it represents the device address that could
+    be used for memory mapping or DMA operations, although this function does not
+    perform those actions directly. In summary, while the function does not directly
+    relate to AIA or KD entry points, it effectively manages message structures relevant
+    to trace resources, justifying a high score in message structure handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_registered_carveouts
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_alloc_registered_carveouts`
+    does not directly involve sharing memory with an AI Accelerator (AIA). It primarily
+    deals with allocating memory for registered carveouts and updating resource tables
+    with physical addresses. There are no indications of pinning user pages, managing
+    DMA buffers, or programming addresses into AIA device page tables, which are typical
+    characteristics of AIA relevant functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space, such as through an ioctl() function. It
+    is a static function that operates within the kernel''s context and does not handle
+    user commands or ioctl codes. Therefore, it does not serve as a dispatch point
+    for AIA-related operations.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that involve Shared
+    Memory Identifiers (SMIDs) being passed between user and kernel space. The structures
+    used (e.g., `rproc_mem_entry` and `fw_rsc_carveout`) are internal to the kernel
+    and do not represent user-space communication.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    that qualify as SMIDs, as the function does not interact with user-space memory
+    or identifiers that would indicate shared memory access. In summary, the function
+    is focused on memory allocation for a remote processor''s carveouts and does not
+    engage in any operations relevant to AI Accelerator integration, user-space interactions,
+    or message structure handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_carveout
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[struct rproc_mem_entry]'
+  SMIDs_identified:
+  - '[mem->da'
+  - mem->dma
+  - mem->va]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout` is involved
+    in allocating coherent DMA memory, which is critical for enabling communication
+    between the CPU and an AI Accelerator (AIA). It uses `dma_alloc_coherent`, which
+    is a key function for managing DMA memory. The function also checks and maps device
+    addresses, which is essential for AIA operations. However, it does not directly
+    handle user pages or memory mapping for the AIA, which is why the score is not
+    a full 100%.'
+  - '**Relevant_KD_Entry_Point Score (60)**: This function is likely called from a
+    higher-level kernel interface, possibly through an ioctl command related to memory
+    allocation for the AIA. However, the specific ioctl command that leads to this
+    function''s execution is not explicitly mentioned in the provided code. The absence
+    of a clear entry point reduces the confidence score.'
+  - '**Message_Structure_Handling Score (70)**: The function handles a structure `struct
+    rproc_mem_entry`, which contains fields relevant to memory management, such as
+    `va` (virtual address), `dma` (DMA address), and `da` (device address). The presence
+    of `copy_from_user` or `copy_to_user` calls is not evident in this function, but
+    it does manipulate the `mem` structure, which is passed as an argument. This structure
+    is crucial for understanding how memory is shared between the CPU and the AIA.'
+  - '**Message Structures identified**: The primary message structure identified is
+    `struct rproc_mem_entry`, which contains fields that are relevant for memory management
+    in the context of AIA operations. The fields of interest include:'
+  - '`void* va`: Virtual address of the allocated memory.'
+  - '`u64 dma`: DMA address for the allocated memory.'
+  - '`u32 da`: Device address requested by the remote processor.'
+  - '**SMID''s identified**: The identified SMIDs include:'
+  - '`mem->da`: Device address, which is critical for the AIA to access the allocated
+    memory.'
+  - '`mem->dma`: DMA address, which is used for DMA operations.'
+  - '`mem->va`: Virtual address, which is necessary for the CPU to access the allocated
+    memory. Overall, the function demonstrates a clear understanding of memory management
+    in the context of AIA integration, but lacks explicit user-space interaction and
+    a defined entry point, leading to moderate confidence scores across the categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_prepare_subdevices
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_prepare_subdevices` does
+    not involve any operations related to shared memory management or interactions
+    with an AI Accelerator (AIA). It primarily prepares subdevices by iterating through
+    a list of `rproc_subdev` structures and calling their `prepare` and `unprepare`
+    methods. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any DMA-related operations that would typically be associated with AIA interactions.'
+  - '**Relevant KD Entry Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is a part of the internal workings of the `rproc` subsystem and does
+    not interact with user space directly.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The `rproc_subdev` structure is very simple and does
+    not contain any fields that would qualify as SMIDs or relevant message structures.'
+  - '**Message Structures identified**: None identified. The `rproc_subdev` structure
+    only contains a `list_head` for linking in a list, which does not qualify as a
+    message structure.'
+  - '**SMID''s identified**: None identified. There are no fields in the `rproc` or
+    `rproc_subdev` structures that represent shared memory identifiers or any relevant
+    addresses, handles, or descriptors. In summary, the function `rproc_prepare_subdevices`
+    is focused on preparing subdevices within the `rproc` framework and does not engage
+    in any operations related to shared memory or AI Accelerator integration, leading
+    to a score of 0 across all categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_start_subdevices
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_start_subdevices` does
+    not involve any operations related to shared memory (SMem) with an AI Accelerator
+    (AIA). It primarily focuses on starting subdevices associated with a remote processor
+    (`rproc`). There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any DMA-related operations that would typically be associated with AIA memory
+    management. Therefore, the confidence score for AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space, nor does it handle any ioctl commands.
+    It does not interact with user commands or trigger deeper kernel logic that would
+    lead to AIA-related functions. Thus, the score for being a relevant kernel driver
+    entry point is also 0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it deal with structures
+    that would typically contain Shared Memory Identifiers (SMIDs). The `rproc_subdev`
+    structure is very minimal and does not contain any fields that would qualify as
+    SMIDs or relevant message structures. Therefore, the score for message structure
+    handling is 0%.'
+  - '**Message Structures Identified**: None identified. The `rproc_subdev` structure
+    only contains a `list_head` node, which does not represent a message structure
+    used for communication between user space and kernel space.'
+  - '**SMIDs Identified**: None identified. There are no fields in the analyzed structures
+    that represent shared memory identifiers or any relevant identifiers that would
+    be used in the context of shared memory management with an AI Accelerator. In
+    summary, the function `rproc_start_subdevices` is focused on managing subdevices
+    and does not engage in any operations related to shared memory or AI Accelerator
+    integration, leading to a complete lack of relevance in the specified categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_of_parse_firmware
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_of_parse_firmware` does
+    not interact with any AI Accelerator (AIA) relevant operations. It primarily reads
+    a firmware name from a device''s device tree node using the `of_property_read_string_index`
+    function. There are no operations related to shared memory, DMA, or memory mapping
+    that are typically associated with AIA functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point for user space interactions with the kernel. It does not handle any ioctl
+    commands or user commands that would typically lead to deeper kernel logic or
+    AIA relevant functions. The function is a straightforward utility for retrieving
+    firmware names from device properties.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would contain Shared
+    Memory Identifiers (SMIDs). The only parameter of interest is `fw_name`, which
+    is a pointer to a string, but it does not represent a structured message or contain
+    any SMID fields.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would qualify as message structures.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers in
+    the function that would correspond to shared memory identifiers or any relevant
+    memory management patterns. In summary, the function is a simple utility for reading
+    a firmware name from a device''s device tree and does not engage in any operations
+    relevant to AI Accelerator integration, kernel entry points, or message structure
+    handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_firmware
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_alloc_firmware` does not
+    interact with any AI Accelerator (AIA) relevant operations such as memory pinning,
+    DMA address handling, or shared memory management. It primarily focuses on allocating
+    a firmware name for a remote processor (rproc) and does not involve any operations
+    that would typically be associated with AIA integration.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a utility function that is likely called
+    from other parts of the kernel code but does not directly interface with user
+    space.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    typically represent shared memory identifiers (SMIDs). The only structure involved
+    is `rproc`, which is used internally to manage firmware names.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    or relevant fields that would qualify as SMIDs in the context of this function.
+    Overall, the function is focused on firmware management for a remote processor
+    and does not engage in any operations relevant to AI Accelerator integration,
+    user space interaction, or message structure handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_validate
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rproc_validate` does not involve
+    any operations related to shared memory management or interactions with an AI
+    Accelerator (AIA). It primarily checks the state of a remote processor (`rproc`)
+    and validates whether the necessary operations (like `start` or `attach`) are
+    defined based on the state. There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any DMA-related operations, which are typically associated
+    with AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point for user space interactions with the kernel, such as through `ioctl()` commands.
+    It does not handle any user commands or dispatch to deeper kernel logic that would
+    lead to AIA-related functions. The function is purely a validation routine and
+    does not process any user input or commands.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it deal with any structures that would typically
+    contain Shared Memory Identifiers (SMIDs) or other relevant metadata. The absence
+    of such operations indicates that there are no message structures being exchanged
+    between user space and kernel space.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that qualify as Shared Memory Identifiers. In summary, the `rproc_validate`
+    function is focused on validating the state of a remote processor and does not
+    engage in any operations relevant to shared memory management or AI Accelerator
+    integration. Therefore, all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_enable_iommu
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_enable_iommu` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily deals with enabling an IOMMU (Input-Output Memory Management Unit)
+    for a remote processor (`rproc`). The operations performed include allocating
+    an IOMMU domain, attaching a device to that domain, and setting a fault handler.
+    None of these operations involve pinning user pages, obtaining physical or DMA
+    addresses, or managing DMA buffers, which are typical characteristics of functions
+    that would score higher in this category.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an `ioctl()` function.
+    There are no user commands being handled or any dispatching logic that would lead
+    to deeper kernel logic related to AIA. The function is a straightforward implementation
+    of enabling IOMMU for a device, and it does not interact with user space.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    exchanged between user space and kernel space in this function. The function does
+    not utilize `copy_from_user()` or `copy_to_user()` calls, nor does it handle any
+    structures that would involve shared memory identifiers (SMIDs). The operations
+    are purely internal to the kernel and do not involve communication with user space.'
+  - '**Message Structures Identified**: None identified. The function does not define
+    or manipulate any structures that would be relevant for message handling.'
+  - '**SMIDs Identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not deal with memory management in the context
+    of shared memory between user space and an AI Accelerator. In summary, the function
+    `rproc_enable_iommu` is focused on IOMMU management and does not engage in any
+    activities related to AI Accelerator integration, user space interactions, or
+    message structure handling. Therefore, all scores are assigned as zero.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:devm_rproc_alloc
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `devm_rproc_alloc` does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    allocates a resource processor (`rproc`) structure and manages its lifecycle using
+    device resource management functions. There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any DMA-related operations that would typically be associated
+    with AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is purely an internal kernel function for resource management.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The `rproc` structure itself does not contain fields
+    that would qualify as SMIDs related to memory sharing with an AIA.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any user-defined message structures or handle any data exchange that would
+    involve user space.'
+  - '**SMID''s identified**: None identified. The `rproc` structure does not contain
+    any fields that represent shared memory identifiers or any relevant addresses
+    that would be used in the context of AIA memory management. In summary, the `devm_rproc_alloc`
+    function is focused on allocating and managing a resource processor structure
+    without any direct relevance to AI Accelerator integration, user space interactions,
+    or message structure handling.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:devm_rproc_add
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `devm_rproc_add` does not involve
+    any operations related to shared memory management or interactions with an AI
+    Accelerator (AIA). It primarily deals with adding a remote processor (rproc) to
+    a device, which does not include pinning user pages, obtaining physical addresses,
+    or managing DMA buffers. Therefore, the confidence score for AIA relevance is
+    0%.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, as it does not handle any ioctl commands
+    or user commands that would trigger deeper kernel logic. The function is a straightforward
+    device management function and does not interact with user space directly. Thus,
+    the score for KD entry point relevance is also 0%.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). Therefore, the score for message structure handling
+    is 0%.'
+  - '**Message Structures identified**: None identified. The function does not involve
+    any structures that would be exchanged between user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function or its associated structures. In summary, the function
+    `devm_rproc_add` is focused on device management and does not engage in any operations
+    relevant to shared memory or AI Accelerator integration, leading to a complete
+    lack of relevance in the specified categories.'
+- Function/Code_Block_Name: drivers/remoteproc/remoteproc_core.c:rproc_auto_boot_callback
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rproc_auto_boot_callback` does
+    not involve any operations related to shared memory (SMem) with an AI Accelerator
+    (AIA). It primarily handles the booting of a remote processor (`rproc`) and does
+    not include any memory management functions such as `get_user_pages`, `pin_user_pages`,
+    or DMA address handling. Therefore, it receives a score of 0%.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` function. It is a
+    callback function that is invoked after firmware loading, which does not involve
+    user commands or kernel logic leading to AIA-related functions. Hence, it also
+    receives a score of 0%.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it deal with structures that would
+    qualify as containing Shared Memory Identifiers (SMIDs). Therefore, it receives
+    a score of 0%.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures.'
+  - '**SMID''s identified**: None identified. There are no fields or structures that
+    correspond to SMIDs in this function. In summary, the function `rproc_auto_boot_callback`
+    is focused on booting a remote processor and does not engage in any operations
+    related to shared memory management or user-kernel communication that would be
+    relevant to AI Accelerator integration.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_init
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The `rpmsg_init` function does not involve
+    any operations related to shared memory (SMem) with an AI Accelerator (AIA). It
+    primarily registers a Virtio driver, which is not directly related to the memory
+    management or data transfer mechanisms typically associated with AI accelerators.
+    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
+    DMA-related operations.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is purely for driver registration and does not interact with user
+    space.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The absence of any relevant structures or memory management
+    patterns further supports a score of 0.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would be relevant for message handling or shared
+    memory identification.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers in
+    the function that would qualify as SMIDs, as it does not deal with memory addresses,
+    descriptors, or any identifiers related to shared memory. In summary, the `rpmsg_init`
+    function is focused solely on registering a Virtio driver and does not engage
+    in any operations that would be relevant to AI Accelerator integration, user space
+    interactions, or message structure handling.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_probe
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 70
+  Message_Structure_Handling: 90
+  Message_Structures_identified:
+  - '[virtproc_info'
+  - rpmsg_device
+  - scatterlist]
+  SMIDs_identified:
+  - '[dma_address'
+  - src
+  - dst
+  - bufs_dma]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is involved in
+    setting up communication between the host and a remote processor via the RPMsg
+    protocol. It allocates coherent memory for buffers using `dma_alloc_coherent`,
+    which is critical for DMA operations. The function also initializes virtqueues
+    for message passing, which is essential for shared memory communication with an
+    AI Accelerator (AIA). The presence of `virtqueue_add_inbuf` indicates that it
+    prepares buffers for receiving messages, which is a key aspect of AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (70)**: The function acts as an entry point for
+    the RPMsg device driver, which is typically invoked during device initialization.
+    While it does not directly handle ioctl commands, it sets up the necessary structures
+    and resources that would be used in subsequent ioctl calls for memory management
+    and message handling. The initialization of `virtproc_info` and `rpmsg_device`
+    structures suggests that it prepares the driver for handling user-space requests,
+    which could include commands related to shared memory.'
+  - '**Message_Structure_Handling Score (90)**: The function handles several message
+    structures, particularly `virtproc_info`, `rpmsg_device`, and `scatterlist`. The
+    `scatterlist` structure is used for managing DMA buffers, which are critical for
+    transferring data between the host and the AIA. The `virtproc_info` structure
+    contains fields like `bufs_dma`, which is a direct reference to the DMA address
+    of the allocated buffers, making it a potential SMID. The `rpmsg_device` structure
+    includes fields for source and destination addresses (`src`, `dst`), which are
+    also relevant for identifying shared memory regions.'
+  - '**Message Structures Identified**:'
+  - '`virtproc_info`: Contains fields for managing the RPMsg device, including buffers
+    and their DMA addresses.'
+  - '`rpmsg_device`: Holds information about the RPMsg device, including source and
+    destination addresses.'
+  - '`scatterlist`: Used for managing DMA buffers, containing fields for DMA addresses
+    and lengths.'
+  - '**SMID''s Identified**:'
+  - '`dma_address`: Represents the DMA address of the allocated buffers, crucial for
+    AIA communication.'
+  - '`src` and `dst`: Source and destination addresses in the `rpmsg_device`, indicating
+    the communication endpoints.'
+  - '`bufs_dma`: The DMA address of the coherent memory allocated for buffers, which
+    is essential for data transfer between the CPU and the AIA. Overall, the function
+    `rpmsg_probe` plays a significant role in setting up the necessary infrastructure
+    for shared memory communication with an AI Accelerator, justifying the high scores
+    in AIA relevance and message structure handling.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+  AIARelevantFunction: 60
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - struct scatterlist
+  SMIDs_identified:
+  - dma_address
+  Reasoning:
+  - '**AIARelevantFunction (60%)**: The function `rpmsg_sg_init` initializes a scatterlist
+    structure, which is often used in DMA operations to describe memory regions for
+    data transfer. The use of `sg_set_page` and `sg_init_one` indicates that it is
+    preparing memory for potential DMA operations, which is relevant for AI Accelerator
+    integration. However, the function does not directly handle user pages or memory
+    mapping for an AI Accelerator, which lowers the score slightly.'
+  - '**Relevant_KD_Entry_Point (0%)**: This function does not represent an entry point
+    from user space to kernel space. It does not involve any ioctl commands or user
+    commands that would trigger deeper kernel logic. Therefore, it receives a score
+    of 0%.'
+  - '**Message_Structure_Handling (70%)**: The function handles a `scatterlist` structure,
+    which is a message structure used in the context of memory management for DMA.
+    The fields within `scatterlist`, such as `dma_address`, are relevant for identifying
+    shared memory identifiers (SMIDs). The presence of `copy_from_user()` or `copy_to_user()`
+    calls is not evident in this function, but the initialization of the scatterlist
+    suggests that it is preparing to handle data that may be transferred between user
+    space and kernel space.'
+  - '**Message Structures identified**: The `scatterlist` structure is identified
+    as it is directly manipulated in the function. It contains fields such as `dma_address`,
+    which is crucial for DMA operations.'
+  - '**SMID''s identified**: The `dma_address` field in the `scatterlist` structure
+    qualifies as a shared memory identifier (SMID) since it represents the DMA address
+    that the AI Accelerator would use to access the shared memory region. In summary,
+    while the function is relevant to memory management for DMA, it does not directly
+    interact with user space or provide an entry point for commands related to AI
+    Accelerator operations. The handling of the `scatterlist` structure indicates
+    potential for shared memory management, but the lack of direct user interaction
+    limits its relevance in that context.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_virtio_add_ctrl_dev
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rpmsg_virtio_add_ctrl_dev`
+    does not involve any operations related to shared memory management or direct
+    interaction with an AI Accelerator (AIA). It primarily focuses on adding a control
+    device for the RPMsg (Remote Processor Messaging) framework, which is not directly
+    related to memory management or DMA operations typically associated with AI accelerators.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as through ioctl commands. It is a
+    static function that is likely called internally within the kernel, specifically
+    for setting up the RPMsg control device. There are no ioctl codes or user commands
+    being handled in this function.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures or contain Shared Memory Identifiers (SMIDs). The function
+    primarily allocates and initializes structures related to the RPMsg framework.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    used within this function that would qualify as SMIDs, such as device virtual
+    addresses, physical addresses, or DMA addresses. In summary, the function `rpmsg_virtio_add_ctrl_dev`
+    is focused on setting up an RPMsg control device and does not engage in any operations
+    relevant to shared memory management or AI Accelerator integration. Therefore,
+    all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_create_ept` does
+    not involve any operations related to shared memory management or direct interaction
+    with an AI Accelerator (AIA). It primarily focuses on creating an endpoint for
+    the RPMsg (Remote Processor Messaging) framework, which is not directly related
+    to memory management or DMA operations typically associated with AIA integration.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. It is a static
+    function that is likely called internally within the kernel, and there are no
+    indications of user commands or ioctl codes being processed.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures or contain Shared Memory Identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any structures that would be considered message structures in the context
+    of shared memory or communication with an AIA.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    involved that would qualify as SMIDs, such as device virtual addresses, physical
+    addresses, or DMA addresses. In summary, the function `virtio_rpmsg_create_ept`
+    is focused on creating an RPMsg endpoint and does not engage in any operations
+    related to shared memory management, user-space communication, or AIA integration.
+    Therefore, all confidence scores are assigned as zero.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct rpmsg_hdr]'
+  SMIDs_identified:
+  - '[src'
+  - dst
+  - reserved
+  - len]
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rpmsg_recv_done` does not interact
+    with an AI Accelerator (AIA) or shared memory management relevant to AIA operations.
+    It primarily handles message reception through a virtqueue, which is part of the
+    VirtIO framework for inter-processor communication. There are no calls to functions
+    like `get_user_pages`, `pin_user_pages`, or any DMA-related operations that would
+    typically be associated with AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space. It is a callback function that processes
+    received messages from a virtqueue, which is typically invoked by the VirtIO framework
+    when messages are available. There are no ioctl commands or user-space interactions
+    present in this function.'
+  - '**Message_Structure_Handling Score (80%)**: The function processes messages of
+    type `struct rpmsg_hdr`, which is defined to include fields such as `src`, `dst`,
+    `reserved`, `len`, and `data`. The function uses `virtqueue_get_buf` to retrieve
+    messages from the virtqueue, indicating that it handles message structures effectively.
+    The presence of `copy_from_user` or `copy_to_user` is not applicable here, as
+    the function operates directly on the message structure retrieved from the virtqueue.'
+  - '**Message Structures identified**: The primary message structure identified is
+    `struct rpmsg_hdr`, which contains fields that are relevant for message handling
+    in the context of inter-processor communication.'
+  - '**SMID''s identified**: The fields `src`, `dst`, `reserved`, and `len` from `struct
+    rpmsg_hdr` can be considered as SMIDs since they identify the source and destination
+    of the message and provide metadata about the message length. Overall, while the
+    function is well-structured for handling messages, it does not engage with AIA-specific
+    operations or serve as a kernel entry point, leading to low scores in those categories.
+    The handling of message structures is significant, hence the higher score in that
+    area.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct rpmsg_hdr'
+  - struct scatterlist]
+  SMIDs_identified:
+  - '[src'
+  - dst
+  - reserved
+  - len
+  - flags
+  - dma_address]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single` does not
+    directly interact with an AI Accelerator (AIA) or shared memory management relevant
+    to AI accelerators. It primarily handles message reception in a remote processor
+    communication context, which does not involve pinning user pages, DMA address
+    management, or memory mapping for an AIA. Therefore, the confidence score for
+    AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an ioctl command. It is
+    a callback function that processes messages received from a remote processor,
+    rather than handling user commands or ioctl codes. Thus, the score for KD entry
+    point relevance is also 0%.'
+  - '**Message Structure Handling Score (80)**: The function processes a message structure
+    (`struct rpmsg_hdr`) and utilizes a scatterlist (`struct scatterlist`) for buffer
+    management. The function extracts fields from the `rpmsg_hdr` structure, such
+    as `src`, `dst`, `len`, and `flags`, which are critical for message handling.
+    The presence of `copy_from_user()` or `copy_to_user()` calls is not evident, but
+    the function does manage message data and validates its length, indicating a strong
+    handling of message structures. Therefore, the score for message structure handling
+    is 80%.'
+  - '**Message Structures Identified**: The function utilizes `struct rpmsg_hdr` for
+    message headers, which contains fields like `src`, `dst`, `len`, and `flags`.
+    Additionally, it uses `struct scatterlist` for managing buffers, which includes
+    fields like `dma_address` and `length`.'
+  - '**SMID''s Identified**: The fields identified as potential SMIDs include `src`,
+    `dst`, `reserved`, `len`, and `flags` from `struct rpmsg_hdr`, which are essential
+    for identifying the source and destination of messages. The `dma_address` from
+    `struct scatterlist` is also relevant for memory management in the context of
+    DMA operations. In summary, while the function does not directly relate to AIA
+    or KD entry points, it effectively handles message structures and manages relevant
+    fields that could be considered SMIDs in the context of message passing.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_channel
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_create_channel`
+    does not involve any operations related to shared memory management or direct
+    interaction with an AI Accelerator (AIA). It primarily creates a communication
+    channel using the `rpmsg_device` and `rpmsg_channel_info` structures. There are
+    no calls to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related
+    operations that would typically be associated with AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` handler. It does not
+    handle any user commands or ioctl codes that would trigger deeper kernel logic
+    leading to AIA-related functions. The function is a straightforward implementation
+    that creates a channel and does not interact with user space.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. While it takes a pointer to `rpmsg_channel_info`, it
+    does not perform any operations that involve copying data from user space to kernel
+    space or vice versa (e.g., no `copy_from_user()` or `copy_to_user()` calls). The
+    function simply uses the `chinfo` parameter to create a channel without any message
+    structure manipulation.'
+  - '**Message Structures identified**: None identified. The `rpmsg_channel_info`
+    structure is passed as a parameter, but it is not used in a way that qualifies
+    it as a message structure in the context of shared memory or communication.'
+  - '**SMID''s identified**: None identified. The function does not deal with any
+    shared memory identifiers (SMIDs) such as device virtual addresses, physical addresses,
+    or DMA addresses. The structures involved do not contain fields that would qualify
+    as SMIDs in the context of shared memory management. In summary, the function
+    `virtio_rpmsg_create_channel` is focused on creating a communication channel and
+    does not engage in any operations related to shared memory management or user-kernel
+    interactions that would be relevant to AI Accelerator integration.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_announce_create
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct rpmsg_ns_msg]'
+  SMIDs_identified:
+  - '[addr'
+  - flags]
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_announce_create`
+    does not interact with an AI Accelerator (AIA) or shared memory management relevant
+    to AIA operations. It primarily deals with announcing a service to a remote processor
+    using the RPMsg protocol, which is not directly related to memory management or
+    DMA operations typically associated with AIA integration.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent a kernel
+    entry point from user space, such as an ioctl handler. It is a static function
+    that is likely called within the context of the RPMsg framework, but it does not
+    handle any user commands or ioctl codes that would indicate a user-space to kernel-space
+    transition.'
+  - '**Message_Structure_Handling Score (80%)**: The function handles a message structure
+    `rpmsg_ns_msg`, which is used to communicate the announcement of a service. The
+    fields of interest in this structure include:'
+  - '`name`: A character array that holds the name of the service being announced.'
+  - '`addr`: An address field that is converted to a specific format using `cpu_to_rpmsg32`,
+    which indicates that it is likely a physical or logical address relevant to the
+    communication.'
+  - '`flags`: This field is also converted using `cpu_to_rpmsg32` and indicates the
+    type of announcement being made (in this case, `RPMSG_NS_CREATE`).'
+  - '**Message Structures Identified**: The only message structure identified is `struct
+    rpmsg_ns_msg`, which is crucial for the communication process in this function.'
+  - '**SMID''s Identified**: The identified SMIDs are:'
+  - '`addr`: This represents the address of the endpoint being announced, which is
+    critical for routing messages correctly.'
+  - '`flags`: This indicates the type of operation being performed, which is essential
+    for the remote processor to understand the context of the message. Overall, while
+    the function does not directly relate to AIA operations or kernel entry points,
+    it does handle message structures that are significant for communication in the
+    RPMsg framework, justifying a high score in message structure handling.'
+dma_operations:
+- Function/Code_Block_Name: rproc_alloc_carveout
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[rproc_mem_entry]'
+  SMIDs_identified:
+  - '[dma'
+  - da
+  - va]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout` is involved
+    in allocating coherent DMA memory, which is crucial for AI Accelerator integration.
+    It uses `dma_alloc_coherent`, which is a key function for managing shared memory
+    between the CPU and an AI Accelerator. The function also checks and maps device
+    addresses, which is essential for ensuring that the AI Accelerator can access
+    the allocated memory. The presence of DMA address handling and memory allocation
+    indicates a strong relevance to AIA operations, hence the high score.'
+  - '**Relevant_KD_Entry_Point Score (60)**: While this function does not directly
+    represent an entry point from user space (like an ioctl handler), it is likely
+    called from higher-level functions that handle user commands. The context suggests
+    that it is part of a larger driver framework that interacts with user space, but
+    without explicit ioctl handling in this function, the score is moderate.'
+  - '**Message_Structure_Handling Score (70)**: The function handles the `rproc_mem_entry`
+    structure, which contains fields relevant to memory management, such as `va` (virtual
+    address), `dma` (DMA address), and `da` (device address). The function uses `copy_from_user`
+    and `copy_to_user` indirectly through the `mem` parameter, which is a pointer
+    to `rproc_mem_entry`. This structure is critical for managing shared memory identifiers
+    (SMIDs) and facilitates communication between user space and kernel space. The
+    presence of these fields justifies a solid score in this category.'
+  - '**Message Structures identified**: The `rproc_mem_entry` structure is identified
+    as it is passed to the function and contains relevant fields for memory management.'
+  - '**SMID''s identified**: The fields `dma`, `da`, and `va` from the `rproc_mem_entry`
+    structure are identified as SMIDs. These fields represent the DMA address, device
+    address, and virtual address, respectively, which are essential for the AI Accelerator
+    to access the allocated memory. Overall, the function demonstrates a strong connection
+    to memory management for AI Accelerator integration, with relevant structures
+    and fields that facilitate shared memory operations.'
+- Function/Code_Block_Name: rpmsg_probe
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 70
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - '[virtproc_info'
+  - rpmsg_device
+  - scatterlist]
+  SMIDs_identified:
+  - '[bufs_dma'
+  - dma_address]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is involved in
+    setting up communication between the host and a remote processor using the RPMsg
+    protocol, which often involves shared memory management. The function allocates
+    coherent memory using `dma_alloc_coherent`, which is critical for DMA operations
+    and allows the AI Accelerator (AIA) to access the memory. The use of `virtqueue_add_inbuf`
+    to set up receive buffers also indicates that this function is relevant for AIA
+    operations, as it prepares the buffers for data transfer between the CPU and the
+    AIA.'
+  - '**Relevant_KD_Entry_Point Score (70)**: The function serves as an entry point
+    for initializing the RPMsg device, which can be triggered from user space through
+    various ioctl commands related to RPMsg. While the specific ioctl codes are not
+    explicitly mentioned in the function, the context of the function suggests it
+    is part of a larger driver that handles such commands. The initialization of the
+    `virtio_device` and the setup of the `virtqueue` indicate that it is a critical
+    point for user-space interactions leading to AIA operations.'
+  - '**Message_Structure_Handling Score (60)**: The function handles several structures
+    that are exchanged between user space and kernel space. The `virtproc_info` structure
+    is used to manage the state of the RPMsg device, including buffers and queues.
+    The `scatterlist` structure is used to manage the memory buffers for DMA operations,
+    which is essential for transferring data to and from the AIA. The `rpmsg_device`
+    structure is also relevant as it encapsulates the device''s properties and operations.
+    However, the function does not explicitly show `copy_from_user` or `copy_to_user`
+    calls, which would typically indicate direct message structure handling.'
+  - '**Message Structures Identified**:'
+  - '`virtproc_info`: This structure contains fields like `vdev`, `rvq`, `svq`, `rbufs`,
+    `sbufs`, `num_bufs`, and `buf_size`, which are essential for managing the buffers
+    and queues for communication.'
+  - '`rpmsg_device`: This structure includes fields like `dev`, `id`, `src`, `dst`,
+    and `ops`, which are important for identifying the device and its operations.'
+  - '`scatterlist`: This structure is used for managing scatter-gather I/O, with fields
+    like `page_link`, `offset`, `length`, and `dma_address`, which are crucial for
+    DMA operations.'
+  - '**SMIDs Identified**:'
+  - '`bufs_dma`: This field in the `virtproc_info` structure holds the DMA address
+    of the allocated buffers, which is critical for the AIA to access the shared memory.'
+  - '`dma_address`: This field in the `scatterlist` structure represents the DMA address
+    for the memory segment, which is essential for the AIA''s memory access. Overall,
+    the function `rpmsg_probe` plays a significant role in setting up the communication
+    infrastructure necessary for the AIA to interact with the host memory, making
+    it relevant for both AIA operations and kernel entry points.'
+Top_Analysis:
+  AIARelevantFunction:
+    description: Top 10 functions ranked by AIARelevantFunction score
+    functions:
+    - rank: 1
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_carveout
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is critical for enabling
+        communication between the CPU and an AI Accelerato...'
+    - rank: 2
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_probe
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        via the RPMsg protocol. It allocates coherent memory for ...'
+    - rank: 3
+      function_name: rproc_alloc_carveout
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is crucial for AI Accelerator
+        integration. It uses `dma_alloc_coherent`, wh...'
+    - rank: 4
+      function_name: rpmsg_probe
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        using the RPMsg protocol, which often involves shared mem...'
+    - rank: 5
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_vring
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rproc_alloc_vring`
+        is involved in allocating resources for a virtual ring (vring) that is likely
+        used for communication between the CPU and an AI Acce...'
+    - rank: 6
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      score: 60
+      reasoning: The function `rpmsg_sg_init` initializes a scatterlist structure,
+        which is often used in DMA operations to describe memory regions for data
+        transfer. The use of `sg_set_page` and `sg_init_one` indicates that it is
+        preparing memory for potential DMA operations, which is relevant for AI Accelerator
+        integration. However, the function does not directly handle user pages or
+        memory mapping for an AI Accelerator, which lowers the score slightly.
+    - rank: 7
+      function_name: drivers/dma-buf/heaps/carveout-heap.c:rmem_dma_heap_carveout_setup
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rmem_dma_heap_carveout_setup`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would t...'
+    - rank: 8
+      function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_init_areas
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_init_areas`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would ...'
+    - rank: 9
+      function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_export
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `carveout_dma_heap_export`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on creating and ...'
+    - rank: 10
+      function_name: drivers/remoteproc/remoteproc_core.c:remoteproc_init
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `remoteproc_init` function
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a workqueue and sets...'
+  Relevant_KD_Entry_Point:
+    description: Top 10 functions ranked by Relevant_KD_Entry_Point score
+    functions:
+    - rank: 1
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_probe
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        via the RPMsg protocol. It allocates coherent memory for ...'
+    - rank: 2
+      function_name: rpmsg_probe
+      operation_type: dma_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        using the RPMsg protocol, which often involves shared mem...'
+    - rank: 3
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_carveout
+      operation_type: functions_by_file
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is critical for enabling
+        communication between the CPU and an AI Accelerato...'
+    - rank: 4
+      function_name: rproc_alloc_carveout
+      operation_type: dma_operations
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is crucial for AI Accelerator
+        integration. It uses `dma_alloc_coherent`, wh...'
+    - rank: 5
+      function_name: drivers/dma-buf/heaps/carveout-heap.c:rmem_dma_heap_carveout_setup
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rmem_dma_heap_carveout_setup`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would t...'
+    - rank: 6
+      function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_init_areas
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_init_areas`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would ...'
+    - rank: 7
+      function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_export
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `carveout_dma_heap_export`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on creating and ...'
+    - rank: 8
+      function_name: drivers/remoteproc/remoteproc_core.c:remoteproc_init
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `remoteproc_init` function
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a workqueue and sets...'
+    - rank: 9
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_init_panic
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_init_panic`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily registers a notifier callb...'
+    - rank: 10
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `rproc_alloc` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initializi...'
+  Message_Structure_Handling:
+    description: Top 10 functions ranked by Message_Structure_Handling score
+    functions:
+    - rank: 1
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_probe
+      operation_type: functions_by_file
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        via the RPMsg protocol. It allocates coherent memory for ...'
+      message_structures_identified:
+      - '[virtproc_info'
+      - rpmsg_device
+      - scatterlist]
+      smids_identified:
+      - '[dma_address'
+      - src
+      - dst
+      - bufs_dma]
+    - rank: 2
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_vring
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rproc_alloc_vring`
+        is involved in allocating resources for a virtual ring (vring) that is likely
+        used for communication between the CPU and an AI Acce...'
+      message_structures_identified:
+      - '[fw_rsc_vdev'
+      - rproc_mem_entry]
+      smids_identified:
+      - '[da'
+      - notifyid
+      - dma
+      - rsc_offset]
+    - rank: 3
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_trace
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_handle_trace`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily handles trace resources and does not ...'
+      message_structures_identified:
+      - '[struct fw_rsc_trace'
+      - struct rproc_debug_trace]
+      smids_identified:
+      - '[da (Device Address)'
+      - len (Length)]
+    - rank: 4
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_recv_done`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily handles message r...'
+      message_structures_identified:
+      - '[struct rpmsg_hdr]'
+      smids_identified:
+      - '[src'
+      - dst
+      - reserved
+      - len]
+    - rank: 5
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AI accelerators. It primarily handle...'
+      message_structures_identified:
+      - '[struct rpmsg_hdr'
+      - struct scatterlist]
+      smids_identified:
+      - '[src'
+      - dst
+      - reserved
+      - len
+      - flags
+      - dma_address]
+    - rank: 6
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_announce_create
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_announce_create`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily deal...'
+      message_structures_identified:
+      - '[struct rpmsg_ns_msg]'
+      smids_identified:
+      - '[addr'
+      - flags]
+    - rank: 7
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_vdev
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_handle_vdev`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. It primarily handles the registration of...'
+      message_structures_identified:
+      - '[struct fw_rsc_vdev'
+      - struct rproc_vdev_data]
+      smids_identified:
+      - '[id'
+      - rsc_offset
+      - rsc->id
+      - rsc->num_of_vrings
+      - rsc->config_len]
+    - rank: 8
+      function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_carveout
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is critical for enabling
+        communication between the CPU and an AI Accelerato...'
+      message_structures_identified:
+      - '[struct rproc_mem_entry]'
+      smids_identified:
+      - '[mem->da'
+      - mem->dma
+      - mem->va]
+    - rank: 9
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      score: 70
+      reasoning: The function handles a `scatterlist` structure, which is a message
+        structure used in the context of memory management for DMA. The fields within
+        `scatterlist`, such as `dma_address`, are relevant for identifying shared
+        memory identifiers (SMIDs). The presence of `copy_from_user()` or `copy_to_user()`
+        calls is not evident in this function, but the initialization of the scatterlist
+        suggests that it is preparing to handle data that may be transferred between
+        user space and kernel space.
+      message_structures_identified:
+      - struct scatterlist
+      smids_identified:
+      - dma_address
+    - rank: 10
+      function_name: rproc_alloc_carveout
+      operation_type: dma_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is crucial for AI Accelerator
+        integration. It uses `dma_alloc_coherent`, wh...'
+      message_structures_identified:
+      - '[rproc_mem_entry]'
+      smids_identified:
+      - '[dma'
+      - da
+      - va]
+  Overall_Top_Scores:
+    description: All function scores sorted from highest to lowest across all categories
+    total_entries: 132
+    entries:
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_probe
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        via the RPMsg protocol. It allocates coherent memory for ...'
+      message_structures:
+      - '[virtproc_info'
+      - rpmsg_device
+      - scatterlist]
+      smids:
+      - '[dma_address'
+      - src
+      - dst
+      - bufs_dma]
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_vring
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rproc_alloc_vring`
+        is involved in allocating resources for a virtual ring (vring) that is likely
+        used for communication between the CPU and an AI Acce...'
+      message_structures:
+      - '[fw_rsc_vdev'
+      - rproc_mem_entry]
+      smids:
+      - '[da'
+      - notifyid
+      - dma
+      - rsc_offset]
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_trace
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_handle_trace`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily handles trace resources and does not ...'
+      message_structures:
+      - '[struct fw_rsc_trace'
+      - struct rproc_debug_trace]
+      smids:
+      - '[da (Device Address)'
+      - len (Length)]
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_carveout
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is critical for enabling
+        communication between the CPU and an AI Accelerato...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_probe
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        via the RPMsg protocol. It allocates coherent memory for ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_recv_done`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily handles message r...'
+      message_structures:
+      - '[struct rpmsg_hdr]'
+      smids:
+      - '[src'
+      - dst
+      - reserved
+      - len]
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AI accelerators. It primarily handle...'
+      message_structures:
+      - '[struct rpmsg_hdr'
+      - struct scatterlist]
+      smids:
+      - '[src'
+      - dst
+      - reserved
+      - len
+      - flags
+      - dma_address]
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_announce_create
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_announce_create`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily deal...'
+      message_structures:
+      - '[struct rpmsg_ns_msg]'
+      smids:
+      - '[addr'
+      - flags]
+    - function_name: rproc_alloc_carveout
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is crucial for AI Accelerator
+        integration. It uses `dma_alloc_coherent`, wh...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_probe
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        using the RPMsg protocol, which often involves shared mem...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_vdev
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_handle_vdev`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. It primarily handles the registration of...'
+      message_structures:
+      - '[struct fw_rsc_vdev'
+      - struct rproc_vdev_data]
+      smids:
+      - '[id'
+      - rsc_offset
+      - rsc->id
+      - rsc->num_of_vrings
+      - rsc->config_len]
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_vring
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rproc_alloc_vring`
+        is involved in allocating resources for a virtual ring (vring) that is likely
+        used for communication between the CPU and an AI Acce...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_carveout
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is critical for enabling
+        communication between the CPU and an AI Accelerato...'
+      message_structures:
+      - '[struct rproc_mem_entry]'
+      smids:
+      - '[mem->da'
+      - mem->dma
+      - mem->va]
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_probe
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        via the RPMsg protocol. It allocates coherent memory for ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: The function handles a `scatterlist` structure, which is a message
+        structure used in the context of memory management for DMA. The fields within
+        `scatterlist`, such as `dma_address`, are relevant for identifying shared
+        memory identifiers (SMIDs). The presence of `copy_from_user()` or `copy_to_user()`
+        calls is not evident in this function, but the initialization of the scatterlist
+        suggests that it is preparing to handle data that may be transferred between
+        user space and kernel space.
+      message_structures:
+      - struct scatterlist
+      smids:
+      - dma_address
+    - function_name: rproc_alloc_carveout
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is crucial for AI Accelerator
+        integration. It uses `dma_alloc_coherent`, wh...'
+      message_structures:
+      - '[rproc_mem_entry]'
+      smids:
+      - '[dma'
+      - da
+      - va]
+    - function_name: rpmsg_probe
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        using the RPMsg protocol, which often involves shared mem...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_carveout
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is critical for enabling
+        communication between the CPU and an AI Accelerato...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 60
+      reasoning: The function `rpmsg_sg_init` initializes a scatterlist structure,
+        which is often used in DMA operations to describe memory regions for data
+        transfer. The use of `sg_set_page` and `sg_init_one` indicates that it is
+        preparing memory for potential DMA operations, which is relevant for AI Accelerator
+        integration. However, the function does not directly handle user pages or
+        memory mapping for an AI Accelerator, which lowers the score slightly.
+      message_structures: []
+      smids: []
+    - function_name: rproc_alloc_carveout
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rproc_alloc_carveout`
+        is involved in allocating coherent DMA memory, which is crucial for AI Accelerator
+        integration. It uses `dma_alloc_coherent`, wh...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_probe
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `rpmsg_probe` is
+        involved in setting up communication between the host and a remote processor
+        using the RPMsg protocol, which often involves shared mem...'
+      message_structures:
+      - '[virtproc_info'
+      - rpmsg_device
+      - scatterlist]
+      smids:
+      - '[bufs_dma'
+      - dma_address]
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:rmem_dma_heap_carveout_setup
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rmem_dma_heap_carveout_setup`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would t...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:rmem_dma_heap_carveout_setup
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rmem_dma_heap_carveout_setup`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would t...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:rmem_dma_heap_carveout_setup
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rmem_dma_heap_carveout_setup`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would t...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_init_areas
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_init_areas`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_init_areas
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_init_areas`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_init_areas
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_init_areas`
+        does not interact with an AI Accelerator (AIA) or perform any operations related
+        to shared memory management that would ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_export
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `carveout_dma_heap_export`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on creating and ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_export
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `carveout_dma_heap_export`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on creating and ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_export
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `carveout_dma_heap_export`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on creating and ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:remoteproc_init
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `remoteproc_init` function
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a workqueue and sets...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:remoteproc_init
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `remoteproc_init` function
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a workqueue and sets...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:remoteproc_init
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `remoteproc_init` function
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a workqueue and sets...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_init_panic
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_init_panic`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily registers a notifier callb...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_init_panic
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_init_panic`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily registers a notifier callb...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_init_panic
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_init_panic`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily registers a notifier callb...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `rproc_alloc` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initializi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `rproc_alloc` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initializi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The `rproc_alloc` function does
+        not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on allocating and initializi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_ops
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_ops`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on allocating and i...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_ops
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_ops`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on allocating and i...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_ops
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_ops`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on allocating and i...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_add` does
+        not involve any operations related to shared memory (SMem) with an AI Accelerator
+        (AIA). It primarily deals with adding a remote proce...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_add` does
+        not involve any operations related to shared memory (SMem) with an AI Accelerator
+        (AIA). It primarily deals with adding a remote proce...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_add` does
+        not involve any operations related to shared memory (SMem) with an AI Accelerator
+        (AIA). It primarily deals with adding a remote proce...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_trigger_auto_boot
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_trigger_auto_boot`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on booting ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_trigger_auto_boot
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_trigger_auto_boot`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on booting ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_trigger_auto_boot
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_trigger_auto_boot`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on booting ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_boot
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `rproc_boot` function does
+        not interact with any AI Accelerator (AIA) relevant functions or memory management
+        patterns that would typically involve shared memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_boot
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `rproc_boot` function does
+        not interact with any AI Accelerator (AIA) relevant functions or memory management
+        patterns that would typically involve shared memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_boot
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `rproc_boot` function does
+        not interact with any AI Accelerator (AIA) relevant functions or memory management
+        patterns that would typically involve shared memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_attach
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_attach` does
+        not involve any operations related to shared memory management or direct interaction
+        with an AI Accelerator (AIA). It primarily focu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_attach
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_attach` does
+        not involve any operations related to shared memory management or direct interaction
+        with an AI Accelerator (AIA). It primarily focu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_attach
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_attach` does
+        not involve any operations related to shared memory management or direct interaction
+        with an AI Accelerator (AIA). It primarily focu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_set_rsc_table
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_set_rsc_table`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with setting up a reso...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_set_rsc_table
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_set_rsc_table`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with setting up a reso...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_set_rsc_table
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_set_rsc_table`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with setting up a reso...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_resources
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_handle_resources`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily handles resources associa...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_resources
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_handle_resources`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily handles resources associa...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_resources
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_handle_resources`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily handles resources associa...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_vdev
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_handle_vdev`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. It primarily handles the registration of...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_vdev
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_handle_vdev`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. It primarily handles the registration of...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_parse_vring
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_parse_vring`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on parsing and validati...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_parse_vring
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_parse_vring`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on parsing and validati...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_parse_vring
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_parse_vring`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on parsing and validati...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_vring
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rproc_alloc_vring`
+        is involved in allocating resources for a virtual ring (vring) that is likely
+        used for communication between the CPU and an AI Acce...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_find_carveout_by_name
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_find_carveout_by_name`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily searches for a memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_find_carveout_by_name
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_find_carveout_by_name`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily searches for a memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_find_carveout_by_name
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_find_carveout_by_name`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily searches for a memory...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_carveout
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_add_carveout`
+        does not involve any operations related to shared memory management or AI
+        Accelerator integration. It simply adds a memory entry (`...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_carveout
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_add_carveout`
+        does not involve any operations related to shared memory management or AI
+        Accelerator integration. It simply adds a memory entry (`...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_carveout
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_add_carveout`
+        does not involve any operations related to shared memory management or AI
+        Accelerator integration. It simply adds a memory entry (`...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_mem_entry_init
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_mem_entry_init`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a `rproc_mem_ent...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_mem_entry_init
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_mem_entry_init`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a `rproc_mem_ent...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_mem_entry_init
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_mem_entry_init`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily initializes a `rproc_mem_ent...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_rvdev
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_add_rvdev`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It simply adds a vi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_rvdev
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_add_rvdev`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It simply adds a vi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_rvdev
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_add_rvdev`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It simply adds a vi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_subdev
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_add_subdev`
+        does not involve any operations related to shared memory management, DMA,
+        or interactions with an AI Accelerator. It simply adds a su...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_subdev
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_add_subdev`
+        does not involve any operations related to shared memory management, DMA,
+        or interactions with an AI Accelerator. It simply adds a su...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_add_subdev
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_add_subdev`
+        does not involve any operations related to shared memory management, DMA,
+        or interactions with an AI Accelerator. It simply adds a su...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_trace
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_handle_trace`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily handles trace resources and does not ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_handle_trace
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_handle_trace`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily handles trace resources and does not ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_registered_carveouts
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_registered_carveouts`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily deals with allocating memory for ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_registered_carveouts
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_registered_carveouts`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily deals with allocating memory for ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_registered_carveouts
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_registered_carveouts`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily deals with allocating memory for ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_prepare_subdevices
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_prepare_subdevices`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primaril...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_prepare_subdevices
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_prepare_subdevices`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primaril...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_prepare_subdevices
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_prepare_subdevices`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primaril...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_start_subdevices
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_start_subdevices`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on starting ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_start_subdevices
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_start_subdevices`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on starting ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_start_subdevices
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_start_subdevices`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily focuses on starting ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_of_parse_firmware
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_of_parse_firmware`
+        does not interact with any AI Accelerator (AIA) relevant operations. It primarily
+        reads a firmware name from a device''s device...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_of_parse_firmware
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_of_parse_firmware`
+        does not interact with any AI Accelerator (AIA) relevant operations. It primarily
+        reads a firmware name from a device''s device...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_of_parse_firmware
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_of_parse_firmware`
+        does not interact with any AI Accelerator (AIA) relevant operations. It primarily
+        reads a firmware name from a device''s device...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_firmware
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_firmware`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory pinning, DMA address handling, or shared memor...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_firmware
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_firmware`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory pinning, DMA address handling, or shared memor...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_alloc_firmware
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_alloc_firmware`
+        does not interact with any AI Accelerator (AIA) relevant operations such as
+        memory pinning, DMA address handling, or shared memor...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_validate
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_validate`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily checks ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_validate
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_validate`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily checks ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_validate
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rproc_validate`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily checks ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_enable_iommu
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_enable_iommu`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with enabling an IOMMU (...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_enable_iommu
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_enable_iommu`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with enabling an IOMMU (...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_enable_iommu
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_enable_iommu`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with enabling an IOMMU (...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:devm_rproc_alloc
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `devm_rproc_alloc`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily allocates a resource processor (...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:devm_rproc_alloc
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `devm_rproc_alloc`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily allocates a resource processor (...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:devm_rproc_alloc
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `devm_rproc_alloc`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily allocates a resource processor (...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:devm_rproc_add
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `devm_rproc_add`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily deals wi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:devm_rproc_add
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `devm_rproc_add`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily deals wi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:devm_rproc_add
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `devm_rproc_add`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily deals wi...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_auto_boot_callback
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_auto_boot_callback`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily handles the bootin...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_auto_boot_callback
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_auto_boot_callback`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily handles the bootin...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/remoteproc/remoteproc_core.c:rproc_auto_boot_callback
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rproc_auto_boot_callback`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily handles the bootin...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_init
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `rpmsg_init` function does
+        not involve any operations related to shared memory (SMem) with an AI Accelerator
+        (AIA). It primarily registers a Virtio driver, which...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_init
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `rpmsg_init` function does
+        not involve any operations related to shared memory (SMem) with an AI Accelerator
+        (AIA). It primarily registers a Virtio driver, which...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_init
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `rpmsg_init` function does
+        not involve any operations related to shared memory (SMem) with an AI Accelerator
+        (AIA). It primarily registers a Virtio driver, which...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: This function does not represent an entry point from user space to
+        kernel space. It does not involve any ioctl commands or user commands that
+        would trigger deeper kernel logic. Therefore, it receives a score of 0%.
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_virtio_add_ctrl_dev
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_virtio_add_ctrl_dev`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_virtio_add_ctrl_dev
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_virtio_add_ctrl_dev`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_virtio_add_ctrl_dev
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_virtio_add_ctrl_dev`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_create_ept`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It pri...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_create_ept`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It pri...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_create_ept`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It pri...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_recv_done`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily handles message r...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_recv_done`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily handles message r...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AI accelerators. It primarily handle...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AI accelerators. It primarily handle...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_channel
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_create_channel`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_channel
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_create_channel`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_channel
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_create_channel`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_announce_create
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_announce_create`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily deal...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_announce_create
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_announce_create`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily deal...'
+      message_structures: []
+      smids: []

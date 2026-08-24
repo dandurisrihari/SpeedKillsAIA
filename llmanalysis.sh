@@ -6,8 +6,14 @@ PLATFORMS=("nxp" "ti" "coral" "aws" "hailo" "nvidia")
 
 # Input/output directories
 INPUT_DIR="data/json_files"
-OUTPUT_DIR="data/llmanalysis"
-LOG_DIR="data/llmanalysis"
+ANALYSIS_DIR="data/llmanalysis"
+RUN_TIMESTAMP="$(date +'%Y%m%d_%H%M%S_%N')"
+RUN_DIR="${ANALYSIS_DIR}/${RUN_TIMESTAMP}_$$"
+OUTPUT_DIR="$RUN_DIR"
+LOG_DIR="$RUN_DIR"
+
+mkdir -p "$RUN_DIR"
+echo "Writing outputs and logs to $RUN_DIR"
 
 # Loop over platforms and run for both dmesg + boot in background
 for PLATFORM in "${PLATFORMS[@]}"; do

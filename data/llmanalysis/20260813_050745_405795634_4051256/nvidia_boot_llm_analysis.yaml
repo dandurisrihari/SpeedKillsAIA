@@ -1,0 +1,3124 @@
+functions_by_file:
+- Function/Code_Block_Name: drivers/gpu/nvgpu/os/linux/linux-dma.c:nvgpu_iommuable
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvgpu_iommuable` does not interact
+    with shared memory or perform any operations that would typically be associated
+    with AI Accelerator integration. It primarily checks if the device associated
+    with the `gk20a` structure is IOMMU-able by querying the IOMMU domain for the
+    device. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any memory management functions that would be relevant for AIA operations.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point for user space interactions with the kernel, such as through `ioctl()` commands.
+    It does not handle any user commands or dispatch to deeper kernel logic that would
+    lead to AIA-related functionality. There are no ioctl codes referenced in this
+    function.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. It does not utilize `copy_from_user()` or `copy_to_user()`
+    calls, nor does it pass any structures that would involve Shared Memory Identifiers
+    (SMIDs). The function is purely a check and does not involve any data exchange
+    between user space and kernel space.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers related
+    to shared memory or memory management that would qualify as SMIDs. In summary,
+    the function `nvgpu_iommuable` is focused on checking the IOMMU capability of
+    a device and does not engage in any operations relevant to shared memory management
+    or AI Accelerator integration. Therefore, all confidence scores are assigned as
+    0%.'
+- Function/Code_Block_Name: drivers/gpu/nvgpu/os/linux/platform_gk20a_tegra.c:gk20a_tegra_idle
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gk20a_tegra_idle` does not
+    perform any operations related to shared memory management or interactions with
+    an AI Accelerator (AIA). It primarily logs an entry message and calls a function
+    (`nvgpu_nvhost_module_idle_ext`) if a certain condition is met (i.e., if `g->nvhost`
+    is not NULL). There are no calls to functions that would pin user pages, manage
+    DMA buffers, or handle memory mapping for an AIA.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point for user space interactions with the kernel, such as through `ioctl()` commands.
+    There are no `ioctl` handling mechanisms or user commands being processed in this
+    function, which would typically indicate a kernel driver entry point.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it manipulate any structures that would represent
+    shared memory identifiers (SMIDs) or message structures.'
+  - '**Message Structures Identified**: None identified. The function does not interact
+    with any structures that would be relevant for message handling.'
+  - '**SMIDs Identified**: None identified. There are no fields or structures in the
+    function that correspond to shared memory identifiers or any relevant memory management
+    patterns. Overall, the function `gk20a_tegra_idle` is primarily focused on logging
+    and managing the idle state of a device without engaging in any operations that
+    would be relevant to shared memory or AI Accelerator interactions.'
+- Function/Code_Block_Name: drivers/gpu/nvgpu/os/linux/platform_gk20a_tegra.c:gk20a_tegra_busy
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `gk20a_tegra_busy` does not
+    involve any operations related to shared memory management or interactions with
+    an AI Accelerator (AIA). It primarily checks if the `nvhost` field of the `gk20a`
+    structure is set and calls another function (`nvgpu_nvhost_module_busy_ext`) if
+    it is. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any other memory management functions that would typically be associated with
+    AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as through an `ioctl()` function.
+    There are no `ioctl` command codes being handled, nor is there any dispatching
+    of user commands that would lead to deeper kernel logic related to AIA operations.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not perform any `copy_from_user()`
+    or `copy_to_user()` operations, nor does it involve any structures that would
+    typically contain Shared Memory Identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would be exchanged between user space and kernel
+    space.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    that correspond to SMIDs, such as device virtual addresses, physical addresses,
+    or any other identifiers that would indicate shared memory usage. In summary,
+    the function `gk20a_tegra_busy` is primarily concerned with checking the state
+    of the `nvhost` and does not engage in any operations that would be relevant to
+    shared memory management or AI Accelerator integration. Therefore, all scores
+    are assigned as 0%.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_free_handle_from_fd
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle_from_fd`
+    does not interact with an AI Accelerator (AIA) or shared memory (SMem) management.
+    It primarily deals with freeing a handle associated with a client and does not
+    involve pinning user pages, obtaining physical addresses, or managing DMA buffers.
+    Therefore, it does not meet the criteria for AIA relevance.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space, such as through an ioctl command. It is
+    a utility function that operates on an `nvmap_client` and `nvmap_handle`, but
+    it does not handle any user commands or ioctl codes that would trigger deeper
+    kernel logic related to AIA operations.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    qualify as message structures or contain Shared Memory Identifiers (SMIDs). The
+    function focuses on managing the lifecycle of a handle and does not interact with
+    user-space data.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    that correspond to shared memory identifiers or any relevant memory management
+    patterns associated with AIA. In summary, the function `nvmap_free_handle_from_fd`
+    is focused on freeing resources associated with a handle and does not engage in
+    any operations relevant to AI Accelerator integration, user-space communication,
+    or shared memory management.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_alloc.c:is_nvmap_id_ro
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `is_nvmap_id_ro` does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    checks if a given NVMAP ID is read-only by interacting with DMA buffers. There
+    are no calls to functions like `get_user_pages`, `pin_user_pages`, or any memory
+    management functions that would typically be associated with AIA memory sharing.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as through `ioctl()` commands. It
+    does not handle any user commands or dispatch to deeper kernel logic that would
+    lead to AIA-related functions. The function is purely a utility function that
+    operates on the `nvmap_client` and `dma_buf` structures without any user interaction.'
+  - '**Message Structure Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that contain Shared Memory
+    Identifiers (SMIDs). The structures involved (`nvmap_client`, `nvmap_handle_info`,
+    and `dma_buf`) do not contain fields that would qualify as SMIDs in the context
+    of AIA memory sharing.'
+  - '**Message Structures identified**: None identified. The function does not exchange
+    any message structures between user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the analyzed
+    structures that correspond to SMIDs relevant to AIA operations. In summary, the
+    function `is_nvmap_id_ro` is focused on checking the read-only status of a DMA
+    buffer associated with a given NVMAP ID and does not engage in any operations
+    that would be relevant to AI Accelerator integration or shared memory management.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_free_handle
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle` does not
+    interact with an AI Accelerator (AIA) or shared memory (SMem) directly. It primarily
+    deals with freeing a handle associated with a memory buffer, which is not indicative
+    of the typical operations required for AIA integration, such as pinning user pages,
+    managing DMA buffers, or memory mapping for AIA devices.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would typically lead to deeper kernel logic related to AIA
+    operations. The function is more of a cleanup routine rather than an interface
+    for user-space interactions.'
+  - '**Message Structure Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The function is focused on managing internal references
+    and freeing resources rather than exchanging data with user space.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would be relevant for AIA or shared
+    memory operations.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    that correspond to SMIDs, such as device virtual addresses, physical addresses,
+    or DMA addresses. In summary, the function `nvmap_free_handle` is primarily concerned
+    with memory management and reference counting for a specific handle, and does
+    not engage in any operations that would be relevant to AI Accelerator integration
+    or shared memory management. Thus, all scores are assigned as 0%.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_alloc.c:_nvmap_handle_free
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `_nvmap_handle_free` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on freeing resources associated with a `nvmap_handle`, which
+    includes managing DMA buffers and releasing memory. There are no calls to functions
+    that pin user pages, obtain physical addresses, or manage DMA buffers in a way
+    that would facilitate AIA access to host memory regions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space, as it does not handle any ioctl commands
+    or user commands. It is a cleanup function that is likely called internally within
+    the kernel, rather than being invoked directly from user space.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The function is focused on resource deallocation rather
+    than communication between user space and kernel space.'
+  - '**Message Structures Identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged between user space
+    and kernel space.'
+  - '**SMIDs Identified**: None identified. There are no fields or structures in the
+    function that qualify as SMIDs, as it does not deal with shared memory identifiers
+    or any related metadata. In summary, the function `_nvmap_handle_free` is primarily
+    concerned with resource management and does not engage in any operations that
+    would be relevant to AI Accelerator integration, user-kernel communication, or
+    message structure handling.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_heap_pgfree
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvmap_heap_pgfree` does not
+    interact with any AI Accelerator (AIA) related memory management functions. It
+    primarily deals with freeing memory allocated for a `nvmap_handle` structure,
+    specifically calling `dma_free_attrs` to release DMA memory. There are no indications
+    of pinning user pages, obtaining physical addresses, or managing DMA buffers that
+    are typical in AIA relevant functions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` handler. It is a static
+    function that is likely called internally within the kernel, and there are no
+    user commands or ioctl codes being handled. Therefore, it does not serve as a
+    relevant kernel driver entry point.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The function focuses solely on freeing memory and
+    does not exchange data with user space.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would typically be exchanged between
+    user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the `nvmap_handle`
+    structure or any other structures involved in this function that qualify as SMIDs,
+    such as device virtual addresses, physical addresses, or DMA addresses. In summary,
+    the function `nvmap_heap_pgfree` is focused on memory management for a specific
+    handle and does not engage in any operations relevant to AI Accelerator integration,
+    user space interactions, or message structure handling.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_heap_pgalloc_dev
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `nvmap_heap_pgalloc_dev` does
+    not interact with any AI Accelerator (AIA) relevant memory management functions
+    such as pinning user pages, obtaining physical addresses, or managing DMA buffers.
+    It primarily focuses on allocating a device structure based on a type parameter
+    and does not involve any operations that would typically be associated with shared
+    memory management for an AI Accelerator.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an ioctl interface. There
+    are no ioctl commands being handled, nor does the function serve as a dispatch
+    point for user commands. It is a static function that does not interact with user
+    space directly.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). The function simply returns a pointer to a `device`
+    structure based on the provided type.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would typically be exchanged between
+    user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not deal with memory management or shared
+    memory concepts relevant to an AI Accelerator. In conclusion, the function `nvmap_heap_pgalloc_dev`
+    is primarily concerned with device allocation and does not engage in any operations
+    that would be relevant to AI Accelerator integration, user space interactions,
+    or message structure handling.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_altfree
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `nvmap_altfree` does not interact
+    with any AI Accelerator (AIA) relevant operations. It is primarily concerned with
+    freeing memory based on the size of the pointer provided. There are no operations
+    related to shared memory, DMA addresses, or memory mapping that would typically
+    be associated with AIA functions.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic. It simply performs memory
+    deallocation based on the input parameters.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it deal with any structures that would contain
+    Shared Memory Identifiers (SMIDs). The function is straightforward and does not
+    involve any complex data structures or message passing.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any structures that would be relevant for message handling.'
+  - '**SMID''s identified**: None identified. There are no identifiers or handles
+    related to shared memory or memory management that would qualify as SMIDs in this
+    context. Overall, the function is a simple memory management routine that does
+    not engage with the AIA or any relevant kernel entry points or message structures.
+    It is focused solely on freeing memory, which does not align with the criteria
+    for AIA relevance or message structure handling.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:dmabuf_is_nvmap
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dmabuf_is_nvmap` does not involve
+    any operations related to shared memory management or interactions with an AI
+    Accelerator (AIA). It simply checks if the `exp_name` field of the `dma_buf` structure
+    matches a predefined name (`dmabuf_name`). There are no calls to functions like
+    `get_user_pages`, `pin_user_pages`, or any memory mapping operations that would
+    typically be associated with AIA interactions.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` handler. There are
+    no user commands being processed, nor is there any dispatching of commands that
+    would lead to deeper kernel logic. The function is a simple utility function that
+    checks a condition and returns a boolean value.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it deal with any structures that would typically
+    contain Shared Memory Identifiers (SMIDs). The `dma_buf` structure is referenced,
+    but it is not involved in any communication between user space and kernel space
+    in this context.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would be relevant for shared memory or AIA operations.'
+  - '**SMID''s identified**: None identified. There are no fields in the `dma_buf`
+    structure being used as SMIDs in this function, nor is there any indication of
+    shared memory identifiers being utilized. In summary, the function `dmabuf_is_nvmap`
+    is a straightforward utility function that checks a property of a `dma_buf` structure
+    and does not engage in any operations relevant to shared memory management or
+    AI Accelerator integration. Therefore, all confidence scores are assigned as zero.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:_nvmap_dmabuf_unmap_dma_buf
+  AIARelevantFunction: 40
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 60
+  Message_Structures_identified: []
+  SMIDs_identified:
+  - '[dma_buf'
+  - device
+  - nvmap_handle
+  - sg_table]
+  Reasoning:
+  - '**AIARelevantFunction Score (40)**: The function `_nvmap_dmabuf_unmap_dma_buf`
+    is primarily focused on unmapping a DMA buffer and does not directly involve operations
+    that share memory with an AI Accelerator (AIA). While it does interact with DMA
+    buffers and manages memory mappings, it does not perform operations like pinning
+    user pages, obtaining physical addresses, or programming AIA device page tables.
+    Therefore, the score reflects a moderate relevance to AIA functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space. There are no ioctl commands or user commands
+    being handled within this function. It is a utility function that operates on
+    DMA buffers and does not serve as a dispatcher for user commands leading to AIA-related
+    functionality.'
+  - '**Message_Structure_Handling Score (60)**: The function does not explicitly handle
+    message structures exchanged between user space and kernel space. However, it
+    does manipulate structures like `dma_buf`, `sg_table`, and `nvmap_handle_info`,
+    which are relevant to memory management and DMA operations. The presence of these
+    structures indicates some level of interaction with memory management, but there
+    are no direct `copy_from_user()` or `copy_to_user()` calls, leading to a moderate
+    score.'
+  - '**Message Structures identified**: None identified. The function does not directly
+    handle any user-defined message structures that would typically be exchanged with
+    user space.'
+  - '**SMID''s identified**: The identified SMIDs include:'
+  - '`dma_buf`: Represents the DMA buffer being managed.'
+  - '`device`: Represents the device associated with the DMA buffer.'
+  - '`nvmap_handle`: Represents the handle for the NVMAP memory management.'
+  - '`sg_table`: Represents the scatter-gather table used for DMA operations. The
+    function primarily focuses on unmapping a DMA buffer and managing associated resources,
+    which is essential for proper memory management in the context of DMA operations,
+    but it does not directly engage with AIA-specific memory sharing or user-space
+    interactions.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_get_drv_data
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvmap_dmabuf_get_drv_data`
+    does not interact with an AI Accelerator (AIA) or shared memory management relevant
+    to AIA operations. It primarily retrieves driver data associated with a `dma_buf`
+    structure, which is not directly related to the memory management patterns typically
+    associated with AIA integration, such as pinning user pages or managing DMA buffers.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point for user space to kernel interactions, such as through `ioctl()` commands.
+    It does not handle any user commands or ioctl codes that would trigger deeper
+    kernel logic leading to AIA-related functions.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    qualify as message structures or contain Shared Memory Identifiers (SMIDs).'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would typically be exchanged between user
+    space and kernel space.'
+  - '**SMID''s identified**: None identified. The function does not deal with any
+    identifiers or fields that would be classified as SMIDs, such as device virtual
+    addresses, physical addresses, or DMA addresses. In summary, the function is focused
+    on retrieving driver data from a `dma_buf` structure and does not engage in any
+    operations relevant to AIA integration, user-space interactions, or message structure
+    handling.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_detach
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvmap_dmabuf_detach` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily deals with detaching a DMA buffer from a device, which does not include
+    pinning user pages, obtaining physical addresses, or managing DMA buffers for
+    communication with an AIA. Therefore, the confidence score for AIA relevance is
+    0%.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. There are no
+    ioctl commands being processed or dispatched in this function. It is a static
+    function that operates on DMA buffers and does not interact with user commands
+    or trigger deeper kernel logic leading to AIA-related functions. Hence, the score
+    for KD entry point relevance is also 0%.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that involve Shared
+    Memory Identifiers (SMIDs) being passed. The function simply logs information
+    and accesses the `nvmap_handle_info` structure, which does not qualify as a message
+    structure in the context of shared memory communication. Therefore, the score
+    for message structure handling is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    accessed that would qualify as SMIDs related to shared memory communication. In
+    summary, the function `nvmap_dmabuf_detach` is focused on detaching a DMA buffer
+    and does not engage in any operations relevant to AIA integration, user space
+    interactions, or message structure handling.'
+- Function/Code_Block_Name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `nvmap_dmabuf_release` does not
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily focuses on releasing a DMA buffer and managing its associated handle.
+    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
+    memory mapping operations that would typically be associated with AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` function. It is a
+    cleanup function that is called internally to release resources associated with
+    a DMA buffer. There are no user commands being handled or any ioctl codes present
+    in this function.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls, nor are there any structures that contain Shared Memory
+    Identifiers (SMIDs) being processed. The function simply operates on the `dma_buf`
+    and `nvmap_handle_info` structures without any user-space interaction.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    that qualify as SMIDs, as the function does not deal with shared memory identifiers
+    or any relevant metadata that would indicate user-space memory access. In summary,
+    the `nvmap_dmabuf_release` function is focused on resource management for DMA
+    buffers and does not engage in any operations that would be relevant to AI Accelerator
+    integration, user-space entry points, or message structure handling.'
+dma_operations:
+- Function/Code_Block_Name: nvgpu_mm_unpin
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `nvgpu_mm_unpin` does not involve
+    any operations that directly relate to sharing memory with an AI Accelerator (AIA).
+    It primarily deals with unmapping and detaching DMA buffers, which is more about
+    managing memory resources rather than facilitating access to shared memory for
+    an AIA. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any other operations that would typically be associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an `ioctl()` function.
+    There are no indications of handling user commands or dispatching to deeper kernel
+    logic that would lead to AIA-related functions. The function is purely internal
+    and does not interact with user space.'
+  - '**Message Structure Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The operations performed are strictly related to DMA
+    buffer management and do not involve any user-space communication.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or manipulate any message structures that would be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers that
+    would qualify as Shared Memory Identifiers (SMIDs) in the context of this function.
+    In summary, the `nvgpu_mm_unpin` function is focused on the management of DMA
+    buffers and does not engage in any operations that would be relevant to AI Accelerator
+    integration, user-space interaction, or message structure handling. Therefore,
+    all confidence scores are assigned as zero.'
+- Function/Code_Block_Name: nvgpu_mm_unpin
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `nvgpu_mm_unpin` does not involve
+    any operations that directly relate to sharing memory with an AI Accelerator (AIA).
+    It primarily deals with unmapping and detaching DMA buffers, which are not specific
+    to AIA memory management or memory sharing. There are no calls to functions like
+    `get_user_pages`, `pin_user_pages`, or any other AIA-specific memory management
+    functions.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an `ioctl()` function.
+    It is a utility function that operates on DMA buffers and does not handle any
+    user commands or ioctl codes. Therefore, it does not trigger any deeper kernel
+    logic that would lead to AIA-related functions.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it involve any structures
+    that would typically contain Shared Memory Identifiers (SMIDs). The function is
+    focused on managing DMA buffer attachments and does not interact with user-defined
+    structures or metadata that would qualify as message structures.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    that correspond to shared memory identifiers or any relevant metadata that would
+    indicate interaction with user space memory. In summary, the function `nvgpu_mm_unpin`
+    is primarily concerned with the management of DMA buffers and does not engage
+    in any operations that would be relevant to AI Accelerator integration, user space
+    interactions, or message structure handling.'
+- Function/Code_Block_Name: nvgpu_vm_unmap_system
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvgpu_vm_unmap_system` does
+    not involve any operations that directly relate to sharing memory with an AI Accelerator
+    (AIA). It primarily deals with unmapping a buffer from the virtual memory space,
+    which does not include pinning user pages, obtaining physical addresses, or managing
+    DMA buffers. The function calls `nvgpu_mm_unpin` and `dma_buf_put`, which are
+    related to memory management but do not specifically target AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` function. There are
+    no user commands being handled or any ioctl codes being processed that would lead
+    to the execution of an AIA relevant function.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that involve Shared
+    Memory Identifiers (SMIDs) being passed around. The function operates solely on
+    the `mapped_buffer` structure and does not interact with user-space data.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be relevant for communication with
+    user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the `nvgpu_mapped_buf`
+    or `vm_gk20a` structures that qualify as SMIDs in the context of shared memory
+    management with an AIA. In summary, the function `nvgpu_vm_unmap_system` is focused
+    on unmapping a buffer and does not engage in any operations that would be classified
+    under AIA relevant functions, relevant kernel entry points, or message structure
+    handling.'
+- Function/Code_Block_Name: is_nvmap_id_ro
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `is_nvmap_id_ro` does not interact
+    with an AI Accelerator (AIA) or shared memory management relevant to AIA operations.
+    It primarily deals with the `nvmap_client` and `dma_buf` structures, focusing
+    on checking if a DMA buffer is read-only. There are no calls to functions that
+    would typically be associated with AIA memory management, such as `get_user_pages`,
+    `dma_map_page`, or memory mapping for an AIA device.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point for user space to kernel space interactions, such as through `ioctl()` commands.
+    There are no indications of handling specific ioctl commands that would lead to
+    AIA-related functionality. The function is a utility function that checks properties
+    of a DMA buffer rather than facilitating user-space requests.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it manipulate any
+    structures that would typically be involved in such operations. The structures
+    `nvmap_handle_info` and `dma_buf` are used, but they do not represent message
+    structures in the context of user-kernel communication.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would qualify as message structures for communication between
+    user space and kernel space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    shared memory identifiers (SMIDs) such as device virtual addresses, physical addresses,
+    or DMA addresses that would be relevant for AIA operations. In summary, the function
+    `is_nvmap_id_ro` is focused on checking the properties of a DMA buffer associated
+    with an `nvmap_client` and does not engage in any operations related to AIA or
+    shared memory management relevant to AI accelerators. Therefore, all scores are
+    assigned as 0%.'
+- Function/Code_Block_Name: nvmap_handle_get_from_id
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct nvmap_handle_info'
+  - struct nvmap_handle
+  - struct dma_buf]
+  SMIDs_identified:
+  - '[dma_buf'
+  - nvmap_handle
+  - nvmap_client
+  - file descriptor]
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id` interacts
+    with DMA buffers through the `dma_buf` structure, which is crucial for memory
+    management in the context of AI accelerators. It retrieves a DMA buffer using
+    the `dma_buf_get` function, which is essential for accessing shared memory between
+    the CPU and the AI accelerator. However, it does not directly handle memory mapping
+    or DMA operations, which lowers the score slightly.'
+  - '**Relevant_KD_Entry_Point Score (60)**: The function serves as an entry point
+    for user-space requests to obtain a handle for a DMA buffer. While it does not
+    explicitly show an ioctl command being processed, it is likely part of a larger
+    ioctl handling mechanism in the driver. The absence of a clear ioctl code in the
+    provided code limits the score.'
+  - '**Message_Structure_Handling Score (80)**: The function handles several structures
+    that are relevant for memory management and communication between user space and
+    kernel space. It uses `struct nvmap_handle_info` and `struct nvmap_handle`, which
+    are critical for managing the lifecycle of DMA buffers. The presence of `copy_from_user`
+    or `copy_to_user` calls would have increased the score, but the function does
+    not show these operations directly.'
+  - '**Message Structures Identified**: The function interacts with several structures:'
+  - '`struct nvmap_handle_info`: This structure is used to manage information about
+    the handle, including its mappings and locks.'
+  - '`struct nvmap_handle`: This structure represents the handle itself, containing
+    fields for reference counting, size, and associated DMA buffers.'
+  - '`struct dma_buf`: This structure is essential for managing the DMA buffer, including
+    its size, file association, and operations.'
+  - '**SMID''s Identified**: The following fields are identified as potential SMIDs:'
+  - '`dma_buf`: Represents the DMA buffer, which is a critical component for shared
+    memory access.'
+  - '`nvmap_handle`: Represents the handle for the memory region, which is essential
+    for managing access to the shared memory.'
+  - '`nvmap_client`: Represents the client requesting the buffer, which is important
+    for tracking ownership and access rights.'
+  - '`file descriptor`: The function uses a file descriptor to obtain the DMA buffer,
+    which is a common pattern in Linux drivers for managing resources. Overall, the
+    function demonstrates a solid understanding of memory management in the context
+    of DMA buffers, but lacks explicit ioctl handling and direct memory operations,
+    which affects the confidence scores.'
+- Function/Code_Block_Name: nvmap_handle_get_from_id
+  AIARelevantFunction: 60
+  Relevant_KD_Entry_Point: 70
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct nvmap_handle_info'
+  - struct dma_buf]
+  SMIDs_identified:
+  - '[dma_buf*'
+  - nvmap_handle*
+  - nvmap_client*
+  - size_t
+  - u32]
+  Reasoning:
+  - '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id` interacts
+    with DMA buffers through the `dma_buf` structure, which is relevant for AI Accelerator
+    integration. It retrieves a DMA buffer using its ID and checks if it is valid.
+    The function also manages references to the DMA buffer, which is crucial for memory
+    management in shared memory contexts. However, it does not directly handle memory
+    mapping or DMA address programming, which are more critical for AIA access, hence
+    the score is not higher.'
+  - '**Relevant_KD_Entry_Point Score (70)**: The function serves as an entry point
+    for user space to kernel interactions, particularly through the use of DMA buffer
+    IDs. The use of `dma_buf_get` and `dma_buf_put` indicates that it is handling
+    user commands related to memory management. While it does not explicitly show
+    ioctl handling, the context suggests it could be part of a larger ioctl command
+    handling mechanism, thus earning a reasonably high score.'
+  - '**Message_Structure_Handling Score (80)**: The function utilizes structures like
+    `nvmap_handle_info` and `dma_buf`, which are involved in managing shared memory
+    and DMA buffers. The presence of `copy_from_user` or `copy_to_user` is not directly
+    shown in this function, but the structures involved suggest that they could be
+    part of the message structures exchanged with user space. The function''s operations
+    on these structures indicate a strong handling of message structures.'
+  - '**Message Structures Identified**:'
+  - '`struct nvmap_handle_info`: This structure contains a pointer to `nvmap_handle`
+    and a list of memory mappings, which is relevant for managing shared memory.'
+  - '`struct dma_buf`: This structure represents a DMA buffer and contains fields
+    like size, file pointer, and various locks, which are essential for memory management.'
+  - '**SMID''s Identified**:'
+  - '`dma_buf*`: Represents the DMA buffer handle, which is crucial for accessing
+    shared memory.'
+  - '`nvmap_handle*`: Represents the handle to the NVMAP memory, which is also a key
+    identifier for shared memory.'
+  - '`nvmap_client*`: Represents the client structure, which is involved in managing
+    client-specific resources.'
+  - '`size_t`: Represents the size of the DMA buffer, which is important for memory
+    allocation and management.'
+  - '`u32`: Represents various flags and identifiers, which can be used to manage
+    memory and access permissions. Overall, the function demonstrates a solid understanding
+    of memory management and DMA buffer handling, which are critical for AI Accelerator
+    integration, but lacks direct interaction with AIA-specific memory mapping or
+    DMA address programming, leading to the assigned scores.'
+- Function/Code_Block_Name: nvmap_handle_get_from_id
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[nvmap_handle_info'
+  - dma_buf
+  - nvmap_client]
+  SMIDs_identified:
+  - '[dma_buf*'
+  - nvmap_handle*
+  - nvmap_client*]
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id` interacts
+    with DMA buffers, which are crucial for memory management in AI Accelerator contexts.
+    It retrieves a DMA buffer using its ID and checks if it is valid. The function
+    also manages references to `nvmap_handle`, which is essential for memory management
+    between the CPU and the AI Accelerator. However, it does not directly handle shared
+    memory or DMA addresses, which slightly lowers the score.'
+  - '**Relevant_KD_Entry_Point Score (60)**: The function does not explicitly represent
+    an entry point from user space to kernel space, such as an ioctl handler. However,
+    it does utilize a DMA buffer ID, which could be associated with user commands
+    that would typically be handled in an ioctl context. The presence of the `nvmap_client`
+    structure indicates that it may be part of a larger interface that could include
+    ioctl commands, but this function itself does not directly handle any ioctl codes.'
+  - '**Message_Structure_Handling Score (80)**: The function handles several structures
+    that are relevant for message passing between user space and kernel space. The
+    `nvmap_handle_info` structure contains a handle to `nvmap_handle`, which is critical
+    for managing memory. The `dma_buf` structure is also significant as it represents
+    the DMA buffer being manipulated. The function uses `dma_buf_get` and `dma_buf_put`,
+    which are essential for managing the lifecycle of DMA buffers, indicating a robust
+    handling of message structures.'
+  - '**Message Structures Identified**: The function utilizes the following structures:'
+  - '`nvmap_handle_info`: Contains a handle to `nvmap_handle` and is used to manage
+    mappings.'
+  - '`dma_buf`: Represents the DMA buffer, which is crucial for memory operations.'
+  - '`nvmap_client`: Represents the client interacting with the memory management
+    system.'
+  - '**SMID''s Identified**: The function interacts with several pointers that can
+    be considered SMIDs:'
+  - '`dma_buf*`: Represents the DMA buffer being accessed.'
+  - '`nvmap_handle*`: Represents the handle to the memory being managed.'
+  - '`nvmap_client*`: Represents the client that owns the handle. Overall, the function
+    demonstrates a solid understanding of memory management in the context of DMA
+    buffers, which is relevant for AI Accelerator integration, but it lacks direct
+    interaction with shared memory identifiers or explicit user-space entry points.'
+- Function/Code_Block_Name: nvmap_handle_get_from_id
+  AIARelevantFunction: 60
+  Relevant_KD_Entry_Point: 70
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[nvmap_handle_info'
+  - dma_buf]
+  SMIDs_identified:
+  - '[dma_buf*'
+  - nvmap_handle*
+  - nvmap_client*
+  - nvmap_handle_info*]
+  Reasoning:
+  - '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id` interacts
+    with DMA buffers through the `dma_buf` structure, which is relevant for AI Accelerator
+    integration as it manages memory buffers that can be shared between the CPU and
+    the AIA. The function retrieves a DMA buffer using its ID and checks if it is
+    valid, which is a critical operation for memory management in the context of AI
+    accelerators. However, it does not directly handle memory mapping or DMA operations
+    that are typically associated with AIA functions, hence the score is not higher.'
+  - '**Relevant_KD_Entry_Point Score (70)**: The function can be considered an entry
+    point for user-space requests to access DMA buffers. It utilizes the `dma_buf_get`
+    function, which is often called from user space, indicating that it serves as
+    a bridge between user commands and kernel operations. The presence of the `nvmap_client`
+    structure suggests that it is part of a larger interface for managing shared memory,
+    which is relevant for AIA operations. The score reflects its role as a user-space
+    interface, but it does not explicitly handle ioctl commands, which would have
+    increased the score.'
+  - '**Message_Structure_Handling Score (80)**: The function handles structures that
+    are exchanged between user space and kernel space, specifically `nvmap_handle_info`
+    and `dma_buf`. The `dma_buf` structure contains fields such as `size`, `file`,
+    and `priv`, which are relevant for managing shared memory. The use of `copy_from_user`
+    and `copy_to_user` is not explicitly shown in this function, but the interaction
+    with DMA buffers implies that such operations are likely part of the broader context
+    in which this function operates. The score reflects the handling of message structures,
+    but the absence of explicit user copy operations lowers it slightly.'
+  - '**Message Structures identified**: The function interacts with `nvmap_handle_info`,
+    which contains a pointer to `nvmap_handle`, and `dma_buf`, which is crucial for
+    managing DMA memory. These structures are essential for understanding how memory
+    is shared and managed between the CPU and AIA.'
+  - '**SMID''s identified**: The identified SMIDs include pointers to `dma_buf`, `nvmap_handle`,
+    and `nvmap_client`, which represent shared memory identifiers and handles used
+    to manage memory access. The `dma_buf` structure''s `priv` field can also be considered
+    a SMID as it may contain additional context or identifiers relevant to the buffer''s
+    usage. Overall, the function demonstrates significant interaction with memory
+    management structures relevant to AI Accelerator integration, but it does not
+    fully encapsulate the critical operations typically associated with AIA functions,
+    leading to moderate confidence scores across the categories.'
+- Function/Code_Block_Name: nvmap_free_handle
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction**: The function `nvmap_free_handle` does not involve any
+    operations that directly relate to sharing memory with an AI Accelerator (AIA).
+    It primarily deals with freeing a handle associated with a memory allocation,
+    managing reference counts, and releasing DMA buffers. There are no calls to functions
+    like `get_user_pages`, `pin_user_pages`, or any operations that would typically
+    be associated with AIA memory management. Therefore, the confidence score is 0%.'
+  - '**Relevant_KD_Entry_Point**: The function does not serve as an entry point from
+    user space to kernel space, as it does not handle any ioctl commands or user commands
+    that would trigger deeper kernel logic leading to AIA-related functions. It is
+    a utility function for memory management within the kernel, specifically for the
+    `nvmap` subsystem. Thus, the confidence score is 0%.'
+  - '**Message_Structure_Handling**: The function does not handle any message structures
+    exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it manipulate any
+    structures that would typically be involved in such operations. The function focuses
+    on internal memory management and reference counting, which does not involve user-space
+    interaction. Therefore, the confidence score is 0%.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would be relevant for shared memory or user-space
+    communication.'
+  - '**SMID''s identified**: None identified. The function does not utilize any shared
+    memory identifiers (SMIDs) such as device virtual addresses, physical addresses,
+    or DMA addresses. In summary, the function `nvmap_free_handle` is focused on freeing
+    memory handles and managing reference counts within the kernel''s memory management
+    subsystem, without any direct relevance to AI Accelerator integration or user-space
+    communication.'
+- Function/Code_Block_Name: nvmap_free_handle
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle` does not
+    interact with an AI Accelerator (AIA) or shared memory (SMem) management relevant
+    to AIA operations. It primarily deals with freeing a handle associated with a
+    memory buffer, which does not involve pinning user pages, DMA addresses, or memory
+    mapping for an AIA. The operations performed in this function are related to reference
+    counting and memory management for the `nvmap_handle` structure, which is not
+    directly tied to AIA functionality.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space, such as through an ioctl interface. It
+    is a utility function that is likely called from other parts of the kernel code,
+    but there are no indications of it being invoked via user-space commands or ioctl
+    codes. Therefore, it does not handle any specific ioctl commands that would relate
+    it to user-space interactions.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures that would involve `copy_from_user()` or `copy_to_user()` calls. There
+    are no structures being passed between user space and kernel space that would
+    contain shared memory identifiers (SMIDs) or relevant metadata. The function focuses
+    on internal kernel memory management without any user-space interaction.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    or relevant fields in the context of AIA operations present in this function.
+    In summary, the function `nvmap_free_handle` is focused on managing memory handles
+    within the kernel and does not engage with AIA functionalities, user-space interactions,
+    or message structures that would be relevant to shared memory management for AI
+    accelerators.'
+- Function/Code_Block_Name: nvmap_ioctl_free
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 80
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - '[None identified]'
+  SMIDs_identified:
+  - '[None identified]'
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free` does not
+    directly interact with an AI Accelerator (AIA) or shared memory (SMem) management.
+    It primarily deals with freeing a DMA buffer associated with a client. The operations
+    performed (like `dma_buf_get` and `dma_buf_put`) are related to buffer management
+    rather than direct memory sharing with an AIA. Therefore, the confidence score
+    for AIA relevance is 0%.'
+  - '**Relevant_KD_Entry_Point Score (80%)**: The function serves as an entry point
+    for an IOCTL command, which is a common mechanism for user-space to kernel-space
+    communication. The function checks the validity of the `arg` parameter and retrieves
+    a `nvmap_client` structure from the `filp->private_data`. The presence of the
+    `arg` parameter suggests that it is likely handling an IOCTL command related to
+    freeing a DMA buffer, which is relevant to the kernel driver interface. However,
+    the specific IOCTL command code is not explicitly mentioned in the provided code,
+    which slightly lowers the confidence score.'
+  - '**Message_Structure_Handling Score (60%)**: The function does not explicitly
+    handle any message structures that are exchanged between user space and kernel
+    space. There are no `copy_from_user()` or `copy_to_user()` calls present, which
+    are typically used to transfer data between user and kernel space. However, the
+    function does interact with structures like `nvmap_client` and `dma_buf`, which
+    could potentially be involved in message handling. The absence of explicit message
+    structures leads to a moderate confidence score.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. The function does not reference any
+    shared memory identifiers (SMIDs) such as device virtual addresses, physical addresses,
+    or DMA addresses. Overall, while the function is an important part of the kernel''s
+    memory management for DMA buffers, it does not directly relate to AIA operations
+    or shared memory management, which is reflected in the low AIA relevance score.
+    The function''s role as an entry point for IOCTL commands is significant, but
+    the lack of explicit message structure handling and SMID references limits the
+    overall confidence in those areas.'
+- Function/Code_Block_Name: nvmap_ioctl_free
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 80
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - '[None identified]'
+  SMIDs_identified:
+  - '[None identified]'
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `nvmap_ioctl_free` does not directly
+    interact with an AI Accelerator (AIA) or shared memory management patterns typically
+    associated with AIA integration. It primarily deals with freeing a DMA buffer
+    and managing file descriptors. There are no calls to functions like `get_user_pages`,
+    `dma_map_page`, or memory management specific to AIA, which would warrant a higher
+    score.'
+  - '**Relevant_KD_Entry_Point Score (80)**: The function serves as an entry point
+    for handling IOCTL commands, specifically related to freeing DMA buffers. The
+    presence of the `filp` parameter indicates that it is invoked in response to an
+    IOCTL call from user space. The function checks the validity of the `arg` parameter
+    (which is likely a file descriptor) and calls `nvmap_free_handle_from_fd`, suggesting
+    that it processes user commands. However, the exact IOCTL command being handled
+    is not explicitly stated in the code, which prevents a perfect score.'
+  - '**Message_Structure_Handling Score (60)**: The function does not explicitly handle
+    any message structures that would typically involve `copy_from_user()` or `copy_to_user()`
+    calls. However, it does interact with a file descriptor, which could imply some
+    form of message structure handling. The `dma_buf` structure is referenced, but
+    it is not passed between user space and kernel space in this function. Therefore,
+    while there is some interaction with structures, it does not meet the criteria
+    for high confidence in message structure handling.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would typically be exchanged between user
+    space and kernel space.'
+  - '**SMID''s identified**: None identified. The function does not manage or reference
+    any shared memory identifiers (SMIDs) such as device virtual addresses, physical
+    addresses, or DMA addresses. In summary, while the function is a valid kernel
+    entry point for handling IOCTL commands, it does not engage with AIA-specific
+    memory management or message structures, leading to lower confidence scores in
+    those areas. The primary focus is on managing DMA buffers and file descriptors
+    rather than shared memory interactions with an AI Accelerator.'
+user_copy_operations:
+- Function/Code_Block_Name: user_copy:gk20a_channel_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 100
+  Message_Structure_Handling: 100
+  Message_Structures_identified:
+  - '[struct nvgpu_alloc_obj_ctx_args'
+  - struct nvgpu_channel_setup_bind_args
+  - struct nvgpu_alloc_gpfifo_ex_args
+  - struct nvgpu_wait_args
+  - struct nvgpu_set_error_notifier
+  - struct nvgpu_set_timeout_args
+  - struct nvgpu_set_timeout_ex_args
+  - struct nvgpu_get_param_args]
+  SMIDs_identified:
+  - '[userd_dmabuf_fd'
+  - gpfifo_dmabuf_fd
+  - userd_dmabuf_offset
+  - gpfifo_dmabuf_offset
+  - offset
+  - size
+  - mem]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `gk20a_channel_ioctl` does not
+    directly involve sharing memory with an AI Accelerator (AIA). It primarily serves
+    as an entry point for various IOCTL commands related to channel management in
+    the GPU context. While it handles user commands and manages resources, it does
+    not perform operations such as pinning user pages, obtaining DMA addresses, or
+    managing DMA buffers that are characteristic of AIA relevant functions.'
+  - '**Relevant_KD_Entry_Point Score (100)**: The function acts as a kernel entry
+    point for user space interactions via IOCTL commands. It validates the command
+    type and size, and it uses `copy_from_user()` to retrieve data from user space
+    into a local buffer (`buf`). The function then processes various IOCTL commands,
+    such as `NVGPU_IOCTL_CHANNEL_ALLOC_OBJ_CTX`, `NVGPU_IOCTL_CHANNEL_SETUP_BIND`,
+    and others, which are critical for managing GPU channels. This confirms its role
+    as a dispatcher for user commands leading to deeper kernel logic.'
+  - '**Message_Structure_Handling Score (100)**: The function handles multiple message
+    structures that are exchanged between user space and kernel space. It utilizes
+    `copy_from_user()` to copy data into structures like `nvgpu_alloc_obj_ctx_args`,
+    `nvgpu_channel_setup_bind_args`, and others. These structures contain fields that
+    qualify as Shared Memory Identifiers (SMIDs), such as file descriptors and offsets,
+    which are essential for managing shared resources between user space and the GPU.'
+  - '**Message Structures Identified**: The function processes several structures:'
+  - '`struct nvgpu_alloc_obj_ctx_args` (fields: class_num, flags, obj_id)'
+  - '`struct nvgpu_channel_setup_bind_args` (fields: num_gpfifo_entries, userd_dmabuf_fd,
+    gpfifo_dmabuf_fd, userd_dmabuf_offset, gpfifo_dmabuf_offset)'
+  - '`struct nvgpu_alloc_gpfifo_ex_args` (fields: num_entries, flags)'
+  - '`struct nvgpu_wait_args` (fields: type, timeout)'
+  - '`struct nvgpu_set_error_notifier` (fields: offset, size, mem)'
+  - '`struct nvgpu_set_timeout_args` (fields: timeout)'
+  - '`struct nvgpu_set_timeout_ex_args` (fields: timeout, flags)'
+  - '`struct nvgpu_get_param_args` (fields: value)'
+  - '**SMIDs Identified**: The identified SMIDs include:'
+  - '`userd_dmabuf_fd`: Represents a file descriptor for user memory.'
+  - '`gpfifo_dmabuf_fd`: Represents a file descriptor for the GPU FIFO.'
+  - '`userd_dmabuf_offset`: Offset for user data buffer.'
+  - '`gpfifo_dmabuf_offset`: Offset for GPU FIFO buffer.'
+  - '`offset`: Memory offset for error notifier.'
+  - '`size`: Size of the memory region for error notifier.'
+  - '`mem`: Memory identifier for the error notifier. Overall, the function is a robust
+    entry point for managing GPU channels, effectively handling user commands and
+    message structures, while not directly engaging in AIA-specific memory management
+    tasks.'
+- Function/Code_Block_Name: user_copy:nvgpu_channel_copy_user_gpfifo
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 100
+  Message_Structures_identified:
+  - '[struct nvgpu_gpfifo_userdata'
+  - struct nvgpu_gpfifo_entry]
+  SMIDs_identified:
+  - '[entries (pointer to nvgpu_gpfifo_entry)'
+  - context (pointer to _resmgr_context)]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `nvgpu_channel_copy_user_gpfifo`
+    does not directly interact with an AI Accelerator (AIA) or perform operations
+    that are typically associated with AIA memory management, such as pinning user
+    pages, obtaining physical addresses, or managing DMA buffers. The function primarily
+    focuses on copying data from user space to kernel space using `copy_from_user`,
+    which is not specific to AIA operations.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent a direct
+    entry point from user space to kernel space through an ioctl interface. It does
+    not handle any ioctl commands or serve as a dispatch point for user commands that
+    would lead to AIA-related functionality. The function is more of a utility for
+    copying user data rather than an entry point for AIA operations.'
+  - '**Message_Structure_Handling Score (100)**: The function effectively handles
+    message structures, specifically `struct nvgpu_gpfifo_userdata` and `struct nvgpu_gpfifo_entry`.
+    The `copy_from_user` function is used to copy data from the user-provided `user_gpfifo`
+    entries into the kernel''s `dest` structure. The `nvgpu_gpfifo_userdata` structure
+    contains a pointer to `nvgpu_gpfifo_entry`, which is crucial for understanding
+    the data being transferred. The function''s operations are centered around these
+    structures, making it highly relevant for message structure handling.'
+  - '**Message Structures Identified**:'
+  - '`struct nvgpu_gpfifo_userdata`: Contains a pointer to `entries` (which is an
+    array of `nvgpu_gpfifo_entry`) and a context pointer. This structure is essential
+    for managing the user data being copied.'
+  - '`struct nvgpu_gpfifo_entry`: Represents individual entries in the FIFO, containing
+    two `u32` fields (`entry0` and `entry1`), which are likely used for storing specific
+    data related to the GPU FIFO operations.'
+  - '**SMID''s Identified**:'
+  - '`entries`: This field in `struct nvgpu_gpfifo_userdata` is a pointer to the user
+    space entries, which can be considered a shared memory identifier (SMID) as it
+    points to the user-provided data that the kernel will access.'
+  - '`context`: Although not a direct SMID, it is a pointer to a resource manager
+    context, which may be relevant for managing resources associated with the user
+    data. Overall, the function is primarily focused on copying user data and does
+    not engage in operations that would typically be associated with AIA integration
+    or kernel entry points for AIA functionality. However, it does effectively manage
+    message structures and user data copying, which is critical for its intended purpose.'
+- Function/Code_Block_Name: user_copy:gk20a_channel_ioctl
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 85
+  Message_Structures_identified:
+  - '[nvgpu_alloc_obj_ctx_args'
+  - nvgpu_channel_setup_bind_args
+  - nvgpu_alloc_gpfifo_ex_args
+  - nvgpu_set_error_notifier
+  - nvgpu_set_timeout_args
+  - nvgpu_set_timeout_ex_args
+  - nvgpu_get_param_args]
+  SMIDs_identified:
+  - '[chid'
+  - tsgid
+  - userd_dmabuf_fd
+  - gpfifo_dmabuf_fd
+  - userd_dmabuf_offset
+  - gpfifo_dmabuf_offset
+  - timeout
+  - flags]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `gk20a_channel_ioctl` interacts
+    with various structures that are crucial for managing GPU channels and their operations,
+    which can involve shared memory management with the AI Accelerator (AIA). The
+    presence of functions like `gk20a_channel_open_ioctl`, `gk20a_channel_setup_bind`,
+    and `gk20a_channel_wait` indicates that it handles operations that may involve
+    memory mapping and DMA operations, which are essential for AIA integration. However,
+    it does not directly manage memory mapping or DMA addresses, hence the score is
+    not a full 100.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as an entry point
+    for various IOCTL commands, which are critical for user-space to kernel-space
+    communication. The use of `_IOC_TYPE`, `_IOC_NR`, and `_IOC_SIZE` checks confirms
+    that it is validating commands that will lead to deeper kernel logic execution.
+    The presence of multiple case statements handling specific IOCTL commands (e.g.,
+    `NVGPU_IOCTL_CHANNEL_ALLOC_OBJ_CTX`, `NVGPU_IOCTL_CHANNEL_SETUP_BIND`) further
+    solidifies its role as a key entry point.'
+  - '**Message_Structure_Handling Score (85)**: The function utilizes several structures
+    for communication between user space and kernel space, particularly through `copy_from_user()`
+    calls. The structures identified (e.g., `nvgpu_alloc_obj_ctx_args`, `nvgpu_channel_setup_bind_args`,
+    etc.) contain fields that are relevant for managing shared memory and channel
+    operations. The presence of fields like `userd_dmabuf_fd`, `gpfifo_dmabuf_fd`,
+    and `timeout` indicates that these structures are integral to the message handling
+    process.'
+  - '**Message Structures Identified**: The identified structures are critical for
+    the operations performed in the function. For example, `nvgpu_alloc_obj_ctx_args`
+    contains `class_num` and `flags`, which are essential for allocating object contexts,
+    while `nvgpu_channel_setup_bind_args` includes `num_gpfifo_entries` and `userd_dmabuf_fd`,
+    which are crucial for setting up bindings for GPU channels.'
+  - '**SMID''s Identified**: The identified SMIDs include various identifiers and
+    addresses that are essential for managing GPU resources. Fields like `chid` and
+    `tsgid` are identifiers for channels and task streams, while `userd_dmabuf_fd`
+    and `gpfifo_dmabuf_fd` are file descriptors that facilitate communication with
+    user-space buffers. The `timeout` and `flags` fields are also significant for
+    managing the state and behavior of the channels. Overall, the function is well-integrated
+    into the kernel''s IOCTL handling mechanism, facilitating communication and resource
+    management for GPU operations, which are essential for AI Accelerator integration.'
+- Function/Code_Block_Name: user_copy:gk20a_as_dev_ioctl
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 85
+  Message_Structures_identified:
+  - '[nvgpu_as_bind_channel_args'
+  - nvgpu32_as_alloc_space_args
+  - nvgpu_as_alloc_space_args
+  - nvgpu_as_free_space_args
+  - nvgpu_as_map_buffer_ex_args
+  - nvgpu_as_unmap_buffer_args
+  - nvgpu_as_get_va_regions_args
+  - nvgpu_as_map_buffer_batch_args
+  - nvgpu_as_get_sync_ro_map_args
+  - nvgpu_as_mapping_modify_args
+  - nvgpu_as_remap_args]
+  SMIDs_identified:
+  - '[channel_fd'
+  - pages
+  - page_size
+  - flags
+  - buffer_offset
+  - offset
+  - base_gpuva]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl` interacts
+    with various memory management operations that are relevant for an AI Accelerator
+    (AIA). It handles memory allocation, mapping, and unmapping, which are critical
+    for enabling the AIA to access shared memory. The presence of functions like `gk20a_as_ioctl_alloc_space`
+    and `gk20a_as_ioctl_map_buffer_ex` indicates that it is involved in managing memory
+    for the AIA. However, it does not directly perform operations like pinning user
+    pages or obtaining DMA addresses, which is why the score is not at 100%.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as an entry point
+    for various IOCTL commands from user space, which is a common pattern for kernel
+    drivers. It processes commands such as `NVGPU_AS_IOCTL_BIND_CHANNEL`, `NVGPU32_AS_IOCTL_ALLOC_SPACE`,
+    and others, which directly lead to memory management functions relevant for the
+    AIA. The high score reflects its critical role in dispatching user commands to
+    the appropriate kernel logic.'
+  - '**Message_Structure_Handling Score (85)**: The function utilizes several message
+    structures that are exchanged between user space and kernel space. It employs
+    `copy_from_user` and `copy_to_user` to handle these structures, indicating a robust
+    mechanism for transferring data. The identified structures include `nvgpu_as_bind_channel_args`,
+    `nvgpu32_as_alloc_space_args`, and others, which contain fields that qualify as
+    SMIDs, such as `channel_fd`, `pages`, and `buffer_offset`. The score reflects
+    the effective handling of these message structures.'
+  - '**Message Structures Identified**: The function processes multiple structures
+    that are relevant for memory management and communication with the AIA. These
+    include:'
+  - '`nvgpu_as_bind_channel_args` (channel_fd)'
+  - '`nvgpu32_as_alloc_space_args` (pages, page_size, flags)'
+  - '`nvgpu_as_alloc_space_args` (pages, page_size, flags)'
+  - '`nvgpu_as_free_space_args` (offset, pages)'
+  - '`nvgpu_as_map_buffer_ex_args` (buffer_offset)'
+  - '`nvgpu_as_unmap_buffer_args` (offset)'
+  - '`nvgpu_as_get_va_regions_args` (buf_addr, buf_size)'
+  - '`nvgpu_as_map_buffer_batch_args` (num_unmaps, num_maps)'
+  - '`nvgpu_as_get_sync_ro_map_args` (base_gpuva)'
+  - '`nvgpu_as_mapping_modify_args` (buffer_offset)'
+  - '`nvgpu_as_remap_args` (ops, num_ops)'
+  - '**SMIDs Identified**: The identified SMIDs include fields that represent shared
+    memory identifiers or relevant addresses:'
+  - '`channel_fd` from `nvgpu_as_bind_channel_args`'
+  - '`pages`, `page_size`, `flags` from `nvgpu32_as_alloc_space_args`'
+  - '`buffer_offset` from `nvgpu_as_map_buffer_ex_args`'
+  - '`offset` from `nvgpu_as_unmap_buffer_args`'
+  - '`base_gpuva` from `nvgpu_as_get_sync_ro_map_args` Overall, the function demonstrates
+    a strong integration with memory management for an AI Accelerator, effectively
+    handling user commands and managing shared memory structures.'
+- Function/Code_Block_Name: user_copy:gk20a_as_dev_ioctl
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 85
+  Message_Structures_identified:
+  - '[struct nvgpu_as_bind_channel_args'
+  - struct nvgpu32_as_alloc_space_args
+  - struct nvgpu_as_alloc_space_args
+  - struct nvgpu_as_free_space_args
+  - struct nvgpu_as_map_buffer_ex_args
+  - struct nvgpu_as_unmap_buffer_args
+  - struct nvgpu_as_get_va_regions_args
+  - struct nvgpu_as_map_buffer_batch_args
+  - struct nvgpu_as_get_sync_ro_map_args
+  - struct nvgpu_as_mapping_modify_args
+  - struct nvgpu_as_remap_args]
+  SMIDs_identified:
+  - '[channel_fd'
+  - pages
+  - page_size
+  - flags
+  - offset
+  - buffer_offset
+  - buffer_size
+  - base_gpuva
+  - num_syncpoints]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl` is involved
+    in handling various IOCTL commands that interact with the AI Accelerator (AIA).
+    It processes commands that allocate space, bind channels, map buffers, and manage
+    memory, which are critical for enabling the AIA to access and manipulate shared
+    memory. The presence of functions like `gk20a_as_ioctl_alloc_space` and `gk20a_as_ioctl_map_buffer_ex`
+    indicates that this function is indeed relevant to AIA operations, but it does
+    not directly handle low-level memory management functions like `get_user_pages`
+    or `pin_user_pages`, which is why the score is not 100%.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as an entry point
+    for user-space applications to interact with the kernel through IOCTL commands.
+    It validates the command and handles various cases based on the command type,
+    which is a typical pattern for IOCTL handlers. The use of `_IOC_TYPE`, `_IOC_NR`,
+    and `_IOC_SIZE` macros indicates a robust implementation for command validation,
+    leading to a high confidence score.'
+  - '**Message_Structure_Handling Score (85)**: The function utilizes several message
+    structures that are passed between user space and kernel space, particularly through
+    `copy_from_user` and `copy_to_user` calls. The structures identified, such as
+    `nvgpu_as_bind_channel_args`, `nvgpu32_as_alloc_space_args`, and others, contain
+    fields that are essential for managing shared memory and communication with the
+    AIA. The presence of fields like `channel_fd`, `pages`, `page_size`, and `offset`
+    indicates that these structures are integral to the function''s operation, thus
+    justifying a high score.'
+  - '**Message Structures Identified**: The function handles multiple message structures,
+    each relevant to different IOCTL commands. For example, `nvgpu_as_bind_channel_args`
+    contains `channel_fd`, which is crucial for binding a channel to the AIA. Similarly,
+    `nvgpu_as_alloc_space_args` and `nvgpu_as_free_space_args` contain fields that
+    manage memory allocation and deallocation.'
+  - '**SMID''s Identified**: The identified SMIDs include fields that represent shared
+    memory identifiers, such as `channel_fd`, `pages`, `page_size`, and `offset`.
+    These fields are critical for the AIA to understand which memory regions are being
+    accessed or modified, thus facilitating effective communication between the CPU
+    and the AIA. Overall, the function demonstrates a strong integration with AIA
+    operations, effectively managing user-space requests and facilitating memory management
+    through well-defined structures.'
+ioctl_operations:
+- Function/Code_Block_Name: gk20a_channel_ioctl
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 85
+  Message_Structures_identified:
+  - '[nvgpu_channel_open_args'
+  - nvgpu_alloc_obj_ctx_args
+  - nvgpu_channel_setup_bind_args
+  - nvgpu_alloc_gpfifo_ex_args
+  - nvgpu_submit_gpfifo_args
+  - nvgpu_wait_args
+  - nvgpu_set_error_notifier
+  - nvgpu_set_timeout_args
+  - nvgpu_set_timeout_ex_args
+  - nvgpu_get_param_args]
+  SMIDs_identified:
+  - '[userd_dmabuf_fd'
+  - gpfifo_dmabuf_fd
+  - userd_dmabuf_offset
+  - gpfifo_dmabuf_offset
+  - obj_id]
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `gk20a_channel_ioctl` interacts
+    with various structures that are relevant for managing GPU channels and their
+    operations, which may involve shared memory and DMA operations. However, it does
+    not directly handle memory mapping or DMA address programming for an AI Accelerator.
+    The presence of functions like `gk20a_channel_open_ioctl` and `nvgpu_ioctl_channel_alloc_obj_ctx`
+    indicates some level of interaction with memory management, but it is not the
+    primary focus of the function. Thus, a score of 70 reflects its relevance without
+    being a direct AIA function.'
+  - '**Relevant_KD_Entry_Point Score (90)**: This function serves as a primary entry
+    point for IOCTL commands from user space to kernel space, handling various commands
+    that interact with GPU channels. The use of `_IOC_TYPE`, `_IOC_NR`, and `_IOC_SIZE`
+    macros indicates that it is validating and processing IOCTL commands, which is
+    a typical pattern for kernel entry points. The function handles multiple commands,
+    including `NVGPU_IOCTL_CHANNEL_OPEN`, `NVGPU_IOCTL_CHANNEL_ALLOC_OBJ_CTX`, and
+    others, which are critical for channel management. Therefore, a score of 90 is
+    appropriate.'
+  - '**Message_Structure_Handling Score (85)**: The function utilizes several structures
+    for message handling, including `nvgpu_channel_open_args`, `nvgpu_alloc_obj_ctx_args`,
+    `nvgpu_channel_setup_bind_args`, and others. The presence of `copy_from_user`
+    indicates that it is transferring data between user space and kernel space, which
+    is a key aspect of message structure handling. The structures contain fields that
+    are relevant for managing GPU resources and operations, such as file descriptors
+    and offsets. The score of 85 reflects the comprehensive handling of message structures.'
+  - '**Message Structures Identified**: The function uses multiple message structures,
+    including:'
+  - '`nvgpu_channel_open_args`: Used for opening a channel.'
+  - '`nvgpu_alloc_obj_ctx_args`: Contains fields like `class_num`, `flags`, and `obj_id`,
+    which are relevant for object context allocation.'
+  - '`nvgpu_channel_setup_bind_args`: Contains fields for setting up bindings, including
+    `userd_dmabuf_fd` and `gpfifo_dmabuf_fd`, which are critical for managing user
+    DMA buffers.'
+  - '`nvgpu_alloc_gpfifo_ex_args`: Contains fields for allocating GP FIFO entries.'
+  - '`nvgpu_submit_gpfifo_args`: Contains fields for submitting GP FIFO commands.'
+  - '`nvgpu_wait_args`: Contains fields for waiting on conditions.'
+  - '`nvgpu_set_error_notifier`: Contains fields for error notification setup.'
+  - '`nvgpu_set_timeout_args` and `nvgpu_set_timeout_ex_args`: Used for setting timeouts.'
+  - '`nvgpu_get_param_args`: Used for retrieving parameters.'
+  - '**SMID''s Identified**: The function handles several fields that can be considered
+    SMIDs:'
+  - '`userd_dmabuf_fd`: A file descriptor for user DMA buffer.'
+  - '`gpfifo_dmabuf_fd`: A file descriptor for GP FIFO DMA buffer.'
+  - '`userd_dmabuf_offset`: Offset for the user DMA buffer.'
+  - '`gpfifo_dmabuf_offset`: Offset for the GP FIFO buffer.'
+  - '`obj_id`: Identifier for the object being allocated. Overall, the function demonstrates
+    a strong interaction with user-space commands and structures, making it a critical
+    component for managing GPU channels and their operations.'
+- Function/Code_Block_Name: gk20a_ioctl_channel_submit_gpfifo
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 85
+  Message_Structures_identified:
+  - '[nvgpu_submit_gpfifo_args'
+  - nvgpu_channel_fence
+  - nvgpu_user_fence
+  - nvgpu_gpfifo_userdata
+  - nvgpu_gpfifo_entry]
+  SMIDs_identified:
+  - '[gpfifo (user virtual address)'
+  - fence.id (fence identifier)
+  - fence.value (fence value)
+  - userd_iova (user data I/O virtual address)]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `gk20a_ioctl_channel_submit_gpfifo`
+    is involved in submitting a GPU FIFO command, which is critical for the interaction
+    between the CPU and the AI Accelerator (AIA). It handles user commands that involve
+    memory management and synchronization through fences, which are essential for
+    ensuring that the AIA can access the correct memory regions. The function uses
+    `nvgpu_submit_channel_gpfifo_user`, which likely interacts with the AIA''s memory
+    management, thus justifying a high score.'
+  - '**Relevant_KD_Entry_Point Score (90)**: This function serves as an entry point
+    for IOCTL commands from user space, specifically handling the `nvgpu_submit_gpfifo_args`
+    structure. The function checks flags and manages the submission of commands to
+    the GPU, which is a typical pattern for IOCTL handlers. The presence of multiple
+    checks for flags related to fence handling indicates that it is a well-defined
+    entry point for user commands, leading to a high score.'
+  - '**Message_Structure_Handling Score (85)**: The function handles several message
+    structures, particularly `nvgpu_submit_gpfifo_args`, which includes fields for
+    the GPU FIFO address, number of entries, and flags. The use of `copy_from_user`
+    and `copy_to_user` indicates that it is actively managing data transfer between
+    user space and kernel space. The function also manages synchronization through
+    fences, which are represented in the `nvgpu_channel_fence` and `nvgpu_user_fence`
+    structures. This comprehensive handling of message structures supports a high
+    score.'
+  - '**Message Structures Identified**:'
+  - '`nvgpu_submit_gpfifo_args`: Contains the fields `gpfifo`, `num_entries`, and
+    `flags`, which are crucial for the submission process.'
+  - '`nvgpu_channel_fence`: Represents the fence used for synchronization, with fields
+    `id` and `value`.'
+  - '`nvgpu_user_fence`: Contains fields for user space synchronization points.'
+  - '`nvgpu_gpfifo_userdata`: Holds user data entries and context for the FIFO submission.'
+  - '`nvgpu_gpfifo_entry`: Represents individual entries in the GPU FIFO.'
+  - '**SMID''s Identified**:'
+  - '`gpfifo`: This is a user virtual address that points to the GPU FIFO in user
+    space.'
+  - '`fence.id` and `fence.value`: These fields are used to manage synchronization
+    and are critical for ensuring that the AIA can correctly access the memory regions.'
+  - '`userd_iova`: This is the I/O virtual address for user data, which is essential
+    for the AIA''s memory management. Overall, the function demonstrates a strong
+    integration with the AIA''s memory management and synchronization mechanisms,
+    justifying the high confidence scores across all categories.'
+- Function/Code_Block_Name: gk20a_as_dev_ioctl
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 85
+  Message_Structures_identified:
+  - '[nvgpu_as_bind_channel_args'
+  - nvgpu32_as_alloc_space_args
+  - nvgpu_as_alloc_space_args
+  - nvgpu_as_free_space_args
+  - nvgpu_as_map_buffer_ex_args
+  - nvgpu_as_unmap_buffer_args
+  - nvgpu_as_get_va_regions_args
+  - nvgpu_as_map_buffer_batch_args
+  - nvgpu_as_get_sync_ro_map_args
+  - nvgpu_as_mapping_modify_args
+  - nvgpu_as_remap_args]
+  SMIDs_identified:
+  - '[channel_fd'
+  - pages
+  - page_size
+  - flags
+  - offset
+  - buffer_offset
+  - buffer_size
+  - base_gpuva
+  - num_syncpoints]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl` interacts
+    with various memory management operations that are relevant for an AI Accelerator
+    (AIA). It handles commands that involve binding channels, allocating space, mapping
+    buffers, and managing virtual address regions, which are critical for enabling
+    the AIA to access and manage shared memory. The presence of functions like `gk20a_as_ioctl_bind_channel`,
+    `gk20a_as_ioctl_alloc_space`, and others indicates a strong connection to AIA
+    memory management, but the function does not directly handle DMA operations or
+    physical address mappings, which slightly lowers the score.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as a kernel entry
+    point for various IOCTL commands, which are dispatched based on the command code
+    (`cmd`). It validates the command and processes it accordingly, making it a critical
+    entry point for user-space interactions with the kernel. The use of `_IOC_TYPE`,
+    `_IOC_NR`, and `_IOC_SIZE` macros indicates a structured approach to handling
+    user commands, which is typical for IOCTL implementations.'
+  - '**Message_Structure_Handling Score (85)**: The function utilizes several message
+    structures that are exchanged between user space and kernel space, particularly
+    through `copy_from_user` and `copy_to_user` calls. The structures identified (e.g.,
+    `nvgpu_as_bind_channel_args`, `nvgpu32_as_alloc_space_args`, etc.) contain fields
+    that are essential for managing shared memory and buffer mappings. The presence
+    of fields like `channel_fd`, `pages`, `page_size`, and `offset` indicates that
+    these structures are designed to facilitate communication about memory management
+    between user space and the kernel.'
+  - '**Message Structures Identified**: The function handles multiple message structures
+    that are relevant for memory management and buffer operations. Each structure
+    has specific fields that correspond to the operations being performed, such as
+    binding channels, allocating space, and mapping buffers.'
+  - '**SMID''s Identified**: The identified SMIDs include fields that represent shared
+    memory identifiers, such as `channel_fd` for channel identification, `pages` and
+    `page_size` for memory allocation, and `offset` for buffer management. These fields
+    are crucial for the kernel to understand which resources are being accessed or
+    modified by the user space. Overall, the function demonstrates a robust implementation
+    of IOCTL handling for an AI Accelerator, with a strong focus on memory management
+    and user-space interactions. The scores reflect the function''s relevance to AIA
+    operations, its role as a kernel entry point, and its handling of message structures
+    and SMIDs.'
+- Function/Code_Block_Name: gk20a_as_ioctl_unmap_buffer
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `gk20a_as_ioctl_unmap_buffer`
+    does not interact with an AI Accelerator (AIA) in a manner that involves shared
+    memory management or DMA operations. It primarily focuses on unmapping a buffer
+    from the virtual memory space associated with a GPU, which does not directly relate
+    to the typical AIA functions such as pinning user pages or managing DMA buffers.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not appear to be an
+    entry point for user space interactions through ioctl commands. There is no indication
+    in the provided code that it handles any ioctl commands or serves as a dispatch
+    point for user commands that would lead to AIA-related functionality.'
+  - '**Message_Structure_Handling Score (0)**: The function does not utilize any message
+    structures that would involve `copy_from_user()` or `copy_to_user()` calls. The
+    only structure involved is `nvgpu_as_unmap_buffer_args`, which contains a single
+    field `offset` but does not represent a message structure that would facilitate
+    communication between user space and kernel space.'
+  - '**Message Structures identified**: None identified. The function does not handle
+    any complex message structures that would typically be exchanged between user
+    space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the analyzed
+    structures that qualify as Shared Memory Identifiers (SMIDs) in the context of
+    this function. In summary, the function `gk20a_as_ioctl_unmap_buffer` is primarily
+    concerned with unmapping a buffer from the GPU''s virtual memory and does not
+    engage in any operations that would be relevant to shared memory management with
+    an AI Accelerator or user-space interactions through ioctl commands.'
+- Function/Code_Block_Name: nvmap_ioctl
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 85
+  Message_Structures_identified:
+  - '[nvmap_rw_handle'
+  - nvmap_rw_handle_32
+  - nvmap_cache_op
+  - nvmap_cache_op_32
+  - nvmap_cache_op_64]
+  SMIDs_identified:
+  - '[addr'
+  - handle
+  - offset
+  - elem_size
+  - hmem_stride
+  - user_stride
+  - count
+  - len
+  - op]
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `nvmap_ioctl` is involved in
+    handling various IOCTL commands that can relate to memory allocation and management,
+    which is relevant for AI Accelerator integration. The presence of commands like
+    `NVMAP_IOC_ALLOC` and `NVMAP_IOC_ALLOC_IVM` suggests that it may interact with
+    shared memory, but the specific operations related to pinning user pages or obtaining
+    DMA addresses are not explicitly present in the code. Therefore, the score reflects
+    a moderate confidence in its relevance to AIA functions.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as a clear entry
+    point for user space to kernel interactions through IOCTL commands. It validates
+    the command type and number, and dispatches to various handling functions based
+    on the command. The presence of multiple case statements handling different IOCTL
+    commands indicates a strong entry point for user commands leading to deeper kernel
+    logic, thus a high score.'
+  - '**Message_Structure_Handling Score (85)**: The function utilizes several structures
+    for message handling, particularly in the context of memory operations. The structures
+    `nvmap_rw_handle`, `nvmap_rw_handle_32`, `nvmap_cache_op`, `nvmap_cache_op_32`,
+    and `nvmap_cache_op_64` are involved in the data exchanged between user space
+    and kernel. The fields within these structures, such as `addr`, `handle`, `offset`,
+    and `len`, are critical for managing shared memory and cache operations, indicating
+    a robust handling of message structures.'
+  - '**Message Structures Identified**: The identified message structures include
+    `nvmap_rw_handle`, `nvmap_rw_handle_32`, `nvmap_cache_op`, `nvmap_cache_op_32`,
+    and `nvmap_cache_op_64`. Each of these structures contains fields that are essential
+    for memory management and operations related to the AI Accelerator.'
+  - '**SMID''s Identified**: The identified SMIDs include `addr`, `handle`, `offset`,
+    `elem_size`, `hmem_stride`, `user_stride`, `count`, `len`, and `op`. These fields
+    represent various identifiers and parameters necessary for managing shared memory
+    and facilitating communication between the CPU and the AI Accelerator. Overall,
+    the analysis indicates that the `nvmap_ioctl` function plays a significant role
+    in managing memory operations relevant to AI Accelerator integration, with a strong
+    entry point for user commands and effective handling of message structures.'
+- Function/Code_Block_Name: nvmap_ioctl_free
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 80
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - '[struct nvmap_client'
+  - struct dma_buf]
+  SMIDs_identified:
+  - '[file descriptor (fd)'
+  - dma_buf pointer]
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free` does not
+    directly interact with an AI Accelerator (AIA) or manage shared memory (SMem)
+    for an AIA. Instead, it focuses on freeing a DMA buffer associated with a file
+    descriptor. There are no calls to functions that would pin user pages, manage
+    DMA buffers for communication with an AIA, or handle memory mapping for an AIA
+    device. Therefore, the confidence score is 0%.'
+  - '**Relevant_KD_Entry_Point Score (80%)**: The function serves as an entry point
+    for an IOCTL operation, which is a common mechanism for user-space applications
+    to communicate with kernel drivers. The function checks the validity of the `arg`
+    parameter (which is expected to be a file descriptor) and retrieves the associated
+    `nvmap_client` structure. The presence of the `arg` parameter and the use of `nvmap_free_handle_from_fd`
+    indicates that this function is likely handling an IOCTL command related to freeing
+    resources. However, the specific IOCTL command code is not explicitly mentioned
+    in the code, which slightly lowers the confidence score.'
+  - '**Message_Structure_Handling Score (60%)**: The function interacts with structures
+    that are relevant for managing resources in the kernel. The `nvmap_client` structure
+    contains fields such as `handle_count`, `next_fd`, and `id_array`, which are relevant
+    for managing client handles and resources. The `dma_buf` structure is also relevant
+    as it represents a DMA buffer that is being freed. However, the function does
+    not directly handle message structures exchanged between user space and kernel
+    space, nor does it utilize `copy_from_user()` or `copy_to_user()` calls, which
+    would typically indicate message structure handling. Therefore, the score is moderate.'
+  - '**Message Structures Identified**: The identified message structures include
+    `struct nvmap_client` and `struct dma_buf`. The `nvmap_client` structure is used
+    to manage client-specific data, while the `dma_buf` structure represents a DMA
+    buffer that is being manipulated in the function.'
+  - '**SMID''s Identified**: The identified SMIDs include the file descriptor (fd)
+    passed as the `arg` parameter, which is used to reference the `dma_buf` being
+    freed. The pointer to the `dma_buf` structure (`dmabuf`) is also relevant as it
+    represents the resource being managed. In summary, while the function does not
+    directly relate to AIA operations, it serves as a relevant entry point for IOCTL
+    commands and manages important structures related to DMA buffers and client resources.'
+Top_Analysis:
+  AIARelevantFunction:
+    description: Top 10 functions ranked by AIARelevantFunction score
+    functions:
+    - rank: 1
+      function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are crucial for managing GPU channels
+        and their operations, which can involve shared memor...'
+    - rank: 2
+      function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles memory allocation, m...'
+    - rank: 3
+      function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        is involved in handling various IOCTL commands that interact with the AI Accelerator
+        (AIA). It processes commands that allocate sp...'
+    - rank: 4
+      function_name: gk20a_ioctl_channel_submit_gpfifo
+      operation_type: ioctl_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_ioctl_channel_submit_gpfifo`
+        is involved in submitting a GPU FIFO command, which is critical for the interaction
+        between the CPU and the AI Acce...'
+    - rank: 5
+      function_name: gk20a_as_dev_ioctl
+      operation_type: ioctl_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles commands that involv...'
+    - rank: 6
+      function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is crucial
+        for memory management in the context of AI acce...'
+    - rank: 7
+      function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers, which are crucial for memory management in AI
+        Accelerator contexts. It retrieves a DMA buffer us...'
+    - rank: 8
+      function_name: gk20a_channel_ioctl
+      operation_type: ioctl_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are relevant for managing GPU channels
+        and their operations, which may involve shared memo...'
+    - rank: 9
+      function_name: nvmap_ioctl
+      operation_type: ioctl_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_ioctl` is
+        involved in handling various IOCTL commands that can relate to memory allocation
+        and management, which is relevant for AI Accelerator ...'
+    - rank: 10
+      function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      score: 60
+      reasoning: '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is relevant
+        for AI Accelerator integration. It retrieves a...'
+  Relevant_KD_Entry_Point:
+    description: Top 10 functions ranked by Relevant_KD_Entry_Point score
+    functions:
+    - rank: 1
+      function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gk20a_channel_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily serves as an entry point for various IOCTL com...'
+    - rank: 2
+      function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are crucial for managing GPU channels
+        and their operations, which can involve shared memor...'
+    - rank: 3
+      function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles memory allocation, m...'
+    - rank: 4
+      function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        is involved in handling various IOCTL commands that interact with the AI Accelerator
+        (AIA). It processes commands that allocate sp...'
+    - rank: 5
+      function_name: gk20a_channel_ioctl
+      operation_type: ioctl_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (70)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are relevant for managing GPU channels
+        and their operations, which may involve shared memo...'
+    - rank: 6
+      function_name: gk20a_ioctl_channel_submit_gpfifo
+      operation_type: ioctl_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_ioctl_channel_submit_gpfifo`
+        is involved in submitting a GPU FIFO command, which is critical for the interaction
+        between the CPU and the AI Acce...'
+    - rank: 7
+      function_name: gk20a_as_dev_ioctl
+      operation_type: ioctl_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles commands that involv...'
+    - rank: 8
+      function_name: nvmap_ioctl
+      operation_type: ioctl_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_ioctl` is
+        involved in handling various IOCTL commands that can relate to memory allocation
+        and management, which is relevant for AI Accelerator ...'
+    - rank: 9
+      function_name: nvmap_ioctl_free
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. It primarily deals with freeing a DMA bu...'
+    - rank: 10
+      function_name: nvmap_ioctl_free
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        patterns typically associated with AIA integratio...'
+  Message_Structure_Handling:
+    description: Top 10 functions ranked by Message_Structure_Handling score
+    functions:
+    - rank: 1
+      function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gk20a_channel_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily serves as an entry point for various IOCTL com...'
+      message_structures_identified:
+      - '[struct nvgpu_alloc_obj_ctx_args'
+      - struct nvgpu_channel_setup_bind_args
+      - struct nvgpu_alloc_gpfifo_ex_args
+      - struct nvgpu_wait_args
+      - struct nvgpu_set_error_notifier
+      - struct nvgpu_set_timeout_args
+      - struct nvgpu_set_timeout_ex_args
+      - struct nvgpu_get_param_args]
+      smids_identified:
+      - '[userd_dmabuf_fd'
+      - gpfifo_dmabuf_fd
+      - userd_dmabuf_offset
+      - gpfifo_dmabuf_offset
+      - offset
+      - size
+      - mem]
+    - rank: 2
+      function_name: user_copy:nvgpu_channel_copy_user_gpfifo
+      operation_type: user_copy_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_channel_copy_user_gpfifo`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that are typically associated with AIA me...'
+      message_structures_identified:
+      - '[struct nvgpu_gpfifo_userdata'
+      - struct nvgpu_gpfifo_entry]
+      smids_identified:
+      - '[entries (pointer to nvgpu_gpfifo_entry)'
+      - context (pointer to _resmgr_context)]
+    - rank: 3
+      function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are crucial for managing GPU channels
+        and their operations, which can involve shared memor...'
+      message_structures_identified:
+      - '[nvgpu_alloc_obj_ctx_args'
+      - nvgpu_channel_setup_bind_args
+      - nvgpu_alloc_gpfifo_ex_args
+      - nvgpu_set_error_notifier
+      - nvgpu_set_timeout_args
+      - nvgpu_set_timeout_ex_args
+      - nvgpu_get_param_args]
+      smids_identified:
+      - '[chid'
+      - tsgid
+      - userd_dmabuf_fd
+      - gpfifo_dmabuf_fd
+      - userd_dmabuf_offset
+      - gpfifo_dmabuf_offset
+      - timeout
+      - flags]
+    - rank: 4
+      function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles memory allocation, m...'
+      message_structures_identified:
+      - '[nvgpu_as_bind_channel_args'
+      - nvgpu32_as_alloc_space_args
+      - nvgpu_as_alloc_space_args
+      - nvgpu_as_free_space_args
+      - nvgpu_as_map_buffer_ex_args
+      - nvgpu_as_unmap_buffer_args
+      - nvgpu_as_get_va_regions_args
+      - nvgpu_as_map_buffer_batch_args
+      - nvgpu_as_get_sync_ro_map_args
+      - nvgpu_as_mapping_modify_args
+      - nvgpu_as_remap_args]
+      smids_identified:
+      - '[channel_fd'
+      - pages
+      - page_size
+      - flags
+      - buffer_offset
+      - offset
+      - base_gpuva]
+    - rank: 5
+      function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        is involved in handling various IOCTL commands that interact with the AI Accelerator
+        (AIA). It processes commands that allocate sp...'
+      message_structures_identified:
+      - '[struct nvgpu_as_bind_channel_args'
+      - struct nvgpu32_as_alloc_space_args
+      - struct nvgpu_as_alloc_space_args
+      - struct nvgpu_as_free_space_args
+      - struct nvgpu_as_map_buffer_ex_args
+      - struct nvgpu_as_unmap_buffer_args
+      - struct nvgpu_as_get_va_regions_args
+      - struct nvgpu_as_map_buffer_batch_args
+      - struct nvgpu_as_get_sync_ro_map_args
+      - struct nvgpu_as_mapping_modify_args
+      - struct nvgpu_as_remap_args]
+      smids_identified:
+      - '[channel_fd'
+      - pages
+      - page_size
+      - flags
+      - offset
+      - buffer_offset
+      - buffer_size
+      - base_gpuva
+      - num_syncpoints]
+    - rank: 6
+      function_name: gk20a_channel_ioctl
+      operation_type: ioctl_operations
+      score: 85
+      reasoning: '**AIARelevantFunction Score (70)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are relevant for managing GPU channels
+        and their operations, which may involve shared memo...'
+      message_structures_identified:
+      - '[nvgpu_channel_open_args'
+      - nvgpu_alloc_obj_ctx_args
+      - nvgpu_channel_setup_bind_args
+      - nvgpu_alloc_gpfifo_ex_args
+      - nvgpu_submit_gpfifo_args
+      - nvgpu_wait_args
+      - nvgpu_set_error_notifier
+      - nvgpu_set_timeout_args
+      - nvgpu_set_timeout_ex_args
+      - nvgpu_get_param_args]
+      smids_identified:
+      - '[userd_dmabuf_fd'
+      - gpfifo_dmabuf_fd
+      - userd_dmabuf_offset
+      - gpfifo_dmabuf_offset
+      - obj_id]
+    - rank: 7
+      function_name: gk20a_ioctl_channel_submit_gpfifo
+      operation_type: ioctl_operations
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_ioctl_channel_submit_gpfifo`
+        is involved in submitting a GPU FIFO command, which is critical for the interaction
+        between the CPU and the AI Acce...'
+      message_structures_identified:
+      - '[nvgpu_submit_gpfifo_args'
+      - nvgpu_channel_fence
+      - nvgpu_user_fence
+      - nvgpu_gpfifo_userdata
+      - nvgpu_gpfifo_entry]
+      smids_identified:
+      - '[gpfifo (user virtual address)'
+      - fence.id (fence identifier)
+      - fence.value (fence value)
+      - userd_iova (user data I/O virtual address)]
+    - rank: 8
+      function_name: gk20a_as_dev_ioctl
+      operation_type: ioctl_operations
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles commands that involv...'
+      message_structures_identified:
+      - '[nvgpu_as_bind_channel_args'
+      - nvgpu32_as_alloc_space_args
+      - nvgpu_as_alloc_space_args
+      - nvgpu_as_free_space_args
+      - nvgpu_as_map_buffer_ex_args
+      - nvgpu_as_unmap_buffer_args
+      - nvgpu_as_get_va_regions_args
+      - nvgpu_as_map_buffer_batch_args
+      - nvgpu_as_get_sync_ro_map_args
+      - nvgpu_as_mapping_modify_args
+      - nvgpu_as_remap_args]
+      smids_identified:
+      - '[channel_fd'
+      - pages
+      - page_size
+      - flags
+      - offset
+      - buffer_offset
+      - buffer_size
+      - base_gpuva
+      - num_syncpoints]
+    - rank: 9
+      function_name: nvmap_ioctl
+      operation_type: ioctl_operations
+      score: 85
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_ioctl` is
+        involved in handling various IOCTL commands that can relate to memory allocation
+        and management, which is relevant for AI Accelerator ...'
+      message_structures_identified:
+      - '[nvmap_rw_handle'
+      - nvmap_rw_handle_32
+      - nvmap_cache_op
+      - nvmap_cache_op_32
+      - nvmap_cache_op_64]
+      smids_identified:
+      - '[addr'
+      - handle
+      - offset
+      - elem_size
+      - hmem_stride
+      - user_stride
+      - count
+      - len
+      - op]
+    - rank: 10
+      function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is crucial
+        for memory management in the context of AI acce...'
+      message_structures_identified:
+      - '[struct nvmap_handle_info'
+      - struct nvmap_handle
+      - struct dma_buf]
+      smids_identified:
+      - '[dma_buf'
+      - nvmap_handle
+      - nvmap_client
+      - file descriptor]
+  Overall_Top_Scores:
+    description: All function scores sorted from highest to lowest across all categories
+    total_entries: 114
+    entries:
+    - function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gk20a_channel_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily serves as an entry point for various IOCTL com...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gk20a_channel_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily serves as an entry point for various IOCTL com...'
+      message_structures:
+      - '[struct nvgpu_alloc_obj_ctx_args'
+      - struct nvgpu_channel_setup_bind_args
+      - struct nvgpu_alloc_gpfifo_ex_args
+      - struct nvgpu_wait_args
+      - struct nvgpu_set_error_notifier
+      - struct nvgpu_set_timeout_args
+      - struct nvgpu_set_timeout_ex_args
+      - struct nvgpu_get_param_args]
+      smids:
+      - '[userd_dmabuf_fd'
+      - gpfifo_dmabuf_fd
+      - userd_dmabuf_offset
+      - gpfifo_dmabuf_offset
+      - offset
+      - size
+      - mem]
+    - function_name: user_copy:nvgpu_channel_copy_user_gpfifo
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_channel_copy_user_gpfifo`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that are typically associated with AIA me...'
+      message_structures:
+      - '[struct nvgpu_gpfifo_userdata'
+      - struct nvgpu_gpfifo_entry]
+      smids:
+      - '[entries (pointer to nvgpu_gpfifo_entry)'
+      - context (pointer to _resmgr_context)]
+    - function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are crucial for managing GPU channels
+        and their operations, which can involve shared memor...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles memory allocation, m...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        is involved in handling various IOCTL commands that interact with the AI Accelerator
+        (AIA). It processes commands that allocate sp...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_channel_ioctl
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (70)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are relevant for managing GPU channels
+        and their operations, which may involve shared memo...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_ioctl_channel_submit_gpfifo
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_ioctl_channel_submit_gpfifo`
+        is involved in submitting a GPU FIFO command, which is critical for the interaction
+        between the CPU and the AI Acce...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_as_dev_ioctl
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles commands that involv...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_ioctl
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_ioctl` is
+        involved in handling various IOCTL commands that can relate to memory allocation
+        and management, which is relevant for AI Accelerator ...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are crucial for managing GPU channels
+        and their operations, which can involve shared memor...'
+      message_structures:
+      - '[nvgpu_alloc_obj_ctx_args'
+      - nvgpu_channel_setup_bind_args
+      - nvgpu_alloc_gpfifo_ex_args
+      - nvgpu_set_error_notifier
+      - nvgpu_set_timeout_args
+      - nvgpu_set_timeout_ex_args
+      - nvgpu_get_param_args]
+      smids:
+      - '[chid'
+      - tsgid
+      - userd_dmabuf_fd
+      - gpfifo_dmabuf_fd
+      - userd_dmabuf_offset
+      - gpfifo_dmabuf_offset
+      - timeout
+      - flags]
+    - function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles memory allocation, m...'
+      message_structures:
+      - '[nvgpu_as_bind_channel_args'
+      - nvgpu32_as_alloc_space_args
+      - nvgpu_as_alloc_space_args
+      - nvgpu_as_free_space_args
+      - nvgpu_as_map_buffer_ex_args
+      - nvgpu_as_unmap_buffer_args
+      - nvgpu_as_get_va_regions_args
+      - nvgpu_as_map_buffer_batch_args
+      - nvgpu_as_get_sync_ro_map_args
+      - nvgpu_as_mapping_modify_args
+      - nvgpu_as_remap_args]
+      smids:
+      - '[channel_fd'
+      - pages
+      - page_size
+      - flags
+      - buffer_offset
+      - offset
+      - base_gpuva]
+    - function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        is involved in handling various IOCTL commands that interact with the AI Accelerator
+        (AIA). It processes commands that allocate sp...'
+      message_structures:
+      - '[struct nvgpu_as_bind_channel_args'
+      - struct nvgpu32_as_alloc_space_args
+      - struct nvgpu_as_alloc_space_args
+      - struct nvgpu_as_free_space_args
+      - struct nvgpu_as_map_buffer_ex_args
+      - struct nvgpu_as_unmap_buffer_args
+      - struct nvgpu_as_get_va_regions_args
+      - struct nvgpu_as_map_buffer_batch_args
+      - struct nvgpu_as_get_sync_ro_map_args
+      - struct nvgpu_as_mapping_modify_args
+      - struct nvgpu_as_remap_args]
+      smids:
+      - '[channel_fd'
+      - pages
+      - page_size
+      - flags
+      - offset
+      - buffer_offset
+      - buffer_size
+      - base_gpuva
+      - num_syncpoints]
+    - function_name: gk20a_channel_ioctl
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 85
+      reasoning: '**AIARelevantFunction Score (70)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are relevant for managing GPU channels
+        and their operations, which may involve shared memo...'
+      message_structures:
+      - '[nvgpu_channel_open_args'
+      - nvgpu_alloc_obj_ctx_args
+      - nvgpu_channel_setup_bind_args
+      - nvgpu_alloc_gpfifo_ex_args
+      - nvgpu_submit_gpfifo_args
+      - nvgpu_wait_args
+      - nvgpu_set_error_notifier
+      - nvgpu_set_timeout_args
+      - nvgpu_set_timeout_ex_args
+      - nvgpu_get_param_args]
+      smids:
+      - '[userd_dmabuf_fd'
+      - gpfifo_dmabuf_fd
+      - userd_dmabuf_offset
+      - gpfifo_dmabuf_offset
+      - obj_id]
+    - function_name: gk20a_ioctl_channel_submit_gpfifo
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_ioctl_channel_submit_gpfifo`
+        is involved in submitting a GPU FIFO command, which is critical for the interaction
+        between the CPU and the AI Acce...'
+      message_structures:
+      - '[nvgpu_submit_gpfifo_args'
+      - nvgpu_channel_fence
+      - nvgpu_user_fence
+      - nvgpu_gpfifo_userdata
+      - nvgpu_gpfifo_entry]
+      smids:
+      - '[gpfifo (user virtual address)'
+      - fence.id (fence identifier)
+      - fence.value (fence value)
+      - userd_iova (user data I/O virtual address)]
+    - function_name: gk20a_as_dev_ioctl
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 85
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles commands that involv...'
+      message_structures:
+      - '[nvgpu_as_bind_channel_args'
+      - nvgpu32_as_alloc_space_args
+      - nvgpu_as_alloc_space_args
+      - nvgpu_as_free_space_args
+      - nvgpu_as_map_buffer_ex_args
+      - nvgpu_as_unmap_buffer_args
+      - nvgpu_as_get_va_regions_args
+      - nvgpu_as_map_buffer_batch_args
+      - nvgpu_as_get_sync_ro_map_args
+      - nvgpu_as_mapping_modify_args
+      - nvgpu_as_remap_args]
+      smids:
+      - '[channel_fd'
+      - pages
+      - page_size
+      - flags
+      - offset
+      - buffer_offset
+      - buffer_size
+      - base_gpuva
+      - num_syncpoints]
+    - function_name: nvmap_ioctl
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 85
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_ioctl` is
+        involved in handling various IOCTL commands that can relate to memory allocation
+        and management, which is relevant for AI Accelerator ...'
+      message_structures:
+      - '[nvmap_rw_handle'
+      - nvmap_rw_handle_32
+      - nvmap_cache_op
+      - nvmap_cache_op_32
+      - nvmap_cache_op_64]
+      smids:
+      - '[addr'
+      - handle
+      - offset
+      - elem_size
+      - hmem_stride
+      - user_stride
+      - count
+      - len
+      - op]
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is crucial
+        for memory management in the context of AI acce...'
+      message_structures:
+      - '[struct nvmap_handle_info'
+      - struct nvmap_handle
+      - struct dma_buf]
+      smids:
+      - '[dma_buf'
+      - nvmap_handle
+      - nvmap_client
+      - file descriptor]
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is relevant
+        for AI Accelerator integration. It retrieves a...'
+      message_structures:
+      - '[struct nvmap_handle_info'
+      - struct dma_buf]
+      smids:
+      - '[dma_buf*'
+      - nvmap_handle*
+      - nvmap_client*
+      - size_t
+      - u32]
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers, which are crucial for memory management in AI
+        Accelerator contexts. It retrieves a DMA buffer us...'
+      message_structures:
+      - '[nvmap_handle_info'
+      - dma_buf
+      - nvmap_client]
+      smids:
+      - '[dma_buf*'
+      - nvmap_handle*
+      - nvmap_client*]
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is relevant
+        for AI Accelerator integration as it manages m...'
+      message_structures:
+      - '[nvmap_handle_info'
+      - dma_buf]
+      smids:
+      - '[dma_buf*'
+      - nvmap_handle*
+      - nvmap_client*
+      - nvmap_handle_info*]
+    - function_name: nvmap_ioctl_free
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. It primarily deals with freeing a DMA bu...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_ioctl_free
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        patterns typically associated with AIA integratio...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are crucial for managing GPU channels
+        and their operations, which can involve shared memor...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles memory allocation, m...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:gk20a_as_dev_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        is involved in handling various IOCTL commands that interact with the AI Accelerator
+        (AIA). It processes commands that allocate sp...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_ioctl_channel_submit_gpfifo
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_ioctl_channel_submit_gpfifo`
+        is involved in submitting a GPU FIFO command, which is critical for the interaction
+        between the CPU and the AI Acce...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_as_dev_ioctl
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `gk20a_as_dev_ioctl`
+        interacts with various memory management operations that are relevant for
+        an AI Accelerator (AIA). It handles commands that involv...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_ioctl_free
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or manage shared memory
+        (SMem) for an AIA. Instead, it focuses on freeing a ...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is crucial
+        for memory management in the context of AI acce...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 70
+      reasoning: '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is relevant
+        for AI Accelerator integration. It retrieves a...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers, which are crucial for memory management in AI
+        Accelerator contexts. It retrieves a DMA buffer us...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 70
+      reasoning: '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is relevant
+        for AI Accelerator integration as it manages m...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_channel_ioctl
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `gk20a_channel_ioctl`
+        interacts with various structures that are relevant for managing GPU channels
+        and their operations, which may involve shared memo...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_ioctl
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_ioctl` is
+        involved in handling various IOCTL commands that can relate to memory allocation
+        and management, which is relevant for AI Accelerator ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:_nvmap_dmabuf_unmap_dma_buf
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (40)**: The function `_nvmap_dmabuf_unmap_dma_buf`
+        is primarily focused on unmapping a DMA buffer and does not directly involve
+        operations that share memory with an AI Acce...'
+      message_structures: []
+      smids:
+      - '[dma_buf'
+      - device
+      - nvmap_handle
+      - sg_table]
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is crucial
+        for memory management in the context of AI acce...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 60
+      reasoning: '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is relevant
+        for AI Accelerator integration. It retrieves a...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (70)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers, which are crucial for memory management in AI
+        Accelerator contexts. It retrieves a DMA buffer us...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_handle_get_from_id
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 60
+      reasoning: '**AIARelevantFunction Score (60)**: The function `nvmap_handle_get_from_id`
+        interacts with DMA buffers through the `dma_buf` structure, which is relevant
+        for AI Accelerator integration as it manages m...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_ioctl_free
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. It primarily deals with freeing a DMA bu...'
+      message_structures:
+      - '[None identified]'
+      smids:
+      - '[None identified]'
+    - function_name: nvmap_ioctl_free
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        patterns typically associated with AIA integratio...'
+      message_structures:
+      - '[None identified]'
+      smids:
+      - '[None identified]'
+    - function_name: nvmap_ioctl_free
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or manage shared memory
+        (SMem) for an AIA. Instead, it focuses on freeing a ...'
+      message_structures:
+      - '[struct nvmap_client'
+      - struct dma_buf]
+      smids:
+      - '[file descriptor (fd)'
+      - dma_buf pointer]
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:_nvmap_dmabuf_unmap_dma_buf
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 40
+      reasoning: '**AIARelevantFunction Score (40)**: The function `_nvmap_dmabuf_unmap_dma_buf`
+        is primarily focused on unmapping a DMA buffer and does not directly involve
+        operations that share memory with an AI Acce...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/linux-dma.c:nvgpu_iommuable
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvgpu_iommuable`
+        does not interact with shared memory or perform any operations that would
+        typically be associated with AI Accelerator integration. It...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/linux-dma.c:nvgpu_iommuable
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvgpu_iommuable`
+        does not interact with shared memory or perform any operations that would
+        typically be associated with AI Accelerator integration. It...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/linux-dma.c:nvgpu_iommuable
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvgpu_iommuable`
+        does not interact with shared memory or perform any operations that would
+        typically be associated with AI Accelerator integration. It...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/platform_gk20a_tegra.c:gk20a_tegra_idle
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gk20a_tegra_idle`
+        does not perform any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily logs ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/platform_gk20a_tegra.c:gk20a_tegra_idle
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gk20a_tegra_idle`
+        does not perform any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily logs ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/platform_gk20a_tegra.c:gk20a_tegra_idle
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gk20a_tegra_idle`
+        does not perform any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily logs ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/platform_gk20a_tegra.c:gk20a_tegra_busy
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gk20a_tegra_busy`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily check...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/platform_gk20a_tegra.c:gk20a_tegra_busy
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gk20a_tegra_busy`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily check...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/gpu/nvgpu/os/linux/platform_gk20a_tegra.c:gk20a_tegra_busy
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `gk20a_tegra_busy`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It primarily check...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_free_handle_from_fd
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle_from_fd`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) management.
+        It primarily deals with freeing a handle...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_free_handle_from_fd
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle_from_fd`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) management.
+        It primarily deals with freeing a handle...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_free_handle_from_fd
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle_from_fd`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) management.
+        It primarily deals with freeing a handle...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:is_nvmap_id_ro
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `is_nvmap_id_ro`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily checks if a given NVMAP ID is rea...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:is_nvmap_id_ro
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `is_nvmap_id_ro`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily checks if a given NVMAP ID is rea...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:is_nvmap_id_ro
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `is_nvmap_id_ro`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily checks if a given NVMAP ID is rea...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_free_handle
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with freeing a handle associate...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_free_handle
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with freeing a handle associate...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_free_handle
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with freeing a handle associate...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:_nvmap_handle_free
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_nvmap_handle_free`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on freeing resources ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:_nvmap_handle_free
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_nvmap_handle_free`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on freeing resources ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:_nvmap_handle_free
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `_nvmap_handle_free`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on freeing resources ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_heap_pgfree
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_heap_pgfree`
+        does not interact with any AI Accelerator (AIA) related memory management
+        functions. It primarily deals with freeing memory allocat...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_heap_pgfree
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_heap_pgfree`
+        does not interact with any AI Accelerator (AIA) related memory management
+        functions. It primarily deals with freeing memory allocat...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_heap_pgfree
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_heap_pgfree`
+        does not interact with any AI Accelerator (AIA) related memory management
+        functions. It primarily deals with freeing memory allocat...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_heap_pgalloc_dev
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_heap_pgalloc_dev`
+        does not interact with any AI Accelerator (AIA) relevant memory management
+        functions such as pinning user pages, obtaining phys...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_heap_pgalloc_dev
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_heap_pgalloc_dev`
+        does not interact with any AI Accelerator (AIA) relevant memory management
+        functions such as pinning user pages, obtaining phys...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_heap_pgalloc_dev
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_heap_pgalloc_dev`
+        does not interact with any AI Accelerator (AIA) relevant memory management
+        functions such as pinning user pages, obtaining phys...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_altfree
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_altfree`
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily concerned with freeing memory based on the size of ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_altfree
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_altfree`
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily concerned with freeing memory based on the size of ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_alloc.c:nvmap_altfree
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_altfree`
+        does not interact with any AI Accelerator (AIA) relevant operations. It is
+        primarily concerned with freeing memory based on the size of ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:dmabuf_is_nvmap
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dmabuf_is_nvmap`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It simply checks if ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:dmabuf_is_nvmap
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dmabuf_is_nvmap`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It simply checks if ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:dmabuf_is_nvmap
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dmabuf_is_nvmap`
+        does not involve any operations related to shared memory management or interactions
+        with an AI Accelerator (AIA). It simply checks if ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:_nvmap_dmabuf_unmap_dma_buf
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (40)**: The function `_nvmap_dmabuf_unmap_dma_buf`
+        is primarily focused on unmapping a DMA buffer and does not directly involve
+        operations that share memory with an AI Acce...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_get_drv_data
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_dmabuf_get_drv_data`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily retriev...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_get_drv_data
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_dmabuf_get_drv_data`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily retriev...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_get_drv_data
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_dmabuf_get_drv_data`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily retriev...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_detach
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_dmabuf_detach`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with detaching a DMA b...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_detach
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_dmabuf_detach`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with detaching a DMA b...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_detach
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_dmabuf_detach`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with detaching a DMA b...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_release
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_dmabuf_release`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on releasing a DMA b...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_release
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_dmabuf_release`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on releasing a DMA b...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/video/tegra/nvmap/nvmap_dmabuf.c:nvmap_dmabuf_release
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_dmabuf_release`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily focuses on releasing a DMA b...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_mm_unpin
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_mm_unpin`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with unmapping ...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_mm_unpin
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_mm_unpin`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with unmapping ...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_mm_unpin
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_mm_unpin`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with unmapping ...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_mm_unpin
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_mm_unpin`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with unmapping ...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_mm_unpin
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_mm_unpin`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with unmapping ...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_mm_unpin
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_mm_unpin`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with unmapping ...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_vm_unmap_system
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvgpu_vm_unmap_system`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with un...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_vm_unmap_system
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvgpu_vm_unmap_system`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with un...'
+      message_structures: []
+      smids: []
+    - function_name: nvgpu_vm_unmap_system
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvgpu_vm_unmap_system`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with un...'
+      message_structures: []
+      smids: []
+    - function_name: is_nvmap_id_ro
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `is_nvmap_id_ro`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily deals with the `nv...'
+      message_structures: []
+      smids: []
+    - function_name: is_nvmap_id_ro
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `is_nvmap_id_ro`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily deals with the `nv...'
+      message_structures: []
+      smids: []
+    - function_name: is_nvmap_id_ro
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `is_nvmap_id_ro`
+        does not interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA operations. It primarily deals with the `nv...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_free_handle
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction**: The function `nvmap_free_handle` does not
+        involve any operations that directly relate to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with freeing a handle ...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_free_handle
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction**: The function `nvmap_free_handle` does not
+        involve any operations that directly relate to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with freeing a handle ...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_free_handle
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction**: The function `nvmap_free_handle` does not
+        involve any operations that directly relate to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with freeing a handle ...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_free_handle
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) management
+        relevant to AIA operations. It primarily deals wi...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_free_handle
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) management
+        relevant to AIA operations. It primarily deals wi...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_free_handle
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_free_handle`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) management
+        relevant to AIA operations. It primarily deals wi...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_ioctl_free
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. It primarily deals with freeing a DMA bu...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_ioctl_free
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        patterns typically associated with AIA integratio...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:gk20a_channel_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gk20a_channel_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily serves as an entry point for various IOCTL com...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:nvgpu_channel_copy_user_gpfifo
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_channel_copy_user_gpfifo`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that are typically associated with AIA me...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:nvgpu_channel_copy_user_gpfifo
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `nvgpu_channel_copy_user_gpfifo`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that are typically associated with AIA me...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_as_ioctl_unmap_buffer
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gk20a_as_ioctl_unmap_buffer`
+        does not interact with an AI Accelerator (AIA) in a manner that involves shared
+        memory management or DMA operations. It pr...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_as_ioctl_unmap_buffer
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gk20a_as_ioctl_unmap_buffer`
+        does not interact with an AI Accelerator (AIA) in a manner that involves shared
+        memory management or DMA operations. It pr...'
+      message_structures: []
+      smids: []
+    - function_name: gk20a_as_ioctl_unmap_buffer
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `gk20a_as_ioctl_unmap_buffer`
+        does not interact with an AI Accelerator (AIA) in a manner that involves shared
+        memory management or DMA operations. It pr...'
+      message_structures: []
+      smids: []
+    - function_name: nvmap_ioctl_free
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `nvmap_ioctl_free`
+        does not directly interact with an AI Accelerator (AIA) or manage shared memory
+        (SMem) for an AIA. Instead, it focuses on freeing a ...'
+      message_structures: []
+      smids: []

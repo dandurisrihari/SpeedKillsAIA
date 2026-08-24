@@ -1,0 +1,2995 @@
+functions_by_file:
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_create_ept` does
+    not involve any operations related to shared memory management or direct interaction
+    with an AI Accelerator (AIA). It primarily focuses on creating an endpoint for
+    the RPMsg (Remote Processor Messaging) framework, which is not directly related
+    to memory management or DMA operations typically associated with AIA integration.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is a static helper function that is likely called internally within
+    the kernel, rather than being invoked directly from user space.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it manipulate any
+    structures that would qualify as message structures or contain Shared Memory Identifiers
+    (SMIDs). The parameters passed to the function do not include any structures that
+    would typically be involved in shared memory communication.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would be relevant for shared memory communication.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    or its parameters that correspond to shared memory identifiers or any relevant
+    addresses. In summary, the function `virtio_rpmsg_create_ept` is focused on creating
+    an RPMsg endpoint and does not engage in any operations that would be relevant
+    to shared memory management or AIA integration. Therefore, all confidence scores
+    are assigned as 0%.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_sendto
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_sendto` does not
+    interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms. It primarily
+    sends messages through a remote procedure call (RPC) mechanism using the `rpmsg_send_offchannel_raw`
+    function. There are no indications of memory pinning, DMA address management,
+    or memory mapping that would typically be associated with AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic. The function is a straightforward
+    implementation of sending data to a specified destination, which does not involve
+    user-space interactions.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The parameters passed to `virtio_rpmsg_sendto` do not
+    include any structures that would typically be exchanged between user space and
+    kernel space. The function simply takes a pointer to data and its length, which
+    are not structured message formats.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be relevant for shared memory or communication
+    protocols.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    (SMIDs) present in the function or its parameters. The function operates on basic
+    data types and does not reference any identifiers that would typically be used
+    to manage shared memory or device addresses. In summary, the function `virtio_rpmsg_sendto`
+    is focused on sending messages over a remote procedure call mechanism without
+    any direct interaction with shared memory, AIA, or user-space/kernel-space communication
+    protocols. Therefore, all confidence scores are assigned as zero.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_send_offchannel_raw
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct rpmsg_hdr'
+  - struct scatterlist]
+  SMIDs_identified:
+  - '[src'
+  - dst
+  - dma_address]
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `rpmsg_send_offchannel_raw`
+    is responsible for sending messages between processors, which can be relevant
+    for AI Accelerator integration. It utilizes a buffer (`msg`) that is structured
+    to hold message headers and data, which can be critical for communication with
+    an AI Accelerator. The function does not directly handle memory mapping or DMA
+    operations, but it does manage message buffers that could be used in such contexts.
+    The use of `virtqueue_add_outbuf` indicates that it is preparing data for transmission,
+    which is relevant for shared memory operations.'
+  - '**Relevant_KD_Entry_Point Score (60)**: The function does not explicitly show
+    an ioctl entry point, but it is likely called from a higher-level interface that
+    handles user commands. The context suggests that it could be part of a larger
+    driver that responds to user-space requests, possibly through an ioctl interface.
+    However, without direct evidence of an ioctl command being processed, the score
+    is moderate.'
+  - '**Message_Structure_Handling Score (80)**: The function handles message structures
+    effectively, particularly the `rpmsg_hdr` structure, which contains fields such
+    as `src`, `dst`, `len`, and `flags`. These fields are critical for identifying
+    the source and destination of messages, as well as the message length. The function
+    also uses `scatterlist` to prepare the message for transmission, indicating a
+    structured approach to managing message data. The presence of `copy_from_user`
+    or `copy_to_user` calls is not evident, but the handling of message structures
+    is robust.'
+  - '**Message Structures Identified**: The primary message structure identified is
+    `struct rpmsg_hdr`, which contains fields that are essential for message transmission.
+    The `struct scatterlist` is also identified, which is used to manage the data
+    buffers for the message.'
+  - '**SMID''s Identified**: The fields `src` and `dst` in the `rpmsg_hdr` structure
+    are identified as SMIDs, representing the source and destination addresses for
+    the message. Additionally, the `dma_address` field in the `scatterlist` structure
+    is relevant for identifying the physical address used for DMA operations. Overall,
+    the function demonstrates a clear understanding of message handling and structure
+    management, which is essential for communication in a multi-processor environment,
+    particularly when integrating with AI Accelerators. The scores reflect the function''s
+    relevance to shared memory operations and message structure handling, while acknowledging
+    the lack of direct ioctl entry point evidence.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:get_a_tx_buf
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `get_a_tx_buf` does not interact
+    with any AI Accelerator (AIA) or shared memory mechanisms. It primarily manages
+    transmission buffers for a virtual device, which is unrelated to the operations
+    typically associated with AIA functions such as memory mapping, DMA address handling,
+    or shared memory management. The function uses a mutex to lock access to a buffer
+    pool but does not perform any operations that would qualify it as relevant to
+    AIA integration.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space, nor does it handle any ioctl commands.
+    It is a static function that operates internally within the kernel module, specifically
+    for managing transmission buffers. There are no ioctl codes or user commands being
+    processed in this function, which would typically indicate a relevant kernel driver
+    entry point.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would typically
+    contain shared memory identifiers (SMIDs) or metadata relevant to shared memory
+    communication. The function simply retrieves a buffer from a pool based on the
+    state of the `virtproc_info` structure.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    or relevant fields that would indicate the presence of SMIDs in this function.
+    In summary, the function `get_a_tx_buf` is focused on buffer management for a
+    virtual device and does not engage with shared memory, AIA operations, or user-space
+    communication, leading to low confidence scores across all categories.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - struct scatterlist
+  SMIDs_identified:
+  - dma_address
+  - length
+  Reasoning:
+  - '**AIARelevantFunction (70%)**: The function `rpmsg_sg_init` initializes a scatter-gather
+    list, which is often used in DMA operations. The use of `sg_set_page` and `sg_init_one`
+    indicates that it is preparing memory for DMA transfers, which is relevant for
+    AI Accelerator integration. However, it does not directly handle shared memory
+    or user pages, which lowers the score slightly. The function does not pin user
+    pages or directly interact with the AI Accelerator, hence the score is not higher.'
+  - '**Relevant_KD_Entry_Point (0%)**: This function does not represent an entry point
+    from user space to kernel space. It does not handle any ioctl commands or serve
+    as a dispatch point for user commands. Therefore, the score is zero.'
+  - '**Message_Structure_Handling (60%)**: The function interacts with the `scatterlist`
+    structure, which is used to describe memory regions for DMA operations. The fields
+    of interest in `scatterlist` include `dma_address` and `length`, which can be
+    considered as potential SMIDs since they represent addresses and sizes relevant
+    for memory mapping. However, the function does not involve any `copy_from_user`
+    or `copy_to_user` calls, which would typically indicate more direct message structure
+    handling.'
+  - '**Message Structures identified**: The primary message structure identified is
+    `struct scatterlist`, which is used to manage memory regions for DMA operations.'
+  - '**SMID''s identified**: The identified SMIDs include `dma_address` and `length`
+    from the `scatterlist` structure. These fields are critical for understanding
+    the memory regions being accessed and manipulated during DMA operations. Overall,
+    while the function is relevant to memory management for DMA, it does not directly
+    interact with user space or shared memory in a way that would significantly impact
+    AI Accelerator operations.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct rpmsg_hdr]'
+  SMIDs_identified:
+  - '[src'
+  - dst
+  - reserved
+  - len]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_done` does not directly
+    interact with an AI Accelerator (AIA) or shared memory management relevant to
+    AIA. It primarily handles message reception through a virtqueue, which is more
+    related to inter-processor communication rather than memory management or DMA
+    operations typically associated with AIA functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent a kernel
+    entry point from user space. It is a callback function that processes received
+    messages from a virtqueue, which is part of the kernel''s internal handling of
+    inter-processor communication. There are no ioctl commands or user-space interactions
+    involved in this function.'
+  - '**Message_Structure_Handling Score (80)**: The function processes messages of
+    type `struct rpmsg_hdr`, which is a message structure used for communication.
+    The function retrieves messages from the virtqueue using `virtqueue_get_buf`,
+    which indicates that it handles message structures. The fields of interest in
+    `struct rpmsg_hdr` include:'
+  - '`src`: Source address of the message.'
+  - '`dst`: Destination address of the message.'
+  - '`reserved`: Reserved space for future use.'
+  - '`len`: Length of the message.'
+  - '`flags`: Flags associated with the message.'
+  - '`data`: The actual message data. The presence of `copy_from_user()` or `copy_to_user()`
+    calls is not applicable here since the function does not interact with user-space
+    buffers directly, but it does handle message structures that could be exchanged
+    between user space and kernel space. Overall, while the function is not directly
+    related to AIA or KD entry points, it does handle message structures relevant
+    to its operation, justifying a moderate score in message structure handling.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct rpmsg_hdr]'
+  SMIDs_identified:
+  - '[src'
+  - dst
+  - reserved
+  - len
+  - flags]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single` does not
+    interact with an AI Accelerator (AIA) or shared memory (SMem) directly. It primarily
+    handles message reception over a virtual messaging protocol, which does not involve
+    memory management or DMA operations typically associated with AIA integration.
+    Therefore, the score is 0.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. It is a callback
+    function that processes messages received from a remote processor. Since there
+    are no ioctl commands or user-space interactions, the score is 0.'
+  - '**Message_Structure_Handling Score (80)**: The function processes a message structure
+    defined by `struct rpmsg_hdr`, which contains fields such as `src`, `dst`, `len`,
+    and `flags`. The function uses these fields to manage message routing and processing.
+    The presence of `copy_from_user()` or `copy_to_user()` calls is not evident in
+    this function, but the handling of the message structure is significant enough
+    to warrant a high score. The score reflects the function''s ability to manage
+    message structures effectively, even though it does not involve direct user-space
+    memory copying.'
+  - '**Message Structures identified**: The primary message structure identified is
+    `struct rpmsg_hdr`, which contains the following fields:'
+  - '`src`: Source address of the message.'
+  - '`dst`: Destination address of the message.'
+  - '`reserved`: Reserved field for future use.'
+  - '`len`: Length of the message payload.'
+  - '`flags`: Flags associated with the message.'
+  - '`data`: The actual message data (though not explicitly used in the analysis).'
+  - '**SMID''s identified**: The fields identified as potential SMIDs within the `rpmsg_hdr`
+    structure are:'
+  - '`src`: Represents the source address of the message.'
+  - '`dst`: Represents the destination address of the message.'
+  - '`reserved`: A reserved field that could be used for additional addressing or
+    identification.'
+  - '`len`: Indicates the length of the message, which is crucial for memory management.'
+  - '`flags`: Flags that may indicate specific properties or states of the message.
+    Overall, while the function does not directly relate to AIA or KD entry points,
+    it effectively handles message structures, justifying the higher score in that
+    category.'
+- Function/Code_Block_Name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_destroy_ept
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_destroy_ept` does
+    not involve any operations related to shared memory (SMem) with an AI Accelerator
+    (AIA). It is primarily focused on destroying an endpoint in the RPMsg (Remote
+    Processor Messaging) framework. There are no calls to functions like `get_user_pages`,
+    `pin_user_pages`, or any memory management functions that would typically be associated
+    with AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic leading to AIA-related functions.
+    The function is a static utility that operates on an endpoint structure and does
+    not interact with user space.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it involve any structures
+    that would typically contain Shared Memory Identifiers (SMIDs). The function simply
+    logs its entry and calls another function to destroy the endpoint.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would be relevant for communication between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that qualify as SMIDs, as it does not deal with memory addresses,
+    handles, or descriptors related to shared memory. In summary, the function `virtio_rpmsg_destroy_ept`
+    is focused on endpoint management within the RPMsg framework and does not engage
+    in any operations related to shared memory or AI Accelerator integration, resulting
+    in low confidence scores across all categories.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_allocate
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_allocate`
+    does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+    It primarily focuses on allocating a DMA buffer from a DMA heap and does not involve
+    pinning user pages, obtaining physical addresses for AIA, or managing DMA buffers
+    for communication between CPU and AIA. Therefore, it receives a score of 0%.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space, such as through an ioctl() interface. There
+    are no indications of handling user commands or dispatching to deeper kernel logic
+    that would lead to AIA-related functions. Thus, it also receives a score of 0%.'
+  - '**Message_Structure_Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present in the function, nor does it deal with structures
+    that would typically contain Shared Memory Identifiers (SMIDs). Consequently,
+    it receives a score of 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would qualify as message structures for communication with
+    user space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that represent shared memory identifiers or any relevant metadata
+    that would indicate shared memory usage. In summary, the function `carveout_dma_heap_allocate`
+    is focused on memory allocation for DMA buffers and does not engage with AIA mechanisms,
+    user space interactions, or message structures relevant to shared memory. Therefore,
+    all scores are 0%.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_mmap
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_heap_mmap` does not interact
+    with an AI Accelerator (AIA) or shared memory (SMem) in a way that is relevant
+    to AIA operations. It primarily focuses on mapping a DMA buffer to user space
+    using `vm_iomap_memory`, which is not directly related to the operations typically
+    associated with AIA memory management, such as pinning user pages or managing
+    DMA buffers for communication with an AIA.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. There are no
+    ioctl commands being processed or dispatched in this function, which would typically
+    indicate a user-space to kernel-space interaction.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures or contain Shared Memory Identifiers (SMIDs). The function
+    simply maps a DMA buffer''s physical address to a virtual memory area without
+    any user-space interaction.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    involved that represent shared memory identifiers or similar constructs. In summary,
+    the `dma_heap_mmap` function is focused on memory mapping for DMA buffers and
+    does not engage in any operations relevant to AIA integration, user-space interactions,
+    or message structure handling.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_attach
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_heap_attach` does not directly
+    involve any operations related to sharing memory with an AI Accelerator (AIA).
+    It primarily deals with attaching a DMA buffer to a device, which does not include
+    pinning user pages, obtaining physical addresses for AIA, or managing DMA buffers
+    for communication between CPU and AIA. Therefore, the confidence score for AIA
+    relevance is 0%.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. There are no
+    ioctl commands being processed or dispatched within this function. It is a standard
+    function for managing DMA buffer attachments, which does not serve as a user-space
+    interface. Thus, the score for KD entry point relevance is also 0%.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures that involve user-space communication. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures being passed that
+    would indicate shared memory identifiers (SMIDs). The function is focused on internal
+    memory management and does not interact with user-space data structures. Therefore,
+    the score for message structure handling is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would be exchanged between user space and
+    kernel space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not interact with user-space memory or provide
+    any identifiers for shared memory regions. In summary, the function `dma_heap_attach`
+    is focused on managing DMA buffer attachments and does not engage with AIA-specific
+    operations, user-space entry points, or message structure handling, leading to
+    a complete lack of relevance in these categories.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_map_dma_buf
+  AIARelevantFunction: 70
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 60
+  Message_Structures_identified:
+  - struct dma_buf_attachment
+  - struct sg_table
+  SMIDs_identified:
+  - paddr
+  - vaddr
+  - dma_address
+  Reasoning:
+  - '**AIARelevantFunction Score (70)**: The function `dma_heap_map_dma_buf` is involved
+    in mapping a DMA buffer to a device, which is relevant for AI Accelerator integration
+    as it deals with memory management and DMA operations. The function uses `dma_map_sg_attrs`,
+    which is critical for preparing the scatter-gather list for DMA operations. However,
+    it does not directly handle shared memory or user-space interactions, which lowers
+    the score slightly.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent a user-space
+    to kernel-space entry point. It is a helper function that operates on already
+    established structures and does not handle any ioctl commands or user requests
+    directly. Therefore, the score is 0.'
+  - '**Message_Structure_Handling Score (60)**: The function interacts with structures
+    that could be considered message structures, specifically `struct dma_buf_attachment`
+    and `struct sg_table`. The `dma_buf_attachment` structure contains a pointer to
+    a `dma_buf`, which is essential for managing DMA buffers. The `sg_table` structure
+    is also relevant as it holds the scatter-gather list used for DMA operations.
+    However, the function does not perform any explicit copy operations between user
+    space and kernel space, which affects the score.'
+  - '**Message Structures identified**:'
+  - '`struct dma_buf_attachment`: This structure contains fields like `dmabuf`, which
+    is a pointer to the DMA buffer, and `dev`, which is a pointer to the device. These
+    fields are crucial for managing DMA operations.'
+  - '`struct sg_table`: This structure contains `sgl`, which is a pointer to the scatterlist,
+    and `nents`, which indicates the number of entries. These are essential for DMA
+    mapping.'
+  - '**SMID''s identified**:'
+  - '`paddr`: The physical address of the DMA buffer, which is critical for DMA operations.'
+  - '`vaddr`: The virtual address of the DMA buffer, which is used for accessing the
+    buffer in the kernel.'
+  - '`dma_address`: This field in the `scatterlist` structure represents the DMA address
+    used for the actual data transfer. Overall, the function is relevant for DMA operations
+    in the context of AI Accelerator integration, but it does not directly handle
+    user-space interactions or shared memory identifiers, which limits its relevance
+    in those areas.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_unmap_dma_buf
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_heap_unmap_dma_buf` does
+    not interact with an AI Accelerator (AIA) or shared memory (SMem) directly. It
+    primarily deals with unmapping DMA buffers from a device, which is not a critical
+    operation for AIA memory access or management. The function uses `dma_unmap_sg_attrs`,
+    which is related to DMA operations but does not involve the specific patterns
+    associated with AIA memory sharing, such as pinning user pages or managing DMA
+    buffers for communication with an AIA.'
+  - '**Relevant_KD_Entry_Point Score (0)**: There is no indication that this function
+    serves as an entry point for user space interactions, such as through ioctl commands.
+    The function is a static utility that is likely called internally within the kernel
+    and does not handle any user commands or ioctl codes that would lead to AIA-related
+    functionality.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures containing Shared Memory Identifiers (SMIDs). The structures
+    involved (`dma_buf_attachment`, `sg_table`, and `carveout_dma_heap_buffer`) do
+    not contain fields that would be classified as SMIDs relevant to AIA operations.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would facilitate communication between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. The analyzed structures do not contain
+    fields that would serve as SMIDs in the context of AIA operations. In summary,
+    the function `dma_heap_unmap_dma_buf` is focused on DMA buffer management and
+    does not engage with the specific requirements or operations associated with AI
+    Accelerator integration, user space interactions, or message structure handling.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_detatch
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_heap_detatch` does not involve
+    any operations related to sharing memory with an AI Accelerator (AIA). It primarily
+    deals with detaching a DMA buffer from a DMA heap, which does not include pinning
+    user pages, obtaining physical addresses, or managing DMA buffers for communication
+    with an AIA. Therefore, the confidence score for AIA relevance is 0%.'
+  - '**Relevant KD Entry Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as through an ioctl() function. There
+    are no user commands being handled or any dispatch points leading to deeper kernel
+    logic related to AIA operations. Thus, the score for KD entry point relevance
+    is also 0%.'
+  - '**Message Structure Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that involve Shared
+    Memory Identifiers (SMIDs). The function is focused on internal memory management
+    of DMA buffers and does not interact with user-space structures. Therefore, the
+    score for message structure handling is 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that qualify as Shared Memory Identifiers (SMIDs) since the function
+    does not deal with memory sharing with an AIA. In summary, the function `dma_heap_detatch`
+    is focused on managing DMA buffer detachments and does not engage in any operations
+    relevant to AI Accelerator integration, user-space interactions, or message structure
+    handling.'
+- Function/Code_Block_Name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_dma_buf_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_heap_dma_buf_release` does
+    not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+    It primarily deals with releasing a DMA buffer and managing memory cleanup. There
+    are no calls to functions like `get_user_pages`, `pin_user_pages`, or any DMA-related
+    operations that would indicate AIA relevance.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point from user space to kernel space. It does not handle any ioctl commands or
+    user commands that would trigger deeper kernel logic. The function is a cleanup
+    routine that is likely called internally, rather than being invoked directly from
+    user space.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). The function focuses solely on releasing resources
+    associated with a DMA buffer.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not deal with user virtual addresses or any
+    identifiers that would indicate shared memory usage. In summary, the function
+    `dma_heap_dma_buf_release` is focused on resource management for DMA buffers and
+    does not engage with any AIA-related functionality, user space entry points, or
+    message structures. Therefore, all confidence scores are assigned as 0%.'
+dma_operations:
+- Function/Code_Block_Name: carveout_dma_heap_allocate
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_allocate`
+    does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+    It primarily focuses on allocating a DMA buffer from a DMA heap and does not involve
+    pinning user pages, obtaining physical addresses for AIA, or managing DMA buffers
+    for communication with an AIA. Therefore, it receives a score of 0%.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not serve as an entry
+    point from user space to kernel space, such as through an ioctl() interface. There
+    are no ioctl commands being handled within this function, which would typically
+    indicate a user-space interaction. Thus, it also receives a score of 0%.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that involve Shared
+    Memory Identifiers (SMIDs) being passed around. Consequently, it receives a score
+    of 0%.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    that qualify as SMIDs, such as device virtual addresses, physical addresses, or
+    DMA addresses. In summary, the function `carveout_dma_heap_allocate` is focused
+    on memory allocation for DMA buffers and does not engage with the AIA or shared
+    memory mechanisms, nor does it serve as a user-space entry point or handle message
+    structures. Therefore, all confidence scores are 0%.'
+- Function/Code_Block_Name: dma_heap_buffer_alloc
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_heap_buffer_alloc` does
+    not directly interact with an AI Accelerator (AIA) or perform operations related
+    to shared memory management that would typically be associated with AIA integration.
+    It primarily focuses on allocating a DMA buffer from a heap and does not involve
+    pinning user pages, obtaining physical addresses, or managing DMA buffers for
+    communication with an AIA.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an ioctl handler. There are no
+    ioctl commands being processed or dispatched within this function, which would
+    typically indicate a user-space interaction leading to deeper kernel logic.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures containing Shared Memory Identifiers (SMIDs). The function
+    is focused solely on buffer allocation without any user-space communication.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers in
+    the function that correspond to shared memory identifiers or any relevant metadata
+    that would typically be associated with AIA operations. In summary, the `dma_heap_buffer_alloc`
+    function is primarily concerned with memory allocation from a DMA heap and does
+    not engage in any operations relevant to AI Accelerator integration, user-space
+    interactions, or message structure handling. Therefore, all confidence scores
+    are assigned as zero.'
+- Function/Code_Block_Name: dma_buf_phys_convert
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[dma_buf_phys_file'
+  - dma_buf
+  - dma_buf_attachment
+  - sg_table]
+  SMIDs_identified:
+  - '[dma_addr'
+  - dma_buf
+  - attachment
+  - sgt]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert` is involved
+    in converting a file descriptor (fd) to a physical address using DMA buffer management
+    functions. It utilizes `dma_buf_get`, `dma_buf_attach`, and `dma_buf_map_attachment`,
+    which are critical for managing shared memory between the CPU and an AI Accelerator
+    (AIA). The function retrieves the physical address of the DMA buffer, which is
+    essential for AIA operations. However, it does not directly handle memory mapping
+    or notify the AIA of accessible memory, which is why the score is not a full 100%.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as an entry point
+    for user space to kernel space interactions, particularly through the file descriptor
+    (fd) passed as an argument. The use of `dma_buf_get(fd)` indicates that this function
+    is likely called in response to an ioctl command related to DMA buffer management,
+    such as `IOCTL_AIA_GET_PHYSICAL_ADDRESS`. This strong linkage to user commands
+    justifies a high score, though not perfect due to the absence of explicit ioctl
+    handling in the code.'
+  - '**Message_Structure_Handling Score (70)**: The function handles several structures
+    that are relevant for message passing between user space and kernel space. The
+    `dma_buf_phys_file` structure contains pointers to `dma_buf`, `dma_buf_attachment`,
+    and `sg_table`, which are all involved in managing DMA buffers. The function also
+    uses `copy_from_user` and `copy_to_user` implicitly through the file descriptor
+    operations, but does not explicitly show these calls, leading to a moderate score.
+    The structures involved are critical for managing shared memory identifiers (SMIDs)
+    but are not directly manipulated in the context of message passing.'
+  - '**Message Structures identified**: The function utilizes several structures:'
+  - '`dma_buf_phys_file`: Contains the device and pointers to DMA buffer and attachment.'
+  - '`dma_buf`: Represents the DMA buffer itself, including size and file association.'
+  - '`dma_buf_attachment`: Links the DMA buffer to a device, facilitating access.'
+  - '`sg_table`: Represents a scatter-gather table, which is essential for managing
+    non-contiguous memory regions.'
+  - '**SMID''s identified**: The following fields are identified as potential SMIDs:'
+  - '`dma_addr`: The physical address obtained from the scatter-gather table, crucial
+    for AIA access.'
+  - '`dma_buf`: The DMA buffer structure that holds the memory region''s information.'
+  - '`attachment`: The attachment structure linking the buffer to the device.'
+  - '`sgt`: The scatter-gather table that contains the list of memory pages. Overall,
+    the function demonstrates a strong involvement in DMA buffer management, which
+    is critical for AIA operations, while also serving as a user-space entry point
+    for kernel interactions. The handling of message structures and SMIDs indicates
+    its role in facilitating shared memory access.'
+- Function/Code_Block_Name: dma_buf_phys_convert
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[struct dma_buf_phys_file'
+  - struct dma_buf
+  - struct dma_buf_attachment
+  - struct sg_table]
+  SMIDs_identified:
+  - '[dma_buf'
+  - dma_buf_attachment
+  - sg_table
+  - dma_addr]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert` is involved
+    in converting a DMA buffer file descriptor to a physical address, which is critical
+    for enabling an AI Accelerator (AIA) to access shared memory. It utilizes the
+    `dma_buf_get`, `dma_buf_attach`, and `dma_buf_map_attachment` functions, which
+    are essential for managing DMA buffers and their mappings. The function also retrieves
+    the physical address from the scatter-gather table, which is a key operation for
+    AIA memory access. The score reflects the function''s significant role in facilitating
+    memory access for AI accelerators, though it does not directly handle memory mapping
+    or DMA operations itself.'
+  - '**Relevant_KD_Entry_Point Score (60)**: The function serves as an entry point
+    for user space to kernel interactions, particularly through the file descriptor
+    (`fd`) passed as an argument. The use of `dma_buf_get(fd)` indicates that this
+    function is likely called in response to an ioctl command from user space, such
+    as `IOCTL_AIA_GET_PHYSICAL_ADDRESS`. However, the specific ioctl command is not
+    explicitly referenced in the code, leading to a moderate confidence score.'
+  - '**Message_Structure_Handling Score (70)**: The function handles several structures
+    that are exchanged between user space and kernel space. The `dma_buf_phys_file`
+    structure contains pointers to `dma_buf`, `dma_buf_attachment`, and `sg_table`,
+    which are all relevant for managing shared memory. The function also uses `copy_from_user`
+    and `copy_to_user` patterns indirectly through the `dma_buf` and `dma_buf_attachment`
+    structures. The presence of these structures indicates that the function is involved
+    in message structure handling, but the actual copying of data is not explicitly
+    shown in the code.'
+  - '**Message Structures Identified**: The identified message structures include:'
+  - '`struct dma_buf_phys_file`: Contains the device pointer and references to DMA
+    buffer and attachment.'
+  - '`struct dma_buf`: Represents the DMA buffer itself, including its size and associated
+    file.'
+  - '`struct dma_buf_attachment`: Represents the attachment of a DMA buffer to a device.'
+  - '`struct sg_table`: Represents the scatter-gather table used for DMA operations.'
+  - '**SMID''s Identified**: The identified SMIDs include:'
+  - '`dma_buf`: Represents the DMA buffer, which is crucial for identifying the memory
+    region shared with the AIA.'
+  - '`dma_buf_attachment`: Contains the attachment information for the DMA buffer,
+    linking it to the device.'
+  - '`sg_table`: Contains the scatter-gather list, which provides the physical addresses
+    needed for DMA operations.'
+  - '`dma_addr`: The physical address obtained from the scatter-gather table, which
+    is essential for AIA memory access. Overall, the function demonstrates a strong
+    involvement in DMA buffer management and memory access for AI accelerators, with
+    moderate confidence in its role as a kernel entry point and message structure
+    handling.'
+- Function/Code_Block_Name: dma_buf_phys_convert
+  AIARelevantFunction: 80
+  Relevant_KD_Entry_Point: 60
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[dma_buf_phys_file'
+  - dma_buf
+  - dma_buf_attachment
+  - sg_table]
+  SMIDs_identified:
+  - '[dma_buf'
+  - dma_buf_attachment
+  - sg_table
+  - dma_addr]
+  Reasoning:
+  - '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert` is involved
+    in converting a DMA buffer file descriptor to a physical address, which is critical
+    for sharing memory with an AI Accelerator (AIA). It uses `dma_buf_get`, `dma_buf_attach`,
+    and `dma_buf_map_attachment`, which are essential for pinning user pages and obtaining
+    physical addresses. The function also checks for contiguity of the DMA buffer,
+    which is important for DMA operations. The presence of these operations indicates
+    a strong relevance to AIA memory management, hence a high score.'
+  - '**Relevant_KD_Entry_Point Score (60)**: The function acts as an entry point for
+    user space through the file descriptor (`fd`) passed as an argument. This is indicative
+    of an ioctl-like interface, where user commands can trigger deeper kernel logic.
+    However, the function does not explicitly handle ioctl commands or dispatch them,
+    which slightly lowers the score. The function''s reliance on the file descriptor
+    suggests it is part of a larger interface that may include ioctl commands related
+    to DMA buffer management.'
+  - '**Message_Structure_Handling Score (70)**: The function handles several structures
+    that are exchanged between user space and kernel space. The `dma_buf_phys_file`
+    structure contains pointers to `dma_buf`, `dma_buf_attachment`, and `sg_table`,
+    which are all relevant for managing shared memory. The function uses these structures
+    in `copy_from_user` and `copy_to_user` operations indirectly through the `dma_buf`
+    API. The presence of these structures indicates that the function is involved
+    in message structure handling, thus earning a moderate to high score.'
+  - '**Message Structures Identified**: The identified message structures include:'
+  - '`dma_buf_phys_file`: Contains the device and pointers to DMA buffer and attachment.'
+  - '`dma_buf`: Represents the DMA buffer itself, containing size and file information.'
+  - '`dma_buf_attachment`: Represents the attachment of a DMA buffer to a device.'
+  - '`sg_table`: Represents a scatter-gather table used for DMA operations.'
+  - '**SMID''s Identified**: The identified SMIDs include:'
+  - '`dma_buf`: Represents the DMA buffer, which is crucial for identifying the memory
+    region being accessed.'
+  - '`dma_buf_attachment`: Contains the attachment information for the DMA buffer
+    to the device.'
+  - '`sg_table`: Contains the scatter-gather list, which is essential for DMA operations.'
+  - '`dma_addr`: The physical address obtained from the scatter-gather table, which
+    is critical for AIA access. Overall, the function demonstrates a strong involvement
+    in DMA buffer management and memory sharing, particularly relevant for AI Accelerator
+    integration, while also handling user-space interactions through file descriptors.'
+- Function/Code_Block_Name: dma_buf_phys_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_release` does not
+    involve any operations that directly relate to sharing memory with an AI Accelerator
+    (AIA). It primarily deals with releasing resources associated with a DMA buffer,
+    such as unmapping and detaching DMA buffers, which are not specific to AIA operations.
+    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
+    other AIA-specific memory management functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` handler. There are
+    no indications of handling user commands or dispatching to deeper kernel logic
+    that would lead to AIA-related functions. The function is a cleanup routine rather
+    than a command handler.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures containing Shared Memory Identifiers (SMIDs). The function
+    operates on the `dma_buf_phys_file` structure, but it does not interact with user-space
+    data or manage shared memory identifiers.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any structures that would be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields in the analyzed
+    structures that correspond to shared memory identifiers relevant to AIA operations.
+    In summary, the function `dma_buf_phys_release` is focused on resource cleanup
+    for DMA buffers and does not engage in any operations that would be relevant to
+    AIA integration, user-space communication, or shared memory management.'
+- Function/Code_Block_Name: dma_buf_phys_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `dma_buf_phys_release` does
+    not involve any operations that directly relate to sharing memory with an AI Accelerator
+    (AIA). It primarily deals with releasing resources associated with a DMA buffer,
+    such as unmapping and detaching the buffer from its attachment. There are no calls
+    to functions like `get_user_pages`, `dma_map_page`, or any other operations that
+    would typically be associated with AIA memory management.'
+  - '**Relevant KD Entry Point Score (0%)**: This function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` handler. It is a cleanup
+    function that is likely called as part of the buffer release process, but it does
+    not handle any user commands or ioctl codes. Therefore, it does not serve as a
+    relevant entry point for AIA operations.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that contain Shared
+    Memory Identifiers (SMIDs) being processed. The function focuses solely on resource
+    cleanup without any interaction with user-defined structures or memory identifiers.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be involved in communication between
+    user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures that
+    qualify as Shared Memory Identifiers (SMIDs) in the context of this function.
+    In summary, the `dma_buf_phys_release` function is focused on resource management
+    for DMA buffers and does not engage in any operations relevant to AI Accelerator
+    integration, user space interaction, or message structure handling.'
+- Function/Code_Block_Name: dma_buf_phys_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `dma_buf_phys_release` does
+    not interact with an AI Accelerator (AIA) or shared memory (SMem) directly. It
+    primarily deals with releasing resources associated with a DMA buffer, specifically
+    unmapping and detaching the buffer from its attachment. There are no calls to
+    functions that would pin user pages, obtain physical addresses, or manage DMA
+    buffers in a way that would be relevant to AIA integration.'
+  - '**Relevant KD Entry Point Score (0%)**: This function does not serve as an entry
+    point from user space to kernel space. It is a cleanup function that is likely
+    called internally when a DMA buffer is released. There are no ioctl commands or
+    user commands being handled in this function, which would typically indicate a
+    relevant entry point.'
+  - '**Message Structure Handling Score (0%)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures or contain Shared Memory Identifiers (SMIDs). The function
+    operates solely on internal structures related to DMA buffer management.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any user-defined message structures or handle data that would be passed between
+    user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the structures
+    used in this function that would qualify as SMIDs, such as device virtual addresses,
+    physical addresses, or DMA addresses. In summary, the `dma_buf_phys_release` function
+    is focused on resource cleanup for DMA buffers and does not engage with AIA functionalities,
+    user space interactions, or message structures, leading to low confidence scores
+    across all categories.'
+user_copy_operations:
+- Function/Code_Block_Name: user_copy:rpmsg_ctrldev_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[rpmsg_endpoint_info'
+  - rpmsg_channel_info]
+  SMIDs_identified:
+  - '[src'
+  - dst]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl` does not
+    directly interact with an AI Accelerator (AIA) or shared memory (SMem) management.
+    Instead, it primarily handles control commands for a remote processor messaging
+    (RPMsg) framework, which is not specifically related to AIA memory management
+    or DMA operations. Therefore, the confidence score for AIA relevance is 0%.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as an entry point
+    for user-space applications to interact with the kernel through the ioctl interface.
+    It processes various commands (e.g., `RPMSG_CREATE_EPT_IOCTL`, `RPMSG_CREATE_DEV_IOCTL`,
+    `RPMSG_RELEASE_DEV_IOCTL`) that are dispatched based on the `cmd` parameter. The
+    use of `copy_from_user` to retrieve the `rpmsg_endpoint_info` structure from user
+    space indicates that this function is a critical point for user-kernel communication,
+    justifying a high score of 90%.'
+  - '**Message_Structure_Handling Score (80)**: The function handles message structures,
+    specifically `rpmsg_endpoint_info` and `rpmsg_channel_info`. The `copy_from_user`
+    call retrieves the `rpmsg_endpoint_info` structure, which contains fields such
+    as `name`, `src`, and `dst`. The `src` and `dst` fields are significant as they
+    represent the source and destination identifiers for the messaging channels, which
+    can be considered as SMIDs. The function also uses `memcpy` to transfer data into
+    the `chinfo` structure, indicating that it effectively manages message structures.
+    Thus, the score is 80%.'
+  - '**Message Structures Identified**: The identified message structures are `rpmsg_endpoint_info`
+    and `rpmsg_channel_info`. The `rpmsg_endpoint_info` structure contains fields
+    for the endpoint name, source, and destination identifiers, while the `rpmsg_channel_info`
+    structure mirrors this layout. Both structures are essential for establishing
+    communication channels.'
+  - '**SMIDs Identified**: The fields `src` and `dst` in both structures are identified
+    as SMIDs, as they represent the source and destination addresses for the messaging
+    system. These identifiers are crucial for routing messages between different endpoints
+    in the RPMsg framework. Overall, the function is primarily focused on managing
+    communication channels rather than directly interfacing with an AI Accelerator,
+    which is reflected in the scoring.'
+- Function/Code_Block_Name: user_copy:dma_heap_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 80
+  Message_Structure_Handling: 70
+  Message_Structures_identified:
+  - '[None identified]'
+  SMIDs_identified:
+  - '[None identified]'
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl` does not directly
+    interact with an AI Accelerator (AIA) or shared memory (SMem) relevant to AIA
+    operations. It primarily handles IOCTL commands related to DMA heap management,
+    which does not involve the specific patterns of memory sharing or DMA address
+    management typically associated with AIA functions. Therefore, the confidence
+    score is 0%.'
+  - '**Relevant_KD_Entry_Point Score (80)**: The function serves as an entry point
+    for IOCTL commands from user space, as indicated by the use of the `ucmd` parameter
+    and the handling of various commands through a switch-case structure. The function
+    checks the validity of the command and processes it accordingly, which is characteristic
+    of an IOCTL handler. The presence of the `copy_from_user` and `copy_to_user` calls
+    further supports this classification, leading to a high confidence score of 80%.'
+  - '**Message_Structure_Handling Score (70)**: The function utilizes `copy_from_user`
+    to retrieve data from user space into a kernel buffer (`kdata`), and `copy_to_user`
+    to send data back to user space. However, there are no specific message structures
+    defined or identified within the function that would typically contain SMIDs or
+    relevant metadata. The lack of explicit structures related to shared memory identifiers
+    or detailed message structures results in a moderate confidence score of 70%.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or utilize any specific message structures that would typically be exchanged between
+    user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields or identifiers in
+    the function that correspond to shared memory identifiers (SMIDs) as defined in
+    the analysis requirements. In summary, while the function serves as a valid entry
+    point for IOCTL commands and handles user data, it does not engage with AIA-specific
+    memory management or shared memory identifiers, leading to the scores reflected
+    above.'
+- Function/Code_Block_Name: user_copy:dma_heap_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 80
+  Message_Structure_Handling: 70
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction (0%)**: The function `dma_heap_ioctl` does not directly
+    involve any operations that are specifically related to sharing memory with an
+    AI Accelerator (AIA). It primarily handles IOCTL commands related to DMA heap
+    management, which does not inherently include pinning user pages, managing DMA
+    buffers, or programming addresses into AIA device page tables. Therefore, the
+    confidence score for AIA relevance is 0%.'
+  - '**Relevant_KD_Entry_Point (80%)**: The function serves as an entry point for
+    IOCTL commands from user space to kernel space. It processes the command received
+    in the `ucmd` parameter and matches it against a predefined command array (`dma_heap_ioctl_cmds`).
+    The function also handles the copying of data between user space and kernel space
+    using `copy_from_user` and `copy_to_user`, which are typical patterns for IOCTL
+    handlers. The presence of these operations and the handling of user commands gives
+    a high confidence score of 80%.'
+  - '**Message_Structure_Handling (70%)**: The function utilizes `copy_from_user`
+    and `copy_to_user`, indicating that it handles message structures exchanged between
+    user space and kernel space. However, without specific structure definitions available
+    for the command data being processed, it is challenging to identify the exact
+    message structures or their fields. The function does not explicitly define any
+    structures for the data being copied, leading to a moderate confidence score of
+    70%. The absence of identifiable message structures and SMIDs reduces the score
+    slightly.'
+  - '**Message Structures identified**: None identified. The function does not reference
+    any specific structures that could be analyzed for fields relevant to shared memory
+    identifiers (SMIDs).'
+  - '**SMID''s identified**: None identified. The function does not explicitly handle
+    any shared memory identifiers or related fields that would typically be present
+    in structures used for memory management in the context of an AIA. In summary,
+    while the function serves as a relevant entry point for IOCTL commands, it lacks
+    direct relevance to AIA operations and does not provide identifiable message structures
+    or SMIDs. The analysis reflects the function''s role in managing DMA heap operations
+    rather than AIA-specific memory sharing.'
+- Function/Code_Block_Name: user_copy:dma_buf_phys_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[struct dma_buf_phys_data]'
+  SMIDs_identified:
+  - '[fd'
+  - phys]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl` does not
+    directly involve sharing memory with an AI Accelerator (AIA). It primarily handles
+    IOCTL commands related to DMA buffer physical address conversion. There are no
+    operations that pin user pages, iterate over scatter-gather user pages, or manage
+    DMA buffers in a way that would be relevant to AIA memory access. Thus, the score
+    is 0.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as an entry point
+    from user space to kernel space through the IOCTL mechanism. It handles the command
+    `DMA_BUF_PHYS_IOC_CONVERT`, which is a clear indication of user commands being
+    processed. The switch-case structure effectively dispatches commands, and the
+    use of `copy_from_user` and `copy_to_user` indicates that it is managing user-space
+    interactions. The score is high at 90 because it effectively serves as a user-space
+    interface, but there is a minor deduction due to the lack of extensive command
+    handling.'
+  - '**Message_Structure_Handling Score (80)**: The function utilizes the `struct
+    dma_buf_phys_data` for transferring data between user space and kernel space.
+    This structure contains fields `fd` (file descriptor) and `phys` (physical address),
+    which are relevant for managing shared memory identifiers (SMIDs). The presence
+    of `copy_from_user` and `copy_to_user` indicates that the function is handling
+    message structures effectively. The score is 80 as it does handle message structures
+    well, but the overall complexity and number of structures involved are limited.'
+  - '**Message Structures identified**: The primary message structure identified is
+    `struct dma_buf_phys_data`, which contains the fields `fd` and `phys`. These fields
+    are critical for the function''s operation, as they represent the file descriptor
+    associated with the DMA buffer and the physical address that is being converted.'
+  - '**SMID''s identified**: The identified SMIDs are `fd` (file descriptor) and `phys`
+    (physical address). The `fd` serves as a handle to the DMA buffer, while `phys`
+    is the physical address that the function aims to retrieve or convert. These identifiers
+    are essential for the function''s operation and for managing memory access between
+    user space and the kernel. Overall, the function is primarily focused on handling
+    IOCTL commands related to DMA buffers, with limited relevance to AIA operations,
+    hence the scores reflect its specific functionality.'
+- Function/Code_Block_Name: user_copy:dma_buf_phys_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 100
+  Message_Structure_Handling: 100
+  Message_Structures_identified:
+  - '[struct dma_buf_phys_data]'
+  SMIDs_identified:
+  - '[fd'
+  - phys]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl` does not
+    directly interact with an AI Accelerator (AIA) or manage shared memory (SMem)
+    in a way that would qualify it as an AIA relevant function. It primarily deals
+    with converting a file descriptor to a physical address, which is not specific
+    to AIA operations. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any DMA buffer management that would typically be associated with AIA integration.'
+  - '**Relevant_KD_Entry_Point Score (100)**: The function serves as an entry point
+    from user space to kernel space through the ioctl mechanism. It handles the `DMA_BUF_PHYS_IOC_CONVERT`
+    command, which is a clear indication of an ioctl command being processed. The
+    switch-case structure effectively dispatches commands, and the function is designed
+    to handle user commands, making it a strong candidate for a kernel entry point.'
+  - '**Message_Structure_Handling Score (100)**: The function utilizes `copy_from_user`
+    and `copy_to_user`, which are critical for transferring data between user space
+    and kernel space. The structure `dma_buf_phys_data` is passed in these calls,
+    which contains fields `fd` (file descriptor) and `phys` (physical address). These
+    fields are essential for the operation of the function and represent the message
+    structure being handled.'
+  - '**Message Structures identified**: The identified message structure is `struct
+    dma_buf_phys_data`, which contains:'
+  - '`unsigned int fd`: This field represents the file descriptor associated with
+    the DMA buffer.'
+  - '`unsigned long long phys`: This field represents the physical address that is
+    being converted from the file descriptor.'
+  - '**SMID''s identified**: The fields `fd` and `phys` qualify as Shared Memory Identifiers
+    (SMIDs) because they are used to identify and manage the shared memory resources
+    between user space and the kernel. The file descriptor (`fd`) is a handle to the
+    DMA buffer, while the physical address (`phys`) is crucial for accessing the memory
+    directly. Overall, the function is well-defined as a kernel entry point for handling
+    user requests related to DMA buffer physical address conversion, but it does not
+    engage in operations that would typically be associated with AIA integration.'
+ioctl_operations:
+- Function/Code_Block_Name: dma_heap_open
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The `dma_heap_open` function does not involve
+    any operations related to AI Accelerator integration or shared memory management.
+    It primarily focuses on opening a DMA heap by loading it from a minor number associated
+    with the inode. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any DMA-related operations that would typically be associated with AIA functionality.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent a user-space
+    to kernel-space entry point through an ioctl command. It is a standard file operation
+    function that is invoked when a file descriptor is opened. There are no ioctl
+    codes being handled in this function, which would typically indicate a relevant
+    entry point for AIA operations.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that would qualify
+    as message structures or contain Shared Memory Identifiers (SMIDs). The function
+    simply retrieves a DMA heap structure based on the inode and sets it as the private
+    data for the file.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any structures that would be used for message passing or shared memory identification.'
+  - '**SMID''s identified**: None identified. There are no fields in the function
+    or associated structures that would qualify as SMIDs, such as device virtual addresses,
+    physical addresses, or any identifiers related to shared memory. In summary, the
+    `dma_heap_open` function is focused on managing DMA heaps and does not engage
+    in any operations relevant to AI Accelerator integration, user-space to kernel-space
+    communication, or message structure handling. Therefore, all confidence scores
+    are assigned as 0.'
+- Function/Code_Block_Name: rpmsg_ctrldev_open
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rpmsg_ctrldev_open` does not
+    interact with any AI Accelerator (AIA) relevant functions. It primarily handles
+    the opening of a character device and does not involve any operations related
+    to shared memory, DMA addresses, or memory mapping that would be typical in AIA
+    integration. There are no calls to functions like `get_user_pages`, `pin_user_pages`,
+    or any memory management functions that would be relevant to AIA operations.'
+  - '**Relevant_KD_Entry_Point Score (0%)**: The function does not represent a direct
+    entry point for user space interactions through ioctl commands. It is a standard
+    file operation function that is called when a device file is opened. There are
+    no ioctl commands being handled in this function, nor does it dispatch to any
+    deeper kernel logic that would lead to AIA-related functionality.'
+  - '**Message_Structure_Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not perform any `copy_from_user()`
+    or `copy_to_user()` operations, nor does it pass any structures that would involve
+    shared memory identifiers (SMIDs). The only structure being manipulated is `rpmsg_ctrldev`,
+    which does not contain any fields relevant to shared memory or communication with
+    an AIA.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged between user space and
+    kernel space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function or the structures involved. In summary, the `rpmsg_ctrldev_open`
+    function is a basic device open handler that does not engage with any AIA-related
+    functionality, user space commands, or message structures relevant to shared memory
+    management. Therefore, all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: rpmsg_ctrldev_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 90
+  Message_Structure_Handling: 80
+  Message_Structures_identified:
+  - '[rpmsg_endpoint_info'
+  - rpmsg_channel_info]
+  SMIDs_identified:
+  - '[src'
+  - dst]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl` does not
+    directly involve sharing memory with an AI Accelerator (AIA). Instead, it primarily
+    handles control operations for RPMsg endpoints and channels. There are no operations
+    related to pinning user pages, obtaining physical addresses, or managing DMA buffers
+    that are typically associated with AIA functions. Therefore, the score is 0%.'
+  - '**Relevant_KD_Entry_Point Score (90)**: The function serves as an entry point
+    from user space to kernel space through the ioctl mechanism. It processes various
+    ioctl commands (e.g., `RPMSG_CREATE_EPT_IOCTL`, `RPMSG_CREATE_DEV_IOCTL`, `RPMSG_RELEASE_DEV_IOCTL`)
+    and handles user commands that trigger deeper kernel logic. The presence of the
+    `copy_from_user` function indicates that it is indeed handling user input, which
+    is a key characteristic of a kernel entry point. The score is high at 90% due
+    to the clear handling of ioctl commands.'
+  - '**Message_Structure_Handling Score (80)**: The function utilizes the `rpmsg_endpoint_info`
+    structure to receive data from user space via `copy_from_user`. This structure
+    contains fields such as `name`, `src`, and `dst`, which are relevant for establishing
+    communication channels. The `rpmsg_channel_info` structure is also used to store
+    channel information. The presence of these structures and the handling of their
+    fields indicate that the function is managing message structures effectively,
+    hence the score of 80%.'
+  - '**Message Structures Identified**: The function identifies two message structures:
+    `rpmsg_endpoint_info` and `rpmsg_channel_info`. The `rpmsg_endpoint_info` structure
+    contains fields for the endpoint name, source, and destination identifiers, while
+    the `rpmsg_channel_info` structure mirrors this layout. Both structures are essential
+    for the communication setup.'
+  - '**SMIDs Identified**: The fields `src` and `dst` from both structures can be
+    considered as Shared Memory Identifiers (SMIDs) since they represent the source
+    and destination identifiers for the RPMsg communication. These identifiers are
+    crucial for establishing the communication context between different endpoints.
+    Overall, the analysis indicates that while the function does not directly relate
+    to AIA operations, it serves as a significant entry point for user-space interactions
+    and effectively manages message structures relevant to RPMsg communication.'
+- Function/Code_Block_Name: rpmsg_ctrldev_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0%)**: The function `rpmsg_ctrldev_release` does
+    not involve any operations related to shared memory (SMem) with an AI Accelerator
+    (AIA). It simply releases a control device by calling `put_device()` on the `ctrldev`
+    structure, which is derived from the `inode` parameter. There are no memory management
+    patterns or interactions with user pages, DMA addresses, or any other AIA-related
+    operations present in this function.'
+  - '**Relevant KD Entry Point Score (0%)**: The function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` handler. It is a release
+    function that is typically called when a file descriptor is closed, and it does
+    not handle any user commands or ioctl codes. Therefore, it does not lead to the
+    execution of any AIA relevant functions.'
+  - '**Message Structure Handling Score (0%)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). The absence of any relevant structures or data exchange
+    further supports a score of 0%.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not deal with memory management or shared
+    memory operations. In summary, the `rpmsg_ctrldev_release` function is primarily
+    concerned with device management and does not engage in any operations relevant
+    to AI Accelerator integration, user space communication, or message structure
+    handling. Thus, all confidence scores are assigned as 0%.'
+- Function/Code_Block_Name: rpmsg_eptdev_open
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_open` does not
+    interact with an AI Accelerator (AIA) or shared memory (SMem) directly. It primarily
+    deals with opening a remote procedure call (RPC) message endpoint, which is not
+    related to memory management or DMA operations typically associated with AI accelerators.
+    There are no calls to functions like `get_user_pages`, `pin_user_pages`, or any
+    DMA-related operations that would indicate relevance to AIA functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not serve as an entry
+    point for user-space interactions that would lead to AIA-related operations. It
+    is not handling any ioctl commands that would typically be associated with AIA
+    memory management or communication. The function is more about establishing a
+    communication endpoint rather than managing shared memory or device memory.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. It does not utilize `copy_from_user()` or `copy_to_user()`
+    calls, nor does it pass any structures that would contain Shared Memory Identifiers
+    (SMIDs). The function focuses on managing the endpoint and device structures without
+    any indication of message passing or shared memory management.'
+  - '**Message Structures Identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged between user space
+    and kernel space.'
+  - '**SMIDs Identified**: None identified. There are no fields or structures that
+    represent shared memory identifiers or any relevant memory addresses that would
+    qualify as SMIDs. In summary, the function `rpmsg_eptdev_open` is focused on establishing
+    a communication endpoint for remote procedure calls and does not engage in any
+    operations related to shared memory management or AI Accelerator integration,
+    leading to a score of 0 across all categories.'
+- Function/Code_Block_Name: dma_heap_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 80
+  Message_Structure_Handling: 70
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction (0%)**: The function `dma_heap_ioctl` does not directly
+    interact with an AI Accelerator (AIA) or perform operations that are typically
+    associated with AIA memory management, such as pinning user pages, obtaining DMA
+    addresses, or managing DMA buffers. The function primarily handles IOCTL commands
+    related to a DMA heap, which is more about memory management in general rather
+    than specifically for an AIA.'
+  - '**Relevant_KD_Entry_Point (80%)**: The function serves as an entry point for
+    IOCTL commands from user space, which is a common pattern in kernel drivers. It
+    processes the command using the `ucmd` parameter and matches it against an array
+    of command definitions (`dma_heap_ioctl_cmds`). The function also handles user
+    input through `copy_from_user` and prepares output with `copy_to_user`, which
+    are typical for IOCTL implementations. The presence of the switch-case structure
+    to handle different commands indicates that it is a well-defined entry point for
+    user commands.'
+  - '**Message_Structure_Handling (70%)**: The function uses `copy_from_user` and
+    `copy_to_user`, which are indicative of message structure handling between user
+    space and kernel space. However, without specific structure definitions, it is
+    difficult to identify the exact message structures being used. The function does
+    not explicitly define any structures for shared memory identifiers (SMIDs), and
+    thus, no SMIDs can be identified. The handling of `kdata` as a buffer for user
+    data suggests that it may be used to transfer structured data, but without the
+    definitions of the structures involved, the analysis remains limited.'
+  - '**Message Structures identified**: None identified. The function does not define
+    or reference any specific message structures that can be analyzed for fields or
+    SMIDs.'
+  - '**SMID''s identified**: None identified. The function does not provide any clear
+    identifiers or fields that would qualify as shared memory identifiers based on
+    the provided code and the lack of structure definitions. In summary, while the
+    function serves as a relevant entry point for IOCTL commands, it does not engage
+    in operations that would typically be associated with AIA memory management, nor
+    does it define or utilize specific message structures or SMIDs.'
+- Function/Code_Block_Name: dma_heap_ioctl_allocate
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 100
+  Message_Structure_Handling: 100
+  Message_Structures_identified:
+  - '[struct dma_heap_allocation_data]'
+  SMIDs_identified:
+  - '[fd]'
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl_allocate` does
+    not directly involve sharing memory with an AI Accelerator (AIA). It primarily
+    focuses on allocating a buffer from a DMA heap and managing file descriptors.
+    There are no operations related to pinning user pages, obtaining physical addresses,
+    or programming AIA device page tables. Therefore, the confidence score for AIA
+    relevance is 0%.'
+  - '**Relevant KD Entry Point Score (100)**: The function serves as an entry point
+    from user space to kernel space through the ioctl interface. It handles user commands
+    related to memory allocation by checking the validity of the provided flags and
+    then calling `dma_heap_buffer_alloc`. The presence of the ioctl mechanism is evident,
+    and it effectively dispatches user commands, leading to deeper kernel logic execution.
+    Thus, the score for this category is 100%.'
+  - '**Message Structure Handling Score (100)**: The function utilizes the `struct
+    dma_heap_allocation_data` for communication between user space and kernel space.
+    The function performs checks on the fields of this structure, such as `fd`, `fd_flags`,
+    and `heap_flags`, and modifies the `fd` field based on the allocation result.
+    The use of `copy_from_user()` or `copy_to_user()` is not explicitly shown in the
+    provided code, but the structure is clearly defined for message handling. Therefore,
+    the score for message structure handling is 100%.'
+  - '**Message Structures identified**: The primary message structure identified is
+    `struct dma_heap_allocation_data`, which contains fields relevant to the allocation
+    process, including `len`, `fd`, `fd_flags`, and `heap_flags`.'
+  - '**SMID''s identified**: The `fd` field in `struct dma_heap_allocation_data` serves
+    as a Shared Memory Identifier (SMID) since it represents a file descriptor that
+    can be used to reference the allocated memory buffer. Other fields like `len`,
+    `fd_flags`, and `heap_flags` are not SMIDs but are relevant for the allocation
+    process. In summary, while the function does not directly relate to AIA operations,
+    it serves as a critical entry point for memory allocation in the kernel, effectively
+    handling user commands and utilizing a well-defined message structure.'
+- Function/Code_Block_Name: dma_buf_phys_open
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_open` does not
+    interact with an AI Accelerator (AIA) or shared memory (SMem) directly. It primarily
+    initializes a private data structure (`dma_buf_phys_file`) and associates it with
+    a file structure. There are no calls to functions that would typically be involved
+    in memory management for an AIA, such as `get_user_pages`, `pin_user_pages`, or
+    any DMA-related operations.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point for user space to kernel space through an ioctl interface. It does not handle
+    any ioctl commands or dispatch user commands that would lead to AIA-related functionality.
+    The function is more of an initialization routine for a file operation rather
+    than an interface for user commands.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve Shared
+    Memory Identifiers (SMIDs). The only structure being allocated is `dma_buf_phys_file`,
+    which does not contain any fields that would qualify as SMIDs or message structures
+    relevant to shared memory.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would be exchanged between user space and kernel
+    space.'
+  - '**SMID''s identified**: None identified. The function does not manage or reference
+    any shared memory identifiers or related fields. In summary, the `dma_buf_phys_open`
+    function is focused on initializing a private data structure for file operations
+    and does not engage with any AIA-related memory management or user-kernel communication
+    mechanisms. Therefore, all confidence scores are assigned as zero.'
+- Function/Code_Block_Name: dma_buf_phys_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 100
+  Message_Structure_Handling: 100
+  Message_Structures_identified:
+  - '[struct dma_buf_phys_data]'
+  SMIDs_identified:
+  - '[fd'
+  - phys]
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl` does not
+    directly interact with an AI Accelerator (AIA) or perform operations that would
+    typically be associated with AIA memory management, such as pinning user pages,
+    obtaining physical addresses for DMA, or managing DMA buffers. Instead, it focuses
+    on converting a file descriptor to a physical address, which is more related to
+    general DMA buffer management rather than AIA-specific operations.'
+  - '**Relevant_KD_Entry_Point Score (100)**: The function serves as an entry point
+    from user space to kernel space through the ioctl mechanism. It handles the `DMA_BUF_PHYS_IOC_CONVERT`
+    command, which is a clear indication of an ioctl command being processed. The
+    switch-case structure effectively dispatches commands, and the function is designed
+    to handle user commands, making it a relevant kernel driver entry point.'
+  - '**Message_Structure_Handling Score (100)**: The function utilizes `copy_from_user()`
+    and `copy_to_user()` to handle data transfer between user space and kernel space.
+    The structure `dma_buf_phys_data` is passed to and from user space, containing
+    fields `fd` (file descriptor) and `phys` (physical address). These fields are
+    critical for understanding the context of the shared memory and the operations
+    being performed, thus qualifying it as a message structure.'
+  - '**Message Structures identified**: The identified message structure is `struct
+    dma_buf_phys_data`, which contains:'
+  - '`unsigned int fd`: This field represents the file descriptor associated with
+    the DMA buffer, which is a potential SMID as it identifies the resource being
+    accessed.'
+  - '`unsigned long long phys`: This field represents the physical address corresponding
+    to the DMA buffer, which is also a potential SMID as it provides the necessary
+    address for memory operations.'
+  - '**SMID''s identified**: The identified SMIDs are:'
+  - '`fd`: The file descriptor that identifies the DMA buffer in user space.'
+  - '`phys`: The physical address that is used for accessing the DMA buffer in the
+    kernel. Overall, the function is well-defined as an ioctl handler, effectively
+    managing user-space interactions while handling the necessary data structures
+    for communication. However, it does not engage in operations that would typically
+    be associated with AIA memory management, leading to a low score in that category.'
+- Function/Code_Block_Name: dma_buf_phys_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_release` does not
+    involve any operations that directly relate to sharing memory with an AI Accelerator
+    (AIA). It primarily deals with releasing resources associated with a DMA buffer,
+    such as unmapping attachments and detaching DMA buffers. There are no calls to
+    functions like `get_user_pages`, `pin_user_pages`, or any other operations that
+    would typically be associated with AIA memory management.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not represent an entry
+    point from user space to kernel space, such as through an `ioctl()` call. It is
+    a cleanup function that is likely called internally when a file descriptor associated
+    with a DMA buffer is closed. There are no `ioctl` command codes being handled
+    in this function, which would be necessary for it to qualify as a relevant kernel
+    entry point.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that contain Shared
+    Memory Identifiers (SMIDs) being processed. The function primarily operates on
+    the `dma_buf_phys_file` structure, which does not involve any user-space interaction.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. The function does not utilize any fields
+    that would qualify as Shared Memory Identifiers (SMIDs), such as device virtual
+    addresses, physical addresses, or DMA addresses. In summary, the `dma_buf_phys_release`
+    function is focused on resource cleanup for DMA buffers and does not engage in
+    any operations relevant to AI Accelerator integration, user-space communication,
+    or message structure handling. Therefore, all confidence scores are set to 0%.'
+- Function/Code_Block_Name: dma_buf_file_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `dma_buf_file_release` does not
+    involve any operations related to AI Accelerators or shared memory management.
+    It primarily handles the release of a DMA buffer file by checking if the file
+    is a DMA buffer file and then removing it from a linked list if it is. There are
+    no calls to functions like `get_user_pages`, `pin_user_pages`, or any memory mapping
+    operations that would typically be associated with AIA relevant functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: This function does not serve as an entry
+    point for user space interactions with the kernel, such as through ioctl commands.
+    It is a cleanup function that is called when a DMA buffer file is released, and
+    there are no ioctl codes being handled within this function. Therefore, it does
+    not qualify as a relevant kernel driver entry point.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor are there any structures that contain Shared
+    Memory Identifiers (SMIDs) being processed. The function simply operates on the
+    `file` structure and the `dma_buf` structure without any user-space interaction.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any specific message structures that would typically be involved in communication
+    between user space and kernel space.'
+  - '**SMID''s identified**: None identified. There are no fields in the `dma_buf`
+    or `file` structures that correspond to shared memory identifiers or any relevant
+    identifiers that would indicate shared memory usage. In summary, the `dma_buf_file_release`
+    function is focused on managing the lifecycle of a DMA buffer file and does not
+    engage in any operations that would be relevant to AI Accelerator integration,
+    kernel entry points, or message structure handling.'
+- Function/Code_Block_Name: rpmsg_eptdev_ioctl
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 100
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_ioctl` does not
+    involve any operations related to shared memory (SMem) with an AI Accelerator
+    (AIA). It primarily checks the command received via the ioctl interface and performs
+    an endpoint destruction operation if the command is valid. There are no calls
+    to functions like `get_user_pages`, `pin_user_pages`, or any memory management
+    functions that would typically be associated with AIA interactions.'
+  - '**Relevant_KD_Entry_Point Score (100)**: The function serves as a kernel entry
+    point for user space interactions through the ioctl interface. It specifically
+    checks for the command `RPMSG_DESTROY_EPT_IOCTL`, which is a valid ioctl command
+    for destroying an endpoint. The function handles this command directly, making
+    it a clear entry point for user commands leading to deeper kernel logic.'
+  - '**Message_Structure_Handling Score (0)**: There are no message structures being
+    handled in this function. The function does not utilize `copy_from_user()` or
+    `copy_to_user()` calls, nor does it pass any structures that would involve shared
+    memory identifiers (SMIDs). The only structure referenced is `rpmsg_eptdev`, but
+    it does not involve any user-space communication or shared memory management.'
+  - '**Message Structures identified**: None identified. The function does not interact
+    with any message structures that would typically be exchanged between user space
+    and kernel space.'
+  - '**SMID''s identified**: None identified. There are no shared memory identifiers
+    present in the function, as it does not deal with memory addresses, descriptors,
+    or any related metadata. In summary, the function is primarily focused on handling
+    a specific ioctl command related to endpoint management and does not engage in
+    any operations that would be relevant to shared memory management or AI Accelerator
+    integration.'
+- Function/Code_Block_Name: rpmsg_eptdev_release
+  AIARelevantFunction: 0
+  Relevant_KD_Entry_Point: 0
+  Message_Structure_Handling: 0
+  Message_Structures_identified: []
+  SMIDs_identified: []
+  Reasoning:
+  - '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_release` does not
+    interact with any AI Accelerator (AIA) relevant functions or memory management
+    patterns that would typically involve shared memory (SMem) with an AIA. It primarily
+    handles the release of a device endpoint and does not perform operations such
+    as pinning user pages, obtaining physical addresses, or managing DMA buffers,
+    which are characteristic of AIA relevant functions.'
+  - '**Relevant_KD_Entry_Point Score (0)**: The function does not represent an entry
+    point from user space to kernel space, such as an `ioctl()` handler. It is a cleanup
+    function that is called when the device is released, and it does not handle any
+    user commands or ioctl codes that would lead to deeper kernel logic involving
+    AIA.'
+  - '**Message_Structure_Handling Score (0)**: The function does not handle any message
+    structures exchanged between user space and kernel space. There are no `copy_from_user()`
+    or `copy_to_user()` calls present, nor does it involve any structures that would
+    typically contain Shared Memory Identifiers (SMIDs). The function focuses on releasing
+    resources associated with the endpoint device.'
+  - '**Message Structures identified**: None identified. The function does not utilize
+    any message structures that would typically be exchanged with user space.'
+  - '**SMID''s identified**: None identified. There are no fields or structures in
+    the function that qualify as SMIDs, as it does not deal with memory addresses,
+    device identifiers, or similar constructs. In summary, the `rpmsg_eptdev_release`
+    function is primarily concerned with resource cleanup and does not engage in any
+    operations related to AIA, user space interactions, or message structure handling.
+    Therefore, all confidence scores are assigned as 0%.'
+Top_Analysis:
+  AIARelevantFunction:
+    description: Top 10 functions ranked by AIARelevantFunction score
+    functions:
+    - rank: 1
+      function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a file descriptor (fd) to a physical address using
+        DMA buffer management functions. It utilizes `dma_b...'
+    - rank: 2
+      function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a DMA buffer file descriptor to a physical address,
+        which is critical for enabling an AI Accelerator (...'
+    - rank: 3
+      function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a DMA buffer file descriptor to a physical address,
+        which is critical for sharing memory with an AI Ac...'
+    - rank: 4
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_send_offchannel_raw
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rpmsg_send_offchannel_raw`
+        is responsible for sending messages between processors, which can be relevant
+        for AI Accelerator integration. It utilizes a...'
+    - rank: 5
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      score: 70
+      reasoning: The function `rpmsg_sg_init` initializes a scatter-gather list, which
+        is often used in DMA operations. The use of `sg_set_page` and `sg_init_one`
+        indicates that it is preparing memory for DMA transfers, which is relevant
+        for AI Accelerator integration. However, it does not directly handle shared
+        memory or user pages, which lowers the score slightly. The function does not
+        pin user pages or directly interact with the AI Accelerator, hence the score
+        is not higher.
+    - rank: 6
+      function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_map_dma_buf
+      operation_type: functions_by_file
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `dma_heap_map_dma_buf`
+        is involved in mapping a DMA buffer to a device, which is relevant for AI
+        Accelerator integration as it deals with memory manage...'
+    - rank: 7
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_create_ept`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It pr...'
+    - rank: 8
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_sendto
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_sendto`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily sends messages through a remote pr...'
+    - rank: 9
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:get_a_tx_buf
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `get_a_tx_buf`
+        does not interact with any AI Accelerator (AIA) or shared memory mechanisms.
+        It primarily manages transmission buffers for a virtual dev...'
+    - rank: 10
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_done`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA. It primarily handles message rece...'
+  Relevant_KD_Entry_Point:
+    description: Top 10 functions ranked by Relevant_KD_Entry_Point score
+    functions:
+    - rank: 1
+      function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or manage shared memory
+        (SMem) in a way that would qualify it as an AIA rel...'
+    - rank: 2
+      function_name: dma_heap_ioctl_allocate
+      operation_type: ioctl_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl_allocate`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily focuses on allocating a buffer from a DMA ...'
+    - rank: 3
+      function_name: dma_buf_phys_ioctl
+      operation_type: ioctl_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that would typically be associated with AIA memory ma...'
+    - rank: 4
+      function_name: rpmsg_eptdev_ioctl
+      operation_type: ioctl_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_ioctl`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily checks the command recei...'
+    - rank: 5
+      function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a file descriptor (fd) to a physical address using
+        DMA buffer management functions. It utilizes `dma_b...'
+    - rank: 6
+      function_name: user_copy:rpmsg_ctrldev_ioctl
+      operation_type: user_copy_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. Instead, it primarily handles control ...'
+    - rank: 7
+      function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily handles IOCTL commands related to DMA buffer ph...'
+    - rank: 8
+      function_name: rpmsg_ctrldev_ioctl
+      operation_type: ioctl_operations
+      score: 90
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). Instead,
+        it primarily handles control operations for RPMsg ...'
+    - rank: 9
+      function_name: user_copy:dma_heap_ioctl
+      operation_type: user_copy_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        relevant to AIA operations. It primarily handles IOCTL ...'
+    - rank: 10
+      function_name: user_copy:dma_heap_ioctl
+      operation_type: user_copy_operations
+      score: 80
+      reasoning: The function serves as an entry point for IOCTL commands from user
+        space to kernel space. It processes the command received in the `ucmd` parameter
+        and matches it against a predefined command array (`dma_heap_ioctl_cmds`).
+        The function also handles the copying of data between user space and kernel
+        space using `copy_from_user` and `copy_to_user`, which are typical patterns
+        for IOCTL handlers. The presence of these operations and the handling of user
+        commands gives a high confidence score of 80%.
+  Message_Structure_Handling:
+    description: Top 10 functions ranked by Message_Structure_Handling score
+    functions:
+    - rank: 1
+      function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or manage shared memory
+        (SMem) in a way that would qualify it as an AIA rel...'
+      message_structures_identified:
+      - '[struct dma_buf_phys_data]'
+      smids_identified:
+      - '[fd'
+      - phys]
+    - rank: 2
+      function_name: dma_heap_ioctl_allocate
+      operation_type: ioctl_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl_allocate`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily focuses on allocating a buffer from a DMA ...'
+      message_structures_identified:
+      - '[struct dma_heap_allocation_data]'
+      smids_identified:
+      - '[fd]'
+    - rank: 3
+      function_name: dma_buf_phys_ioctl
+      operation_type: ioctl_operations
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that would typically be associated with AIA memory ma...'
+      message_structures_identified:
+      - '[struct dma_buf_phys_data]'
+      smids_identified:
+      - '[fd'
+      - phys]
+    - rank: 4
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_send_offchannel_raw
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rpmsg_send_offchannel_raw`
+        is responsible for sending messages between processors, which can be relevant
+        for AI Accelerator integration. It utilizes a...'
+      message_structures_identified:
+      - '[struct rpmsg_hdr'
+      - struct scatterlist]
+      smids_identified:
+      - '[src'
+      - dst
+      - dma_address]
+    - rank: 5
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_done`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA. It primarily handles message rece...'
+      message_structures_identified:
+      - '[struct rpmsg_hdr]'
+      smids_identified:
+      - '[src'
+      - dst
+      - reserved
+      - len]
+    - rank: 6
+      function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+      operation_type: functions_by_file
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily handles message reception over a virtu...'
+      message_structures_identified:
+      - '[struct rpmsg_hdr]'
+      smids_identified:
+      - '[src'
+      - dst
+      - reserved
+      - len
+      - flags]
+    - rank: 7
+      function_name: user_copy:rpmsg_ctrldev_ioctl
+      operation_type: user_copy_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. Instead, it primarily handles control ...'
+      message_structures_identified:
+      - '[rpmsg_endpoint_info'
+      - rpmsg_channel_info]
+      smids_identified:
+      - '[src'
+      - dst]
+    - rank: 8
+      function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily handles IOCTL commands related to DMA buffer ph...'
+      message_structures_identified:
+      - '[struct dma_buf_phys_data]'
+      smids_identified:
+      - '[fd'
+      - phys]
+    - rank: 9
+      function_name: rpmsg_ctrldev_ioctl
+      operation_type: ioctl_operations
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). Instead,
+        it primarily handles control operations for RPMsg ...'
+      message_structures_identified:
+      - '[rpmsg_endpoint_info'
+      - rpmsg_channel_info]
+      smids_identified:
+      - '[src'
+      - dst]
+    - rank: 10
+      function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a file descriptor (fd) to a physical address using
+        DMA buffer management functions. It utilizes `dma_b...'
+      message_structures_identified:
+      - '[dma_buf_phys_file'
+      - dma_buf
+      - dma_buf_attachment
+      - sg_table]
+      smids_identified:
+      - '[dma_addr'
+      - dma_buf
+      - attachment
+      - sgt]
+  Overall_Top_Scores:
+    description: All function scores sorted from highest to lowest across all categories
+    total_entries: 123
+    entries:
+    - function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or manage shared memory
+        (SMem) in a way that would qualify it as an AIA rel...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or manage shared memory
+        (SMem) in a way that would qualify it as an AIA rel...'
+      message_structures:
+      - '[struct dma_buf_phys_data]'
+      smids:
+      - '[fd'
+      - phys]
+    - function_name: dma_heap_ioctl_allocate
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl_allocate`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily focuses on allocating a buffer from a DMA ...'
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_ioctl_allocate
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl_allocate`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily focuses on allocating a buffer from a DMA ...'
+      message_structures:
+      - '[struct dma_heap_allocation_data]'
+      smids:
+      - '[fd]'
+    - function_name: dma_buf_phys_ioctl
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that would typically be associated with AIA memory ma...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_ioctl
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that would typically be associated with AIA memory ma...'
+      message_structures:
+      - '[struct dma_buf_phys_data]'
+      smids:
+      - '[fd'
+      - phys]
+    - function_name: rpmsg_eptdev_ioctl
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 100
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_ioctl`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily checks the command recei...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a file descriptor (fd) to a physical address using
+        DMA buffer management functions. It utilizes `dma_b...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:rpmsg_ctrldev_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. Instead, it primarily handles control ...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily handles IOCTL commands related to DMA buffer ph...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_ctrldev_ioctl
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 90
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). Instead,
+        it primarily handles control operations for RPMsg ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_send_offchannel_raw
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rpmsg_send_offchannel_raw`
+        is responsible for sending messages between processors, which can be relevant
+        for AI Accelerator integration. It utilizes a...'
+      message_structures:
+      - '[struct rpmsg_hdr'
+      - struct scatterlist]
+      smids:
+      - '[src'
+      - dst
+      - dma_address]
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_done`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA. It primarily handles message rece...'
+      message_structures:
+      - '[struct rpmsg_hdr]'
+      smids:
+      - '[src'
+      - dst
+      - reserved
+      - len]
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily handles message reception over a virtu...'
+      message_structures:
+      - '[struct rpmsg_hdr]'
+      smids:
+      - '[src'
+      - dst
+      - reserved
+      - len
+      - flags]
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a file descriptor (fd) to a physical address using
+        DMA buffer management functions. It utilizes `dma_b...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a DMA buffer file descriptor to a physical address,
+        which is critical for enabling an AI Accelerator (...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 80
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a DMA buffer file descriptor to a physical address,
+        which is critical for sharing memory with an AI Ac...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:rpmsg_ctrldev_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. Instead, it primarily handles control ...'
+      message_structures:
+      - '[rpmsg_endpoint_info'
+      - rpmsg_channel_info]
+      smids:
+      - '[src'
+      - dst]
+    - function_name: user_copy:dma_heap_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        relevant to AIA operations. It primarily handles IOCTL ...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:dma_heap_ioctl
+      operation_type: user_copy_operations
+      category: Relevant_KD_Entry_Point
+      score: 80
+      reasoning: The function serves as an entry point for IOCTL commands from user
+        space to kernel space. It processes the command received in the `ucmd` parameter
+        and matches it against a predefined command array (`dma_heap_ioctl_cmds`).
+        The function also handles the copying of data between user space and kernel
+        space using `copy_from_user` and `copy_to_user`, which are typical patterns
+        for IOCTL handlers. The presence of these operations and the handling of user
+        commands gives a high confidence score of 80%.
+      message_structures: []
+      smids: []
+    - function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily handles IOCTL commands related to DMA buffer ph...'
+      message_structures:
+      - '[struct dma_buf_phys_data]'
+      smids:
+      - '[fd'
+      - phys]
+    - function_name: rpmsg_ctrldev_ioctl
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 80
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). Instead,
+        it primarily handles control operations for RPMsg ...'
+      message_structures:
+      - '[rpmsg_endpoint_info'
+      - rpmsg_channel_info]
+      smids:
+      - '[src'
+      - dst]
+    - function_name: dma_heap_ioctl
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 80
+      reasoning: The function serves as an entry point for IOCTL commands from user
+        space, which is a common pattern in kernel drivers. It processes the command
+        using the `ucmd` parameter and matches it against an array of command definitions
+        (`dma_heap_ioctl_cmds`). The function also handles user input through `copy_from_user`
+        and prepares output with `copy_to_user`, which are typical for IOCTL implementations.
+        The presence of the switch-case structure to handle different commands indicates
+        that it is a well-defined entry point for user commands.
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_send_offchannel_raw
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rpmsg_send_offchannel_raw`
+        is responsible for sending messages between processors, which can be relevant
+        for AI Accelerator integration. It utilizes a...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 70
+      reasoning: The function `rpmsg_sg_init` initializes a scatter-gather list, which
+        is often used in DMA operations. The use of `sg_set_page` and `sg_init_one`
+        indicates that it is preparing memory for DMA transfers, which is relevant
+        for AI Accelerator integration. However, it does not directly handle shared
+        memory or user pages, which lowers the score slightly. The function does not
+        pin user pages or directly interact with the AI Accelerator, hence the score
+        is not higher.
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_map_dma_buf
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 70
+      reasoning: '**AIARelevantFunction Score (70)**: The function `dma_heap_map_dma_buf`
+        is involved in mapping a DMA buffer to a device, which is relevant for AI
+        Accelerator integration as it deals with memory manage...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a file descriptor (fd) to a physical address using
+        DMA buffer management functions. It utilizes `dma_b...'
+      message_structures:
+      - '[dma_buf_phys_file'
+      - dma_buf
+      - dma_buf_attachment
+      - sg_table]
+      smids:
+      - '[dma_addr'
+      - dma_buf
+      - attachment
+      - sgt]
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a DMA buffer file descriptor to a physical address,
+        which is critical for enabling an AI Accelerator (...'
+      message_structures:
+      - '[struct dma_buf_phys_file'
+      - struct dma_buf
+      - struct dma_buf_attachment
+      - struct sg_table]
+      smids:
+      - '[dma_buf'
+      - dma_buf_attachment
+      - sg_table
+      - dma_addr]
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a DMA buffer file descriptor to a physical address,
+        which is critical for sharing memory with an AI Ac...'
+      message_structures:
+      - '[dma_buf_phys_file'
+      - dma_buf
+      - dma_buf_attachment
+      - sg_table]
+      smids:
+      - '[dma_buf'
+      - dma_buf_attachment
+      - sg_table
+      - dma_addr]
+    - function_name: user_copy:dma_heap_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        relevant to AIA operations. It primarily handles IOCTL ...'
+      message_structures:
+      - '[None identified]'
+      smids:
+      - '[None identified]'
+    - function_name: user_copy:dma_heap_ioctl
+      operation_type: user_copy_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: The function utilizes `copy_from_user` and `copy_to_user`, indicating
+        that it handles message structures exchanged between user space and kernel
+        space. However, without specific structure definitions available for the command
+        data being processed, it is challenging to identify the exact message structures
+        or their fields. The function does not explicitly define any structures for
+        the data being copied, leading to a moderate confidence score of 70%. The
+        absence of identifiable message structures and SMIDs reduces the score slightly.
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_ioctl
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 70
+      reasoning: The function uses `copy_from_user` and `copy_to_user`, which are
+        indicative of message structure handling between user space and kernel space.
+        However, without specific structure definitions, it is difficult to identify
+        the exact message structures being used. The function does not explicitly
+        define any structures for shared memory identifiers (SMIDs), and thus, no
+        SMIDs can be identified. The handling of `kdata` as a buffer for user data
+        suggests that it may be used to transfer structured data, but without the
+        definitions of the structures involved, the analysis remains limited.
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_send_offchannel_raw
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (70)**: The function `rpmsg_send_offchannel_raw`
+        is responsible for sending messages between processors, which can be relevant
+        for AI Accelerator integration. It utilizes a...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: The function interacts with the `scatterlist` structure, which is
+        used to describe memory regions for DMA operations. The fields of interest
+        in `scatterlist` include `dma_address` and `length`, which can be considered
+        as potential SMIDs since they represent addresses and sizes relevant for memory
+        mapping. However, the function does not involve any `copy_from_user` or `copy_to_user`
+        calls, which would typically indicate more direct message structure handling.
+      message_structures:
+      - struct scatterlist
+      smids:
+      - dma_address
+      - length
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_map_dma_buf
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 60
+      reasoning: '**AIARelevantFunction Score (70)**: The function `dma_heap_map_dma_buf`
+        is involved in mapping a DMA buffer to a device, which is relevant for AI
+        Accelerator integration as it deals with memory manage...'
+      message_structures:
+      - struct dma_buf_attachment
+      - struct sg_table
+      smids:
+      - paddr
+      - vaddr
+      - dma_address
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a DMA buffer file descriptor to a physical address,
+        which is critical for enabling an AI Accelerator (...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_convert
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 60
+      reasoning: '**AIARelevantFunction Score (80)**: The function `dma_buf_phys_convert`
+        is involved in converting a DMA buffer file descriptor to a physical address,
+        which is critical for sharing memory with an AI Ac...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_create_ept`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It pr...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_create_ept`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It pr...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_create_ept
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_create_ept`
+        does not involve any operations related to shared memory management or direct
+        interaction with an AI Accelerator (AIA). It pr...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_sendto
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_sendto`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily sends messages through a remote pr...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_sendto
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_sendto`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily sends messages through a remote pr...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_sendto
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `virtio_rpmsg_sendto`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily sends messages through a remote pr...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:get_a_tx_buf
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `get_a_tx_buf`
+        does not interact with any AI Accelerator (AIA) or shared memory mechanisms.
+        It primarily manages transmission buffers for a virtual dev...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:get_a_tx_buf
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `get_a_tx_buf`
+        does not interact with any AI Accelerator (AIA) or shared memory mechanisms.
+        It primarily manages transmission buffers for a virtual dev...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:get_a_tx_buf
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `get_a_tx_buf`
+        does not interact with any AI Accelerator (AIA) or shared memory mechanisms.
+        It primarily manages transmission buffers for a virtual dev...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_sg_init
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: This function does not represent an entry point from user space to
+        kernel space. It does not handle any ioctl commands or serve as a dispatch
+        point for user commands. Therefore, the score is zero.
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_done`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA. It primarily handles message rece...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_done
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_done`
+        does not directly interact with an AI Accelerator (AIA) or shared memory management
+        relevant to AIA. It primarily handles message rece...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily handles message reception over a virtu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:rpmsg_recv_single
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_recv_single`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily handles message reception over a virtu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_destroy_ept
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_destroy_ept`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It is primarily focused on des...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_destroy_ept
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_destroy_ept`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It is primarily focused on des...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/rpmsg/virtio_rpmsg_bus.c:virtio_rpmsg_destroy_ept
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `virtio_rpmsg_destroy_ept`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It is primarily focused on des...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_allocate
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_allocate`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily focuses on allocating a DM...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_allocate
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_allocate`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily focuses on allocating a DM...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:carveout_dma_heap_allocate
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_allocate`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily focuses on allocating a DM...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_mmap
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_mmap`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that is relevant to AIA operations. It primarily focuses...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_mmap
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_mmap`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that is relevant to AIA operations. It primarily focuses...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_mmap
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_mmap`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) in
+        a way that is relevant to AIA operations. It primarily focuses...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_attach
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_attach`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily deals with attaching a D...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_attach
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_attach`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily deals with attaching a D...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_attach
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_attach`
+        does not directly involve any operations related to sharing memory with an
+        AI Accelerator (AIA). It primarily deals with attaching a D...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_map_dma_buf
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (70)**: The function `dma_heap_map_dma_buf`
+        is involved in mapping a DMA buffer to a device, which is relevant for AI
+        Accelerator integration as it deals with memory manage...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_unmap_dma_buf
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_unmap_dma_buf`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with unmapping DMA buffers ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_unmap_dma_buf
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_unmap_dma_buf`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with unmapping DMA buffers ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_unmap_dma_buf
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_unmap_dma_buf`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with unmapping DMA buffers ...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_detatch
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_detatch`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with detaching a DMA buffe...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_detatch
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_detatch`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with detaching a DMA buffe...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_detatch
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_detatch`
+        does not involve any operations related to sharing memory with an AI Accelerator
+        (AIA). It primarily deals with detaching a DMA buffe...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_dma_buf_release
+      operation_type: functions_by_file
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_dma_buf_release`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily deals with releasing a DMA bu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_dma_buf_release
+      operation_type: functions_by_file
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_dma_buf_release`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily deals with releasing a DMA bu...'
+      message_structures: []
+      smids: []
+    - function_name: drivers/dma-buf/heaps/carveout-heap.c:dma_heap_dma_buf_release
+      operation_type: functions_by_file
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_dma_buf_release`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily deals with releasing a DMA bu...'
+      message_structures: []
+      smids: []
+    - function_name: carveout_dma_heap_allocate
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_allocate`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily focuses on allocating a DM...'
+      message_structures: []
+      smids: []
+    - function_name: carveout_dma_heap_allocate
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_allocate`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily focuses on allocating a DM...'
+      message_structures: []
+      smids: []
+    - function_name: carveout_dma_heap_allocate
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `carveout_dma_heap_allocate`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) mechanisms.
+        It primarily focuses on allocating a DM...'
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_buffer_alloc
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_buffer_alloc`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would typ...'
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_buffer_alloc
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_buffer_alloc`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would typ...'
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_buffer_alloc
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_buffer_alloc`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        related to shared memory management that would typ...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rele...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rele...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rele...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rel...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rel...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rel...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `dma_buf_phys_release`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with releasing resources ass...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `dma_buf_phys_release`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with releasing resources ass...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: dma_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `dma_buf_phys_release`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with releasing resources ass...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:rpmsg_ctrldev_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        management. Instead, it primarily handles control ...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:dma_heap_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or shared memory (SMem)
+        relevant to AIA operations. It primarily handles IOCTL ...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:dma_heap_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: The function `dma_heap_ioctl` does not directly involve any operations
+        that are specifically related to sharing memory with an AI Accelerator (AIA).
+        It primarily handles IOCTL commands related to DMA heap management, which
+        does not inherently include pinning user pages, managing DMA buffers, or programming
+        addresses into AIA device page tables. Therefore, the confidence score for
+        AIA relevance is 0%.
+      message_structures: []
+      smids: []
+    - function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily handles IOCTL commands related to DMA buffer ph...'
+      message_structures: []
+      smids: []
+    - function_name: user_copy:dma_buf_phys_ioctl
+      operation_type: user_copy_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or manage shared memory
+        (SMem) in a way that would qualify it as an AIA rel...'
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_open
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `dma_heap_open` function
+        does not involve any operations related to AI Accelerator integration or shared
+        memory management. It primarily focuses on opening a DMA...'
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_open
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `dma_heap_open` function
+        does not involve any operations related to AI Accelerator integration or shared
+        memory management. It primarily focuses on opening a DMA...'
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_open
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The `dma_heap_open` function
+        does not involve any operations related to AI Accelerator integration or shared
+        memory management. It primarily focuses on opening a DMA...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_ctrldev_open
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_ctrldev_open`
+        does not interact with any AI Accelerator (AIA) relevant functions. It primarily
+        handles the opening of a character device and doe...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_ctrldev_open
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_ctrldev_open`
+        does not interact with any AI Accelerator (AIA) relevant functions. It primarily
+        handles the opening of a character device and doe...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_ctrldev_open
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_ctrldev_open`
+        does not interact with any AI Accelerator (AIA) relevant functions. It primarily
+        handles the opening of a character device and doe...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_ctrldev_ioctl
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_ctrldev_ioctl`
+        does not directly involve sharing memory with an AI Accelerator (AIA). Instead,
+        it primarily handles control operations for RPMsg ...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_ctrldev_release
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_ctrldev_release`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It simply releases a control devi...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_ctrldev_release
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_ctrldev_release`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It simply releases a control devi...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_ctrldev_release
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0%)**: The function `rpmsg_ctrldev_release`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It simply releases a control devi...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_eptdev_open
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_open`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with opening a remote procedure ...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_eptdev_open
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_open`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with opening a remote procedure ...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_eptdev_open
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_open`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily deals with opening a remote procedure ...'
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_ioctl
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: The function `dma_heap_ioctl` does not directly interact with an
+        AI Accelerator (AIA) or perform operations that are typically associated with
+        AIA memory management, such as pinning user pages, obtaining DMA addresses,
+        or managing DMA buffers. The function primarily handles IOCTL commands related
+        to a DMA heap, which is more about memory management in general rather than
+        specifically for an AIA.
+      message_structures: []
+      smids: []
+    - function_name: dma_heap_ioctl_allocate
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_heap_ioctl_allocate`
+        does not directly involve sharing memory with an AI Accelerator (AIA). It
+        primarily focuses on allocating a buffer from a DMA ...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_open
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_open`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily initializes a private data structure (...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_open
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_open`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily initializes a private data structure (...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_open
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_open`
+        does not interact with an AI Accelerator (AIA) or shared memory (SMem) directly.
+        It primarily initializes a private data structure (...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_ioctl
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_ioctl`
+        does not directly interact with an AI Accelerator (AIA) or perform operations
+        that would typically be associated with AIA memory ma...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rele...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rele...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_phys_release
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_phys_release`
+        does not involve any operations that directly relate to sharing memory with
+        an AI Accelerator (AIA). It primarily deals with rele...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_file_release
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_file_release`
+        does not involve any operations related to AI Accelerators or shared memory
+        management. It primarily handles the release of a DMA...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_file_release
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_file_release`
+        does not involve any operations related to AI Accelerators or shared memory
+        management. It primarily handles the release of a DMA...'
+      message_structures: []
+      smids: []
+    - function_name: dma_buf_file_release
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `dma_buf_file_release`
+        does not involve any operations related to AI Accelerators or shared memory
+        management. It primarily handles the release of a DMA...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_eptdev_ioctl
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_ioctl`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily checks the command recei...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_eptdev_ioctl
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_ioctl`
+        does not involve any operations related to shared memory (SMem) with an AI
+        Accelerator (AIA). It primarily checks the command recei...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_eptdev_release
+      operation_type: ioctl_operations
+      category: AIARelevantFunction
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_release`
+        does not interact with any AI Accelerator (AIA) relevant functions or memory
+        management patterns that would typically involve sha...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_eptdev_release
+      operation_type: ioctl_operations
+      category: Relevant_KD_Entry_Point
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_release`
+        does not interact with any AI Accelerator (AIA) relevant functions or memory
+        management patterns that would typically involve sha...'
+      message_structures: []
+      smids: []
+    - function_name: rpmsg_eptdev_release
+      operation_type: ioctl_operations
+      category: Message_Structure_Handling
+      score: 0
+      reasoning: '**AIARelevantFunction Score (0)**: The function `rpmsg_eptdev_release`
+        does not interact with any AI Accelerator (AIA) relevant functions or memory
+        management patterns that would typically involve sha...'
+      message_structures: []
+      smids: []
