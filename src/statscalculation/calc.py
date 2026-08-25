@@ -30,14 +30,14 @@ accelerator_stats = {
         "KD Entry Point": (1273, 8, 5), 
 
         # gckVIDMEM_NODE_WrapUserMemory (struct gcsUSER_MEMORY_DESC) (VRC: 90%), 
-        # gcvHAL_LOCK_VIDEO_MEMORY (struct gcsHAL_LOCK_VIDEO_MEMORY) (VRC: 80%)[1] 
-        # (avg: VRC: 85%)
+        # gckVIDMEM_NODE_LockCPU  (struct gcsHAL_LOCK_VIDEO_MEMORY) (VRC: 60%)[1] 
+        # (avg: VRC: 75%)
         "SMem Handling": (1273, 16, 7), 
     },
     "TMMA": {
-        # dma_heap_buffer_alloc (VRC: 80%)[1], 
+        # dma_heap_map_dma_buf (VRC: 70%), 
         # dma_buf_phys_convert (VRC: 80%) 
-        # (avg: VRC: 80%)
+        # (avg: VRC: 75%)
         "Relevant Functions": (6138, 7, 2), 
 
         # dma_heap_ioctl (DMA_HEAP_IOCTL_ALLOC) (VRC: 80%), 
@@ -66,7 +66,7 @@ accelerator_stats = {
         "SMem Handling": (296, 24, 4), 
     },
     "NVIDIA": {
-        # nvmap_ioctl_create_from_va (VRC: 80%)[1], 
+        # nvmap_ioctl_create_from_va (VRC: 80%), 
         # nvgpu_vm_map_buffer (VRC: 80%) 
         # (avg: VRC: 80%)
         "Relevant Functions": (7624, 33, 13), 
@@ -85,7 +85,7 @@ accelerator_stats = {
     "AWS": {
         # mc_alloc_internal (VRC: 70%)
         # ncdev_mem_buf_copy (VRC: 70%)
-        # ncdev_mem_get_pa (VRC: 80%)
+        # ncdev_mem_get_pa_deprecated (VRC: 80%)
         # (avg: VRC: 73.3%)
         "Relevant Functions": (635, 7, 4), 
 
