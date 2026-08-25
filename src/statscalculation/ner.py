@@ -3,15 +3,23 @@
 NER CSV Generator
 
 Writes a ``NER.csv`` into every LLM analysis run directory with a blank
-``Manually_Analyzed_Functions`` column to be filled in by hand. Re-running the
-script keeps whatever has already been filled in and computes:
+``Manually_Analyzed_Functions`` column to be filled in by hand, and computes:
 
     NER = (total_functions - manually_analyzed_functions) / total_functions * 100
+
+``Flagged_Functions`` is carried across from the ``BER.csv`` in the same run
+directory so both rates can be read from one file. It is reference data; the rate
+itself is measured against the whole driver, exactly as BER is, which keeps the
+two directly comparable.
+
+An existing NER.csv is never overwritten. Pass --force to regenerate it, which
+still preserves any hand-filled counts, or --reset to blank them.
 
 Usage:
     python ner.py data/llmanalysis/run2
     python ner.py data/llmanalysis --recursive
-    python ner.py data/llmanalysis --recursive --reset   # blank the manual column
+    python ner.py data/llmanalysis --recursive --force   # recompute after filling counts
+    python ner.py data/llmanalysis --recursive --force --reset
 """
 
 import argparse
@@ -21,6 +29,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 OUTPUT_NAME = "NER.csv"
+FLAGGED_SOURCE_NAME = "BER.csv"
 
 PLATFORMS = ["coral", "nxp", "ti", "hailo", "nvidia", "aws"]
 
@@ -47,11 +56,34 @@ TOTAL_FUNCTIONS = {
 CATEGORIES = ["Relevant Functions", "KD Entry Point", "SMem Handling"]
 
 MANUAL_COLUMN = "Manually_Analyzed_Functions"
-FIELDNAMES = ["Accelerator", "Platform", "Category", "Total_Functions", MANUAL_COLUMN, "NER"]
+FLAGGED_COLUMN = "Flagged_Functions"
+FIELDNAMES = [
+    "Accelerator",
+    "Platform",
+    "Category",
+    "Total_Functions",
+    FLAGGED_COLUMN,
+    MANUAL_COLUMN,
+    "NER",
+]
 
 
-def read_existing_manual(run_dir: Path) -> Dict[Tuple[str, str], str]:
-    """Carry over hand-filled manual counts from an existing NER.csv."""
+def read_flagged(run_dir: Path) -> Dict[Tuple[str, str], str]:
+    """Reads the flagged counts from the run's BER.csv."""
+    path = run_dir / FLAGGED_SOURCE_NAME
+    if not path.exists():
+        return {}
+
+    flagged: Dict[Tuple[str, str], str] = {}
+    with open(path, "r", encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            key = (row.get("Platform", "").strip(), row.get("Category", "").strip())
+            flagged[key] = row.get(FLAGGED_COLUMN, "").strip()
+    return flagged
+
+
+def read_existing_column(run_dir: Path, column: str) -> Dict[Tuple[str, str], str]:
+    """Carries over a column from an existing NER.csv."""
     path = run_dir / OUTPUT_NAME
     if not path.exists():
         return {}
@@ -60,12 +92,21 @@ def read_existing_manual(run_dir: Path) -> Dict[Tuple[str, str], str]:
     with open(path, "r", encoding="utf-8", newline="") as handle:
         for row in csv.DictReader(handle):
             key = (row.get("Platform", "").strip(), row.get("Category", "").strip())
-            existing[key] = row.get(MANUAL_COLUMN, "").strip()
+            existing[key] = row.get(column, "").strip()
     return existing
 
 
+def parse_count(raw: str) -> Optional[float]:
+    try:
+        return float(raw)
+    except (TypeError, ValueError):
+        return None
+
+
 def build_rows(run_dir: Path, reset: bool) -> List[Dict[str, object]]:
-    existing = {} if reset else read_existing_manual(run_dir)
+    existing = {} if reset else read_existing_column(run_dir, MANUAL_COLUMN)
+    # BER.csv is authoritative; a previously written NER.csv only covers for it.
+    flagged_counts = read_flagged(run_dir) or read_existing_column(run_dir, FLAGGED_COLUMN)
 
     rows: List[Dict[str, object]] = []
     for platform in PLATFORMS:
@@ -74,27 +115,33 @@ def build_rows(run_dir: Path, reset: bool) -> List[Dict[str, object]]:
         total = TOTAL_FUNCTIONS.get(platform)
         for category in CATEGORIES:
             manual_raw = existing.get((platform, category), "")
-            try:
-                manual = float(manual_raw)
-            except (TypeError, ValueError):
-                manual = None
+            flagged_raw = flagged_counts.get((platform, category), "")
+            manual = parse_count(manual_raw)
+
+            if total and manual is not None:
+                ner = f"{(total - manual) / total * 100:.2f}"
+            else:
+                ner = ""
 
             rows.append({
                 "Accelerator": PLATFORM_DISPLAY_NAMES.get(platform, platform),
                 "Platform": platform,
                 "Category": category,
                 "Total_Functions": total if total else "",
+                FLAGGED_COLUMN: flagged_raw,
                 MANUAL_COLUMN: manual_raw,
-                "NER": f"{(total - manual) / total * 100:.2f}" if total and manual is not None else "",
+                "NER": ner,
             })
     return rows
 
 
-def process_run_dir(run_dir: Path, reset: bool) -> Optional[Tuple[Path, int, int]]:
+def process_run_dir(run_dir: Path, reset: bool, force: bool) -> Optional[Tuple[Path, int, int]]:
+    output_path = run_dir / OUTPUT_NAME
+    if output_path.exists() and not force:
+        return None
     rows = build_rows(run_dir, reset)
     if not rows:
         return None
-    output_path = run_dir / OUTPUT_NAME
     with open(output_path, "w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=FIELDNAMES)
         writer.writeheader()
@@ -122,6 +169,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     parser.add_argument("inputs", nargs="+", type=Path, help="run directory/directories")
     parser.add_argument("-r", "--recursive", action="store_true", help="also search subdirectories for run directories")
+    parser.add_argument("-f", "--force", action="store_true", help="regenerate an existing NER.csv instead of leaving it alone")
     parser.add_argument("--reset", action="store_true", help="blank the manual column instead of keeping filled values")
     args = parser.parse_args(argv)
 
@@ -131,7 +179,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1
 
     for run_dir in run_dirs:
-        result = process_run_dir(run_dir, args.reset)
+        if (run_dir / OUTPUT_NAME).exists() and not args.force:
+            print(f"[keep] {run_dir / OUTPUT_NAME} already exists; --force to regenerate")
+            continue
+        result = process_run_dir(run_dir, args.reset, args.force)
         if result is None:
             print(f"[skip] {run_dir}: no platform CSVs matched", file=sys.stderr)
             continue

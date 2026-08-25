@@ -8,9 +8,12 @@ CSVs) for every accelerator and writes a ``BER.csv`` next to those CSVs.
 
     BER = (total_functions - flagged_functions) / total_functions * 100
 
+An existing BER.csv is never overwritten. Pass --force to regenerate it.
+
 Usage:
     python ber.py data/llmanalysis/run2
     python ber.py data/llmanalysis --recursive
+    python ber.py data/llmanalysis --recursive --force
 """
 
 import argparse
@@ -108,11 +111,13 @@ def build_rows(run_dir: Path) -> List[Dict[str, object]]:
     return rows
 
 
-def process_run_dir(run_dir: Path) -> Optional[Path]:
+def process_run_dir(run_dir: Path, force: bool) -> Optional[Path]:
+    output_path = run_dir / OUTPUT_NAME
+    if output_path.exists() and not force:
+        return None
     rows = build_rows(run_dir)
     if not rows:
         return None
-    output_path = run_dir / OUTPUT_NAME
     with open(output_path, "w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=FIELDNAMES)
         writer.writeheader()
@@ -139,6 +144,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     parser.add_argument("inputs", nargs="+", type=Path, help="run directory/directories")
     parser.add_argument("-r", "--recursive", action="store_true", help="also search subdirectories for run directories")
+    parser.add_argument("-f", "--force", action="store_true", help="regenerate an existing BER.csv instead of leaving it alone")
     args = parser.parse_args(argv)
 
     run_dirs = collect_run_dirs(args.inputs, args.recursive)
@@ -147,7 +153,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1
 
     for run_dir in run_dirs:
-        output_path = process_run_dir(run_dir)
+        if (run_dir / OUTPUT_NAME).exists() and not args.force:
+            print(f"[keep] {run_dir / OUTPUT_NAME} already exists; --force to regenerate")
+            continue
+        output_path = process_run_dir(run_dir, args.force)
         if output_path is None:
             print(f"[skip] {run_dir}: no platform CSVs matched", file=sys.stderr)
             continue

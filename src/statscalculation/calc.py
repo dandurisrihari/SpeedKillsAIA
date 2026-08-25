@@ -87,17 +87,17 @@ accelerator_stats = {
         # ncdev_mem_buf_copy (VRC: 70%)
         # ncdev_mem_get_pa (VRC: 80%)
         # (avg: VRC: 73.3%)
-        "Relevant Functions": (381, 7, 4), 
+        "Relevant Functions": (635, 7, 4), 
 
         # ncdev_ioctl (NEURON_IOCTL_MEM_GET_PA, NEURON_IOCTL_MEM_ALLOC) (VRC: 90%)
         # (avg: VRC: 90%)
-        "KD Entry Point": (381, 13, 9), 
+        "KD Entry Point": (635, 13, 9), 
 
         # ncdev_mem_get_pa_deprecated (struct neuron_ioctl_mem_get_pa) (VRC: 85%), 
         # ncdev_mem_buf_copy (struct neuron_ioctl_mem_buf_copy) (VRC: 80%), 
         # mc_alloc_internal (struct mem_chunk) (VRC: 80%)
         # (avg: VRC: 81.6%)
-        "SMem Handling": (381, 17, 15), 
+        "SMem Handling": (635, 17, 15), 
     },
 }
 
