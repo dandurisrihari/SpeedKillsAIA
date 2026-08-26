@@ -25,8 +25,8 @@ import matplotlib.pyplot as plt  # noqa: E402
 
 RESULTS_NAME = "results.csv"
 OUTPUT_NAME = "results_plots.png"
-AVERAGE_RESULTS_NAME = "average_results.csv"
-AVERAGE_OUTPUT_NAME = "average_results_plots.png"
+# Aggregates live beside the run directories rather than inside one.
+AGGREGATE_LABELS = ["average", "median"]
 
 CATEGORIES = ["Relevant Functions", "KD Entry Point", "SMem Handling"]
 
@@ -167,16 +167,17 @@ def main(argv: Optional[List[str]] = None) -> int:
             continue
         print(f"{run_dir.name} -> {output_path.name}")
 
-    # The averaged file lives beside the run directories rather than inside one.
+    # The averaged and median files live beside the run directories.
     for path in args.inputs:
-        if not (path / AVERAGE_RESULTS_NAME).exists():
-            continue
-        output_path = plot_run(
-            path, AVERAGE_RESULTS_NAME, AVERAGE_OUTPUT_NAME,
-            title="F1 against VRC threshold - averaged across runs",
-        )
-        if output_path is not None:
-            print(f"{path.name} -> {output_path.name}")
+        for label in AGGREGATE_LABELS:
+            if not (path / f"{label}_{RESULTS_NAME}").exists():
+                continue
+            output_path = plot_run(
+                path, f"{label}_{RESULTS_NAME}", f"{label}_{OUTPUT_NAME}",
+                title=f"F1 against VRC threshold - {label} across runs",
+            )
+            if output_path is not None:
+                print(f"{path.name} -> {output_path.name}")
     return 0
 
 
