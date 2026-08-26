@@ -32,7 +32,23 @@ CATEGORIES = ["Relevant Functions", "KD Entry Point", "SMem Handling"]
 
 THRESHOLD_COLUMN = "Threshold"
 ACCELERATOR_COLUMN = "Accelerator"
+RUNS_COLUMN = "Runs"
 METRIC = "F1"
+
+
+def read_run_count(path: Path) -> Optional[int]:
+    """Aggregates record how many runs sit behind each cell in a Runs column."""
+    with open(path, "r", encoding="utf-8", newline="") as handle:
+        rows = list(csv.reader(handle))
+    if len(rows) < 3 or RUNS_COLUMN not in rows[1]:
+        return None
+    position = rows[1].index(RUNS_COLUMN)
+    counts = [
+        int(row[position])
+        for row in rows[2:]
+        if len(row) > position and row[position].strip().isdigit()
+    ]
+    return max(counts) if counts else None
 
 
 def read_results(path: Path) -> Tuple[List[str], Dict[str, Dict[str, List[Tuple[float, float]]]]]:
@@ -170,11 +186,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     # The averaged and median files live beside the run directories.
     for path in args.inputs:
         for label in AGGREGATE_LABELS:
-            if not (path / f"{label}_{RESULTS_NAME}").exists():
+            aggregate_path = path / f"{label}_{RESULTS_NAME}"
+            if not aggregate_path.exists():
                 continue
+            runs = read_run_count(aggregate_path)
+            span = f"across {runs} runs" if runs else "across runs"
             output_path = plot_run(
                 path, f"{label}_{RESULTS_NAME}", f"{label}_{OUTPUT_NAME}",
-                title=f"F1 against VRC threshold - {label} across runs",
+                title=f"F1 against VRC threshold - {label} {span}",
             )
             if output_path is not None:
                 print(f"{path.name} -> {output_path.name}")
