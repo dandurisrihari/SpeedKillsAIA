@@ -31,6 +31,8 @@ OUTPUT_NAME = "results_plots.pdf"
 AGGREGATE_LABELS = ["average", "median"]
 
 CATEGORIES = ["Relevant Functions", "KD Entry Point", "SMem Handling"]
+# The CSVs use a shorter name for this one than the plot should show.
+CATEGORY_LABELS = {"Relevant Functions": "AIA Relevant Functions"}
 
 THRESHOLD_COLUMN = "Threshold"
 ACCELERATOR_COLUMN = "Accelerator"
@@ -117,7 +119,7 @@ def plot_run(run_dir: Path, results_name: str = RESULTS_NAME,
                 label=accelerator,
                 color=colour_of[accelerator],
             )
-        axis.set_title(category)
+        axis.set_title(CATEGORY_LABELS.get(category, category))
         axis.set_xlabel("VRC threshold")
         axis.set_xticks(range(50, 101, 10))
         axis.set_xlim(48, 102)
