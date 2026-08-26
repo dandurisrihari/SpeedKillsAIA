@@ -57,6 +57,7 @@ CATEGORIES = ["Relevant Functions", "KD Entry Point", "SMem Handling"]
 
 MANUAL_COLUMN = "Manually_Analyzed_Functions"
 FLAGGED_COLUMN = "Flagged_Functions"
+VRC_COLUMN = "VRC"
 FIELDNAMES = [
     "Accelerator",
     "Platform",
@@ -64,6 +65,7 @@ FIELDNAMES = [
     "Total_Functions",
     FLAGGED_COLUMN,
     MANUAL_COLUMN,
+    VRC_COLUMN,
     "NER",
 ]
 
@@ -105,6 +107,8 @@ def parse_count(raw: str) -> Optional[float]:
 
 def build_rows(run_dir: Path, reset: bool) -> List[Dict[str, object]]:
     existing = {} if reset else read_existing_column(run_dir, MANUAL_COLUMN)
+    # results.py fills these two, so a regeneration must not discard them.
+    existing_vrc = {} if reset else read_existing_column(run_dir, VRC_COLUMN)
     # BER.csv is authoritative; a previously written NER.csv only covers for it.
     flagged_counts = read_flagged(run_dir) or read_existing_column(run_dir, FLAGGED_COLUMN)
 
@@ -130,6 +134,7 @@ def build_rows(run_dir: Path, reset: bool) -> List[Dict[str, object]]:
                 "Total_Functions": total if total else "",
                 FLAGGED_COLUMN: flagged_raw,
                 MANUAL_COLUMN: manual_raw,
+                VRC_COLUMN: existing_vrc.get((platform, category), ""),
                 "NER": ner,
             })
     return rows

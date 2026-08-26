@@ -166,13 +166,16 @@ def read_flagged(run_dir: Path) -> Dict[Tuple[str, str], str]:
 
 def score_category(
     entries: List[Tuple[int, str, float]], targets: Dict[str, int]
-) -> Tuple[Optional[int], List[str], List[str], List[Dict[str, object]]]:
-    """Returns the manual effort, present/missing targets and the threshold sweep."""
+) -> Tuple[Optional[int], Optional[float], List[str], List[str], List[Dict[str, object]]]:
+    """Returns the manual effort, mean target score, present/missing targets and the sweep."""
     by_name = {name: (rank, score) for rank, name, score in entries}
     present = [name for name in targets if name in by_name]
     missing = [name for name in targets if name not in by_name]
 
     manual = max((by_name[name][0] for name in present), default=None)
+    # VRC is read off this run rather than the hand-assigned table, so it varies
+    # run to run and is worth averaging.
+    vrc = sum(by_name[name][1] for name in present) / len(present) if present else None
 
     sweep: List[Dict[str, object]] = []
     for threshold in THRESHOLDS:
@@ -193,11 +196,11 @@ def score_category(
             "recall": f"{recall:.4f}",
             "f1": f"{f1:.4f}",
         })
-    return manual, present, missing, sweep
+    return manual, vrc, present, missing, sweep
 
 
-def update_ner(run_dir: Path, manual_by_key: Dict[Tuple[str, str], Optional[int]]) -> int:
-    """Fills Manually_Analyzed_Functions and NER in place, leaving other columns alone."""
+def update_ner(run_dir: Path, cell_by_key: Dict[Tuple[str, str], Dict[str, Optional[float]]]) -> int:
+    """Fills the derived columns in place, leaving anything else in the file alone."""
     path = run_dir / NER_NAME
     if not path.exists():
         return 0
@@ -210,11 +213,16 @@ def update_ner(run_dir: Path, manual_by_key: Dict[Tuple[str, str], Optional[int]
     filled = 0
     for row in rows:
         key = (row.get("Platform", "").strip(), row.get("Category", "").strip())
-        manual = manual_by_key.get(key)
+        cell = cell_by_key.get(key)
         total = parse_number(row.get("Total_Functions", ""))
-        if manual is None or not total:
+        if cell is None or total is None or not total:
             continue
-        row["Manually_Analyzed_Functions"] = str(manual)
+        manual, vrc = cell["manual"], cell["vrc"]
+        if vrc is not None and "VRC" in fieldnames:
+            row["VRC"] = f"{vrc:.2f}"
+        if manual is None:
+            continue
+        row["Manually_Analyzed_Functions"] = str(int(manual))
         row["NER"] = f"{(total - manual) / total * 100:.2f}"
         filled += 1
 
@@ -228,7 +236,7 @@ def update_ner(run_dir: Path, manual_by_key: Dict[Tuple[str, str], Optional[int]
 def process_run_dir(run_dir: Path) -> List[str]:
     messages: List[str] = []
     flagged_counts = read_flagged(run_dir)
-    manual_by_key: Dict[Tuple[str, str], Optional[int]] = {}
+    cell_by_key: Dict[Tuple[str, str], Dict[str, Optional[float]]] = {}
 
     # platform -> category -> {"scalars": {...}, "sweep": {threshold: {...}}}
     table: Dict[str, Dict[str, Dict[str, object]]] = {}
@@ -245,8 +253,8 @@ def process_run_dir(run_dir: Path) -> List[str]:
         for category, csv_label in CATEGORIES.items():
             targets = GROUND_TRUTH.get((platform, category), {})
             entries = sorted(category_rows.get(csv_label, []))
-            manual, present, missing, sweep = score_category(entries, targets)
-            manual_by_key[(platform, category)] = manual
+            manual, vrc, present, missing, sweep = score_category(entries, targets)
+            cell_by_key[(platform, category)] = {"manual": manual, "vrc": vrc}
 
             if missing:
                 messages.append(
@@ -257,7 +265,7 @@ def process_run_dir(run_dir: Path) -> List[str]:
             flagged_value = parse_number(flagged)
             ber = f"{(total - flagged_value) / total * 100:.2f}" if total and flagged_value is not None else ""
             ner = f"{(total - manual) / total * 100:.2f}" if total and manual is not None else ""
-            vrc = f"{sum(targets.values()) / len(targets):.2f}" if targets else ""
+            vrc_text = f"{vrc:.2f}" if vrc is not None else ""
 
             table[platform][category] = {
                 "scalars": {
@@ -266,7 +274,7 @@ def process_run_dir(run_dir: Path) -> List[str]:
                     "BER": ber,
                     "Manual": manual if manual is not None else "",
                     "NER": ner,
-                    "VRC": vrc,
+                    "VRC": vrc_text,
                 },
                 "sweep": {point["threshold"]: point for point in sweep},
             }
@@ -274,7 +282,7 @@ def process_run_dir(run_dir: Path) -> List[str]:
     if not table:
         return messages
 
-    filled = update_ner(run_dir, manual_by_key)
+    filled = update_ner(run_dir, cell_by_key)
     rows = write_results(run_dir, table, covered)
 
     messages.append(f"{NER_NAME}: {filled} rows filled")

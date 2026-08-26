@@ -60,6 +60,7 @@ STATISTICS: List[Tuple[str, Stat, str, bool]] = [
 NER_COLUMNS = [
     ("Flagged_Functions", "Flagged"),
     ("Manually_Analyzed_Functions", "Manual"),
+    ("VRC", "VRC"),
     ("NER", "NER"),
 ]
 BER_COLUMNS = [
