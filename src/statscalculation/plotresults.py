@@ -21,10 +21,12 @@ import matplotlib
 
 # Chosen before pyplot is imported so the script runs without a display.
 matplotlib.use("Agg")
+# Matplotlib defaults to Type 3 fonts, which IEEE and ACM submission checks reject.
+matplotlib.rcParams["pdf.fonttype"] = 42
 import matplotlib.pyplot as plt  # noqa: E402
 
 RESULTS_NAME = "results.csv"
-OUTPUT_NAME = "results_plots.png"
+OUTPUT_NAME = "results_plots.pdf"
 # Aggregates live beside the run directories rather than inside one.
 AGGREGATE_LABELS = ["average", "median"]
 
@@ -147,7 +149,7 @@ def plot_run(run_dir: Path, results_name: str = RESULTS_NAME, output_name: str =
     figure.tight_layout(rect=(0, 0.09, 1, 0.94))
 
     output_path = run_dir / output_name
-    figure.savefig(output_path, dpi=150)
+    figure.savefig(output_path)
     plt.close(figure)
     return output_path
 
