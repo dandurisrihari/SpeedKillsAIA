@@ -244,3 +244,29 @@ def test_preprocessed_files_are_skipped(tmp_path):
     root = build(tmp_path, **{"d.h": "#define DRV_A _IOW('g', 0, struct a)\n"})
     (root / "d.i").write_text("#define DRV_COPY _IOW('g', 9, struct z)\n")
     assert names(analyse(root)) == {"DRV_A"}
+
+
+def test_a_root_can_be_a_single_file(tmp_path):
+    """ti_misc is one file in a directory full of other vendors' drivers."""
+    root = build(tmp_path, **{
+        "mine.c": """
+static long drv_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
+{
+\tswitch (cmd) {
+\tcase DMA_BUF_PHYS_IOC_CONVERT:
+\t\treturn 0;
+\t}
+}
+""",
+        "theirs.c": """
+static long other_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
+{
+\tswitch (cmd) {
+\tcase XSDFEC_START_DEV:
+\t\treturn 0;
+\t}
+}
+"""})
+    driver = analyse(root / "mine.c", name="ti_misc")
+    assert driver.dispatched == {"DMA_BUF_PHYS_IOC_CONVERT"}
+    assert driver.name == "ti_misc"

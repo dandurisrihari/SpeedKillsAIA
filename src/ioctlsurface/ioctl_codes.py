@@ -218,14 +218,19 @@ def balanced(text: str, start: int, opening: str, closing: str) -> Tuple[str, in
 
 
 def source_files(*roots: Path) -> List[Path]:
-    return sorted(
-        path
-        for root in roots
-        for path in root.rglob("*")
-        if path.suffix in SOURCE_SUFFIXES
-        and path.is_file()
-        and not any(part in SKIP_DIRECTORIES for part in path.parts)
-    )
+    """A root may be a subtree or a single file, since a driver inside a shared
+    directory is only the handful of files the build compiles."""
+    found: List[Path] = []
+    for root in roots:
+        candidates = [root] if root.is_file() else root.rglob("*")
+        found += [
+            path
+            for path in candidates
+            if path.suffix in SOURCE_SUFFIXES
+            and path.is_file()
+            and not any(part in SKIP_DIRECTORIES for part in path.parts)
+        ]
+    return sorted(set(found))
 
 
 def read_definitions(paths: Iterable[Path]) -> Tuple[List[Definition], Dict[Path, str]]:
