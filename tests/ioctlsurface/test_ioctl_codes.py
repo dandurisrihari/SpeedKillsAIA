@@ -148,6 +148,59 @@ static long drv_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
     assert "DMA_BUF_SYNC_READ" not in driver.dispatched
 
 
+def test_helper_switch_in_an_ioctl_named_function_is_not_dispatch(tmp_path):
+    """nvgpu_event_id_to_ioctl_channel_event_id switches on an event, not a code."""
+    driver = analyse(build(tmp_path, **{"d.c": """
+static u32 nvgpu_event_id_to_ioctl_channel_event_id(enum nvgpu_event_id_type event_id)
+{
+\tswitch (event_id) {
+\tcase NVGPU_EVENT_ID_BPT_INT:
+\t\treturn 0;
+\t}
+}
+static int nvgpu_prof_ioctl_get_pm_resource_type(u32 resource, int *out)
+{
+\tswitch (resource) {
+\tcase NVGPU_PROFILER_PM_RESOURCE_ARG_SMPC:
+\t\treturn 0;
+\t}
+}
+"""}))
+    assert driver.dispatched == set()
+
+
+def test_codes_defined_as_plain_integers_still_count(tmp_path):
+    """nxp defines IOCTL_GCHAL_INTERFACE as 30000, not with _IO*."""
+    driver = analyse(build(tmp_path, **{"d.c": """
+#define IOCTL_GCHAL_INTERFACE 30000
+static long drv_ioctl(struct file *f, unsigned int ioctlCode, unsigned long arg)
+{
+\tswitch (ioctlCode) {
+\tcase IOCTL_GCHAL_INTERFACE:
+\t\treturn 0;
+\t}
+}
+"""}))
+    assert driver.dispatched == {"IOCTL_GCHAL_INTERFACE"}
+
+
+def test_dispatch_on_a_variable_named_for_nothing(tmp_path):
+    """gru switches on req; the declared labels are what identify it."""
+    driver = analyse(build(tmp_path, **{
+        "d.h": "#define GRU_CREATE_CONTEXT _IOWR('G', 1, void *)\n",
+        "d.c": """
+static long gru_file_unlocked_ioctl(struct file *file, unsigned int req, unsigned long arg)
+{
+\tswitch (req) {
+\tcase GRU_CREATE_CONTEXT:
+\t\treturn 0;
+\t}
+}
+"""}))
+    assert driver.dispatched == {"GRU_CREATE_CONTEXT"}
+    assert driver.undispatched == set()
+
+
 def test_second_level_dispatch(tmp_path):
     """NXP runs ~79 operations behind one code, keyed on a field."""
     driver = analyse(build(tmp_path, **{"d.c": """

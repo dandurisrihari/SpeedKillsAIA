@@ -48,15 +48,16 @@ CALL = re.compile(r"^([A-Za-z_]\w*)\s*\(")
 CASE_LABEL = re.compile(r"\bcase\s+([A-Za-z_]\w*)\s*(?:\.\.\.\s*[A-Za-z_]\w*\s*)?:")
 CONDITIONAL = re.compile(r"^#\s*(if|ifdef|ifndef|elif|else|endif)\b(.*)$")
 SWITCH = re.compile(r"\bswitch\s*\(")
-# The cmd argument is named cmd, ucmd, kcmd or ioctl depending on the driver, so
-# the handler is found by its own name and the switch by its shape instead.
-IOCTL_FUNCTION = re.compile(r"ioctl", re.IGNORECASE)
+# The variable holding the code is named for it, however the driver spells it:
+# cmd, ucmd, kcmd, ioctl, ioctlCode. A handler switches on other things too.
+COMMAND_VARIABLE = re.compile(r"cmd|command|ioctl", re.IGNORECASE)
 COMMAND_FIELD = re.compile(r"^(?:cmd|command)s?$", re.IGNORECASE)
 BARE_IDENTIFIER = re.compile(r"^[A-Za-z_]\w*$")
 MEMBER_FIELD = re.compile(r"(?:->|\.)\s*([A-Za-z_]\w*)\s*$")
 CALL_OPEN = re.compile(r"\b([A-Za-z_]\w*)\s*\(")
 # A table of handlers, such as drm_ioctl_desc, dispatches without a switch.
 IOCTL_TABLE = re.compile(r"struct\s+\w*ioctl\w*\s+\w+\s*\[[^\]]*\]\s*=\s*\{", re.IGNORECASE)
+IOCTL_FUNCTION = re.compile(r"ioctl", re.IGNORECASE)
 NOT_A_FUNCTION = {"if", "for", "while", "switch", "return", "sizeof", "do", "else",
                  "case", "defined", "catch"}
 
@@ -360,9 +361,12 @@ def dispatch_sites(text: str, declared: Set[str]) -> Tuple[Set[str], Set[str]]:
         if not BARE_IDENTIFIER.match(expression):
             # A switch on _IOC_TYPE(cmd) or on sync.flags is not on the code.
             continue
-        # Either the switch sits in the handler, or it decides on codes the
-        # driver declared, which is evidence enough for one that does not.
-        if any(s <= start < e for s, e in handlers) or labels & declared:
+        # Deciding on a code the driver declared settles it whatever the variable
+        # is called, which is how gru's switch on req is found. Failing that the
+        # variable has to name the command and sit in a handler, since protocol
+        # and firmware commands are held in variables named cmd as well.
+        in_handler = any(s <= start < e for s, e in handlers)
+        if labels & declared or (COMMAND_VARIABLE.search(expression) and in_handler):
             first |= labels
     return first, second
 
@@ -415,6 +419,15 @@ def analyse(*roots: Path, name: Optional[str] = None) -> Driver:
         second |= switch_second
         first |= comparison_dispatch(text, names)
         first |= table_dispatch(text, names)
+
+    # A driver may spell a code as a plain constant rather than build it with
+    # _IO*, as nxp does with IOCTL_GCHAL_INTERFACE. Dispatching on one is what
+    # shows it is a code, so it is only counted once the driver does.
+    for definition in definitions:
+        if definition.name in first and definition.name not in names:
+            declared.append(Code(definition.name, "", (), definition.path, definition.line))
+            names.add(definition.name)
+    declared.sort()
 
     # A label that is not a code the driver defines is either a framework code
     # it handles or an unrelated constant; only the former reaches an ioctl.
