@@ -217,9 +217,10 @@ def balanced(text: str, start: int, opening: str, closing: str) -> Tuple[str, in
     return text[start + 1:], len(text)
 
 
-def source_files(root: Path) -> List[Path]:
+def source_files(*roots: Path) -> List[Path]:
     return sorted(
         path
+        for root in roots
         for path in root.rglob("*")
         if path.suffix in SOURCE_SUFFIXES
         and path.is_file()
@@ -390,8 +391,9 @@ def comparison_dispatch(text: str, declared: Set[str]) -> Set[str]:
     return matched
 
 
-def analyse(root: Path) -> Driver:
-    paths = source_files(root)
+def analyse(*roots: Path, name: Optional[str] = None) -> Driver:
+    """A driver may be spread over several subtrees, as nvgpu and nvmap are."""
+    paths = source_files(*roots)
     definitions, prepared = read_definitions(paths)
     builders = resolve_builders(definitions)
     declared = declared_codes(definitions, builders)
@@ -412,7 +414,7 @@ def analyse(root: Path) -> Driver:
     # A label that is not a code the driver defines is either a framework code
     # it handles or an unrelated constant; only the former reaches an ioctl.
     external = {name for name in first if name not in names}
-    return Driver(root.name, declared, first, external, second - first)
+    return Driver(name or roots[0].name, declared, first, external, second - first)
 
 
 def collisions(declared: Sequence[Code]) -> List[List[str]]:
