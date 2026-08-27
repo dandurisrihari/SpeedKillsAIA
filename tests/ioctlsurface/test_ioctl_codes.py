@@ -247,7 +247,7 @@ def test_preprocessed_files_are_skipped(tmp_path):
 
 
 def test_a_root_can_be_a_single_file(tmp_path):
-    """ti_misc is one file in a directory full of other vendors' drivers."""
+    """nvmap's uapi header is one file in a directory of unrelated headers."""
     root = build(tmp_path, **{
         "mine.c": """
 static long drv_ioctl(struct file *f, unsigned int cmd, unsigned long arg)

@@ -47,11 +47,15 @@ add_driver \
 
 # NVIDIA, from build-drivers.sh DRIVER_PATH. Those in-tree paths are what
 # KERNEL_OVERLAYS maps source/kernel/{nvgpu,nvidia} onto, so the sources are
-# read from the overlay trees the build actually compiles. nvmap keeps its uapi
-# header outside the driver directory, so that is a second root.
+# read from the overlay trees the build actually compiles. Both keep their uapi
+# headers outside the driver directory, so those are a second root.
 add_driver \
 	"nvidia_nvgpu" \
-	"${L4T_ROOT}/source/kernel/nvgpu"
+	"${L4T_ROOT}/source/kernel/nvgpu/drivers/gpu/nvgpu"
+
+add_driver \
+	"nvidia_nvgpu" \
+	"${L4T_ROOT}/source/kernel/nvgpu/include/uapi"
 
 add_driver \
 	"nvidia_nvmap" \
@@ -61,28 +65,25 @@ add_driver \
 	"nvidia_nvmap" \
 	"${L4T_ROOT}/source/kernel/nvidia/include/uapi/linux/nvmap.h"
 
-# TI, from build-drivers.sh DIRS. Kbuild compiles those directories whole, but
-# most of what is in them is other vendors' drivers: drivers/misc alone carries
-# ioctls for xsdfec, genwqe, fastrpc, gru, ocxl and cxl. So each driver is named
-# by the files that were built and instrumented, which is also how
-# data/instrumentation reports them.
-add_driver "ti_dmabuf" "${TI_KERNEL}/drivers/dma-buf/dma-buf.c"
-add_driver "ti_dmabuf" "${TI_KERNEL}/drivers/dma-buf/dma-heap.c"
-add_driver "ti_dmabuf" "${TI_KERNEL}/drivers/dma-buf/sync_file.c"
-add_driver "ti_dmabuf" "${TI_KERNEL}/drivers/dma-buf/heaps/carveout-heap.c"
-add_driver "ti_dmabuf" "${TI_KERNEL}/drivers/dma-buf/heaps/cma_heap.c"
-add_driver "ti_dmabuf" "${TI_KERNEL}/drivers/dma-buf/heaps/system_heap.c"
+# TI, from build-drivers.sh DIRS. Kbuild compiles those directories whole and
+# the instrumentation run processed them whole, so every C file in them counts
+# here too. drivers/misc in particular carries other vendors' drivers, so its
+# codes are not all TI's; the per-driver detail files name them.
+add_driver \
+	"ti_dmabuf" \
+	"${TI_KERNEL}/drivers/dma-buf"
 
-add_driver "ti_misc" "${TI_KERNEL}/drivers/misc/dma-buf-phys.c"
+add_driver \
+	"ti_misc" \
+	"${TI_KERNEL}/drivers/misc"
 
-add_driver "ti_remoteproc" "${TI_KERNEL}/drivers/remoteproc/remoteproc_cdev.c"
-add_driver "ti_remoteproc" "${TI_KERNEL}/drivers/remoteproc/remoteproc_core.c"
-add_driver "ti_remoteproc" "${TI_KERNEL}/drivers/remoteproc/remoteproc_debugfs.c"
+add_driver \
+	"ti_remoteproc" \
+	"${TI_KERNEL}/drivers/remoteproc"
 
-add_driver "ti_rpmsg" "${TI_KERNEL}/drivers/rpmsg/rpmsg_char.c"
-add_driver "ti_rpmsg" "${TI_KERNEL}/drivers/rpmsg/rpmsg_ctrl.c"
-add_driver "ti_rpmsg" "${TI_KERNEL}/drivers/rpmsg/rpmsg_pru.c"
-add_driver "ti_rpmsg" "${TI_KERNEL}/drivers/rpmsg/virtio_rpmsg_bus.c"
+add_driver \
+	"ti_rpmsg" \
+	"${TI_KERNEL}/drivers/rpmsg"
 
 # Copy this block to add another driver. Repeat a name to give it several roots,
 # and a root may be a directory or a single file.
