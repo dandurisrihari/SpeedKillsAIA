@@ -120,7 +120,7 @@ def plot_run(run_dir: Path, results_name: str = RESULTS_NAME,
                 color=colour_of[accelerator],
             )
         axis.set_title(CATEGORY_LABELS.get(category, category))
-        axis.set_xlabel("VRC threshold")
+        axis.set_xlabel("Confidence Score")
         axis.set_xticks(range(50, 101, 10))
         axis.set_xlim(48, 102)
         axis.grid(True, linewidth=0.4, alpha=0.5)
