@@ -183,7 +183,15 @@ def score_category(
     missing = [name for name in targets if name not in by_name]
     ground_truth = sum(targets.values())
 
-    manual = max((by_name[name][0] for name in present), default=None)
+    manual: Optional[int] = None
+    position = 0
+    for _, name, _ in entries:
+        # A target standing for several findings is that many to work through:
+        # _GFPAlloc is read, then gckMMU_FillFlatMappingWithPage16M with it. That
+        # keeps the effort at least as large as |G|, so |G|/manual stays a rate.
+        position += targets.get(name, 1)
+        if name in targets:
+            manual = position
     # VRC is read off this run rather than the hand-assigned table, so it varies
     # run to run and is worth averaging. A function standing for several of the
     # ground truth weighs that many times.
