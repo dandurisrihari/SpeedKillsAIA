@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Plots F1 against the VRC threshold for each category.
+Plots F1 and recall against the confidence score for each category.
 
-Reads the results.csv written by results.py and produces one image per run
-directory holding three side-by-side plots, one per category, with a line per
-accelerator.
+Reads the results.csv written by results.py and produces two images per run
+directory, each holding three side-by-side plots, one per category, with a line
+per accelerator.
 
 Usage:
     python plotresults.py data/llmanalysis/run2
@@ -15,7 +15,7 @@ import argparse
 import csv
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, NamedTuple, Optional, Tuple
 
 import matplotlib
 
@@ -26,7 +26,6 @@ matplotlib.rcParams["pdf.fonttype"] = 42
 import matplotlib.pyplot as plt  # noqa: E402
 
 RESULTS_NAME = "results.csv"
-OUTPUT_NAME = "results_plots.pdf"
 # Aggregates live beside the run directories rather than inside one.
 AGGREGATE_LABELS = ["average", "median"]
 
@@ -36,10 +35,24 @@ CATEGORY_LABELS = {"Relevant Functions": "AIA Relevant Functions"}
 
 THRESHOLD_COLUMN = "Threshold"
 ACCELERATOR_COLUMN = "Accelerator"
-METRIC = "F1"
 
 
-def read_results(path: Path) -> Tuple[List[str], Dict[str, Dict[str, List[Tuple[float, float]]]]]:
+class Plot(NamedTuple):
+    metric: str
+    output: str
+    label: str
+
+
+# The F1 file keeps its name from when it was the only one.
+PLOTS = [
+    Plot("F1", "results_plots.pdf", "F1 score"),
+    Plot("Recall", "recall_plots.pdf", "Recall"),
+]
+
+
+def read_results(
+    path: Path, metric: str
+) -> Tuple[List[str], Dict[str, Dict[str, List[Tuple[float, float]]]]]:
     """Returns the accelerators in file order and category -> accelerator -> points."""
     with open(path, "r", encoding="utf-8", newline="") as handle:
         rows = list(csv.reader(handle))
@@ -57,8 +70,8 @@ def read_results(path: Path) -> Tuple[List[str], Dict[str, Dict[str, List[Tuple[
 
     index = {name: position for position, name in enumerate(metric_row) if not groups[position]}
     metric_columns: Dict[str, int] = {}
-    for position, (group, metric) in enumerate(zip(groups, metric_row)):
-        if group and metric == METRIC:
+    for position, (group, name) in enumerate(zip(groups, metric_row)):
+        if group and name == metric:
             metric_columns[group] = position
 
     accelerators: List[str] = []
@@ -87,13 +100,13 @@ def read_results(path: Path) -> Tuple[List[str], Dict[str, Dict[str, List[Tuple[
     return accelerators, series
 
 
-def plot_run(run_dir: Path, results_name: str = RESULTS_NAME,
-             output_name: str = OUTPUT_NAME) -> Optional[Path]:
+def plot_run(run_dir: Path, plot: Plot, results_name: str = RESULTS_NAME,
+             output_name: Optional[str] = None) -> Optional[Path]:
     results_path = run_dir / results_name
     if not results_path.exists():
         return None
 
-    accelerators, series = read_results(results_path)
+    accelerators, series = read_results(results_path, plot.metric)
     if not series:
         return None
 
@@ -125,7 +138,7 @@ def plot_run(run_dir: Path, results_name: str = RESULTS_NAME,
         axis.set_xlim(48, 102)
         axis.grid(True, linewidth=0.4, alpha=0.5)
 
-    axes[0].set_ylabel("F1 score")
+    axes[0].set_ylabel(plot.label)
     axes[0].set_ylim(-0.02, 1.02)
 
     handles, labels = axes[0].get_legend_handles_labels()
@@ -133,7 +146,7 @@ def plot_run(run_dir: Path, results_name: str = RESULTS_NAME,
     # Leave room for the shared legend beneath the axes.
     figure.tight_layout(rect=(0, 0.09, 1, 1))
 
-    output_path = run_dir / output_name
+    output_path = run_dir / (output_name or plot.output)
     figure.savefig(output_path)
     plt.close(figure)
     return output_path
@@ -153,7 +166,8 @@ def collect_run_dirs(paths: List[Path], recursive: bool) -> List[Path]:
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="Plot F1 against the VRC threshold per category.")
+    parser = argparse.ArgumentParser(
+        description="Plot F1 and recall against the confidence score per category.")
     parser.add_argument("inputs", nargs="+", type=Path, help="run directory/directories")
     parser.add_argument("-r", "--recursive", action="store_true", help="also search subdirectories for run directories")
     args = parser.parse_args(argv)
@@ -164,20 +178,23 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1
 
     for run_dir in run_dirs:
-        output_path = plot_run(run_dir)
-        if output_path is None:
-            print(f"[skip] {run_dir}: no plottable rows", file=sys.stderr)
-            continue
-        print(f"{run_dir.name} -> {output_path.name}")
+        for plot in PLOTS:
+            output_path = plot_run(run_dir, plot)
+            if output_path is None:
+                print(f"[skip] {run_dir}: no plottable rows", file=sys.stderr)
+                continue
+            print(f"{run_dir.name} -> {output_path.name}")
 
     # The averaged and median files live beside the run directories.
     for path in args.inputs:
         for label in AGGREGATE_LABELS:
             if not (path / f"{label}_{RESULTS_NAME}").exists():
                 continue
-            output_path = plot_run(path, f"{label}_{RESULTS_NAME}", f"{label}_{OUTPUT_NAME}")
-            if output_path is not None:
-                print(f"{path.name} -> {output_path.name}")
+            for plot in PLOTS:
+                output_path = plot_run(path, plot, f"{label}_{RESULTS_NAME}",
+                                       f"{label}_{plot.output}")
+                if output_path is not None:
+                    print(f"{path.name} -> {output_path.name}")
     return 0
 
 
