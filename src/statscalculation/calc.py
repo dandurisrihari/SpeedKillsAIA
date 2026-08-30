@@ -20,7 +20,9 @@ accelerator_stats = {
     },
     "NXP NPU": {
         # _GFPAlloc (VRC: 80%), 
-        # import_page_map(VRC: 90%) 
+        # _GFPAlloc (gckMMU_FillFlatMappingWithPage16M) (VRC: 80%),
+        # import_page_map(VRC: 90%),
+        # import_page_map (gckOS_MapPagesEx) (VRC: 90%) 
         # (avg: VRC: 85%)
         "Relevant Functions": (1273, 15, 4), 
 
@@ -89,7 +91,7 @@ accelerator_stats = {
         # (avg: VRC: 73.3%)
         "Relevant Functions": (635, 7, 4), 
 
-        # ncdev_ioctl (NEURON_IOCTL_MEM_GET_PA, NEURON_IOCTL_MEM_ALLOC) (VRC: 90%)
+        # ncdev_ioctl (NEURON_IOCTL_MEM_GET_PA, NEURON_IOCTL_MEM_ALLOC, NEURON_IOCTL_MEM_BUF_COPY) (VRC: 90%)
         # (avg: VRC: 90%)
         "KD Entry Point": (635, 13, 9), 
 
