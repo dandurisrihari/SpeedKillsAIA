@@ -19,7 +19,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple
 
 OUTPUT_NAME = "instrumentation-stats.csv"
-FIELDNAMES = ["Device", "Instrumented Fns.", "Instrumented Files"]
+FIELDNAMES = ["Device", "Total Fns.", "Instrumented Fns.", "Instrumented Files",
+              "Func Entry", "User Copy", "DMA", "IOCTL", "Total Probes"]
 
 # Device to the instrumentation runs it took, in the order they are reported.
 DEVICES: List[Tuple[str, Tuple[str, ...]]] = [
@@ -36,6 +37,12 @@ FIELDS = {
     "files_instrumented": r"Files modified:\s+(\d+)",
     "functions": r"Total functions in source code:\s+(\d+)",
     "functions_instrumented": r"Functions instrumented:\s+(\d+)",
+    "probes": r"Total instrumentations added:\s+(\d+)",
+    # The breakdown labels sit alone on a line, and Dma is a prefix of another.
+    "entry": r"^Dma Present Files Functions\s+(\d+)\s*$",
+    "user_copy": r"^User Copy\s+(\d+)\s*$",
+    "dma": r"^Dma\s+(\d+)\s*$",
+    "ioctl": r"^Ioctl\s+(\d+)\s*$",
 }
 
 
@@ -43,10 +50,14 @@ def read_report(path: Path) -> Dict[str, int]:
     text = path.read_text(encoding="utf-8", errors="replace")
     counts: Dict[str, int] = {}
     for field, pattern in FIELDS.items():
-        match = re.search(pattern, text)
+        match = re.search(pattern, text, re.MULTILINE)
         if match is None:
             raise ValueError(f"{path.name}: no {field}")
         counts[field] = int(match.group(1))
+    if counts["entry"] != counts["functions_instrumented"]:
+        raise ValueError(f"{path.name}: entry probes and functions instrumented disagree")
+    if sum(counts[k] for k in ("entry", "user_copy", "dma", "ioctl")) != counts["probes"]:
+        raise ValueError(f"{path.name}: the breakdown does not add up to the probes")
     return counts
 
 
@@ -67,8 +78,14 @@ def build_rows(directory: Path) -> List[Dict[str, str]]:
                 totals[field] += value
         rows.append({
             "Device": device,
+            "Total Fns.": str(totals["functions"]),
             "Instrumented Fns.": share(totals["functions_instrumented"], totals["functions"]),
             "Instrumented Files": share(totals["files_instrumented"], totals["files"]),
+            "Func Entry": str(totals["entry"]),
+            "User Copy": str(totals["user_copy"]),
+            "DMA": str(totals["dma"]),
+            "IOCTL": str(totals["ioctl"]),
+            "Total Probes": str(totals["probes"]),
         })
     return rows
 
@@ -95,9 +112,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         writer.writeheader()
         writer.writerows(rows)
 
-    width = max(len(row["Device"]) for row in rows)
+    widths = {name: max(len(name), max(len(row[name]) for row in rows)) for name in FIELDNAMES}
+    print("  ".join(name.ljust(widths[name]) for name in FIELDNAMES))
     for row in rows:
-        print(f"{row['Device']:<{width}}  {row['Instrumented Fns.']:<26}{row['Instrumented Files']}")
+        print("  ".join(row[name].ljust(widths[name]) for name in FIELDNAMES))
+    print("\nFunc Entry, User Copy, DMA and IOCTL are probes, and add up to Total Probes.")
+    print("Instrumented Fns. counts the functions given an entry probe, so a function")
+    print("carrying only a user copy or ioctl probe is not among them.")
     print(f"\nwrote {output}")
     return 0
 
