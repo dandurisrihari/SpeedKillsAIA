@@ -65,55 +65,65 @@ CATEGORIES = {
     "SMem Handling": "Message_Structure_Handling",
 }
 
-# Target functions per platform and category, with their hand-assigned VRC.
-# Mirrors the annotations in calc.py.
+# Target functions per platform and category, against how much of the ground
+# truth each one accounts for. One function often covers several: finding
+# gasket_handle_ioctl finds both GASKET_IOCTL_MAP_BUFFER and
+# GASKET_IOCTL_MAP_BUFFER_FLAGS, and finding _GFPAlloc is finding
+# gckMMU_FillFlatMappingWithPage16M with it. |G| is these added up, so recall is
+# whole when every target is retrieved. The scores these once held are read off
+# each run instead.
 GROUND_TRUTH: Dict[Tuple[str, str], Dict[str, int]] = {
-    ("coral", "Relevant Functions"): {"gasket_perform_mapping": 90},
-    ("coral", "KD Entry Point"): {"gasket_handle_ioctl": 90},
-    ("coral", "SMem Handling"): {"gasket_map_buffers_flags": 80},
+    ("coral", "Relevant Functions"): {"gasket_perform_mapping": 1},
+    # GASKET_IOCTL_MAP_BUFFER, GASKET_IOCTL_MAP_BUFFER_FLAGS
+    ("coral", "KD Entry Point"): {"gasket_handle_ioctl": 2},
+    ("coral", "SMem Handling"): {"gasket_map_buffers_flags": 1},
 
-    ("nxp", "Relevant Functions"): {"_GFPAlloc": 80, "import_page_map": 90},
+    # _GFPAlloc covers gckMMU_FillFlatMappingWithPage16M, import_page_map covers
+    # gckOS_MapPagesEx.
+    ("nxp", "Relevant Functions"): {"_GFPAlloc": 2, "import_page_map": 2},
     ("nxp", "KD Entry Point"): {
-        "gckVIDMEM_NODE_WrapUserMemory": 70,
-        "gckVIDMEM_NODE_LockCPU": 60,
+        "gckVIDMEM_NODE_WrapUserMemory": 1,
+        "gckVIDMEM_NODE_LockCPU": 1,
     },
     ("nxp", "SMem Handling"): {
-        "gckVIDMEM_NODE_WrapUserMemory": 90,
-        "gckVIDMEM_NODE_LockCPU": 60,
+        "gckVIDMEM_NODE_WrapUserMemory": 1,
+        "gckVIDMEM_NODE_LockCPU": 1,
     },
 
-    ("ti", "Relevant Functions"): {"dma_heap_map_dma_buf": 70, "dma_buf_phys_convert": 80},
-    ("ti", "KD Entry Point"): {"dma_heap_ioctl": 80, "dma_buf_phys_ioctl": 100},
-    ("ti", "SMem Handling"): {"dma_buf_phys_ioctl": 100, "dma_heap_ioctl_allocate": 100},
+    ("ti", "Relevant Functions"): {"dma_heap_map_dma_buf": 1, "dma_buf_phys_convert": 1},
+    ("ti", "KD Entry Point"): {"dma_heap_ioctl": 1, "dma_buf_phys_ioctl": 1},
+    ("ti", "SMem Handling"): {"dma_buf_phys_ioctl": 1, "dma_heap_ioctl_allocate": 1},
 
-    ("hailo", "Relevant Functions"): {"hailo_desc_list_create": 80, "hailo_vdma_buffer_map": 90},
+    ("hailo", "Relevant Functions"): {"hailo_desc_list_create": 1, "hailo_vdma_buffer_map": 1},
     ("hailo", "KD Entry Point"): {
-        "hailo_desc_list_create_ioctl": 100,
-        "hailo_vdma_buffer_map_ioctl": 90,
+        "hailo_desc_list_create_ioctl": 1,
+        "hailo_vdma_buffer_map_ioctl": 1,
     },
-    ("hailo", "SMem Handling"): {"hailo_desc_list_create_ioctl": 100},
+    ("hailo", "SMem Handling"): {"hailo_desc_list_create_ioctl": 1},
 
     ("nvidia", "Relevant Functions"): {
-        "nvmap_ioctl_create_from_va": 80,
-        "nvgpu_vm_map_buffer": 80,
+        "nvmap_ioctl_create_from_va": 1,
+        "nvgpu_vm_map_buffer": 1,
     },
-    ("nvidia", "KD Entry Point"): {"nvmap_ioctl": 90, "gk20a_as_dev_ioctl": 90},
+    # nvmap_ioctl covers NVMAP_IOC_FROM_VA and NVMAP_IOC_GET_FD.
+    ("nvidia", "KD Entry Point"): {"nvmap_ioctl": 2, "gk20a_as_dev_ioctl": 1},
     ("nvidia", "SMem Handling"): {
-        "nvmap_ioctl_create_from_va": 85,
-        "nvmap_ioctl_getfd": 100,
-        "gk20a_as_ioctl_map_buffer_ex": 90,
+        "nvmap_ioctl_create_from_va": 1,
+        "nvmap_ioctl_getfd": 1,
+        "gk20a_as_ioctl_map_buffer_ex": 1,
     },
 
     ("aws", "Relevant Functions"): {
-        "mc_alloc_internal": 70,
-        "ncdev_mem_buf_copy": 70,
-        "ncdev_mem_get_pa_deprecated": 80,
+        "mc_alloc_internal": 1,
+        "ncdev_mem_buf_copy": 1,
+        "ncdev_mem_get_pa_deprecated": 1,
     },
-    ("aws", "KD Entry Point"): {"ncdev_ioctl": 90},
+    # NEURON_IOCTL_MEM_GET_PA, NEURON_IOCTL_MEM_ALLOC, NEURON_IOCTL_MEM_BUF_COPY
+    ("aws", "KD Entry Point"): {"ncdev_ioctl": 3},
     ("aws", "SMem Handling"): {
-        "ncdev_mem_get_pa_deprecated": 85,
-        "ncdev_mem_buf_copy": 80,
-        "mc_alloc_internal": 80,
+        "ncdev_mem_get_pa_deprecated": 1,
+        "ncdev_mem_buf_copy": 1,
+        "mc_alloc_internal": 1,
     },
 }
 
@@ -171,18 +181,27 @@ def score_category(
     by_name = {name: (rank, score) for rank, name, score in entries}
     present = [name for name in targets if name in by_name]
     missing = [name for name in targets if name not in by_name]
+    ground_truth = sum(targets.values())
 
     manual = max((by_name[name][0] for name in present), default=None)
     # VRC is read off this run rather than the hand-assigned table, so it varies
-    # run to run and is worth averaging.
-    vrc = sum(by_name[name][1] for name in present) / len(present) if present else None
+    # run to run and is worth averaging. A function standing for several of the
+    # ground truth weighs that many times.
+    found = sum(targets[name] for name in present)
+    vrc = (
+        sum(by_name[name][1] * targets[name] for name in present) / found
+        if found else None
+    )
 
     sweep: List[Dict[str, object]] = []
     for threshold in THRESHOLDS:
         retrieved = [name for _, name, score in entries if score >= threshold]
-        true_positives = sum(1 for name in retrieved if name in targets)
-        precision = true_positives / len(retrieved) if retrieved else 0.0
-        recall = true_positives / len(targets) if targets else 0.0
+        true_positives = sum(targets.get(name, 0) for name in retrieved)
+        # Counted the same way on both sides: a retrieved target stands for as
+        # much of the ground truth as it covers, anything else for one function.
+        returned = sum(targets.get(name, 1) for name in retrieved)
+        precision = true_positives / returned if returned else 0.0
+        recall = true_positives / ground_truth if ground_truth else 0.0
         f1 = (
             2 * precision * recall / (precision + recall)
             if precision + recall > 0
